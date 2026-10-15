@@ -52,13 +52,12 @@ public class MobMixin extends LivingEntityMixin
 			
 			if(rand > 1 - chance)
 			{
-				Level level = level();
 				Optional<HolderSet.Named<Item>> tag = BuiltInRegistries.ITEM.getTag(itemTagIn);
 				if(tag.isPresent() && tag.get().size() > 0)
 				{
 					ItemStack weapon = ItemStack.EMPTY;
 					List<Item> possibleWeapons = tag.get().stream().map(Holder::value).toList();
-					weapon = ItemRandomizer.generate(level, possibleWeapons);
+					weapon = ItemRandomizer.generate(random, possibleWeapons);
 					setItemSlot(EquipmentSlot.MAINHAND, weapon);
 				}
 			}

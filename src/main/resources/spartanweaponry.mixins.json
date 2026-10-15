@@ -5,6 +5,7 @@
 	"refmap": "spartanweaponry.mixins.refmap.json",
 	"mixins": [
 		"EntityMixin",
+		"EnchantmentHelperMixin",
 		"ProjectileMixin",
 		"AbstractArrowMixin",
 		"LivingEntityMixin",

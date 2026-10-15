@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.oblivioussp.spartanweaponry.util.ItemNbt;
 
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -41,13 +42,15 @@ import net.neoforged.fml.loading.FMLLoader;
 public class ClientEventHandler 
 {
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
-	public static void onMouseEvent(InputEvent.MouseButton ev)
+	public static void onMouseEvent(InputEvent.MouseButton.Post ev)
 	{
 		Minecraft mc = Minecraft.getInstance();
 		if(mc.level == null || mc.screen != null || mc.isPaused())
 			return;
 		
-		if(ev.getButton() == KeyBinds.KEY_ACCESS_QUIVER.getKey().getValue() && ev.getAction() == GLFW.GLFW_PRESS)
+		// 1.20.1 listened to both the Pre and Post mouse events (a click sent two packets) and compared the button with a
+		// key binding of any type
+		if(KeyBinds.KEY_ACCESS_QUIVER.getKey().getType() == InputConstants.Type.MOUSE && ev.getButton() == KeyBinds.KEY_ACCESS_QUIVER.getKey().getValue() && ev.getAction() == GLFW.GLFW_PRESS)
 		{
 			NetworkHandler.sendPacketToServer(new QuiverAccessPacket());
 			//Log.info("Mouse: Attack pressed!");
@@ -61,7 +64,7 @@ public class ClientEventHandler
 		if(mc.level == null || mc.screen != null || mc.isPaused())
 			return;
 		
-		if(ev.getKey() == KeyBinds.KEY_ACCESS_QUIVER.getKey().getValue() && ev.getAction() == GLFW.GLFW_PRESS)
+		if(KeyBinds.KEY_ACCESS_QUIVER.getKey().getType() == InputConstants.Type.KEYSYM && ev.getKey() == KeyBinds.KEY_ACCESS_QUIVER.getKey().getValue() && ev.getAction() == GLFW.GLFW_PRESS)
 		{
 			NetworkHandler.sendPacketToServer(new QuiverAccessPacket());
 			//Log.info("Keyboard: Attack pressed!");

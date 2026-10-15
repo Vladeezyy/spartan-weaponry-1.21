@@ -32,7 +32,10 @@ import net.neoforged.fml.ModList;
 public class HudCrosshair
 {
 	public static final ResourceLocation CROSSHAIR_TEXTURES = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/crosshairs.png");
-	public static final ResourceLocation ICONS_LOCATION = ResourceLocation.parse("textures/gui/icons.png");
+	// 1.20.1 drew these from textures/gui/icons.png, which is a set of sprites since 1.20.2
+	public static final ResourceLocation ATTACK_INDICATOR_FULL = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_full");
+	public static final ResourceLocation ATTACK_INDICATOR_BACKGROUND = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_background");
+	public static final ResourceLocation ATTACK_INDICATOR_PROGRESS = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_progress");
 	protected static boolean isVanillaCrosshairDisabled = false;
 	
 	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)

@@ -26,7 +26,6 @@ import net.minecraft.client.gui.Gui;
 
 public class HudOilUses
 {
-	protected static final ResourceLocation WIDGETS = ResourceLocation.parse("textures/gui/widgets.png");
 	
 	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)
 	{
@@ -69,7 +68,6 @@ public class HudOilUses
 
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, WIDGETS);
         RenderSystem.enableBlend();
         
         guiGraphics.renderFakeItem(oilStack, offsetX - 17, offsetY);

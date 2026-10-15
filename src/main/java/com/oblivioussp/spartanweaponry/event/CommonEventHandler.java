@@ -3,7 +3,6 @@ package com.oblivioussp.spartanweaponry.event;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
-import net.neoforged.neoforge.event.enchanting.GetEnchantmentLevelEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.bus.api.EventPriority;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -235,16 +234,23 @@ public class CommonEventHandler
 	}
 	
 	/**
-	 * Lucky Throw: a kill by a thrown weapon drops loot with Looting of its Lucky Throw level. 1.20.1 used
-	 * LootingLevelEvent; 1.21's loot functions read Looting from the killer's equipment, so while the dead entity's
-	 * drops are made (LivingDeathEvent until LivingDropsEvent) the Looting level of those items is raised to it.
+	 * Lucky Throw: a kill by a thrown weapon drops loot with the Looting level of its Lucky Throw level (1.20.1:
+	 * LootingLevelEvent, which set the level for kills by thrown weapons). 1.21's loot functions read Looting from the
+	 * killer's equipment (EnchantmentHelper.getEnchantmentLevel); while the dead entity's drops are made
+	 * (LivingDeathEvent until LivingDropsEvent) mixin/EnchantmentHelperMixin answers with this level instead. -1: no
+	 * thrown weapon kill.
 	 */
-	private static final ThreadLocal<Integer> LUCKY_THROW_LOOTING = ThreadLocal.withInitial(() -> 0);
+	private static final ThreadLocal<Integer> LUCKY_THROW_LOOTING = ThreadLocal.withInitial(() -> -1);
+	
+	public static int getLuckyThrowLooting()
+	{
+		return LUCKY_THROW_LOOTING.get();
+	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onLivingDeath(LivingDeathEvent ev)
 	{
-		LUCKY_THROW_LOOTING.set(0);
+		LUCKY_THROW_LOOTING.set(-1);
 		if(!ev.isCanceled() && ev.getSource() != null && ev.getSource().getDirectEntity() instanceof ThrowingWeaponEntity throwingWeapon)
 			LUCKY_THROW_LOOTING.set(Enchants.level(throwingWeapon.getWeaponItem(), ModEnchantments.LUCKY_THROW));
 	}
@@ -252,21 +258,7 @@ public class CommonEventHandler
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingDrops(LivingDropsEvent ev)
 	{
-		LUCKY_THROW_LOOTING.set(0);
-	}
-	
-	@SubscribeEvent
-	public static void modifyLootLevel(GetEnchantmentLevelEvent ev)
-	{
-		int luckLevel = LUCKY_THROW_LOOTING.get();
-		if(luckLevel > 0 && ev.isTargetting(Enchantments.LOOTING))
-		{
-			ev.getHolder(Enchantments.LOOTING).ifPresent((looting) -> 
-			{
-				if(ev.getEnchantments().getLevel(looting) < luckLevel)
-					ev.getEnchantments().set(looting, luckLevel);
-			});
-		}
+		LUCKY_THROW_LOOTING.set(-1);
 	}
 	
 	@SubscribeEvent

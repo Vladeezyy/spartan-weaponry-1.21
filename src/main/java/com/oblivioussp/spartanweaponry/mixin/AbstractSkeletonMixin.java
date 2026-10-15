@@ -89,7 +89,7 @@ public class AbstractSkeletonMixin extends MobMixin
 				{
 					ItemStack weapon = ItemStack.EMPTY;
 					List<Item> possibleWeapons = tag.stream().toList();
-					weapon = ItemRandomizer.generate(level, possibleWeapons);
+					weapon = ItemRandomizer.generate(random, possibleWeapons);
 					setItemSlot(EquipmentSlot.MAINHAND, weapon);
 				}
 			}

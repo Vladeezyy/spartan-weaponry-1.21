@@ -34,6 +34,18 @@ neoForge {
         client {
             client()
         }
+        // Scripted test scene (port/DevScene): world run/saves/sw_scene, run/screenshots/scene_*.png, then quits.
+        // -Pscene_lang=ru_ru runs it in another language.
+        scene {
+            client()
+            systemProperty 'spartanweaponry.scene', 'true'
+            systemProperty 'spartanweaponry.scene.lang', project.findProperty('scene_lang') ?: 'en_us'
+        }
+        // Functional and stress tests (port/StressScene): world run/saves/sw_stress, run/screenshots/stress_*.png
+        stress {
+            client()
+            systemProperty 'spartanweaponry.stress', 'true'
+        }
         server {
             server()
             programArgument '--nogui'

@@ -27,13 +27,12 @@ public class ZombieMixin extends MobMixin
 			
 			if(rand > 1 - chance)
 			{
-				Level level = level();
 				ITag<Item> tag = BuiltInRegistries.ITEM.tags().getTag(ModItemTags.ZOMBIE_SPAWN_WEAPONS);
 				if(!tag.isEmpty())
 				{
 					ItemStack weapon = ItemStack.EMPTY;
 					List<Item> possibleWeapons = tag.stream().toList();
-					weapon = ItemRandomizer.generate(level, possibleWeapons);
+					weapon = ItemRandomizer.generate(random, possibleWeapons);
 					setItemSlot(EquipmentSlot.MAINHAND, weapon);
 				}
 			}

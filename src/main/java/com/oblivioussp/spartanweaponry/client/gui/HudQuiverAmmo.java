@@ -28,7 +28,8 @@ import net.minecraft.client.gui.Gui;
 
 public class HudQuiverAmmo
 {
-	protected static final ResourceLocation WIDGETS = ResourceLocation.parse("textures/gui/widgets.png");
+	// 1.20.1: textures/gui/widgets.png (the off hand slot of the hotbar), a sprite since 1.20.2
+	protected static final ResourceLocation OFFHAND_SLOT = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_left");
 
 	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight) 
 	{
@@ -79,7 +80,7 @@ public class HudQuiverAmmo
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 //        RenderSystem.setShaderTexture(0, WIDGETS);
         
-		guiGraphics.blit(WIDGETS, offsetX, offsetY, 24, 23, 22, 22);
+		guiGraphics.blitSprite(OFFHAND_SLOT, 29, 24, 0, 1, offsetX, offsetY, 22, 22);
 		guiGraphics.renderFakeItem(quiverStack, offsetX + 3, offsetY + 3);
         poseStack.translate(0.0f, 0.0f, 200.0f);
 		guiGraphics.drawString(font, ammoStr, offsetX + 20 - font.width(ammoStr), offsetY + 13, ammoCount == 0 ? 0xFF6060 : 0xFFC000, true);

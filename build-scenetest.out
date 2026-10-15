@@ -1,0 +1,68 @@
+exit 0
+CHECK OK   extended heads placed (10)
+CHECK OK   longbow (real input) shoots an iron arrow from the inventory (15 arrows left)
+CHECK OK   the arrow hits the golem (100.0 -> 88.0)
+CHECK OK   longbow loses durability (1)
+CHECK OK   heavy crossbow loads a bolt (charged_projectiles) (1 spartanweaponry:bolt)
+CHECK OK   loading takes the bolt from the inventory (7)
+CHECK OK   heavy crossbow fires (unloaded afterwards) (ChargedProjectiles[items=[]])
+CHECK OK   the bolt hits the golem (100.0 -> 80.0)
+CHECK OK   javelin thrown (real input) uses one ammo (4 -> 3)
+CHECK OK   the javelin hits the golem (100.0 -> 89.0)
+CHECK OK   one thrown javelin in the world (1)
+CHECK OK   picking the javelin up gives back exactly one ammo (ammo 4/4, stacks 1)
+CHECK OK   the arrow is in the ground (1)
+CHECK OK   issue #188: shooting and picking the arrow up gives back one arrow, not two (10 arrows, 0 left in the world)
+CHECK OK   selecting a bow takes arrows out of the quiver into the off hand (32 spartanweaponry:iron_arrow, in the quiver 0)
+CHECK OK   quiver screen opens (com.oblivioussp.spartanweaponry.client.gui.container.QuiverArrowScreen@78951b5d)
+CHECK OK   weapon oil applies to the katana in the other hand (Optional[com.oblivioussp.spartanweaponry.api.oil.OilEffect@14dc1945])
+CHECK OK   the oil bottle is used up (glass bottle back) (0 minecraft:air)
+CHECK OK   Hallowed oil adds damage against undead (10.627197 vs 8.856003)
+CHECK OK   a hit uses the oil once (19/20)
+CHECK OK   katana hit deals its attack damage (after armour) (4.427994 vs 4.428 of 4.5)
+CHECK OK   Armour Piercing: warhammer against diamond armour (4.199997 dealt, vanilla armour formula 1.3999999 of 7.0)
+CHECK OK   Reach: a spear extends the entity interaction range (4.0)
+CHECK OK   the reach goes back with an empty hand (3.0)
+CHECK OK   Two-Handed: greatsword with an off hand item gives Mining Fatigue (effect.minecraft.mining_fatigue x 4, Duration: 6, Particles: false, Show Icon: false)
+CHECK OK   issue #169: a two-handed weapon keeps Mining Fatigue from other sources (effect.minecraft.mining_fatigue, Duration: infinite)
+CHECK OK   Melee Block: a parrying dagger in use blocks a melee hit (using true, blocked hit 0.0, unblocked 4.0)
+CHECK OK   the block wears the dagger (5)
+CHECK OK   Decapitate: a scythe drops zombie heads (25%) (15 heads in 60 kills)
+CHECK OK   no heads without the trait (0)
+CHECK OK   Lucky Throw III: thrown weapon kills drop loot like Looting III (rotten flesh 47 plain, 91 with Lucky Throw III)
+CHECK OK   issue #185: a skeleton with a longbow shoots (arrows 0, villager 488.0)
+CHECK OK   Ender Disruption stops an enderman from teleporting ((-369.5, 140.0, -61.5))
+CHECK OK   without the effect it teleports ((-401.09628733146315, 72.0, -29.602809833146026))
+CHECK OK   explosive arrow explodes on impact (0 left)
+CHECK OK   the javelin thrown down hits the zombie (194.096)
+CHECK OK   issue #186: it hits once, not every time the hurt cooldown ends (194.096 after the hit, 194.096 5 s later)
+CHECK OK   recipes loaded (226 recipes)
+CHECK OK   modded material recipes skipped without the material (no tin ingots) ()
+CHECK OK   tag smelting: iron weapons melt into iron nuggets (1 minecraft:iron_nugget)
+CHECK OK   enchanting table: throwing knife ([minecraft:loyalty, minecraft:unbreaking, spartanweaponry:expanse, spartanweaponry:hydrodynamic, spartanweaponry:incendiary, spartanweaponry:lucky_throw, spartanweaponry:propel, spartanweaponry:razors_edge, spartanweaponry:supercharge])
+CHECK OK   enchanting table: katana (Sweep I trait: Sweeping Edge) ([minecraft:bane_of_arthropods, minecraft:fire_aspect, minecraft:knockback, minecraft:looting, minecraft:sharpness, minecraft:smite, minecraft:sweeping_edge, minecraft:unbreaking])
+CHECK OK   enchanting table: no Sweeping Edge on a greatsword (Sweep III, as in 1.20.1) ([minecraft:bane_of_arthropods, minecraft:fire_aspect, minecraft:knockback, minecraft:looting, minecraft:sharpness, minecraft:smite, minecraft:unbreaking])
+CHECK OK   enchanting table: no Sweeping Edge on a warhammer ([minecraft:bane_of_arthropods, minecraft:fire_aspect, minecraft:knockback, minecraft:looting, minecraft:sharpness, minecraft:smite, minecraft:unbreaking])
+CHECK OK   enchanting table: heavy crossbow ([minecraft:multishot, minecraft:piercing, minecraft:quick_charge, minecraft:unbreaking, spartanweaponry:sharpshooter])
+CHECK OK   enchanting table: longbow ([minecraft:flame, minecraft:infinity, minecraft:power, minecraft:punch, minecraft:unbreaking])
+CHECK OK   enchanting table: boomerang ([minecraft:loyalty, minecraft:unbreaking, spartanweaponry:collectorang, spartanweaponry:expanse, spartanweaponry:hydrodynamic, spartanweaponry:incendiary, spartanweaponry:lucky_throw, spartanweaponry:propel, spartanweaponry:razors_edge, spartanweaponry:supercharge])
+CHECK OK   Loyalty on throwing weapons (anvil) ()
+CHECK OK   village weaponsmith chests contain Spartan weapons (147 in 100 chests)
+CHECK OK   longbow durability from the material (500)
+CHECK OK   heads: 11 extended skull blocks (20)
+DONE, failed checks: 0
+scene_creative_tab.png
+scene_dropped.png
+scene_first_person_oiled.png
+scene_heads.png
+scene_heavy_crossbow_aim.png
+scene_heavy_crossbow_loaded.png
+scene_longbow_draw.png
+scene_quiver_huge.png
+scene_quiver_small.png
+scene_throw_charge.png
+scene_tooltip.png
+scene_wall_ammo.png
+scene_wall_modded.png
+scene_wall_vanilla.png
+--- errors

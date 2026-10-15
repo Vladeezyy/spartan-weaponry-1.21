@@ -120,7 +120,10 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 			if((distance < 1.0d && isReturning) || (isInWater() && waterInertia <= 0.0f) || returnPos == null)
 				setNoGravity(false);
 			if(distance > maxDistance && !isReturning)
+			{
 				isReturning = true;
+				allowHittingAgain();
+			}
 			
 			// Override motion for Boomerang when returning to the thrower
 			if(isReturning && returnPos != null)
@@ -207,6 +210,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 		{
 			Level level = level();
 			// Once the Boomerang hits any surface, it should return to the player.
+			allowHittingAgain();
 			
 			BlockPos blockPos = hitResult.getBlockPos();
 			BlockState blockState = level.getBlockState(blockPos);

@@ -7,6 +7,8 @@ import com.oblivioussp.spartanweaponry.util.Enchants;
 import com.oblivioussp.spartanweaponry.util.ItemNbt;
 
 import java.util.Collection;
+
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import java.util.Optional;
 
 import com.oblivioussp.spartanweaponry.api.IWeaponTraitContainer;
@@ -62,6 +64,12 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	protected boolean isReturning = false;
 	protected boolean playedReturnSound = false;
 	protected int knockback = 0;
+	/**
+	 * Entities this weapon has damaged in this flight. Port fix (issue #186): 1.20.1 hit the same mob again and again
+	 * (a weapon thrown down onto a mob bounced on its head and dealt full damage every time the hurt cooldown ran out);
+	 * now a flight damages a mob once, like a trident. A boomerang clears it when it turns back.
+	 */
+	protected final IntOpenHashSet hitEntities = new IntOpenHashSet();
 	
 	public ThrowingWeaponEntity(EntityType<? extends ThrowingWeaponEntity> type, Level level) 
 	{
@@ -185,6 +193,18 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	protected boolean canHitEntity(Entity target)
+	{
+		return super.canHitEntity(target) && !hitEntities.contains(target.getId());
+	}
+	
+	/** A boomerang turning back can hit the mobs of its way out again */
+	protected void allowHittingAgain()
+	{
+		hitEntities.clear();
+	}
+	
+	@Override
 	protected void onHitEntity(EntityHitResult hitResult) 
 	{
 		Entity entity = hitResult.getEntity();
@@ -258,6 +278,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
             
             if(entity.hurt(src, damage))
             {
+            	hitEntities.add(entity.getId());
             	boolean[] broke = {false};
             	if(weapon.isDamageableItem() && level instanceof ServerLevel serverLevel)
             		weapon.hurtAndBreak(1, serverLevel, null, (item) -> broke[0] = true);
