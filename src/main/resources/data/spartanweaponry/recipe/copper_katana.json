@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "katana",
+        "copper"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/copper"
+      }
+    }
+  ],
+  "group": "spartanweaponry:katana",
+  "key": {
+    "#": {
+      "tag": "c:ingots/copper"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    " # ",
+    "|  "
+  ],
+  "result": {
+    "id": "spartanweaponry:copper_katana"
+  }
+}

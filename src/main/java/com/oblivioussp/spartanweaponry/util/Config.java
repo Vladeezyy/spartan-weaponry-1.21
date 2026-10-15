@@ -299,7 +299,7 @@ public class Config
 						.define("check_armor_value", false);
 				damageBonusMaxArmorValue = builder.comment("Max armor value allowed for any damage bonus that checks for armor to apply, without any armor equipped")
 						.translation("config." + ModSpartanWeaponry.ID + ".traits.damage_bonus.max_armor_value")
-						.defineInRange("max_armor_value", Defaults.DamageBonusMaxArmorValue, 1.0, 50.0);
+						.defineInRange("max_armor_value", Defaults.DamageBonusMaxArmorValue, 0.0, 50.0);	// Port fix: the default (0) was below the minimum (1), so the value was "corrected" on every start
 				damageBonusUndeadMultiplier = builder.comment("Changes the \"Undead Damage Bonus\" Weapon Trait multiplier value")
 						.translation("config." + ModSpartanWeaponry.ID + ".traits.damage_bonus.undead_multiplier")
 						.defineInRange("undead_multiplier", Defaults.DamageBonusUndeadMultiplier, 1.0, 50.0);

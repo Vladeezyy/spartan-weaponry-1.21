@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "arrows"
+      ]
+    }
+  ],
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "F": {
+      "tag": "c:feathers"
+    },
+    "|": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "#",
+    "|",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "id": "spartanweaponry:iron_arrow"
+  }
+}

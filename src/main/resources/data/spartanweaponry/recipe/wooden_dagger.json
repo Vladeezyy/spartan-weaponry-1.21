@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "dagger"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:dagger",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "|": {
+      "tag": "spartanweaponry:handles"
+    }
+  },
+  "pattern": [
+    "#",
+    "|"
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_dagger"
+  }
+}

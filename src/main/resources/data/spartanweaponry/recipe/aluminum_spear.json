@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "spear",
+        "aluminum"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "spartanweaponry:ingots/aluminum"
+      }
+    }
+  ],
+  "group": "spartanweaponry:spear",
+  "key": {
+    "#": {
+      "tag": "spartanweaponry:ingots/aluminum"
+    },
+    "/": {
+      "tag": "spartanweaponry:poles"
+    }
+  },
+  "pattern": [
+    "#",
+    "/"
+  ],
+  "result": {
+    "id": "spartanweaponry:aluminum_spear"
+  }
+}

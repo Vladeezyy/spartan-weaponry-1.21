@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin",
+        "copper"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/copper"
+      }
+    }
+  ],
+  "group": "spartanweaponry:javelin",
+  "key": {
+    "#": {
+      "tag": "c:ingots/copper"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "/#"
+  ],
+  "result": {
+    "id": "spartanweaponry:copper_javelin"
+  }
+}

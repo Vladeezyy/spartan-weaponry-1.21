@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "tomahawk"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:tomahawk",
+  "key": {
+    "#": {
+      "tag": "c:gems/diamond"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "|#",
+    " #"
+  ],
+  "result": {
+    "id": "spartanweaponry:diamond_tomahawk"
+  }
+}

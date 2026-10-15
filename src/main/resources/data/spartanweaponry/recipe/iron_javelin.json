@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:javelin",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "/#"
+  ],
+  "result": {
+    "id": "spartanweaponry:iron_javelin"
+  }
+}

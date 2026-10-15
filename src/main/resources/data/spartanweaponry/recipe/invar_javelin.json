@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin",
+        "invar"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/invar"
+      }
+    }
+  ],
+  "group": "spartanweaponry:javelin",
+  "key": {
+    "#": {
+      "tag": "c:ingots/invar"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "/#"
+  ],
+  "result": {
+    "id": "spartanweaponry:invar_javelin"
+  }
+}

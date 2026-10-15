@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "longsword"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:longsword",
+  "key": {
+    "#": {
+      "tag": "c:ingots/gold"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " # ",
+    " # ",
+    "#|#"
+  ],
+  "result": {
+    "id": "spartanweaponry:golden_longsword"
+  }
+}

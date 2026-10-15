@@ -1,0 +1,36 @@
+{
+  "parent": "spartanweaponry:spear",
+  "criteria": {
+    "has_halberd": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#spartanweaponry:halberds"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.spartanweaponry.craft_halberd.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "spartanweaponry:golden_halberd"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.spartanweaponry.craft_halberd.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_halberd"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "cestus"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:cestus",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "C": {
+      "item": "spartanweaponry:cestus"
+    }
+  },
+  "pattern": [
+    "C#"
+  ],
+  "result": {
+    "id": "spartanweaponry:studded_cestus"
+  }
+}

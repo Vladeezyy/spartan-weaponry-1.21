@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "dagger",
+        "copper"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/copper"
+      }
+    }
+  ],
+  "group": "spartanweaponry:dagger",
+  "key": {
+    "#": {
+      "tag": "c:ingots/copper"
+    },
+    "|": {
+      "tag": "spartanweaponry:handles"
+    }
+  },
+  "pattern": [
+    "#",
+    "|"
+  ],
+  "result": {
+    "id": "spartanweaponry:copper_dagger"
+  }
+}

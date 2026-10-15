@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "tomahawk",
+        "lead"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/lead"
+      }
+    }
+  ],
+  "group": "spartanweaponry:tomahawk",
+  "key": {
+    "#": {
+      "tag": "c:ingots/lead"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "|#",
+    " #"
+  ],
+  "result": {
+    "id": "spartanweaponry:lead_tomahawk"
+  }
+}

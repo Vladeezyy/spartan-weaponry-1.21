@@ -1,0 +1,36 @@
+{
+  "parent": "spartanweaponry:dagger",
+  "criteria": {
+    "has_boomerang": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#spartanweaponry:boomerangs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.spartanweaponry.craft_boomerang.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "spartanweaponry:wooden_boomerang"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.spartanweaponry.craft_boomerang.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_boomerang"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

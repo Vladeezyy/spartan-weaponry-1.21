@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "dagger",
+        "bronze"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/bronze"
+      }
+    }
+  ],
+  "group": "spartanweaponry:dagger",
+  "key": {
+    "#": {
+      "tag": "c:ingots/bronze"
+    },
+    "|": {
+      "tag": "spartanweaponry:handles"
+    }
+  },
+  "pattern": [
+    "#",
+    "|"
+  ],
+  "result": {
+    "id": "spartanweaponry:bronze_dagger"
+  }
+}

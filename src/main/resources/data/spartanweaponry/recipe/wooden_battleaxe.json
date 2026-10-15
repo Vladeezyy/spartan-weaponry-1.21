@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "battleaxe"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:battleaxe",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "###",
+    "#/#",
+    " | "
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_battleaxe"
+  }
+}

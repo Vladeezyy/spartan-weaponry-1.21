@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "club"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:club",
+  "key": {
+    "#": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    " #",
+    "# "
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_club"
+  }
+}

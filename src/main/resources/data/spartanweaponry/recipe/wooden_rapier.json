@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "rapier"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:rapier",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    "## ",
+    "|# "
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_rapier"
+  }
+}

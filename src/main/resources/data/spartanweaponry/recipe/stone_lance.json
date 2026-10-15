@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "lance"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:lance",
+  "key": {
+    "#": {
+      "tag": "c:cobblestones"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    "#/ ",
+    "|# "
+  ],
+  "result": {
+    "id": "spartanweaponry:stone_lance"
+  }
+}

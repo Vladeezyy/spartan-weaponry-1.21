@@ -11,3 +11,4 @@ run-*/
 !gradle/wrapper/gradle-wrapper.jar
 *.log
 prodtest/*/
+build-*.log

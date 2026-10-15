@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "rapier"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:rapier",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    "## ",
+    "|# "
+  ],
+  "result": {
+    "id": "spartanweaponry:iron_rapier"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "spartanweaponry:simple_handle"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    "/",
+    "#",
+    "/"
+  ],
+  "result": {
+    "id": "spartanweaponry:simple_pole"
+  },
+  "show_notification": true
+}

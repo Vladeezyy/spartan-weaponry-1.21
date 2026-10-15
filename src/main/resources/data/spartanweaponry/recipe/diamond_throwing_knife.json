@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "throwing_knife"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:throwing_knife",
+  "key": {
+    "#": {
+      "tag": "c:gems/diamond"
+    },
+    "|": {
+      "tag": "spartanweaponry:handles"
+    }
+  },
+  "pattern": [
+    "|#"
+  ],
+  "result": {
+    "id": "spartanweaponry:diamond_throwing_knife"
+  }
+}

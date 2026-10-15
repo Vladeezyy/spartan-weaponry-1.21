@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "parrying_dagger",
+        "electrum"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/electrum"
+      }
+    }
+  ],
+  "group": "spartanweaponry:parrying_dagger",
+  "key": {
+    "#": {
+      "tag": "c:ingots/electrum"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " #",
+    "#|"
+  ],
+  "result": {
+    "id": "spartanweaponry:electrum_parrying_dagger"
+  }
+}

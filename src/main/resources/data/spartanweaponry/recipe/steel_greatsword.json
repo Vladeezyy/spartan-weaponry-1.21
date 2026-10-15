@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "greatsword",
+        "steel"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/steel"
+      }
+    }
+  ],
+  "group": "spartanweaponry:greatsword",
+  "key": {
+    "#": {
+      "tag": "c:ingots/steel"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " # ",
+    "###",
+    "#|#"
+  ],
+  "result": {
+    "id": "spartanweaponry:steel_greatsword"
+  }
+}

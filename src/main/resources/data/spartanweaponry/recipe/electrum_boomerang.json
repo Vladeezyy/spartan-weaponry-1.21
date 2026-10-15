@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "boomerang",
+        "electrum"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/electrum"
+      }
+    }
+  ],
+  "group": "spartanweaponry:boomerang",
+  "key": {
+    "#": {
+      "tag": "c:ingots/electrum"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "#PP",
+    "P  ",
+    "P  "
+  ],
+  "result": {
+    "id": "spartanweaponry:electrum_boomerang"
+  }
+}

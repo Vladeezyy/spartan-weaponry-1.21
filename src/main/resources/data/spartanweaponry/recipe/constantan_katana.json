@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "katana",
+        "constantan"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/constantan"
+      }
+    }
+  ],
+  "group": "spartanweaponry:katana",
+  "key": {
+    "#": {
+      "tag": "c:ingots/constantan"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    " # ",
+    "|  "
+  ],
+  "result": {
+    "id": "spartanweaponry:constantan_katana"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "parrying_dagger"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:parrying_dagger",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " #",
+    "#|"
+  ],
+  "result": {
+    "id": "spartanweaponry:iron_parrying_dagger"
+  }
+}

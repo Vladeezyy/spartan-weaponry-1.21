@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "scythe"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:scythe",
+  "key": {
+    "#": {
+      "tag": "c:gems/diamond"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "## ",
+    "  #",
+    " / "
+  ],
+  "result": {
+    "id": "spartanweaponry:diamond_scythe"
+  }
+}

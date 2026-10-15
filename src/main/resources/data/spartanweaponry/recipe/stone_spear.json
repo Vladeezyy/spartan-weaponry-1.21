@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "spear"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:spear",
+  "key": {
+    "#": {
+      "tag": "c:cobblestones"
+    },
+    "/": {
+      "tag": "spartanweaponry:poles"
+    }
+  },
+  "pattern": [
+    "#",
+    "/"
+  ],
+  "result": {
+    "id": "spartanweaponry:stone_spear"
+  }
+}

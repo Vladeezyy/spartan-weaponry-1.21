@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "battleaxe",
+        "electrum"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/electrum"
+      }
+    }
+  ],
+  "group": "spartanweaponry:battleaxe",
+  "key": {
+    "#": {
+      "tag": "c:ingots/electrum"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "###",
+    "#/#",
+    " | "
+  ],
+  "result": {
+    "id": "spartanweaponry:electrum_battleaxe"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "pike"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:pike",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "#",
+    "/",
+    "/"
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_pike"
+  }
+}

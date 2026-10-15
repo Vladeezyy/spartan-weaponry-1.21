@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "warhammer",
+        "tin"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/tin"
+      }
+    }
+  ],
+  "group": "spartanweaponry:warhammer",
+  "key": {
+    "#": {
+      "tag": "c:ingots/tin"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " #",
+    "##",
+    " |"
+  ],
+  "result": {
+    "id": "spartanweaponry:tin_warhammer"
+  }
+}

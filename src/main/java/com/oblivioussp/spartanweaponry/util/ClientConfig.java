@@ -1,6 +1,5 @@
 package com.oblivioussp.spartanweaponry.util;
 
-import net.neoforged.fml.common.EventBusSubscriber;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -13,7 +12,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.fml.common.Mod;
 
-@EventBusSubscriber(modid = ModSpartanWeaponry.ID, bus = EventBusSubscriber.Bus.MOD)
 public class ClientConfig 
 {
 	public static final ClientConfig INSTANCE;

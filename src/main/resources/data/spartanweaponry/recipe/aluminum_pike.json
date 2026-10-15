@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "pike",
+        "aluminum"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "spartanweaponry:ingots/aluminum"
+      }
+    }
+  ],
+  "group": "spartanweaponry:pike",
+  "key": {
+    "#": {
+      "tag": "spartanweaponry:ingots/aluminum"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "#",
+    "/",
+    "/"
+  ],
+  "result": {
+    "id": "spartanweaponry:aluminum_pike"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "flanged_mace"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:flanged_mace",
+  "key": {
+    "#": {
+      "tag": "c:cobblestones"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " ##",
+    " /#",
+    "|  "
+  ],
+  "result": {
+    "id": "spartanweaponry:stone_flanged_mace"
+  }
+}

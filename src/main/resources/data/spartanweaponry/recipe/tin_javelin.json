@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin",
+        "tin"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/tin"
+      }
+    }
+  ],
+  "group": "spartanweaponry:javelin",
+  "key": {
+    "#": {
+      "tag": "c:ingots/tin"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    "/#"
+  ],
+  "result": {
+    "id": "spartanweaponry:tin_javelin"
+  }
+}

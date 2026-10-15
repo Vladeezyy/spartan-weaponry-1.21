@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "arrows",
+        "netherite_ammo"
+      ]
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "c:ingots/netherite"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    },
+    {
+      "item": "spartanweaponry:diamond_arrow"
+    }
+  ],
+  "result": {
+    "count": 8,
+    "id": "spartanweaponry:netherite_arrow"
+  }
+}

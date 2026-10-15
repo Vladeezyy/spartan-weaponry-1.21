@@ -1,0 +1,32 @@
+{
+  "type": "jeed:effect_provider",
+  "neoforge:conditions": [
+    {
+      "disabled": [
+        "oil"
+      ],
+      "type": "spartanweaponry:type_disabled"
+    },
+    {
+      "modid": "jeed",
+      "type": "neoforge:mod_loaded"
+    }
+  ],
+  "effect": "spartanweaponry:ender_disruption",
+  "providers": [
+    {
+      "type": "neoforge:components",
+      "items": "spartanweaponry:weapon_oil",
+      "components": {
+        "minecraft:custom_data": "{Oil:{Effect:\"spartanweaponry:ender\"}}"
+      }
+    },
+    {
+      "type": "neoforge:components",
+      "items": "spartanweaponry:weapon_oil",
+      "components": {
+        "minecraft:custom_data": "{Oil:{Effect:\"spartanweaponry:ender_strong\"}}"
+      }
+    }
+  ]
+}

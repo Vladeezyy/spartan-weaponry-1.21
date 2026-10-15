@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "battleaxe",
+        "copper"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/copper"
+      }
+    }
+  ],
+  "group": "spartanweaponry:battleaxe",
+  "key": {
+    "#": {
+      "tag": "c:ingots/copper"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "###",
+    "#/#",
+    " | "
+  ],
+  "result": {
+    "id": "spartanweaponry:copper_battleaxe"
+  }
+}

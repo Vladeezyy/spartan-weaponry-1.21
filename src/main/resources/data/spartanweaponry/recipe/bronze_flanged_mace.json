@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "flanged_mace",
+        "bronze"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/bronze"
+      }
+    }
+  ],
+  "group": "spartanweaponry:flanged_mace",
+  "key": {
+    "#": {
+      "tag": "c:ingots/bronze"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " ##",
+    " /#",
+    "|  "
+  ],
+  "result": {
+    "id": "spartanweaponry:bronze_flanged_mace"
+  }
+}

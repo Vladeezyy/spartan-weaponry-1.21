@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "quiver"
+      ]
+    }
+  ],
+  "key": {
+    "#": {
+      "tag": "c:gems/diamond"
+    },
+    "~": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "#~#",
+    " # "
+  ],
+  "result": {
+    "id": "spartanweaponry:large_quiver_brace"
+  }
+}

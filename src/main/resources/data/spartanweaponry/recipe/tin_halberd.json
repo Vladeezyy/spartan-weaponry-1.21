@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "halberd",
+        "tin"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/tin"
+      }
+    }
+  ],
+  "group": "spartanweaponry:halberd",
+  "key": {
+    "#": {
+      "tag": "c:ingots/tin"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    " #",
+    "##",
+    "#/"
+  ],
+  "result": {
+    "id": "spartanweaponry:tin_halberd"
+  }
+}

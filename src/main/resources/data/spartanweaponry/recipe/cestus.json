@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "cestus"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:cestus",
+  "key": {
+    "l": {
+      "tag": "c:leathers"
+    },
+    "o": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "lo"
+  ],
+  "result": {
+    "id": "spartanweaponry:cestus"
+  }
+}

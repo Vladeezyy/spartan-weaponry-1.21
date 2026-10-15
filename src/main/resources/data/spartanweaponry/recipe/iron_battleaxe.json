@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "battleaxe"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:battleaxe",
+  "key": {
+    "#": {
+      "tag": "c:ingots/iron"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "###",
+    "#/#",
+    " | "
+  ],
+  "result": {
+    "id": "spartanweaponry:iron_battleaxe"
+  }
+}

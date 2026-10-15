@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "parrying_dagger",
+        "nickel"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/nickel"
+      }
+    }
+  ],
+  "group": "spartanweaponry:parrying_dagger",
+  "key": {
+    "#": {
+      "tag": "c:ingots/nickel"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    " #",
+    "#|"
+  ],
+  "result": {
+    "id": "spartanweaponry:nickel_parrying_dagger"
+  }
+}

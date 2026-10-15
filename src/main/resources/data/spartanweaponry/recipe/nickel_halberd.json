@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "halberd",
+        "nickel"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/nickel"
+      }
+    }
+  ],
+  "group": "spartanweaponry:halberd",
+  "key": {
+    "#": {
+      "tag": "c:ingots/nickel"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    " #",
+    "##",
+    "#/"
+  ],
+  "result": {
+    "id": "spartanweaponry:nickel_halberd"
+  }
+}

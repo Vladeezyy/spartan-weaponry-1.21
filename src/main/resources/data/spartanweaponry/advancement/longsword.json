@@ -1,0 +1,36 @@
+{
+  "parent": "spartanweaponry:root",
+  "criteria": {
+    "has_longsword": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#spartanweaponry:longswords"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.spartanweaponry.craft_longsword.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "spartanweaponry:iron_longsword"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.spartanweaponry.craft_longsword.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_longsword"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

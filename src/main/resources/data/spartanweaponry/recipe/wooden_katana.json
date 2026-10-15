@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "katana"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:katana",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    " # ",
+    "|  "
+  ],
+  "result": {
+    "id": "spartanweaponry:wooden_katana"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "glaive",
+        "silver"
+      ]
+    },
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "c:ingots/silver"
+      }
+    }
+  ],
+  "group": "spartanweaponry:glaive",
+  "key": {
+    "#": {
+      "tag": "c:ingots/silver"
+    },
+    "/": {
+      "item": "spartanweaponry:pole"
+    }
+  },
+  "pattern": [
+    " #",
+    " #",
+    " /"
+  ],
+  "result": {
+    "id": "spartanweaponry:silver_glaive"
+  }
+}

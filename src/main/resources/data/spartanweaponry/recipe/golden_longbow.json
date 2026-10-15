@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "spartanweaponry:type_disabled",
+      "disabled": [
+        "longbow"
+      ]
+    }
+  ],
+  "group": "spartanweaponry:longbow",
+  "key": {
+    "#": {
+      "tag": "c:ingots/gold"
+    },
+    "/": {
+      "tag": "c:rods/wooden"
+    },
+    "|": {
+      "item": "spartanweaponry:handle"
+    },
+    "~": {
+      "tag": "c:strings"
+    }
+  },
+  "pattern": [
+    "|/#",
+    "/ ~",
+    "#~~"
+  ],
+  "result": {
+    "id": "spartanweaponry:golden_longbow"
+  }
+}

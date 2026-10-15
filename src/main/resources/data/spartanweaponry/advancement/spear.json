@@ -1,0 +1,36 @@
+{
+  "parent": "spartanweaponry:root",
+  "criteria": {
+    "has_spear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#spartanweaponry:spears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.spartanweaponry.craft_spear.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "spartanweaponry:iron_spear"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.spartanweaponry.craft_spear.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_spear"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
