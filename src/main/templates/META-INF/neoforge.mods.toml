@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="${mod_license}"
+issueTrackerURL="https://github.com/Vladeezyy/spartan-weaponry-1.21/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/spartan-weaponry"
+logoFile="logo.png"
+authors="${mod_authors}"
+credits="${mod_credits}"
+description='''${mod_description}'''
+
+[[mixins]]
+config="spartanweaponry.mixins.json"
+
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="shouldersurfing"
+    type="optional"
+    versionRange="${shoulder_surfing_version_range}"
+    ordering="NONE"
+    side="CLIENT"
