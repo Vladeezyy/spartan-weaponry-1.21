@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Writes tools/overlay/assets/spartanweaponry/lang/{en_us,ru_ru,uk_ua,de_de,es_es,pt_br,zh_cn}.json.
+"""Writes tools/overlay/assets/spartanweaponry/lang/{en_us,ru_ru,uk_ua,de_de,es_es,es_mx,pt_br,zh_cn,fr_fr}.json.
 
     python3 -I tools/gen_translations.py <SpartanWeaponry 1.20.1 checkout>
 
@@ -8,8 +8,10 @@ keys they lacked, and the 1.20.1 strings whose placeholders did not match the En
 e.g. "%.2f" where the game passes an already formatted value) or that named the wrong material. en_us gets the names of
 the potions added in 1.21. Weapon names are built from the material and the weapon word; the rest is a table. Vanilla
 potion names follow the game's own translations. Machine translations (no native speaker checked them).
+Item tag names (all languages) come from tools/tag_names.py.
 Run tools/convert_resources.py afterwards.
 """
+import importlib.util
 import json
 import os
 import re
@@ -1331,6 +1333,13 @@ def main(upstream):
                 missing.append('%s:%s placeholders %r vs %r' % (lang, key, merged[key], value))
     if missing:
         sys.exit('untranslated or broken:\n  ' + '\n  '.join(missing))
+
+    # Item tag names (tools/tag_names.py; python -I leaves the script's folder off the path)
+    spec = importlib.util.spec_from_file_location('tag_names', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tag_names.py'))
+    tag_names = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tag_names)
+    for lang, data in tag_names.keys().items():
+        out.setdefault(lang, {}).update(data)
 
     dst = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'overlay', 'assets', MOD, 'lang')
     os.makedirs(dst, exist_ok=True)

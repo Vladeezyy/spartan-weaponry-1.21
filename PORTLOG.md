@@ -157,6 +157,12 @@ tooltips) or named the wrong material. Weapon names are built from the material 
 names follow the game's own translations; the 1.21 potions (wind charged, weaving, oozing, infested) got names in every
 language. Machine translations (no native speaker checked them). The existing translations are kept.
 
+**Item tag names** (2026-10-15): the mod's 73 item tags (`#spartanweaponry:longswords`, `#spartanweaponry:iron_weapons`,
+quivers, projectiles, mob spawn weapons, ...) plus `#c:weapons` and `#c:grass` had no names, so EMI showed raw tag ids
+in recipes and logged 144 "Untranslated tag" errors. `tools/tag_names.py` names them (`tag.item.<namespace>.<path>`) in
+all nine languages (es_mx uses the Spanish names); `gen_translations.py` writes them into the overlay. Checked with EMI:
+no untranslated tag of the mod left (`#curios:back` / `#curios:quiver` are Curios' slot tags, named by Curios).
+
 ## Not changed on purpose
 
 - A thrown weapon loses its enchantments when it lands (1.20.1 anti-dupe for ammo stacks); the item is kept.
