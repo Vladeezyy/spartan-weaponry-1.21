@@ -12,3 +12,4 @@ run-*/
 *.log
 prodtest/*/
 build-*.log
+build-*.out
