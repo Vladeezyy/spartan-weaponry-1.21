@@ -91,7 +91,7 @@ The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORT
 
 ## ✅ Tested
 
-- **Functional** (51 checks): longbow, heavy crossbow and javelin with real input, oils, traits (reach, armour piercing,
+- **Functional** (54 checks, in English and Russian): longbow, heavy crossbow and javelin with real input, oils, traits (reach, armour piercing,
   two-handed, block, decapitate), Lucky Throw, quivers, enchanting table, recipes, loot, mobs with longbows, saving and
   rejoining, 1.20.1 items, data packs; dedicated servers NeoForge 21.1.197 and 21.1.259.
 - **Stress**: 600 quiver packets with bad values, 400 armor stands with 800 weapons on screen, 110 fighting mobs
@@ -209,7 +209,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 <details>
 <summary><b>✅ Проверено</b></summary>
 
-- **Функционально** (51 проверка): большой лук, тяжёлый арбалет и метательное копьё с настоящим вводом, масла,
+- **Функционально** (54 проверки, на английском и русском): большой лук, тяжёлый арбалет и метательное копьё с настоящим вводом, масла,
   особенности (досягаемость, бронебойность, двуручность, блок, обезглавливание), «Удачный бросок», колчаны, стол
   зачарований, рецепты, добыча, мобы с большими луками, сохранение и перезаход, предметы из 1.20.1, датапаки;
   выделенные серверы NeoForge 21.1.197 и 21.1.259.

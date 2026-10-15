@@ -163,6 +163,31 @@ language. Machine translations (no native speaker checked them). The existing tr
 - Sweeping Edge needs the Sweep I trait (katana, ...), not Sweep II / III.
 - The Lucky Throw level replaces the killer's Looting for kills by a thrown weapon (1.20.1 set the level).
 
-## Verified
+## Verified (2026-10-15)
 
-See the end of the file (filled in after the test runs).
+- `./gradlew build`: jar `SpartanWeaponry-neoforge-3.2.1+1.21.1.jar` (LGPL, GPL and the original's Apache texts inside;
+  the test scenes are left out).
+- Dev server, fresh world: starts clean, no recipe / advancement / tag / enchantment / loot errors.
+- Client scene (`tools/scenetest.sh`, 54 checks, all pass, in English and in Russian): longbow, heavy crossbow (load,
+  aim, fire) and javelin with real client input; arrow and javelin pickup (one back, #188); quiver to off hand on bow
+  select, quiver in the Curios back slot, quiver screens (#193); weapon oil applied, undead bonus, one use per hit; katana
+  damage, Armour Piercing (warhammer: 4.2 vs 1.4 through diamond armour), Reach, Two-Handed, #169, parrying dagger
+  block, Decapitate (about 25 %), Lucky Throw III (Looting III drops), #186 (one hit when thrown down); a skeleton with a
+  longbow shoots (#185); Ender Disruption stops teleports; explosive arrow; recipes, tag smelting, enchanting table
+  offers per weapon kind, Loyalty on throwing weapons, village chest loot; a data pack with `"replace": true` replaces
+  the warhammer traits (#162); JEED recipe.
+- Stress scene (`tools/stresstest.sh`, 20 checks, all pass): leave and rejoin keeps oils, potion oil, loaded bolt,
+  throwing ammo, enchantments, quiver contents, tipped bolts in the inventory and in a chest, and the thrown javelin,
+  diamond bolt (not black, #165) and tipped arrow in the ground; 1.20.1 items through the data fixer (oiled katana with
+  damage, potion oil, tipped bolt, throwing knives, loaded heavy crossbow, quiver contents); 600 quiver packets with bad
+  slot numbers (client stays connected); 400 armor stands with 800 weapons (half oiled) + 160 item frames: 39-40 FPS,
+  the same stands with vanilla swords 52 FPS (the layered weapon models; 31-37 before the oil model fix); 40
+  skeletons with longbows and 40 armed zombies against 30 golems: server tick 2-3 ms; 600 projectiles: tick 2 ms.
+- Compatibility (`tools/compattest.sh`): Sodium 0.6.13, Iris 1.8.12 with Complementary Reimagined r5.9.3, Lithium
+  0.15.4, FerriteCore 7.0.3, ModernFix 5.27.26, Jade 15.10.6, JEI 19.64, EMI 1.1.24, JEED 2.3.5, Curios 9.5.1 and
+  Shoulder Surfing 5.2.0 or 4.5.1: the client scene (all checks, plus a loaded heavy crossbow in the shoulder view, #192)
+  and the stress scene pass. The only errors in those logs are the shader pack's own and Iris' optional mixins for mods
+  that are not installed.
+- Release jar on real NeoForge servers 21.1.259 and 21.1.197 (`prodtest/serve.sh`): starts clean.
+- Not run: a dedicated client joining the dedicated server, C2ME (not on NeoForge 1.21.1 in the test set; the fix is the
+  random source), Better Combat.
