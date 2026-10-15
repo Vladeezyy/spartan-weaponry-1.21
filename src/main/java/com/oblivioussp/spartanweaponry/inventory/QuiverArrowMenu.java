@@ -4,7 +4,7 @@ import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.init.ModMenus;
 import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,12 +20,13 @@ public class QuiverArrowMenu extends QuiverBaseMenu
 		super(ModMenus.QUIVER_ARROW.get(), id, inventory, quiverStack, BowItem.ARROW_ONLY, EMPTY_ARROW_SLOT);
 	}
 	
-	public static QuiverArrowMenu createFromNetwork(int id, Inventory inventory, FriendlyByteBuf buf)
+	public static QuiverArrowMenu createFromNetwork(int id, Inventory inventory, RegistryFriendlyByteBuf buf)
 	{
 		QuiverBaseItem.SlotType slotType = buf.readEnum(QuiverBaseItem.SlotType.class);
 		int slot = buf.readInt();
+		ItemStack sentStack = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
 		
-		ItemStack quiverStack = findQuiverStack(inventory, slotType, slot);
+		ItemStack quiverStack = findQuiverStack(inventory, slotType, slot, sentStack);
 		return new QuiverArrowMenu(id, inventory, quiverStack);
 	}
 

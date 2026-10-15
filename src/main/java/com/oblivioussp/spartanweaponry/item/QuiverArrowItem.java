@@ -49,6 +49,7 @@ public class QuiverArrowItem extends QuiverBaseItem
 			{
 				buf.writeEnum(slotType);
 				buf.writeInt(slot);
+				ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, stack);
 			});
 	}
 

@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.capability;
 
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.core.component.DataComponents;
 import com.oblivioussp.spartanweaponry.util.ItemNbt;
 
 import java.util.Optional;
@@ -37,9 +39,30 @@ public class OilHandler implements IOilHandler
 		effect = Optional.empty();
 		potion = Optional.empty();
 		usesLeft = 0;
-		// Load the values contained in the NBT if available
-		if(ItemNbt.get(stack).contains(NBT_OIL))
-			deserializeNBT(ItemNbt.get(stack).getCompound(NBT_OIL));
+		// Load the values contained in the NBT if available (read only: no copy of the item's NBT)
+		CompoundTag oil = oilTag(stack);
+		if(oil != null)
+			deserializeNBT(oil);
+	}
+	
+	@SuppressWarnings("deprecation")
+	private static CompoundTag oilTag(ItemStack stack)
+	{
+		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+		return data != null && data.contains(NBT_OIL) ? data.getUnsafe().getCompound(NBT_OIL) : null;
+	}
+	
+	/**
+	 * {@link #isOiled()} of the stack without making a handler. The oil coating model asks this for every weapon it
+	 * renders; going through the capability made a handler and copied the item's NBT twice per weapon and frame.
+	 */
+	public static boolean isOiled(ItemStack stack)
+	{
+		CompoundTag oil = oilTag(stack);
+		if(oil == null)
+			return false;
+		ResourceLocation oilId = ResourceLocation.tryParse(oil.getString(NBT_OIL_EFFECT));
+		return oilId != null && !oil.getString(NBT_OIL_EFFECT).isEmpty() && OilEffects.OIL_REGISTRY.get(oilId) != OilEffects.NONE.get();
 	}
 
 	@Override

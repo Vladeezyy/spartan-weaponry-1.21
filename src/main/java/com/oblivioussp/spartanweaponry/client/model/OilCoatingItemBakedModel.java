@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.model;
 
+import com.oblivioussp.spartanweaponry.capability.OilHandler;
 import java.util.Optional;
 
 import java.util.ArrayList;
@@ -39,8 +40,7 @@ public class OilCoatingItemBakedModel extends CompositeModel.Baked
 	@Override
 	public List<BakedModel> getRenderPasses(ItemStack itemStack, boolean fabulous) 
 	{
-		Optional<IOilHandler> lazyHandler = Optional.ofNullable(itemStack.getCapability(ModCapabilities.OIL_CAPABILITY));
-		return lazyHandler.isPresent() && lazyHandler.get().isOiled() ? coatedLayerModels : super.getRenderPasses(itemStack, fabulous);
+		return OilHandler.isOiled(itemStack) ? coatedLayerModels : super.getRenderPasses(itemStack, fabulous);
 	}
 	
 	public static Builder makeBuilder(IGeometryBakingContext contextIn, TextureAtlasSprite particleIn, ItemOverrides overridesIn, ItemTransforms transformsIn)

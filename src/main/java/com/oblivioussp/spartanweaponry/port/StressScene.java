@@ -116,8 +116,12 @@ public final class StressScene
 			tick = 0;
 		}));
 		// Phase 2: rejoined
-		SECOND.add(Pair.of(40, mc -> server(mc, StressScene::checkData)));
-		SECOND.add(Pair.of(45, mc -> server(mc, StressScene::legacyItems)));
+		// Issue #165 of the original: heavy crossbow bolts turned black after rejoining
+		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.serverLevel(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, 0.0F, 35.0F))));
+		SECOND.add(Pair.of(42, mc -> { mc.options.hideGui = true; shot(mc, "rejoined_projectiles"); }));
+		SECOND.add(Pair.of(44, mc -> mc.options.hideGui = false));
+		SECOND.add(Pair.of(46, mc -> server(mc, StressScene::checkData)));
+		SECOND.add(Pair.of(48, mc -> server(mc, StressScene::legacyItems)));
 		SECOND.add(Pair.of(50, mc -> server(mc, StressScene::prepareSpam)));
 		SECOND.add(Pair.of(60, mc -> {
 			for(int i = 0; i < 200; i++)
@@ -127,17 +131,27 @@ public final class StressScene
 				NetworkHandler.sendPacketToServer(new QuiverAccessPacket());
 			}
 		}));
-		SECOND.add(Pair.of(80, mc -> { if(mc.screen != null) mc.player.closeContainer(); server(mc, StressScene::checkSpam); }));
+		SECOND.add(Pair.of(80, mc -> {
+			// 1.20.1 (and the port before the fix) disconnected the client when a quiver screen arrived before the
+			// client's inventory had the quiver
+			check("the client is still connected after the quiver packet spam", mc.player != null && mc.getConnection() != null && mc.level != null, mc.screen);
+			if(mc.screen != null)
+				mc.player.closeContainer();
+			server(mc, StressScene::checkSpam);
+		}));
 		SECOND.add(Pair.of(90, mc -> server(mc, StressScene::renderStress)));
 		SECOND.add(Pair.of(170, mc -> fps(mc, "400 armor stands with weapons (half oiled) + 160 item frames")));
 		SECOND.add(Pair.of(230, mc -> { fps(mc, "400 armor stands with weapons (half oiled) + 160 item frames"); shot(mc, "render"); }));
-		SECOND.add(Pair.of(240, mc -> server(mc, StressScene::combatStress)));
-		SECOND.add(Pair.of(640, mc -> { fps(mc, "40 skeletons with longbows + 40 armed zombies vs 30 golems"); shot(mc, "combat"); }));
-		SECOND.add(Pair.of(840, mc -> server(mc, StressScene::checkCombatStress)));
-		SECOND.add(Pair.of(850, mc -> server(mc, StressScene::projectileStress)));
-		SECOND.add(Pair.of(870, mc -> { fps(mc, "600 projectiles in the air"); shot(mc, "projectiles"); }));
-		SECOND.add(Pair.of(1050, mc -> server(mc, StressScene::checkProjectileStress)));
-		SECOND.add(Pair.of(1070, mc -> {
+		// The same with vanilla swords: the baseline for the FPS above
+		SECOND.add(Pair.of(235, mc -> server(mc, StressScene::vanillaBaseline)));
+		SECOND.add(Pair.of(310, mc -> fps(mc, "the same 400 armor stands with vanilla swords (baseline)")));
+		SECOND.add(Pair.of(320, mc -> server(mc, StressScene::combatStress)));
+		SECOND.add(Pair.of(720, mc -> { fps(mc, "40 skeletons with longbows + 40 armed zombies vs 30 golems"); shot(mc, "combat"); }));
+		SECOND.add(Pair.of(920, mc -> server(mc, StressScene::checkCombatStress)));
+		SECOND.add(Pair.of(930, mc -> server(mc, StressScene::projectileStress)));
+		SECOND.add(Pair.of(950, mc -> { fps(mc, "600 projectiles in the air"); shot(mc, "projectiles"); }));
+		SECOND.add(Pair.of(1130, mc -> server(mc, StressScene::checkProjectileStress)));
+		SECOND.add(Pair.of(1150, mc -> {
 			Log.info("[stress] DONE, failed checks: " + failures);
 			mc.stop();
 			phase = 3;
@@ -327,10 +341,19 @@ public final class StressScene
 		level.addFreshEntity(projectile);
 	}
 
+	/** The inventory and the landed projectiles' items before leaving (throwing weapons get a UUID in the inventory) */
+	private static final List<ItemStack> savedInventory = new ArrayList<>();
+	private static final List<ItemStack> savedProjectiles = new ArrayList<>();
+
 	private static void checkProjectilesLanded(ServerPlayer player)
 	{
 		List<AbstractArrow> landed = player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(0, 0, 6)).inflate(8));
 		check("three projectiles in the ground before leaving", landed.size() == 3, landed);
+		savedInventory.clear();
+		for(int i = 0; i < 8; i++)
+			savedInventory.add(player.getInventory().getItem(i).copy());
+		savedProjectiles.clear();
+		landed.stream().filter(e -> e instanceof ThrowingWeaponEntity).forEach(e -> savedProjectiles.add(((ThrowingWeaponEntity)e).getWeaponItem().copy()));
 	}
 
 	private static boolean sameItems(List<ItemStack> expected, java.util.function.IntFunction<ItemStack> actual, StringBuilder detail)
@@ -353,7 +376,7 @@ public final class StressScene
 		ServerLevel level = player.serverLevel();
 		List<ItemStack> expected = testItems(player);
 		StringBuilder detail = new StringBuilder();
-		check("inventory after rejoining: oils, loaded bolt, ammo, enchantments, quiver contents, tipped bolts, potion oil", sameItems(expected, player.getInventory()::getItem, detail), detail.length() == 0 ? expected.size() + " stacks" : detail);
+		check("inventory after rejoining: oils, loaded bolt, ammo, enchantments, quiver contents, tipped bolts, potion oil", sameItems(savedInventory, player.getInventory()::getItem, detail), detail.length() == 0 ? savedInventory.size() + " stacks" : detail);
 		ChestBlockEntity chest = (ChestBlockEntity)level.getBlockEntity(stage.offset(3, 0, 3));
 		StringBuilder chestDetail = new StringBuilder();
 		check("chest after rejoining", chest != null && sameItems(expected, chest::getItem, chestDetail), chestDetail.length() == 0 ? "same" : chestDetail);
@@ -364,7 +387,8 @@ public final class StressScene
 		ThrowingWeaponEntity javelin = landed.stream().filter(e -> e instanceof ThrowingWeaponEntity).map(e -> (ThrowingWeaponEntity)e).findFirst().orElse(null);
 		BoltEntity bolt = landed.stream().filter(e -> e instanceof BoltEntity).map(e -> (BoltEntity)e).findFirst().orElse(null);
 		ArrowBaseEntity arrow = landed.stream().filter(e -> e instanceof ArrowBaseEntity).map(e -> (ArrowBaseEntity)e).findFirst().orElse(null);
-		check("thrown javelin saved with its weapon (enchantments kept)", javelin != null && javelin.getWeaponItem().is(ModItems.JAVELINS.gold.get()) && !javelin.getWeaponItem().getEnchantments().isEmpty(), javelin == null ? "gone" : javelin.getWeaponItem());
+		// 1.20.1 strips the enchantments of a thrown weapon that lands (anti-dupe); the rest of the item is kept
+		check("thrown javelin saved with its weapon item", javelin != null && savedProjectiles.size() == 1 && ItemStack.isSameItemSameComponents(javelin.getWeaponItem(), savedProjectiles.get(0)), javelin == null ? "gone" : javelin.getWeaponItem().getComponentsPatch());
 		check("bolt in the ground saved (1.20.1 lost it)", bolt != null && bolt.getPickupItemStackOrigin().is(ModItems.DIAMOND_BOLT.get()), bolt == null ? "gone" : bolt.getPickupItemStackOrigin());
 		check("tipped arrow saved with its potion", arrow != null && PotionHelper.getPotion(arrow.getPickupItemStackOrigin()).map(p -> p.is(Potions.POISON)).orElse(false), arrow == null ? "gone" : arrow.getPickupItemStackOrigin());
 		if(javelin != null)
@@ -511,6 +535,22 @@ public final class StressScene
 		stat("weapon kinds on the stands", weapons.size());
 	}
 
+	private static void vanillaBaseline(ServerPlayer player)
+	{
+		ServerLevel level = player.serverLevel();
+		for(int id : mobs)
+		{
+			Entity e = level.getEntity(id);
+			if(e instanceof ArmorStand stand)
+			{
+				stand.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+				stand.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.DIAMOND_AXE));
+			}
+			else if(e instanceof ItemFrame frame)
+				frame.setItem(new ItemStack(Items.GOLDEN_SWORD), false);
+		}
+	}
+
 	private static long combatStart;
 
 	private static void combatStress(ServerPlayer player)
@@ -609,8 +649,8 @@ public final class StressScene
 		ServerLevel level = player.serverLevel();
 		double tickMs = player.getServer().getAverageTickTimeNanos() / 1.0E6;
 		List<AbstractArrow> all = level.getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(80));
-		long flying = all.stream().filter(a -> a.getDeltaMovement().lengthSqr() > 0.01 && !(a instanceof com.oblivioussp.spartanweaponry.entity.projectile.BoomerangEntity)).count();
-		stat("projectiles left in the world / still moving after 9 s", all.size() + " / " + flying);
+		long flying = all.stream().filter(a -> a.getY() > stage.getY() + 1.0).count();
+		stat("projectiles left in the world / still above the floor after 9 s", all.size() + " / " + flying);
 		stat("average server tick ms", String.format("%.2f", tickMs));
 		check("projectile stress: server keeps 20 TPS", tickMs < 50.0, String.format("%.2f ms", tickMs));
 		all.forEach(Entity::discard);

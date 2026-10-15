@@ -170,6 +170,19 @@ public abstract class QuiverBaseMenu extends AbstractContainerMenu
 		return quiverStack;
 	}
 	
+	/**
+	 * The quiver of a menu opened by the server. Port fix: 1.20.1 only sent the slot, and when the client's inventory
+	 * was not up to date yet (the quiver key pressed while the quiver moved) the client found no quiver there and was
+	 * disconnected (NullPointerException in the menu); the server now also sends the quiver, used in that case.
+	 */
+	protected static ItemStack findQuiverStack(Inventory inventory, QuiverBaseItem.SlotType slotType, int slot, ItemStack sentStack)
+	{
+		ItemStack found = findQuiverStack(inventory, slotType, slot);
+		if(found.getItem() instanceof QuiverBaseItem && found.getCapability(ModCapabilities.QUIVER_ITEM_CAPABILITY) != null)
+			return found;
+		return sentStack;
+	}
+	
 	protected static ItemStack findQuiverStack(Inventory inventory, QuiverBaseItem.SlotType slotType, int slot)
 	{
 		ItemStack quiverStack = ItemStack.EMPTY;

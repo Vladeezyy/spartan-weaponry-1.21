@@ -78,6 +78,18 @@ dependencies {
         localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
         localRuntime "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     }
+    // Popular client / performance mods and the optional integrations for compatibility runs (-Pwith_compat)
+    if (project.hasProperty('with_compat')) {
+        localRuntime "maven.modrinth:sodium:${compat_sodium}"
+        localRuntime "maven.modrinth:iris:${compat_iris}"
+        localRuntime "maven.modrinth:lithium:${compat_lithium}"
+        localRuntime "maven.modrinth:ferrite-core:${compat_ferritecore}"
+        localRuntime "maven.modrinth:modernfix:${compat_modernfix}"
+        localRuntime "maven.modrinth:jade:${compat_jade}"
+        localRuntime "maven.modrinth:emi:${emi_version}"
+        localRuntime "maven.modrinth:just-enough-effect-descriptions-jeed:${compat_jeed}"
+        localRuntime "maven.modrinth:shoulder-surfing-reloaded:${project.hasProperty('with_ss4') ? compat_shoulder_surfing_4 : shoulder_surfing_version}"
+    }
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
@@ -103,6 +115,8 @@ sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
 tasks.named('jar', Jar).configure {
+    // The test scenes (port/) are for dev runs only; DevScene uses the Curios API, an optional mod
+    exclude 'com/oblivioussp/spartanweaponry/port/**'
     from('LICENSE') { rename { 'LICENSE_spartanweaponry' } }
     from('licenses') { into 'licenses/spartanweaponry' }
     manifest {

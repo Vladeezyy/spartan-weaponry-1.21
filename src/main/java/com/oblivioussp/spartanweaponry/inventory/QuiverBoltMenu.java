@@ -5,7 +5,7 @@ import com.oblivioussp.spartanweaponry.init.ModMenus;
 import com.oblivioussp.spartanweaponry.item.HeavyCrossbowItem;
 import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,12 +20,13 @@ public class QuiverBoltMenu extends QuiverBaseMenu
 		super(ModMenus.QUIVER_BOLT.get(), id, inventory, quiverStack, HeavyCrossbowItem.BOLT, EMPTY_BOLT_SLOT);
 	}
 	
-	public static QuiverBoltMenu createFromNetwork(int id, Inventory inventory, FriendlyByteBuf buf)
+	public static QuiverBoltMenu createFromNetwork(int id, Inventory inventory, RegistryFriendlyByteBuf buf)
 	{
 		QuiverBaseItem.SlotType slotType = buf.readEnum(QuiverBaseItem.SlotType.class);
 		int slot = buf.readInt();
+		ItemStack sentStack = ItemStack.OPTIONAL_STREAM_CODEC.decode(buf);
 
-		ItemStack quiverStack = findQuiverStack(inventory, slotType, slot);
+		ItemStack quiverStack = findQuiverStack(inventory, slotType, slot, sentStack);
 		return new QuiverBoltMenu(id, inventory, quiverStack);
 	}
 	

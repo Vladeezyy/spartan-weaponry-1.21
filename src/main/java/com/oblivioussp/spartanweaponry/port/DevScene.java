@@ -205,7 +205,19 @@ public final class DevScene
 		at(1760, mc -> server(mc, DevScene::throwDownFirstHit));
 		at(1860, mc -> server(mc, DevScene::throwDownLater));
 		at(1865, mc -> server(mc, DevScene::checkData));
-		at(1880, mc -> {
+		// Curios: a quiver in the back slot feeds the bow too
+		at(1870, mc -> server(mc, DevScene::prepareCuriosQuiver));
+		at(1875, mc -> server(mc, p -> p.getInventory().selected = 1));
+		at(1895, mc -> server(mc, DevScene::checkCuriosQuiver));
+		// Shoulder Surfing: a loaded heavy crossbow in the shoulder view (issue #192 of the original: crash)
+		at(1910, mc -> server(mc, DevScene::prepareShoulderSurfing));
+		at(1920, mc -> shoulderSurfing(mc, "SHOULDER_SURFING"));
+		at(1960, mc -> { if(isShoulderSurfing()) { mc.options.hideGui = false; shot(mc, "shoulder_surfing"); } });
+		at(1965, mc -> { shoulderSurfing(mc, "FIRST_PERSON"); mc.options.hideGui = true; });
+		// Issue #162 of the original: a data pack with "replace": true can take traits away
+		at(1970, mc -> server(mc, DevScene::traitDataPack));
+		at(2050, mc -> server(mc, DevScene::checkTraitDataPack));
+		at(2060, mc -> {
 			Log.info("[scene] DONE, failed checks: " + failures);
 			mc.stop();
 		});
@@ -229,6 +241,9 @@ public final class DevScene
 			mc.setScreen(new TitleScreen());
 			return;
 		}
+		// The language switch reloads the resources; the world is created after that, not during it
+		if(!opened && mc.getOverlay() != null)
+			return;
 		if(!opened && mc.screen instanceof TitleScreen)
 		{
 			if(!mc.options.languageCode.equals(LANG))
@@ -614,6 +629,109 @@ public final class DevScene
 		for(int i = 0; i < handler.getSlots(); i++)
 			inQuiver += handler.getStackInSlot(i).getCount();
 		check("selecting a bow takes arrows out of the quiver into the off hand", offhand.is(ModItems.IRON_ARROW.get()) && offhand.getCount() + inQuiver == 32, offhand + ", in the quiver " + inQuiver);
+	}
+
+	private static void prepareCuriosQuiver(ServerPlayer player)
+	{
+		if(!net.neoforged.fml.ModList.get().isLoaded("curios"))
+			return;
+		player.setGameMode(GameType.SURVIVAL);
+		player.getInventory().clearContent();
+		player.getInventory().setItem(1, new ItemStack(ModItems.LONGBOWS.iron.get()));
+		player.getInventory().setItem(2, new ItemStack(Items.TORCH, 4));
+		player.getInventory().selected = 2;
+		ItemStack quiver = quiverWith(ModItems.MEDIUM_ARROW_QUIVER.get(), 40);
+		boolean placed = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player).flatMap(inv -> inv.getStacksHandler("back")).map(handler -> 
+		{
+			handler.getStacks().setStackInSlot(0, quiver);
+			return true;
+		}).orElse(false);
+		check("Curios: the quiver goes into the back slot", placed, "");
+	}
+
+	private static void checkCuriosQuiver(ServerPlayer player)
+	{
+		if(!net.neoforged.fml.ModList.get().isLoaded("curios"))
+			return;
+		ItemStack offhand = player.getOffhandItem();
+		check("Curios: selecting a bow takes arrows out of the quiver in the back slot", offhand.is(ModItems.IRON_ARROW.get()), offhand);
+		player.setGameMode(GameType.CREATIVE);
+	}
+
+	private static boolean isShoulderSurfing()
+	{
+		return net.neoforged.fml.ModList.get().isLoaded("shouldersurfing");
+	}
+
+	private static void prepareShoulderSurfing(ServerPlayer player)
+	{
+		if(!isShoulderSurfing())
+			return;
+		player.getInventory().clearContent();
+		ItemStack crossbow = new ItemStack(ModItems.HEAVY_CROSSBOWS.iron.get());
+		HeavyCrossbowItem.setLoadedBolt(crossbow, new ItemStack(ModItems.BOLT.get()), 1);
+		ItemNbt.update(crossbow, nbt -> nbt.putBoolean(HeavyCrossbowItem.NBT_CHARGED, true));
+		player.getInventory().setItem(0, crossbow);
+		player.getInventory().setItem(1, new ItemStack(ModItems.JAVELINS.iron.get()));
+		player.getInventory().selected = 0;
+		player.teleportTo(player.serverLevel(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 0.0F);
+	}
+
+	/** Through the API by reflection (the 4.x and 5.x API classes differ, the scene compiles against neither) */
+	private static void shoulderSurfing(Minecraft mc, String perspective)
+	{
+		if(!isShoulderSurfing())
+			return;
+		try
+		{
+			Class<?> api = Class.forName("com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing");
+			Object instance = api.getMethod("getInstance").invoke(null);
+			Class<?> perspectiveClass;
+			try
+			{
+				perspectiveClass = Class.forName("com.github.exopandora.shouldersurfing.api.client.Perspective");	// 5.x
+			}
+			catch(ClassNotFoundException e)
+			{
+				perspectiveClass = Class.forName("com.github.exopandora.shouldersurfing.api.model.Perspective");	// 4.x
+			}
+			Object value = perspectiveClass.getMethod("valueOf", String.class).invoke(null, perspective);
+			instance.getClass().getMethod("changePerspective", perspectiveClass).invoke(instance, value);
+			check("Shoulder Surfing perspective " + perspective + " with a heavy crossbow", true, mc.options.getCameraType());
+		}
+		catch(ReflectiveOperationException | RuntimeException e)
+		{
+			check("Shoulder Surfing perspective " + perspective + " with a heavy crossbow", false, e);
+		}
+	}
+
+	private static void traitDataPack(ServerPlayer player)
+	{
+		MinecraftServer server = player.getServer();
+		try
+		{
+			java.nio.file.Path pack = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.DATAPACK_DIR).resolve("sw_traits");
+			java.nio.file.Path tag = pack.resolve("data/spartanweaponry/tags/spartanweaponry/weapon_traits/warhammer.json");
+			java.nio.file.Files.createDirectories(tag.getParent());
+			java.nio.file.Files.writeString(pack.resolve("pack.mcmeta"), "{\"pack\": {\"pack_format\": 48, \"description\": \"scene\"}}");
+			java.nio.file.Files.writeString(tag, "{\"replace\": true, \"values\": [\"spartanweaponry:armour_piercing\"]}");
+		}
+		catch(java.io.IOException e)
+		{
+			check("data pack written", false, e);
+			return;
+		}
+		server.getPackRepository().reload();
+		List<String> selected = new ArrayList<>(server.getPackRepository().getSelectedIds());
+		selected.add("file/sw_traits");
+		server.reloadResources(selected);
+	}
+
+	private static void checkTraitDataPack(ServerPlayer player)
+	{
+		var warhammer = (com.oblivioussp.spartanweaponry.api.IWeaponTraitContainer<?>)ModItems.WARHAMMERS.iron.get();
+		List<String> traits = warhammer.getAllWeaponTraits().stream().map(t -> String.valueOf(com.oblivioussp.spartanweaponry.api.WeaponTraits.TRAIT_REGISTRY.getKey(t))).toList();
+		check("issue #162: a data pack replaces the warhammer traits (no Two-Handed any more)", traits.contains("spartanweaponry:armour_piercing") && traits.stream().noneMatch(t -> t.contains("two_handed")), traits);
 	}
 
 	private static void hugeQuiver(ServerPlayer player)
@@ -1015,6 +1133,8 @@ public final class DevScene
 		// Durability from the config (issue #167 longbow, #183 throwing weapons)
 		ItemStack longbow = new ItemStack(ModItems.LONGBOWS.iron.get());
 		check("longbow durability from the material", longbow.getMaxDamage() > 300, longbow.getMaxDamage());
+		if(net.neoforged.fml.ModList.get().isLoaded("jeed"))
+			check("JEED: effect provider recipe for Ender Disruption loaded", recipes.byKey(id("compat/jeed/ender_disruption")).isPresent(), "");
 		check("heads: 11 extended skull blocks", ModBlocks.REGISTRY.getEntries().size() >= 11, ModBlocks.REGISTRY.getEntries().size());
 	}
 
