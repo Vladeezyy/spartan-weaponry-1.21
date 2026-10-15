@@ -1,0 +1,17 @@
+{
+  "item.spartanweaponry.huge_arrow_quiver": "巨型箭袋",
+  "item.spartanweaponry.parrying_dagger": "格挡匕首",
+  "item.spartanweaponry.silent_gear_parrying_dagger": "格挡匕首",
+  "item.spartanweaponry.silent_gear_parrying_dagger.nameProper": "%s格挡匕首",
+  "item.spartanweaponry.blueprint.parrying_dagger.desc": "老派防御",
+  "part.spartanweaponry.parrying_dagger_blade": "格挡匕首刃",
+  "item.spartanweaponry.parrying_dagger_blade": "复合格挡匕首刃",
+  "item.spartanweaponry.parrying_dagger_blade.nameProper": "%s格挡匕首刃",
+  "gearType.silentgear.parrying_dagger": "格挡匕首",
+  "tooltip.spartanweaponry.trait.lightweight": "轻盈 %s",
+  "tooltip.spartanweaponry.trait.lightweight.desc": "提高攻击速度、拉弓速度、装填时间和投掷蓄力时间",
+  "tooltip.spartanweaponry.quiver_compartment.applies_to": "箭袋与弩箭袋",
+  "tooltip.spartanweaponry.quiver_compartment.ingredients": "下一级箭袋支架",
+  "tooltip.spartanweaponry.quiver_compartment.base_slot_description": "箭袋槽",
+  "tooltip.spartanweaponry.quiver_compartment.additonal_slot_description": "箭袋支架槽"
+}

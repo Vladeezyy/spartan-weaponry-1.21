@@ -1070,5 +1070,9 @@
   "subtitle.spartanweaponry.boomerang_hit_ground": "Boomerang hits ground",
   "subtitle.spartanweaponry.throwing_weapon_loyalty_return": "Throwing Weapon returns",
   "subtitle.spartanweaponry.oil_applied": "Oil applied to weapon",
-  "subtitle.spartanweaponry.hammer_slams_into_ground": "Hammer slams into ground"
+  "subtitle.spartanweaponry.hammer_slams_into_ground": "Hammer slams into ground",
+  "item.spartanweaponry.proj_tipped.effect.wind_charged": "%s of Wind Charging",
+  "item.spartanweaponry.proj_tipped.effect.weaving": "%s of Weaving",
+  "item.spartanweaponry.proj_tipped.effect.oozing": "%s of Oozing",
+  "item.spartanweaponry.proj_tipped.effect.infested": "%s of Infestation"
 }
