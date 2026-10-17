@@ -56,7 +56,7 @@ thrown and ranged weapons, each with its own traits.
 ## 📦 Installation
 
 1. Install **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
-2. Put `SpartanWeaponry-neoforge-3.2.1+1.21.1.jar` from the [releases](../../releases) into `mods`.
+2. Put `SpartanWeaponry-neoforge-3.2.1.1+1.21.1.jar` from the [releases](../../releases) into `mods`.
 
 No other mods needed. Required on both the client and the server. Optional: **Curios** (quiver in the back slot),
 **JEI** / **EMI** (tipped projectile and oil recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
@@ -161,7 +161,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 <summary><b>📦 Установка</b></summary>
 
 1. Установите **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
-2. Положите `SpartanWeaponry-neoforge-3.2.1+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
+2. Положите `SpartanWeaponry-neoforge-3.2.1.1+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
 
 Других модов не нужно. Нужен и на клиенте, и на сервере. По желанию: **Curios** (колчан на спине), **JEI** / **EMI**
 (рецепты наконечников и масел), **Shoulder Surfing** 4.x / 5.x (прицеливание как с луком), **JEED**.
