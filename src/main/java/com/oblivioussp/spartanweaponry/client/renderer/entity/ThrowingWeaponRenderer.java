@@ -24,6 +24,8 @@ import net.minecraft.world.item.ItemStack;
 @SuppressWarnings("deprecation")
 public class ThrowingWeaponRenderer<T extends ThrowingWeaponEntity> extends EntityRenderer<T> 
 {
+	/** Half a turn around (1, 1, 0): the same for every frame, made once */
+	private static final Quaternionf FLIP = new Quaternionf().setAngleAxis(Mth.PI, new Vector3f(1.0f, 1.0f, 0.0f).normalize().x, new Vector3f(1.0f, 1.0f, 0.0f).normalize().y, 0.0f);
 	private final ItemRenderer itemRenderer;
 
 	public ThrowingWeaponRenderer(EntityRendererProvider.Context rendererProvider) 
@@ -39,9 +41,7 @@ public class ThrowingWeaponRenderer<T extends ThrowingWeaponEntity> extends Enti
 		matrixStackIn.pushPose();
 		doRenderTransformations(entityIn, partialTicks, matrixStackIn);
 		
-		Vector3f nextRotateAxis = new Vector3f(1.0f, 1.0f, 0.0f);
-		nextRotateAxis.normalize();
-		matrixStackIn.mulPose(new Quaternionf().setAngleAxis(Mth.PI, nextRotateAxis.x, nextRotateAxis.y, nextRotateAxis.z));
+		matrixStackIn.mulPose(FLIP);
 		matrixStackIn.translate(-0.10d, -0.20d, 0.0d);
 		
 		ItemStack weapon = entityIn.getWeaponItem();

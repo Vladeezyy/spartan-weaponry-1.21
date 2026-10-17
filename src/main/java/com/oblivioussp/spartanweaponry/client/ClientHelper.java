@@ -189,7 +189,7 @@ public class ClientHelper
 			});
 			ItemProperties.register(throwingWeapon, ModelOverrides.EMPTY, (stack, world, living, value) ->
 			{
-				return ItemNbt.get(stack).getInt(ThrowingWeaponItem.NBT_AMMO_USED) == ((ThrowingWeaponItem)throwingWeapon).getMaxAmmo(stack) ? 1 : 0;
+				return ItemNbt.read(stack).getInt(ThrowingWeaponItem.NBT_AMMO_USED) == ((ThrowingWeaponItem)throwingWeapon).getMaxAmmo(stack) ? 1 : 0;
 			});
 		});
 	}

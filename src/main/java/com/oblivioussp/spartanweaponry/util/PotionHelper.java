@@ -50,7 +50,7 @@ public final class PotionHelper
 		PotionContents contents = stack.get(DataComponents.POTION_CONTENTS);
 		if(contents != null)
 			return contents;
-		return getPotion(ItemNbt.get(stack)).map(PotionContents::new).orElse(PotionContents.EMPTY);
+		return getPotion(ItemNbt.read(stack)).map(PotionContents::new).orElse(PotionContents.EMPTY);
 	}
 
 	public static Optional<Holder<Potion>> getPotion(ItemStack stack)

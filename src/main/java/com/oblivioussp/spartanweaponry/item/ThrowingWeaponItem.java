@@ -199,7 +199,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	public void damageThrowingWeapon(ItemStack stack, int damage, LivingEntity entity)
 	{
 		//stack.damageItem(damage, entity);
-		if(stack.isDamageableItem() && ItemNbt.get(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack) && 
+		if(stack.isDamageableItem() && ItemNbt.read(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack) && 
 				(!(entity instanceof Player) || !((Player)entity).getAbilities().instabuild) && entity.level() instanceof ServerLevel serverLevel)
 		{
 			if(ItemDamage.hurt(stack, damage, serverLevel, entity instanceof ServerPlayer ? (ServerPlayer)entity : null))
@@ -208,7 +208,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 				if(breakSlot != null)
 					entity.onEquippedItemBroken(stack.getItem(), breakSlot);
 				
-				int ammo = ItemNbt.get(stack).getInt(NBT_AMMO_USED) + 1;
+				int ammo = ItemNbt.read(stack).getInt(NBT_AMMO_USED) + 1;
 				ItemNbt.update(stack, (nbt) -> nbt.putInt(NBT_AMMO_USED, ammo));
 				
 				if(entity instanceof Player)
@@ -250,12 +250,12 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
     	archetype.addTagErrorTooltip(stack, tooltip);
     	material.addTagErrorTooltip(stack, tooltip);
     	
-    	if(ItemNbt.get(stack).contains(NBT_ORIGINAL) && !ItemNbt.get(stack).getBoolean(NBT_ORIGINAL))
+    	if(ItemNbt.read(stack).contains(NBT_ORIGINAL) && !ItemNbt.read(stack).getBoolean(NBT_ORIGINAL))
     		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.not_original", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.DARK_RED));
-    	if(ItemNbt.get(stack).hasUUID(NBT_UUID) && flagIn.isAdvanced())
-    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.get(stack).getUUID(NBT_UUID).toString()).withStyle(ChatFormatting.DARK_PURPLE));
+    	if(ItemNbt.read(stack).hasUUID(NBT_UUID) && flagIn.isAdvanced())
+    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.read(stack).getUUID(NBT_UUID).toString()).withStyle(ChatFormatting.DARK_PURPLE));
     	int mxAmmo = getMaxAmmo(stack);
-    	tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.ammo", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.ammo.value", ModSpartanWeaponry.ID), mxAmmo - ItemNbt.get(stack).getInt(NBT_AMMO_USED), mxAmmo).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+    	tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.ammo", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.ammo.value", ModSpartanWeaponry.ID), mxAmmo - ItemNbt.read(stack).getInt(NBT_AMMO_USED), mxAmmo).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
 		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.charge_time", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.charge_time.value", ModSpartanWeaponry.ID), getMaxChargeTicks(stack) / 20.0f).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
     	
 		if(traits != null && !traits.isEmpty())
@@ -280,7 +280,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		traits.forEach((trait) -> trait.getMeleeCallback().ifPresent((callback) -> callback.onHitEntity(material, stack, target, attacker, null)));
     	
 		// Deal double durability damage when used as a melee weapon
-    	if(ItemNbt.get(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack))
+    	if(ItemNbt.read(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack))
     		damageThrowingWeapon(stack, 2, attacker);
     	
         return true;
@@ -290,7 +290,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	public InteractionResultHolder<ItemStack> use(Level levelIn, Player player, InteractionHand hand)
 	{
 		ItemStack stack = player.getItemInHand(hand);
-		if(ItemNbt.get(stack).getInt(NBT_AMMO_USED) == getMaxAmmo(stack))
+		if(ItemNbt.read(stack).getInt(NBT_AMMO_USED) == getMaxAmmo(stack))
 			return InteractionResultHolder.fail(stack);
         player.startUsingItem(hand);
         return InteractionResultHolder.consume(stack);
@@ -302,7 +302,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		if(entityLiving instanceof Player)
 		{
 			int maxAmmo = getMaxAmmo(stack);
-			int ammoCount = maxAmmo - ItemNbt.get(stack).getInt(NBT_AMMO_USED);
+			int ammoCount = maxAmmo - ItemNbt.read(stack).getInt(NBT_AMMO_USED);
 			
 			if(ammoCount > 0)
 			{
@@ -352,7 +352,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		            	ItemNbt.update(stack, (nbt) -> nbt.putInt(NBT_AMMO_USED, ammoUsed));
 		            	
 		            	// If there is no ammo left and the stack isn't original (picked up from the ground to create a new stack), then delete the stack
-		            	if(ammoCount == 0 && !ItemNbt.get(stack).getBoolean(NBT_ORIGINAL))
+		            	if(ammoCount == 0 && !ItemNbt.read(stack).getBoolean(NBT_ORIGINAL))
 		            	{
 			                stack.shrink(1);
 			                if(stack.getCount() <= 0)
@@ -541,6 +541,10 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	
 	protected void initNBT(ItemStack stack, boolean initUUID) 
 	{
+		// runs every tick for every throwing weapon in an inventory: nothing to copy once the tags are there
+		CompoundTag current = ItemNbt.read(stack);
+		if(current.contains(NBT_AMMO_USED) && (!initUUID || current.hasUUID(NBT_UUID)))
+			return;
 		CompoundTag tag = ItemNbt.get(stack);
 		boolean changed = false;
 		// Initialise ammo tag if necessary

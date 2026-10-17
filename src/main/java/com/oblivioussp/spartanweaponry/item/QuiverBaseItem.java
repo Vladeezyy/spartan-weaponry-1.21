@@ -145,7 +145,7 @@ public abstract class QuiverBaseItem extends Item
 			else
 			{
 				// Toggle ammo collection
-				boolean ammoCollect = !ItemNbt.get(heldItem).getBoolean(NBT_AMMO_COLLECT);
+				boolean ammoCollect = !ItemNbt.read(heldItem).getBoolean(NBT_AMMO_COLLECT);
 				ItemNbt.update(heldItem, (nbt) -> nbt.putBoolean(NBT_AMMO_COLLECT, ammoCollect));
 				
 				String collectStatus = ammoCollect ? "enabled" : "disabled";
@@ -161,12 +161,12 @@ public abstract class QuiverBaseItem extends Item
 	@Override
 	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, List<Component> tooltip, TooltipFlag flagIn) 
 	{
-		if(ItemNbt.get(stack).contains("ClientInventory"))
+		if(ItemNbt.read(stack).contains("ClientInventory"))
 			ItemNbt.update(stack, (nbt) -> nbt.remove("ClientInventory"));
 		
 		super.appendHoverText(stack, levelIn, tooltip, flagIn);
 		
-		boolean ammoCollect = ItemNbt.get(stack).getBoolean(NBT_AMMO_COLLECT);
+		boolean ammoCollect = ItemNbt.read(stack).getBoolean(NBT_AMMO_COLLECT);
 		String collectStatus = ammoCollect ? "enabled" : "disabled";
 		ChatFormatting statusColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
 		tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".quiver_collect_status").append(Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(statusColour)).withStyle(ChatFormatting.DARK_AQUA));
@@ -177,7 +177,7 @@ public abstract class QuiverBaseItem extends Item
 	
 	public Optional<TooltipComponent> makeTooltipImage(ItemStack stackIn, boolean isBoltQuiver)
 	{
-		int prioritySlot = ItemNbt.get(stackIn).getInt(NBT_PROIRITY_SLOT);
+		int prioritySlot = ItemNbt.read(stackIn).getInt(NBT_PROIRITY_SLOT);
 		
 		NonNullList<ItemStack> items = NonNullList.withSize(ammoSlots, ItemStack.EMPTY);
 		stackIn.getOrDefault(ModDataComponents.QUIVER_CONTENTS.get(), ItemContainerContents.EMPTY).copyInto(items);

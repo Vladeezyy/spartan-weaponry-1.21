@@ -215,7 +215,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
                 
 	            int i = this.getUseDuration(stack, entityLiving) - timeLeft;
 	            
-	            if (i < 0 || !ItemNbt.get(stack).getBoolean(NBT_CHARGED)) return;
+	            if (i < 0 || !ItemNbt.read(stack).getBoolean(NBT_CHARGED)) return;
 	
 	            if (!itemstack.isEmpty() || isCreativeOrInfinite)
 	            {
@@ -322,7 +322,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     @Override
     public UseAnim getUseAnimation(ItemStack stack) 
     {
-    	if(!ItemNbt.get(stack).getBoolean(NBT_CHARGED))
+    	if(!ItemNbt.read(stack).getBoolean(NBT_CHARGED))
     		return UseAnim.CROSSBOW;
     	return UseAnim.BOW;
     }
@@ -334,7 +334,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     	ItemStack ammoStack = playerIn.getProjectile(stack);
     	boolean hasAmmo = !ammoStack.isEmpty();
     	
-    	if(!playerIn.getAbilities().instabuild && !hasAmmo && !ItemNbt.get(stack).getBoolean(NBT_CHARGED) && Enchants.level(stack, Enchantments.INFINITY) == 0)
+    	if(!playerIn.getAbilities().instabuild && !hasAmmo && !ItemNbt.read(stack).getBoolean(NBT_CHARGED) && Enchants.level(stack, Enchantments.INFINITY) == 0)
     	{
     		return !hasAmmo ? InteractionResultHolder.fail(stack) : InteractionResultHolder.pass(stack);
     	}
@@ -346,7 +346,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     public void onUseTick(Level levelIn, LivingEntity livingEntityIn, ItemStack stack, int count) 
     {
     	// Play loading sounds as necessary
-    	if(!levelIn.isClientSide && !ItemNbt.get(stack).getBoolean(NBT_CHARGED) && livingEntityIn instanceof Player)
+    	if(!levelIn.isClientSide && !ItemNbt.read(stack).getBoolean(NBT_CHARGED) && livingEntityIn instanceof Player)
     	{
 	    	float loadTicks = getLoadProgress(stack, livingEntityIn);
 	    	SoundEvent loadingSound = null;
@@ -414,7 +414,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 
     	material.addTagErrorTooltip(stack, tooltip);
     	
-    	if(ItemNbt.get(stack).contains(NBT_CHARGED))
+    	if(ItemNbt.read(stack).contains(NBT_CHARGED))
     	{
     		ItemStack bolt = getLoadedBolt(stack, levelIn.registries());
     		if(!bolt.isEmpty())
@@ -474,7 +474,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 	@Override
 	public boolean isLoaded(ItemStack stack)
 	{
-		return ItemNbt.has(stack) && ItemNbt.get(stack).getBoolean(NBT_CHARGED);
+		return ItemNbt.has(stack) && ItemNbt.read(stack).getBoolean(NBT_CHARGED);
 	}
 
 	@Override

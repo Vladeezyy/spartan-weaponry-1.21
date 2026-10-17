@@ -371,7 +371,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	protected void removeEnchantments(ItemStack stack)
 	{
 		Level level = level();
-		if(stack.isEnchanted() && ItemNbt.get(stack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
+		if(stack.isEnchanted() && ItemNbt.read(stack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
 		{
     		EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
 
@@ -482,12 +482,12 @@ public class ThrowingWeaponEntity extends AbstractArrow
 				{
 					ItemStack slotStack = player.getInventory().getItem(i);
 					if(slotStack.getItem() == weapon.getItem() && 
-							ItemNbt.get(weapon).hasUUID(ThrowingWeaponItem.NBT_UUID) && ItemNbt.get(slotStack).hasUUID(ThrowingWeaponItem.NBT_UUID) && 
-							ItemNbt.get(weapon).getUUID(ThrowingWeaponItem.NBT_UUID).equals(ItemNbt.get(slotStack).getUUID(ThrowingWeaponItem.NBT_UUID)) &&
+							ItemNbt.read(weapon).hasUUID(ThrowingWeaponItem.NBT_UUID) && ItemNbt.read(slotStack).hasUUID(ThrowingWeaponItem.NBT_UUID) && 
+							ItemNbt.read(weapon).getUUID(ThrowingWeaponItem.NBT_UUID).equals(ItemNbt.read(slotStack).getUUID(ThrowingWeaponItem.NBT_UUID)) &&
 							weapon.getItem() instanceof ThrowingWeaponItem throwingWeapon)
 					{
 						int maxAmmo = throwingWeapon.getMaxAmmo(slotStack);
-						int currentAmmo = maxAmmo - ItemNbt.get(slotStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+						int currentAmmo = maxAmmo - ItemNbt.read(slotStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
 						
 						if(currentAmmo < maxAmmo)
 						{

@@ -104,10 +104,10 @@ public class HudCrosshairThrowingWeapon
 
 	        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 	        
-	        if(ItemNbt.get(equippedStack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
+	        if(ItemNbt.read(equippedStack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
 	        {
 				int maxAmmo = throwingWeapon.getMaxAmmo(equippedStack);
-	        	int ammo = maxAmmo - ItemNbt.get(equippedStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+	        	int ammo = maxAmmo - ItemNbt.read(equippedStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
 	        	
 	        	String text = String.format("%d/%d", ammo, maxAmmo);
 				

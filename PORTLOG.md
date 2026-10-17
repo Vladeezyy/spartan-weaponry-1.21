@@ -197,3 +197,23 @@ no untranslated tag of the mod left (`#curios:back` / `#curios:quiver` are Curio
 - Release jar on real NeoForge servers 21.1.259 and 21.1.197 (`prodtest/serve.sh`): starts clean.
 - Not run: a dedicated client joining the dedicated server, C2ME (not on NeoForge 1.21.1 in the test set; the fix is the
   random source), Better Combat.
+
+## Performance check (2026-10-17)
+
+Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-XX:StartFlightRecording=filename=run/x-%p.jfr,settings=profile,dumponexit=true"`).
+
+- **Oil coating colour**: the item colour handler runs for every quad of the coating layer of every oiled weapon on
+  screen, every frame, and made an oil capability handler (reading the item's NBT) each time: 2.4 % of the render
+  thread with 400 armor stands (half oiled). It now reads the oil tag in place and keeps the colour of the last item
+  data (the quads of one weapon come one after another): 0.4 %.
+- **Item NBT copies**: `ItemNbt.get` copies the whole tag; 56 places only read one value from it (throwing weapon ammo
+  every tick and every frame for the "empty" model, the crosshair HUDs, the quiver, the heavy crossbow ...). They use
+  `ItemNbt.read` now (the component's own tag, read only). Copies stay where the tag is changed and in the one-time
+  migration of 1.20.1 data. Throwing weapons no longer copy their tag every tick to check that it is complete.
+- The thrown weapon renderer makes its fixed rotation once instead of every frame.
+- Measured (noisy laptop, same scene): 400 armor stands with 800 weapons + 160 frames 42-46 FPS (39-50 before), the
+  same stands with vanilla swords 60-62. The rest of that gap is the original art: 165 weapon textures are 32x32 or
+  64x64, and a generated item model has more faces the bigger its sprite; the oil coating is one more pass on oiled
+  weapons (not drawn on the others). The server tick of that scene (6-13 ms, vanilla swords 4.5-4.9 ms) is mostly the
+  water spreading in the test world: Spartan Weaponry code is about 1 % of the server thread.
+- Client scene and stress scene: all checks pass.

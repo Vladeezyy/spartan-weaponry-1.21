@@ -31,7 +31,7 @@ public class PotionOilEffect extends OilEffect
 	@Override
 	public int getColor(ItemStack stackIn) 
 	{
-		CompoundTag oilTag = ItemNbt.get(stackIn).getCompound(OilHandler.NBT_OIL);
+		CompoundTag oilTag = ItemNbt.read(stackIn).getCompound(OilHandler.NBT_OIL);
 		Optional<Holder<Potion>> potion = PotionHelper.getPotion(oilTag);
 		if(potion.isPresent())
 			return PotionContents.getColor(potion.get());
@@ -41,7 +41,7 @@ public class PotionOilEffect extends OilEffect
 	@Override
 	public float onUse(float baseDamageIn, Level levelIn, LivingEntity targetEntityIn, LivingEntity userEntityIn, ItemStack oilStackIn) 
 	{
-		CompoundTag oilTag = ItemNbt.get(oilStackIn).getCompound(OilHandler.NBT_OIL);
+		CompoundTag oilTag = ItemNbt.read(oilStackIn).getCompound(OilHandler.NBT_OIL);
 		Optional<Holder<Potion>> potion = PotionHelper.getPotion(oilTag);
 		if(potion.isPresent())
 		{

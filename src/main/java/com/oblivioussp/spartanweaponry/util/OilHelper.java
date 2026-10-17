@@ -22,7 +22,7 @@ public class OilHelper
 {
 	public static OilEffect getOilFromStack(ItemStack stackIn)
 	{
-		CompoundTag tag = ItemNbt.get(stackIn).getCompound(OilHandler.NBT_OIL);
+		CompoundTag tag = ItemNbt.read(stackIn).getCompound(OilHandler.NBT_OIL);
 		ResourceLocation oil = ResourceLocation.tryParse(tag.getString(OilHandler.NBT_OIL_EFFECT));
 		if(oil != null && OilEffects.OIL_REGISTRY.containsKey(oil))
 			return OilEffects.OIL_REGISTRY.get(oil);
@@ -40,7 +40,7 @@ public class OilHelper
 	
 	public static Optional<Holder<Potion>> getPotionFromStack(ItemStack stackIn)
 	{
-		return PotionHelper.getPotion(ItemNbt.get(stackIn).getCompound(OilHandler.NBT_OIL));
+		return PotionHelper.getPotion(ItemNbt.read(stackIn).getCompound(OilHandler.NBT_OIL));
 	}
 	
 	public static ItemStack makePotionOilStack(Holder<Potion> potionIn)
@@ -74,7 +74,7 @@ public class OilHelper
 	
 	public static void addPotionTooltip(ItemStack stackIn, List<Component> tooltipListIn, float durationModifierIn)
 	{
-		addPotionTooltip(ItemNbt.get(stackIn).getCompound(OilHandler.NBT_OIL), tooltipListIn, durationModifierIn);
+		addPotionTooltip(ItemNbt.read(stackIn).getCompound(OilHandler.NBT_OIL), tooltipListIn, durationModifierIn);
 	}
 	
 	/** The potion tooltip of 1.20.1 (effects, levels, durations, "When Applied" attributes) for the potion in an oil tag */

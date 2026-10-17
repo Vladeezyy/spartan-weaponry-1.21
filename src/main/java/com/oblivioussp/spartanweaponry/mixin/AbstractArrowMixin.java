@@ -65,7 +65,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 						{
 							//Log.debug("Found a quiver to place the arrow into!");
 							// Make sure auto-collect is enabled.
-							if(ItemNbt.get(quiver).getBoolean(QuiverBaseItem.NBT_AMMO_COLLECT))
+							if(ItemNbt.read(quiver).getBoolean(QuiverBaseItem.NBT_AMMO_COLLECT))
 							{
 								//Log.debug("Inserting arrows into a quiver!");
 								// Attempt to place the arrows into the quiver.
