@@ -85,10 +85,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 /**
  * Development scene, inert unless the {@code spartanweaponry.scene} system property is set ({@code ./gradlew runScene}):
@@ -97,7 +93,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
  * ranged weapons, server side for the rest) and logs them as {@code [scene] CHECK}, saves
  * {@code run/screenshots/scene_*.png}, then quits. {@code -Dspartanweaponry.scene.lang=ru_ru} switches the language.
  */
-@EventBusSubscriber(modid = ModSpartanWeaponry.ID, value = Dist.CLIENT)
 public final class DevScene
 {
 	private static final boolean ENABLED = System.getProperty("spartanweaponry.scene") != null;
@@ -229,8 +224,11 @@ public final class DevScene
 		STEPS.add(Pair.of(t, action));
 	}
 
-	@SubscribeEvent
-	public static void onTick(ClientTickEvent.Post event)
+	/** Puts the quiver into the back accessory slot (NeoForge: Curios; set by the loader's scene hooks). */
+	public static java.util.function.BiPredicate<ServerPlayer, ItemStack> accessorySlot;
+
+	// The loader modules call this after every client tick (port/*SceneHooks)
+	public static void onTick()
 	{
 		if(!ENABLED)
 			return;
@@ -642,11 +640,7 @@ public final class DevScene
 		player.getInventory().setItem(2, new ItemStack(Items.TORCH, 4));
 		player.getInventory().selected = 2;
 		ItemStack quiver = quiverWith(ModItems.MEDIUM_ARROW_QUIVER.get(), 40);
-		boolean placed = top.theillusivec4.curios.api.CuriosApi.getCuriosInventory(player).flatMap(inv -> inv.getStacksHandler("back")).map(handler -> 
-		{
-			handler.getStacks().setStackInSlot(0, quiver);
-			return true;
-		}).orElse(false);
+		boolean placed = accessorySlot != null && accessorySlot.test(player, quiver);
 		check("Curios: the quiver goes into the back slot", placed, "");
 	}
 
@@ -1044,7 +1038,7 @@ public final class DevScene
 		ServerLevel level = player.serverLevel();
 		EnderMan enderman = EntityType.ENDERMAN.spawn(level, stage.offset(30, 0, 0), MobSpawnType.COMMAND);
 		enderman.setNoAi(true);
-		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION, 600));
+		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION.holder(), 600));
 		Vec3 start = enderman.position();
 		boolean teleported = false;
 		try
@@ -1119,7 +1113,7 @@ public final class DevScene
 		check("enchanting table: heavy crossbow", crossbow.containsAll(List.of("spartanweaponry:sharpshooter", "minecraft:piercing")), crossbow);
 		check("enchanting table: longbow", offered(new ItemStack(ModItems.LONGBOWS.iron.get()), possible).contains("minecraft:power"), offered(new ItemStack(ModItems.LONGBOWS.iron.get()), possible));
 		check("enchanting table: boomerang", offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible).contains("spartanweaponry:collectorang"), offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible));
-		check("Loyalty on throwing weapons (anvil)", new ItemStack(ModItems.JAVELINS.iron.get()).supportsEnchantment(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.LOYALTY)), "");
+		check("Loyalty on throwing weapons (anvil)", ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).supportsEnchantment(new ItemStack(ModItems.JAVELINS.iron.get()), level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.LOYALTY)), "");
 		// Loot injected into the village weaponsmith chest
 		var table = level.getServer().reloadableRegistries().getLootTable(BuiltInLootTables.VILLAGE_WEAPONSMITH);
 		int found = 0;
@@ -1169,7 +1163,7 @@ public final class DevScene
 			{
 				ItemStack stack = stacks.get(i);
 				List<Component> lines = Screen.getTooltipFromItem(Minecraft.getInstance(), stack);
-				graphics.renderTooltip(font, lines, stack.getTooltipImage(), stack, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16);
+				graphics.renderTooltip(font, lines, stack.getTooltipImage(), (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16);
 				for(Component line : lines)
 					if(line.getString().contains("tooltip.spartanweaponry") || line.getString().contains("item.spartanweaponry"))
 						Log.info("[scene] CHECK FAIL untranslated tooltip line (" + line.getString() + ")");

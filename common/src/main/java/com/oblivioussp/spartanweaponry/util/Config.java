@@ -1,9 +1,7 @@
 package com.oblivioussp.spartanweaponry.util;
 
 import net.minecraft.core.registries.Registries;
-import net.neoforged.fml.config.ModConfig;
 
-import net.neoforged.fml.common.EventBusSubscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +26,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.config.ModConfigEvent;
 
-@EventBusSubscriber(modid = ModSpartanWeaponry.ID, bus = EventBusSubscriber.Bus.MOD)
 public class Config
 {
 	public static final Config INSTANCE;
@@ -390,21 +384,10 @@ public class Config
 	}
 	
 	// 1.21: Loading and Reloading separately (the base event also gets Unloading, where values can't be read)
-	@SubscribeEvent
-	public static void onConfigLoad(ModConfigEvent.Loading ev)
+	// The loaders call this on the config loading and reloading events
+	public static void onConfigChanged(String fileName, Object spec)
 	{
-		onConfigChanged(ev.getConfig());
-	}
-	
-	@SubscribeEvent
-	public static void onConfigReload(ModConfigEvent.Reloading ev)
-	{
-		onConfigChanged(ev.getConfig());
-	}
-	
-	private static void onConfigChanged(ModConfig config)
-	{
-		if(config.getSpec() != CONFIG_SPEC)
+		if(spec != CONFIG_SPEC)
 			return;
 		
 		Log.info("Updating config settings!");

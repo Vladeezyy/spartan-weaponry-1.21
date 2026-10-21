@@ -92,7 +92,7 @@ public class WeaponOilItem extends BasicItem
 						playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_applied", stack.getHoverName(), oppositeStack.getHoverName()), true);
 						playerIn.playSound(ModSounds.OIL_APPLIED.get(), 1.0f, 1.0f);
 						// Remove one from the stack and replace the container back into the inventory (a glass bottle)
-						ItemStack bottleStack = getCraftingRemainingItem(stack);
+						ItemStack bottleStack = hasCraftingRemainingItem() ? new ItemStack(getCraftingRemainingItem()) : ItemStack.EMPTY;
 						stack.shrink(1);
 						if(stack.getCount() == 0)
 							playerIn.setItemInHand(handIn, ItemStack.EMPTY);

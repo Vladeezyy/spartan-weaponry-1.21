@@ -1,5 +1,9 @@
 package com.oblivioussp.spartanweaponry.util;
 
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+
+import net.minecraft.core.component.DataComponents;
+
 import java.util.Optional;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -18,7 +22,7 @@ public final class Enchants
 	/** {@code stack.getEnchantmentLevel(enchantment)} of 1.20.1 */
 	public static int level(ItemStack stack, ResourceKey<Enchantment> key)
 	{
-		for(Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getTagEnchantments().entrySet())
+		for(Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
 		{
 			if(entry.getKey().is(key))
 				return entry.getIntValue();

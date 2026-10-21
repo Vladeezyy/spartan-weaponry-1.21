@@ -355,7 +355,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
     		if(!level.isClientSide)
     		{
     			BlockState state = level.getBlockState(hitResult.getBlockPos());
-    			((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state).setPos(hitResult.getBlockPos()), getX(), getY(), getZ(), 5, 0.1d, 0.1d, 0.1d, 0.05d);
+    			((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), getX(), getY(), getZ(), 5, 0.1d, 0.1d, 0.1d, 0.05d);
     		}
     		
     		ItemStack stack = getWeaponItem();

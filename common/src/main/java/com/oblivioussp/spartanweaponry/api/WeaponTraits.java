@@ -2,6 +2,7 @@ package com.oblivioussp.spartanweaponry.api;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.core.registries.Registries;
+import com.oblivioussp.spartanweaponry.platform.Platform;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.api.trait.DamageAbsorbWeaponTrait;
@@ -33,7 +34,7 @@ public class WeaponTraits
 	public static final ResourceKey<Registry<WeaponTrait>> REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "weapon_traits"));
 	public static final Registrar<WeaponTrait> REGISTRY = Registrar.create(REGISTRY_KEY);
 	/** The weapon trait registry (synced to clients; its tags assign traits to weapons and materials) */
-	public static final Registry<WeaponTrait> TRAIT_REGISTRY = REGISTRY.makeRegistry((builder) -> builder.sync(true));
+	public static final Registry<WeaponTrait> TRAIT_REGISTRY = Platform.INSTANCE.createRegistry(REGISTRY_KEY, null);
 	
 	// Weapon Trait Types
 	public static final String TYPE_THROWABLE = "throwable",

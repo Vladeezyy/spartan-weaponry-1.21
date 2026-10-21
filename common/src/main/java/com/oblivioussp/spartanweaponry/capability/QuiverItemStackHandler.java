@@ -3,7 +3,6 @@ package com.oblivioussp.spartanweaponry.capability;
 import com.oblivioussp.spartanweaponry.init.ModDataComponents;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.ComponentItemHandler;
 
 /** The inventory of a quiver, stored in its {@code spartanweaponry:quiver_contents} component */
 public class QuiverItemStackHandler extends ComponentItemHandler implements IQuiverItemHandler

@@ -7,7 +7,9 @@ import com.oblivioussp.spartanweaponry.util.Config;
 
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import com.oblivioussp.spartanweaponry.item.crafting.BrewingRecipe;
+
+import java.util.function.Consumer;
 
 public class ModOilRecipes
 {
@@ -15,15 +17,15 @@ public class ModOilRecipes
 	public static PotionToOilBrewingRecipe potionToOilRecipes = null;
 	
 	// 1.21: brewing recipes are added on every server start (NeoForge's RegisterBrewingRecipesEvent)
-	public static void initOilRecipes(RegisterBrewingRecipesEvent ev)
+	public static void initOilRecipes(Consumer<BrewingRecipe> registrar)
 	{
 		if(oilRecipes == null)
 			oilRecipes = new OilBrewingRecipe();
-		ev.getBuilder().addRecipe(oilRecipes);
+		registrar.accept(oilRecipes);
 		
 		if(potionToOilRecipes == null)
 			potionToOilRecipes = new PotionToOilBrewingRecipe();
-		ev.getBuilder().addRecipe(potionToOilRecipes);
+		registrar.accept(potionToOilRecipes);
 	}
 	
 	public static void loadOilMixes()

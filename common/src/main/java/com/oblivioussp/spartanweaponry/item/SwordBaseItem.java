@@ -140,10 +140,10 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}*/
 	
 	/** Damage, speed and trait attributes (rebuilt on every reload from the config and the weapon_attributes data) */
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, super.getDefaultAttributeModifiers(stack));
+		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
     }
 	
 	/**
@@ -171,7 +171,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
         return material.getAttackDamageBonus();
     }
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getMaxDamage(ItemStack stack) 
 	{
 		return material.getUses();
@@ -191,7 +191,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
         return super.getDestroySpeed(stack, state);
     }
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker)
 	{
 		return hasWeaponTrait(WeaponTraits.SHIELD_BREACH.get());
@@ -329,7 +329,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 		return super.getUseAnimation(stack);
 	}
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public boolean doesSneakBypassUse(ItemStack stack, LevelReader level, BlockPos pos, Player player) 
 	{
 		Optional<WeaponTrait> actionTrait = archetype.getActionTrait();
@@ -339,7 +339,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 			if(trait.getActionCallback().isPresent())
 				return trait.getActionCallback().get().doesSneakBypassUse(stack, level, pos, player);
 		}
-		return super.doesSneakBypassUse(stack, level, pos, player);
+		return false;
 	}
 	
 	@Override
@@ -363,22 +363,22 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
     
     // 1.20.1 canApplyAtEnchantingTable (enchanting table and anvil)
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment)
     {
     	Optional<Boolean> fromTraits = traitEnchantmentRule(enchantment);
     	if(fromTraits.isPresent())
     		return fromTraits.get();
-        return !enchantment.is(Enchantments.SWEEPING_EDGE) && super.isPrimaryItemFor(stack, enchantment);
+        return !enchantment.is(Enchantments.SWEEPING_EDGE) && ItemExtensions.isPrimaryItemFor(stack, enchantment, supportsEnchantment(stack, enchantment));
     }
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment)
     {
     	Optional<Boolean> fromTraits = traitEnchantmentRule(enchantment);
     	if(fromTraits.isPresent())
     		return fromTraits.get();
-        return !enchantment.is(Enchantments.SWEEPING_EDGE) && super.supportsEnchantment(stack, enchantment);
+        return !enchantment.is(Enchantments.SWEEPING_EDGE) && ItemExtensions.supportsEnchantment(stack, enchantment);
     }
     
     // Sweeping Edge is incompatible with most weapons unless they have the Sweep I trait
@@ -394,7 +394,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
     	return Optional.empty();
     }
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
     {
     	int damage = amount;

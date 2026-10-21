@@ -1,5 +1,9 @@
 package com.oblivioussp.spartanweaponry.event;
 
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+
+import net.minecraft.core.component.DataComponents;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
@@ -457,7 +461,7 @@ public class CommonEventHandler
 		ItemEntity itemEntity = ev.getItemEntity();
 		Player player  = ev.getPlayer();
 		// 1.20.1 ran this only when the item could be picked up (pickup delay over, no other owner)
-		if(itemEntity.hasPickUpDelay() || (itemEntity.getTarget() != null && !itemEntity.getTarget().equals(player.getUUID())))
+		if(itemEntity.hasPickUpDelay() || (itemEntity.target != null && !itemEntity.target.equals(player.getUUID())))
 			return;
 		ItemStack pickedUpStack = itemEntity.getItem().copy();
 		int beforeCount = pickedUpStack.getCount(),
@@ -541,7 +545,7 @@ public class CommonEventHandler
     							
     							// Additionally, restore any enchantments from the original stack
 											if(pickedUpStack.isEnchanted())
-												EnchantmentHelper.setEnchantments(slotStack, pickedUpStack.getTagEnchantments());
+												EnchantmentHelper.setEnchantments(slotStack, pickedUpStack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY));
     						}
     					}
     					slotStack.setDamageValue(itemDamage);
@@ -592,7 +596,6 @@ public class CommonEventHandler
 	{
 		return LootPool.lootPool().add(generateLootEntry(lootName))
 						.setBonusRolls(UniformGenerator.between(0, 1))
-						.name(ModSpartanWeaponry.ID + "_inject")
 						.build();
 	}
 	
@@ -696,7 +699,7 @@ public class CommonEventHandler
 	 */
 	public static boolean checkToCancelTeleport(LivingEntity teleportingEntity)
 	{
-		return teleportingEntity.hasEffect(ModMobEffects.ENDER_DISRPUTION);
+		return teleportingEntity.hasEffect(ModMobEffects.ENDER_DISRPUTION.holder());
 	}
 	
 	/**
@@ -736,7 +739,7 @@ public class CommonEventHandler
 			// Calculate enchantment level to set the XP cost (This should help discourage potential duping)
 			int cost = 1;	// 1 Level of cost per total levels of enchantment
 	
-			for(Object2IntMap.Entry<Holder<Enchantment>> enchantment : left.getTagEnchantments().entrySet())
+			for(Object2IntMap.Entry<Holder<Enchantment>> enchantment : left.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY).entrySet())
 			{
 				cost += enchantment.getIntValue();
 			}

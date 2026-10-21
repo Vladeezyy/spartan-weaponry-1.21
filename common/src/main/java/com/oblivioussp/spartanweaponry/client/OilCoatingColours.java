@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.client;
 
+import com.oblivioussp.spartanweaponry.platform.Platform;
+
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.FastColor;
 
@@ -13,7 +15,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.world.item.Item;
-import net.neoforged.api.distmarker.Dist;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 public class OilCoatingColours
@@ -46,9 +47,9 @@ public class OilCoatingColours
 	@SuppressWarnings("deprecation")
 	public static void reload() 
 	{
-		if(FMLEnvironment.dist == Dist.CLIENT)
+		if(Platform.INSTANCE.isClient())
 		{
-			BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.OILABLE_WEAPONS).forEach((item) -> Minecraft.getInstance().getItemColors().register(OIL_COATED_WEAPON, item.value()));
+			BuiltInRegistries.ITEM.getTagOrEmpty(ModItemTags.OILABLE_WEAPONS).forEach((item) -> Minecraft.getInstance().itemColors.register(OIL_COATED_WEAPON, item.value()));
 		}
 	}
 

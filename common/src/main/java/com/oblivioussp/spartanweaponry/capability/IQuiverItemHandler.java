@@ -1,6 +1,5 @@
 package com.oblivioussp.spartanweaponry.capability;
 
-import net.neoforged.neoforge.items.IItemHandler;
 
 public interface IQuiverItemHandler extends IItemHandler 
 {

@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.client.gui.container;
 
+import com.oblivioussp.spartanweaponry.client.ClientHelper;
+
 import com.oblivioussp.spartanweaponry.client.gui.components.TexturedButton;
 
 import java.util.Optional;
@@ -140,7 +142,7 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 		guiGraphics.blit(texture, leftPos - 27, topPos + offhandY, 178, offhandY, 27, 29);
 
 		Slot highlightedSlot = menu.slots.get(prioritySlot);
-		renderSlotHighlight(guiGraphics, leftPos + highlightedSlot.x, topPos + highlightedSlot.y, 0, 0x8040C040);
+		ClientHelper.renderSlotHighlight(guiGraphics, leftPos + highlightedSlot.x, topPos + highlightedSlot.y, 0, 0x8040C040);
 	}
 	
 	@Override

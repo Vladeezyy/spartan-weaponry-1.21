@@ -1,4 +1,4 @@
-package com.oblivioussp.spartanweaponry.mixin;
+package com.oblivioussp.spartanweaponry.neoforge.mixin;
 
 import java.util.ArrayList;
 import java.util.HashMap;

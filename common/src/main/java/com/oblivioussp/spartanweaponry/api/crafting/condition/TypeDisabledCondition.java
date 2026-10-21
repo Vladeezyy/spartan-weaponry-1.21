@@ -70,8 +70,8 @@ public record TypeDisabledCondition(List<String> types)
 			Codec.STRING.listOf().fieldOf("disabled").forGetter(TypeDisabledCondition::types))
 			.apply(instance, TypeDisabledCondition::new));
 
-	@Override
-	public boolean test(IContext context) 
+	/** NeoForge: ICondition#test, Fabric: ResourceCondition#test (the loader modules wrap the record). */
+	public boolean test() 
 	{
 		for(String type : types)
 		{

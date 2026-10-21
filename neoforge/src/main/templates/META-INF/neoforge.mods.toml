@@ -16,6 +16,9 @@ description='''${mod_description}'''
 [[mixins]]
 config="spartanweaponry.mixins.json"
 
+[[mixins]]
+config="spartanweaponry.neoforge.mixins.json"
+
 [[accessTransformers]]
 file="META-INF/accesstransformer.cfg"
 

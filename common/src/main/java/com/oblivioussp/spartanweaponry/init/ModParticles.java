@@ -18,9 +18,9 @@ public class ModParticles
 {
 	public static final Registrar<ParticleType<?>> REGISTRY = Registrar.create(Registries.PARTICLE_TYPE);
 	
-	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> DAMAGE_BOOSTED = REGISTRY.register("damage_boosted", () -> new SimpleParticleType(false) {} {});
-	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> DAMAGE_REDUCED = REGISTRY.register("damage_reduced", () -> new SimpleParticleType(false) {} {});
-	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> OIL_DAMAGE_BOOSTED = REGISTRY.register("oil_damage_boosted", () -> new SimpleParticleType(false) {} {});
+	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> DAMAGE_BOOSTED = REGISTRY.register("damage_boosted", () -> new SimpleParticleType(false) {});
+	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> DAMAGE_REDUCED = REGISTRY.register("damage_reduced", () -> new SimpleParticleType(false) {});
+	public static final Registrar.Entry<ParticleType<?>, SimpleParticleType> OIL_DAMAGE_BOOSTED = REGISTRY.register("oil_damage_boosted", () -> new SimpleParticleType(false) {});
 	// TODO: Also consider adding boomerang trail particle and possibly for other throwing weapons too
 	
 	/** NeoForge: RegisterParticleProvidersEvent#registerSpriteSet, Fabric: ParticleFactoryRegistry. */

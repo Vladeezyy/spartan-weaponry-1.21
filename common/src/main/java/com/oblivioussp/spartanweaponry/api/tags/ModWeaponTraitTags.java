@@ -63,7 +63,7 @@ public class ModWeaponTraitTags
 	
 	public static TagKey<WeaponTrait> create(ResourceLocation loc)
 	{
-		return WeaponTraits.REGISTRY.createTagKey(loc);
+		return TagKey.create(WeaponTraits.REGISTRY_KEY, loc);
 	}
 	
 	public static TagKey<WeaponTrait> create(String namespace, String path)

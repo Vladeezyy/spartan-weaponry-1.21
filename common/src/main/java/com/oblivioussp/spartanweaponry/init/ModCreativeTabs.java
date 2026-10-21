@@ -83,7 +83,7 @@ public class ModCreativeTabs
 		build());
 
 	public static final Registrar.Entry<CreativeModeTab, CreativeModeTab> MODDED = REGISTRY.register("modded", () -> 
-		Platform.INSTANCE.creativeTabBuilder().
+		Platform.INSTANCE.creativeTabBuilder(BASIC.getKey()).
 		title(Component.translatable("itemGroup." + ModSpartanWeaponry.ID + ".modded")).
 		icon(() -> new ItemStack(ModItems.GREATSWORDS.bronze.get())).
 		displayItems((itemDisplayParams, output) -> {
@@ -113,11 +113,11 @@ public class ModCreativeTabs
 			builder.addAll(ModItems.QUARTERSTAVES.getModdedItemStacks());
 			builder.addAll(ModItems.SCYTHES.getModdedItemStacks());
 			output.acceptAll(builder.build());
-		}).withTabsBefore(BASIC.getKey()).
+		}).
 		build());
 	
 	public static final Registrar.Entry<CreativeModeTab, CreativeModeTab> ARROWS_BOLTS = REGISTRY.register("arrows_bolts", () -> 
-		Platform.INSTANCE.creativeTabBuilder().
+		Platform.INSTANCE.creativeTabBuilder(MODDED.getKey()).
 		title(Component.translatable("itemGroup." + ModSpartanWeaponry.ID + ".arrows_bolts")).
 		icon(() -> new ItemStack(ModItems.DIAMOND_ARROW.get())).
 		displayItems((itemDisplayParams, output) -> {
@@ -141,7 +141,7 @@ public class ModCreativeTabs
 			makeTippedProjectiles(output, ModItems.TIPPED_DIAMOND_BOLT.get());
 			output.accept(ModItems.NETHERITE_BOLT.get());
 			makeTippedProjectiles(output, ModItems.TIPPED_NETHERITE_BOLT.get());
-		}).withTabsBefore(MODDED.getKey()).
+		}).
 		build());
 	
 	private static void makeTippedProjectiles(CreativeModeTab.Output output, Item item)

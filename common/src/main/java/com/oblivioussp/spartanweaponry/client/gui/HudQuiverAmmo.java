@@ -91,7 +91,7 @@ public class HudQuiverAmmo
 		{
 			String inventoryKey = "[" + KeyBinds.KEY_ACCESS_QUIVER.getTranslatedKeyMessage().getString().toUpperCase() + "]";
 			int keyTextYOffset = align.getVertical() == VerticalAlignment.TOP ? 22 : -8;
-			guiGraphics.drawString(font, inventoryKey, offsetX + 11 - ((float)font.width(inventoryKey) / 2.0f), offsetY + keyTextYOffset, 0xFFFFFF, true);
+			guiGraphics.drawString(font, inventoryKey, Math.round(offsetX + 11 - ((float)font.width(inventoryKey) / 2.0f)), Math.round(offsetY + keyTextYOffset), 0xFFFFFF, true);
 //			font.drawInBatch(inventoryKey, offsetX + 11 - ((float)font.width(inventoryKey) / 2.0f), offsetY + keyTextYOffset, 0xFFFFFF, true, poseStack.last().pose(), renderBuffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
 		}
 //		renderBuffer.endBatch();

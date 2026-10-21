@@ -107,7 +107,7 @@ public class HarvesterWeaponTrait extends WeaponTrait implements IActionTraitCal
 				drops.forEach((stack) -> Block.popResource(levelIn, posIn, stack));
 				
 				levelIn.setBlockAndUpdate(posIn, state.setValue(ageProp, 0));
-				SoundType blockSound = block.getSoundType(state, levelIn, posIn, null);
+				SoundType blockSound = state.getSoundType();
 				levelIn.playSound(null, posIn, blockSound.getBreakSound(), SoundSource.BLOCKS, blockSound.getVolume(), blockSound.getPitch());
 				return true;
 			}

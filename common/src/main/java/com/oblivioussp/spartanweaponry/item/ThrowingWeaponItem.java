@@ -149,14 +149,14 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		throwDamageMultiplier = extraDamageTrait != null ? extraDamageTrait.getMagnitude() : 1.0f;
 	}
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
 	{
-		return WeaponAttributes.forStack(stack, defaultModifiers, super.getDefaultAttributeModifiers(stack));
+		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
 	}
 	
 	// Port fix: durability follows the material config (1.20.1 kept the value from item creation, like issue #167)
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getMaxDamage(ItemStack stack) 
 	{
 		return Math.max(1, material.getUses() / 4);
@@ -402,26 +402,26 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		return stack;
 	}
 
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getEnchantmentValue(ItemStack stack) 
 	{
 		return material.getEnchantmentValue();
 	}
 	
 	// Allow Loyalty enchantments to work on Throwing Weapons (1.20.1 canApplyAtEnchantingTable)
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) 
 	{
-		return super.isPrimaryItemFor(stack, enchantment) || enchantment.is(Enchantments.LOYALTY);
+		return ItemExtensions.isPrimaryItemFor(stack, enchantment, supportsEnchantment(stack, enchantment)) || enchantment.is(Enchantments.LOYALTY);
 	}
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) 
 	{
-		return super.supportsEnchantment(stack, enchantment) || enchantment.is(Enchantments.LOYALTY);
+		return ItemExtensions.supportsEnchantment(stack, enchantment) || enchantment.is(Enchantments.LOYALTY);
 	}
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
     {
     	int damage = amount;

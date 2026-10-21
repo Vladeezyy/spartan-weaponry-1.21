@@ -11,9 +11,8 @@ import java.util.Optional;
 
 import com.oblivioussp.spartanweaponry.util.PotionHelper;
 import net.minecraft.core.Holder;
-import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 
-public class PotionToOilBrewingRecipe implements IBrewingRecipe 
+public class PotionToOilBrewingRecipe implements BrewingRecipe 
 {
 	@Override
 	public boolean isInput(ItemStack input) 

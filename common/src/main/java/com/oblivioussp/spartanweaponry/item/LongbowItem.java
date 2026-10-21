@@ -51,7 +51,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.EventHooks;
+import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 public class LongbowItem extends BowItem implements IReloadable
@@ -109,15 +109,15 @@ public class LongbowItem extends BowItem implements IReloadable
 		defaultModifiers = WeaponAttributes.toItemModifiers(modifiers);
 	}
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, super.getDefaultAttributeModifiers(stack));
+		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
     }
 	
 	// Port fix (issue #167 of the original): durability follows the material config (1.20.1 kept the value from
 	// item creation)
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getMaxDamage(ItemStack stack)
 	{
 		return Math.max(1, (int)(material.getUses() * 2.0f));
@@ -138,7 +138,7 @@ public class LongbowItem extends BowItem implements IReloadable
             	return;
 
             int i = this.getUseDuration(stack, entityLiving) - timeLeft;
-            i = EventHooks.onArrowLoose(stack, level, player, i, true);
+            i = Platform.INSTANCE.onArrowLoose(stack, level, player, i, true);
             if (i < 0) return;
 
             float f = getArrowSpeed(i);
@@ -151,7 +151,7 @@ public class LongbowItem extends BowItem implements IReloadable
                 	for(ItemStack ammo : projectiles)
                 	{
 	                	ArrowItem itemarrow = ammo.getItem() instanceof ArrowItem arrowItem ? arrowItem : (ArrowItem)Items.ARROW;
-	                    AbstractArrow entityarrow = customArrow(itemarrow.createArrow(level, ammo, player, stack), ammo, stack);
+	                    AbstractArrow entityarrow = itemarrow.createArrow(level, ammo, player, stack);	// NeoForge: customArrow (returns it as is)
 	                    entityarrow.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f, f * 3.0f, 0.5f);
 	                    
 	                	for(WeaponTrait trait : rangedTraits)
@@ -187,7 +187,7 @@ public class LongbowItem extends BowItem implements IReloadable
         return f;
     }
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getEnchantmentValue(ItemStack stack)
 	{
 		return material.getEnchantmentValue();
@@ -199,7 +199,7 @@ public class LongbowItem extends BowItem implements IReloadable
 		return material.getRepairIngredient().test(repair);
 	}
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
     {
     	int damage = amount;

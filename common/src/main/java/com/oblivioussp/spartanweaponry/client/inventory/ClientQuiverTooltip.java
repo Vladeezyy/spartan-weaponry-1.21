@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.client.inventory;
 
+import com.oblivioussp.spartanweaponry.client.ClientHelper;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.inventory.QuiverArrowMenu;
@@ -109,7 +111,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 		guiGraphics.blit(slotX + 1, slotY + 1, BLIT_OFFSET, 16, 16, sprite);
 		
 		if(slotIdxIn == prioritySlot)
-			AbstractContainerScreen.renderSlotHighlight(guiGraphics, slotX + 1, slotY + 1, BLIT_OFFSET + 10, 0x8040C040);
+			ClientHelper.renderSlotHighlight(guiGraphics, slotX + 1, slotY + 1, BLIT_OFFSET + 10, 0x8040C040);
 		if(!stackToDraw.isEmpty())
 		{
 			guiGraphics.renderItem(stackToDraw, slotX + 1, slotY + 1);

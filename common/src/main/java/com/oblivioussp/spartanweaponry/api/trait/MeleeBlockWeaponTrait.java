@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 
 public class MeleeBlockWeaponTrait extends WeaponTrait implements IActionTraitCallback
 {
@@ -52,19 +51,20 @@ public class MeleeBlockWeaponTrait extends WeaponTrait implements IActionTraitCa
 		return action == ModToolActions.MELEE_BLOCK;
 	}
 
-	public static void onBlockEvent(LivingShieldBlockEvent ev)
+	/**
+	 * Whether a melee block weapon in use lets the damage through anyway (NeoForge: cancels the LivingShieldBlockEvent,
+	 * Fabric: LivingEntity#isDamageSourceBlocked returns false).
+	 */
+	public static boolean cancelsBlock(LivingEntity living, DamageSource source)
 	{
-		LivingEntity living = ev.getEntity();
 //		if(living.getUseItem().getItem() instanceof IWeaponTraitContainer<?> container && container.hasWeaponTrait(WeaponTraits.BLOCK_MELEE.get()))
 		ItemStack stack = living.getUseItem();
 		if(ToolAction.canPerform(stack, ModToolActions.MELEE_BLOCK))
 		{
-			DamageSource source = ev.getDamageSource();
-			
 			// Block Melee attacks only! Explosion, Fire, Magic, Projectile and unblockable damage won't be blocked!
 			// NOTE: Changes in Minecraft version 1.20.x means that it can only block specific damage sources, rather than block melee damage sources only! Maybe provide a tag for damage sources?
-			if(!source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.MOB_ATTACK) && !source.is(DamageTypes.MOB_ATTACK_NO_AGGRO))
-				ev.setCanceled(true);
+			return !source.is(DamageTypes.PLAYER_ATTACK) && !source.is(DamageTypes.MOB_ATTACK) && !source.is(DamageTypes.MOB_ATTACK_NO_AGGRO);
 		}
+		return false;
 	}
 }

@@ -37,6 +37,9 @@ public interface Platform
 
 	CreativeModeTab.Builder creativeTabBuilder();
 
+	/** A tab placed after the given one (NeoForge: withTabsBefore; Fabric keeps the registration order). */
+	CreativeModeTab.Builder creativeTabBuilder(ResourceKey<CreativeModeTab> after);
+
 	/** A synced registry, created before the registration of the entries; defaultKey may be null. */
 	<T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, ResourceLocation defaultKey);
 

@@ -12,7 +12,6 @@ import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.neoforged.neoforge.common.NeoForgeMod;
 
 public class ReachWeaponTrait extends MeleeCallbackWeaponTrait
 {

@@ -146,15 +146,15 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 		defaultModifiers = WeaponAttributes.toItemModifiers(modifiers);
 	}
 	
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, super.getDefaultAttributeModifiers(stack));
+		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
     }
 	
 	// 1.20.1 returned the material's durability here while the item was created with 1.5x of it (the tooltip and the
 	// bar disagreed until the first reload); kept as in 1.20.1: the material's durability
-	@Override
+	// NeoForge IItemExtension (Fabric: a mixin)
 	public int getMaxDamage(ItemStack stack) 
 	{
 		return Math.max(1, material.getUses());
@@ -360,7 +360,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     	}
     }
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
 	public int getEnchantmentValue(ItemStack stack)
 	{
 		return material != null ? material.getEnchantmentValue() : 1;
@@ -372,7 +372,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     	return this.material.getRepairIngredient().test(repair);
     }
     
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
     {
     	int damage = amount;
@@ -453,7 +453,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     	tooltip.add(Component.empty());
     }
 
-    @Override
+    // NeoForge IItemExtension (Fabric: a mixin)
     public Component getHighlightTip(ItemStack item, Component displayName) 
     {
     	if(isLoaded(item))
@@ -465,7 +465,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     		}
 		}
 
-    	return super.getHighlightTip(item, displayName);
+    	return displayName;
     }
 	
 	// ---- ---- ---- ---- ---- ---- ---- ----

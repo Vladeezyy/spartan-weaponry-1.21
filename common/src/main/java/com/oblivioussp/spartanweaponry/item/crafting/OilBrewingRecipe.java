@@ -11,9 +11,8 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 
-public class OilBrewingRecipe implements IBrewingRecipe 
+public class OilBrewingRecipe implements BrewingRecipe 
 {
 	private static final List<OilMix> VALID_MIXES = new ArrayList<>();
 

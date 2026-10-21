@@ -9,23 +9,31 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   сцена 20/20 и стресс 22/22 на обоих загрузчиках. Не сделано: README, compat-прогон на Fabric (Sodium/Iris),
   prod-сервер Fabric, merge в main, релиз.
 
-## Weaponry — в процессе (этот коммит НЕ собирается)
+## Weaponry — в процессе
 - Раскладка: `common/` (код без NeoForge), `neoforge/`, `fabric/` (пока только build.gradle и AW).
-- Сделано в common: `platform/Registrar` (вместо DeferredRegister), `platform/Platform` (интерфейс, реализаций
-  ещё нет), `capability/IItemHandler`, `ComponentItemHandler`, `inventory/SlotItemHandler` (свои вместо NeoForge),
-  `init/ModCapabilities` = `getOil(stack)` / `getQuiver(stack)`, `api/ToolAction` вместо `ItemAbility`,
-  `event/LoaderEvents` (мини-события с методами NeoForge), CommonEventHandler / ClientEventHandler / ClientHelper /
-  NetworkHandler (`PacketContext`) / KeyBinds / ModCommands / ModParticles / ModMenus переписаны на
-  загрузчико-нейтральные методы.
-- Перенесены в neoforge: CurioRenderer, OilCoatedItemModel, OilCoatingItemBakedModel, ModModelLoaders,
-  ItemModelGeneratorMixin (убрать его из common mixins json).
-- Осталось в common: `TypeDisabledCondition` (убрать `implements ICondition`, `test()` без аргументов),
-  ModSpartanWeaponry (разнести на common init + entry points), Config/ClientConfig (события конфига),
-  предметы (`@Override` у NeoForge-расширений убрать: getMaxDamage, damageItem, getDefaultAttributeModifiers,
-  supportsEnchantment, isPrimaryItemFor, canDisableShield, doesSneakBypassUse, getHighlightTip, isInfinite,
-  canApplyAtEnchantingTable, getEnchantmentValue(stack)), LongbowItem `EventHooks.onArrowLoose` →
-  `Platform.onArrowLoose`, брожение (свой IBrewingRecipe), DecapitateLootModifier (правило в common, GLM в
-  neoforge, на Fabric миксин в LootTable), MeleeBlockWeaponTrait.onBlockEvent, AT: добавить `SKIN_BY_TYPE`.
+- **`./gradlew :common:compileJava` собирается (2026-10-21).** neoforge/fabric модули ещё не собираются.
+- Сделано в common: `platform/Registrar`, `platform/Platform` (интерфейс, реализаций нет), свои `IItemHandler` /
+  `ComponentItemHandler` / `SlotItemHandler`, `ToolAction`, `event/LoaderEvents`, обработчики переписаны на них;
+  `ModSpartanWeaponry` = `init()` / `setup()` / `clientSetup(ItemPropertyRegistrar)` (как в Shields);
+  `Config.onConfigChanged(fileName, spec)`; `TypeDisabledCondition.test()` без аргументов;
+  `MeleeBlockWeaponTrait.cancelsBlock(living, source)`; `item/crafting/BrewingRecipe` (свой IBrewingRecipe),
+  `ModOilRecipes.initOilRecipes(Consumer<BrewingRecipe>)`; `loot/Decapitation.apply(...)` (правило черепов);
+  NeoForge-методы предметов без `@Override` (`// NeoForge IItemExtension`), super → `item/ItemExtensions`;
+  `Platform.creativeTabBuilder(after)`, сцены: `DevScene/StressScene.onTick()` без события,
+  `DevScene.accessorySlot` (Curios ставит `port/NeoForgeSceneHooks`). AT/AW: `SKIN_BY_TYPE`,
+  `MenuScreens$ScreenConstructor`, `BlockEntityType$BlockEntitySupplier`, `ItemEntity.target`, `Minecraft.itemColors`.
+- Уже в neoforge (ждут модуля): CurioRenderer, OilCoated*Model, ModModelLoaders, `neoforge/mixin/ItemModelGeneratorMixin`
+  (свой `spartanweaponry.neoforge.mixins.json`, добавлен в mods.toml), `loot/DecapitateLootModifier` (зовёт
+  `Decapitation`), `port/NeoForgeSceneHooks`.
+- NeoForge-модулю зарегистрировать то, что было в DeferredRegister'ах NeoForge-реестров: GLM `decapitate`
+  (`DecapitateLootModifier.CODEC`), условие рецептов `type_disabled` (обёртка `ICondition` над
+  `TypeDisabledCondition`), аргументы команд `oil`/`potion` (`ModCommands.registerArgumentTypes`), конфиги
+  (`registerConfig` + `ModConfigEvent` → `Config.onConfigChanged`), payload'ы, capabilities, брожение
+  (`RegisterBrewingRecipesEvent` → обёртка `IBrewingRecipe`), `LivingShieldBlockEvent` → `cancelsBlock`,
+  `onArrowLoose`, `customArrow` (в common вызов убран: по умолчанию NeoForge возвращает стрелу как есть).
+- Fabric: те же методы предметов звать миксинами (getMaxDamage, атрибуты, damageItem, supportsEnchantment,
+  isPrimaryItemFor, canDisableShield, doesSneakBypassUse, getHighlightTip, getEnchantmentValue(stack));
+  `Decapitation` из миксина в LootTable по данным `loot_modifiers`; брожение — миксин в PotionBrewing.
 - Потом: neoforge-модуль (entry point, NeoForgePlatform, подписка событий, миксин canPerformAction(ItemAbility)),
   fabric-модуль (entry points, FabricPlatform, миксины: урон LivingEntity.hurt через @WrapMethod, sweep в
   Player.attack, canDisableShield, isDamageSourceBlocked для melee block, getMaxDamage/атрибуты в ItemStack,
@@ -34,6 +42,7 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 - Затем Arcana и HUD Baubles, потом ветки версий.
 
 ## Сборка / тесты
-JDK: `export JAVA_HOME=~/.gradle/jdks/eclipse_adoptium-21-amd64-windows.2`. `./gradlew :common:compileJava`.
+JDK: Windows `export JAVA_HOME=~/.gradle/jdks/eclipse_adoptium-21-amd64-windows.2`, Mac
+`export JAVA_HOME=/opt/homebrew/Cellar/openjdk@21/21.0.12.1/libexec/openjdk.jdk/Contents/Home`. `./gradlew :common:compileJava`.
 Тест-скрипты Shields: `LOADER=neoforge|fabric sh tools/scenetest.sh` (stresstest/servertest). Грабли — в
 modding-kb `porting/multiloader.md` (раздел Spartan Shields).

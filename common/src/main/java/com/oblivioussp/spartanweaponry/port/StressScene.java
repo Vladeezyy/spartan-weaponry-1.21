@@ -74,10 +74,6 @@ import net.minecraft.world.level.levelgen.WorldOptions;
 import net.minecraft.world.level.levelgen.presets.WorldPresets;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 /**
  * Functional and stress tests, inert unless the {@code spartanweaponry.stress} system property is set
@@ -87,7 +83,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
  * skeletons with longbows and 40 armed zombies against iron golems (TPS); 600 projectiles at once. Results:
  * {@code [stress] CHECK} / {@code [stress] STAT} lines.
  */
-@EventBusSubscriber(modid = ModSpartanWeaponry.ID, value = Dist.CLIENT)
 public final class StressScene
 {
 	private static final boolean ENABLED = System.getProperty("spartanweaponry.stress") != null;
@@ -158,8 +153,8 @@ public final class StressScene
 		}));
 	}
 
-	@SubscribeEvent
-	public static void onTick(ClientTickEvent.Post event)
+	// The loader modules call this after every client tick (port/*SceneHooks)
+	public static void onTick()
 	{
 		if(!ENABLED)
 			return;

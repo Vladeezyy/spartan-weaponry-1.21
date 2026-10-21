@@ -2,6 +2,7 @@ package com.oblivioussp.spartanweaponry.api;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.core.registries.Registries;
+import com.oblivioussp.spartanweaponry.platform.Platform;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.api.oil.MobOilEffect;
@@ -22,7 +23,7 @@ public class OilEffects
 	public static final ResourceKey<Registry<OilEffect>> REGISTRY_KEY = ResourceKey.createRegistryKey(REGISTRY_NAME);
 	public static final Registrar<OilEffect> REGISTRY = Registrar.create(REGISTRY_KEY);
 	/** The oil effect registry (synced to clients; unknown oils read as "none") */
-	public static final Registry<OilEffect> OIL_REGISTRY = REGISTRY.makeRegistry((builder) -> builder.sync(true).defaultKey(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "none")));
+	public static final Registry<OilEffect> OIL_REGISTRY = Platform.INSTANCE.createRegistry(REGISTRY_KEY, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "none"));
 	
 	public static final Registrar.Entry<OilEffect, OilEffect> NONE = REGISTRY.register("none", () -> new OilEffect("none", OilEffectType.NONE, 0xE2C467, 0, 0.0f, OilEffect.USE_NOTHING));
 	public static final Registrar.Entry<OilEffect, OilEffect> UNDEAD = REGISTRY.register("undead", () -> new OilEffect("undead", OilEffectType.STANDARD, 0xFFE600, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_NORMAL, OilEffect.USE_UNDEAD));
@@ -37,8 +38,8 @@ public class OilEffects
 	public static final Registrar.Entry<OilEffect, OilEffect> CREEPER_STRONG = REGISTRY.register("creeper_strong", () -> new OilEffect("creeper", OilEffectType.POTENT, 0x804080, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_STRONG, OilEffect.USE_CREEPER));
 	public static final Registrar.Entry<OilEffect, OilEffect> AQUATIC = REGISTRY.register("aquatic", () -> new OilEffect("aquatic", OilEffectType.STANDARD, 0x4080C0, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_NORMAL, OilEffect.USE_AQUATIC));
 	public static final Registrar.Entry<OilEffect, OilEffect> AQUATIC_STRONG = REGISTRY.register("aquatic_strong", () -> new OilEffect("aquatic", OilEffectType.POTENT, 0x4080C0, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_STRONG, OilEffect.USE_AQUATIC));
-	public static final Registrar.Entry<OilEffect, OilEffect> ENDER = REGISTRY.register("ender", () -> new MobOilEffect("ender", OilEffectType.STANDARD, 0x208080, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_NORMAL, OilEffect.USE_ENDER, ModMobEffects.ENDER_DISRPUTION, 300, 0));
-	public static final Registrar.Entry<OilEffect, OilEffect> ENDER_STRONG = REGISTRY.register("ender_strong", () -> new MobOilEffect("ender", OilEffectType.POTENT, 0x208080, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_STRONG, OilEffect.USE_ENDER, ModMobEffects.ENDER_DISRPUTION, 600, 0));
+	public static final Registrar.Entry<OilEffect, OilEffect> ENDER = REGISTRY.register("ender", () -> new MobOilEffect("ender", OilEffectType.STANDARD, 0x208080, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_NORMAL, OilEffect.USE_ENDER, ModMobEffects.ENDER_DISRPUTION.holder(), 300, 0));
+	public static final Registrar.Entry<OilEffect, OilEffect> ENDER_STRONG = REGISTRY.register("ender_strong", () -> new MobOilEffect("ender", OilEffectType.POTENT, 0x208080, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_STRONG, OilEffect.USE_ENDER, ModMobEffects.ENDER_DISRPUTION.holder(), 600, 0));
 	public static final Registrar.Entry<OilEffect, OilEffect> WITHER = REGISTRY.register("wither", () -> new MobOilEffect("wither", OilEffectType.EFFECT_ONLY, 0x402020, Defaults.OIL_USES_NORMAL, MobEffects.WITHER, 200, 0));
 	public static final Registrar.Entry<OilEffect, OilEffect> WITHER_LONG = REGISTRY.register("wither_long", () -> new MobOilEffect("wither", OilEffectType.EFFECT_ONLY, 0x402020, Defaults.OIL_USES_LONG, MobEffects.WITHER, 200, 0));
 	public static final Registrar.Entry<OilEffect, OilEffect> WITHER_STRONG = REGISTRY.register("wither_strong", () -> new MobOilEffect("wither", OilEffectType.EFFECT_ONLY, 0x402020, Defaults.OIL_USES_NORMAL, MobEffects.WITHER, 100, 1));

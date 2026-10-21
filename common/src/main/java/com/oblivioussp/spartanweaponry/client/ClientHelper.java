@@ -1,5 +1,9 @@
 package com.oblivioussp.spartanweaponry.client;
 
+import net.minecraft.client.renderer.RenderType;
+
+import net.minecraft.client.gui.GuiGraphics;
+
 import net.minecraft.world.inventory.MenuType;
 
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -338,6 +342,12 @@ public class ClientHelper
 		propertyRegistrar = registrar;
 		PENDING_PROPERTIES.forEach(Runnable::run);
 		PENDING_PROPERTIES.clear();
+	}
+	
+	/** AbstractContainerScreen.renderSlotHighlight with a colour (NeoForge adds that overload). */
+	public static void renderSlotHighlight(GuiGraphics guiGraphics, int x, int y, int blitOffset, int colour)
+	{
+		guiGraphics.fillGradient(RenderType.guiOverlay(), x, y, x + 16, y + 16, colour, colour, blitOffset);
 	}
 	
 	/** The HUD layers: above everything (aboveAll) or right above the vanilla crosshair (aboveCrosshair). */
