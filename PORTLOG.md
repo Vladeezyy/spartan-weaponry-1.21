@@ -217,3 +217,14 @@ Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-X
   weapons (not drawn on the others). The server tick of that scene (6-13 ms, vanilla swords 4.5-4.9 ms) is mostly the
   water spreading in the test world: Spartan Weaponry code is about 1 % of the server thread.
 - Client scene and stress scene: all checks pass.
+
+## Multiloader: NeoForge module (2026-10-21, branch `multiloader`)
+
+- The code is split into `common` (no NeoForge), `neoforge` and `fabric` (in progress). The NeoForge module wires the
+  common handlers to the same events, priorities and registries as the NeoForge-only port.
+- Client scene (`LOADER=neoforge sh tools/scenetest.sh`): 54 checks, 0 failed. Stress scene: 20 checks, 0 failed.
+  Dev server starts without errors.
+- Measured (MacBook, stress scene): 400 armor stands with weapons (half oiled) + 160 frames 41-49 FPS, server tick
+  6.7-9.6 ms; the same stands with vanilla swords 58 FPS, 4.5 ms; 40 skeletons + 40 zombies vs 30 golems 107 FPS,
+  2.2 ms; 600 projectiles 99 FPS, 1.8 ms. The same as the NeoForge-only port.
+

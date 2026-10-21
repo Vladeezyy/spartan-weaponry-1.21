@@ -11,7 +11,15 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 
 ## Weaponry — в процессе
 - Раскладка: `common/` (код без NeoForge), `neoforge/`, `fabric/` (пока только build.gradle и AW).
-- **`./gradlew :common:compileJava` собирается (2026-10-21).** neoforge/fabric модули ещё не собираются.
+- **`./gradlew :common:compileJava` собирается (2026-10-21).**
+- **NeoForge 1.21.1 готов (2026-10-21):** `neoforge/…/neoforge/SpartanWeaponryNeoForge` (реестры, NeoForge-реестры
+  `decapitate`/`type_disabled`/аргументы команд, payload'ы, capabilities `oil`/`quiver_items` для других модов,
+  конфиги, все игровые события), `SpartanWeaponryNeoForgeClient` (клиентские регистрации и события),
+  `NeoForgePlatform` (+ `META-INF/services`), `neoforge/mixin/ItemStackMixin` (ItemAbility → ToolAction), AT кладётся в
+  jar из `common/accesstransformer.cfg`. Сцена 54/54, стресс 20/20, dev-сервер стартует без ошибок. Не сделано:
+  prod-прогон jar (`prodtest/serve.sh`), compat-прогон (`tools/compattest.sh` ещё под старую раскладку).
+- Тест-скрипты: `LOADER=neoforge|fabric sh tools/scenetest.sh` (stresstest/servertest), общий `tools/common.sh`;
+  игра запускается в `<loader>/run`, логи `build-<scene|stress|server>-<loader>.log`.
 - Сделано в common: `platform/Registrar`, `platform/Platform` (интерфейс, реализаций нет), свои `IItemHandler` /
   `ComponentItemHandler` / `SlotItemHandler`, `ToolAction`, `event/LoaderEvents`, обработчики переписаны на них;
   `ModSpartanWeaponry` = `init()` / `setup()` / `clientSetup(ItemPropertyRegistrar)` (как в Shields);
@@ -25,7 +33,7 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 - Уже в neoforge (ждут модуля): CurioRenderer, OilCoated*Model, ModModelLoaders, `neoforge/mixin/ItemModelGeneratorMixin`
   (свой `spartanweaponry.neoforge.mixins.json`, добавлен в mods.toml), `loot/DecapitateLootModifier` (зовёт
   `Decapitation`), `port/NeoForgeSceneHooks`.
-- NeoForge-модулю зарегистрировать то, что было в DeferredRegister'ах NeoForge-реестров: GLM `decapitate`
+- (Сделано) NeoForge-модулю зарегистрировать то, что было в DeferredRegister'ах NeoForge-реестров: GLM `decapitate`
   (`DecapitateLootModifier.CODEC`), условие рецептов `type_disabled` (обёртка `ICondition` над
   `TypeDisabledCondition`), аргументы команд `oil`/`potion` (`ModCommands.registerArgumentTypes`), конфиги
   (`registerConfig` + `ModConfigEvent` → `Config.onConfigChanged`), payload'ы, capabilities, брожение
@@ -34,8 +42,7 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 - Fabric: те же методы предметов звать миксинами (getMaxDamage, атрибуты, damageItem, supportsEnchantment,
   isPrimaryItemFor, canDisableShield, doesSneakBypassUse, getHighlightTip, getEnchantmentValue(stack));
   `Decapitation` из миксина в LootTable по данным `loot_modifiers`; брожение — миксин в PotionBrewing.
-- Потом: neoforge-модуль (entry point, NeoForgePlatform, подписка событий, миксин canPerformAction(ItemAbility)),
-  fabric-модуль (entry points, FabricPlatform, миксины: урон LivingEntity.hurt через @WrapMethod, sweep в
+- Дальше: fabric-модуль (entry points, FabricPlatform, миксины: урон LivingEntity.hurt через @WrapMethod, sweep в
   Player.attack, canDisableShield, isDamageSourceBlocked для melee block, getMaxDamage/атрибуты в ItemStack,
   анвил, телепорты, подбор в колчан, брожение, черепа, прицел), условия рецептов скриптом
   `tools/port/neo2fabric_conditions.py <res> spartanweaponry spartanweaponry:type_disabled`.

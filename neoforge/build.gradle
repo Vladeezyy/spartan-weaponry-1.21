@@ -100,6 +100,11 @@ var generateModMetadata = tasks.register('generateModMetadata', ProcessResources
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 
+// NeoForge reads the access transformer from the jar
+processResources {
+    from(rootProject.file('common/accesstransformer.cfg')) { into 'META-INF' }
+}
+
 tasks.named('jar', Jar).configure {
     // The test scenes (port/) are for dev runs only
     exclude 'com/oblivioussp/spartanweaponry/port/**'
