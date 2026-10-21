@@ -20,6 +20,7 @@ import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
 import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.CommonLifecycleEvents;
@@ -113,6 +114,11 @@ public class SpartanWeaponryFabric implements ModInitializer
 		EnchantmentEvents.ALLOW_ENCHANTING.register((enchantment, stack, context) -> FabricItemHooks.allowEnchanting(stack, enchantment, context == EnchantingContext.PRIMARY));
 		// NeoForge VillagerTradesEvent; the trade lists come from the config and the registries, so on the first start
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> addVillagerTrades());
+		
+		// Addons (entrypoint "spartanweaponry" in their fabric.mod.json) start after the mod: their weapons are made by
+		// the API, and Fabric does not order the "main" entrypoints of dependent mods (NeoForge: their constructors
+		// run first, the registration later)
+		FabricLoader.getInstance().invokeEntrypoints(ModSpartanWeaponry.ID, ModInitializer.class, ModInitializer::onInitialize);
 	}
 
 	/** Registers every registrar, registry by registry in the order of BuiltInRegistries.REGISTRY (as NeoForge does). */

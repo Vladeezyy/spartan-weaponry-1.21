@@ -46,7 +46,16 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   Один прогон сцены Fabric показал «a hit uses the oil once (18/20)», три следующих — 19/20; не воспроизвелось.
 - Не сделано для обоих загрузчиков: prod-прогон jar, compat-прогон (`tools/compattest.sh` под старую раскладку),
   README, merge в main, релиз.
-- Затем Arcana и HUD Baubles, потом ветки версий.
+- **Arcana готова на NeoForge + Fabric 1.21.1 (2026-10-21)**: `spartan-weaponry-arcana-1.21@multiloader`, та же
+  раскладка, свои `platform/Platform` и `Registrar`. Сцена 22/22 без Botania и 34/34 с ней, сетевой тест 6/6, на
+  обоих загрузчиках. На Fabric Arcana стартует из entrypoint `spartanweaponry`, его вызывает Weaponry в конце своего
+  `onInitialize` (`SpartanWeaponryFabric`). Botania: локальные сборки ветки 1.21.1-porting
+  (`~/Desktop/mod-scout/src/Botania`, `:Fabric:remapJar`, `:NeoForge:build`) в `arcana/libs/botania/{xplat,neoforge,fabric}`
+  (не в git); Fabric-сборке нужны Loom 1.15.5 и Loader 0.17.3. Jar'ы Weaponry в `arcana/libs/` пересобирать после
+  изменений Weaponry (`:common:jar :neoforge:jar :fabric:remapJar`).
+- **Дальше:** HUD Baubles (NeoForge + Fabric 1.21.1, на Fabric — Trinkets), затем ветки версий `mc/<версия>` для
+  всех четырёх. Не сделано для Weaponry и Arcana: prod-прогон jar на обоих загрузчиках, compat-прогон, README,
+  merge в main, релизы. Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
 ## Сборка / тесты
 JDK: Windows `export JAVA_HOME=~/.gradle/jdks/eclipse_adoptium-21-amd64-windows.2`, Mac
