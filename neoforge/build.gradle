@@ -1,0 +1,106 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+
+repositories {
+    maven { url = 'https://maven.blamejared.com/' } // JEI
+    maven { url = 'https://maven.theillusivec4.top/' } // Curios
+}
+
+neoForge {
+    version = neo_version
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    accessTransformers.from(rootProject.file('common/accesstransformer.cfg'))
+    runs {
+        configureEach {
+            gameDirectory = project.file('run')
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.INFO
+        }
+        client {
+            client()
+        }
+        // Scripted test scene (port/DevScene): world run/saves/sw_scene, run/screenshots/scene_*.png, then quits.
+        // -Pscene_lang=ru_ru runs it in another language.
+        scene {
+            client()
+            systemProperty 'spartanweaponry.scene', 'true'
+            systemProperty 'spartanweaponry.scene.lang', project.findProperty('scene_lang') ?: 'en_us'
+        }
+        // Functional and stress tests (port/StressScene): world run/saves/sw_stress, run/screenshots/stress_*.png
+        stress {
+            client()
+            systemProperty 'spartanweaponry.stress', 'true'
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    compileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+neoforge"
+    // Dev runs: JEI and Curios (-Pno_compat_mods to run without them)
+    if (!project.hasProperty('no_compat_mods')) {
+        localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+        localRuntime "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    }
+    // Popular client / performance mods and the optional integrations for compatibility runs (-Pwith_compat)
+    if (project.hasProperty('with_compat')) {
+        localRuntime "maven.modrinth:sodium:${compat_sodium}"
+        localRuntime "maven.modrinth:iris:${compat_iris}"
+        localRuntime "maven.modrinth:lithium:${compat_lithium}"
+        localRuntime "maven.modrinth:ferrite-core:${compat_ferritecore}"
+        localRuntime "maven.modrinth:modernfix:${compat_modernfix}"
+        localRuntime "maven.modrinth:jade:${compat_jade}"
+        localRuntime "maven.modrinth:emi:${emi_version}+neoforge"
+        localRuntime "maven.modrinth:just-enough-effect-descriptions-jeed:${compat_jeed}"
+        localRuntime "maven.modrinth:shoulder-surfing-reloaded:${project.hasProperty('with_ss4') ? compat_shoulder_surfing_4 : shoulder_surfing_version}+neoforge"
+    }
+}
+
+// neoforge.mods.toml comes from src/main/templates with the gradle properties
+var generateModMetadata = tasks.register('generateModMetadata', ProcessResources) {
+    var replaceProperties = [
+            minecraft_version             : minecraft_version,
+            minecraft_version_range       : minecraft_version_range,
+            neo_version_range             : neo_version_range,
+            shoulder_surfing_version_range: shoulder_surfing_version_range,
+            mod_id                        : mod_id,
+            mod_name                      : mod_name,
+            mod_license                   : license,
+            mod_version                   : mod_version,
+            mod_authors                   : mod_authors,
+            mod_credits                   : mod_credits,
+            mod_description               : mod_description,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from 'src/main/templates'
+    into 'build/generated/sources/modMetadata'
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.named('jar', Jar).configure {
+    // The test scenes (port/) are for dev runs only
+    exclude 'com/oblivioussp/spartanweaponry/port/**'
+}

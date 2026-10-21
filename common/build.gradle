@@ -1,0 +1,45 @@
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    neoFormVersion = neo_form_version
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+    // Only what NeoForge opens anyway; the Fabric module has the same lines as an access widener
+    accessTransformers.from(file('accesstransformer.cfg'))
+}
+
+repositories {
+    maven { url = 'https://maven.blamejared.com/' } // JEI
+}
+
+dependencies {
+    // NeoForge's ModConfigSpec (and Night Config) for the common code
+    compileOnly "fuzs.forgeconfigapiport:forgeconfigapiport-common-neoforgeapi:${forgeconfigapiport_version}"
+    compileOnly 'org.spongepowered:mixin:0.8.5'
+    compileOnly 'io.github.llamalad7:mixinextras-common:0.4.1'
+    // Optional integrations
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
+    compileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+neoforge"
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+}

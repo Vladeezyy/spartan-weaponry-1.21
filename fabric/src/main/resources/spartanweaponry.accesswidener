@@ -1,0 +1,10 @@
+accessWidener v2 named
+# Spartan Weaponry: the same entries as common/accesstransformer.cfg (NeoForge)
+accessible field net/minecraft/world/entity/projectile/AbstractArrow life I
+accessible field net/minecraft/world/entity/projectile/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
+mutable field net/minecraft/world/entity/projectile/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
+accessible field net/minecraft/world/entity/projectile/AbstractArrow piercedAndKilledEntities Ljava/util/List;
+accessible field net/minecraft/world/effect/MobEffect descriptionId Ljava/lang/String;
+accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
+accessible method net/minecraft/world/entity/projectile/AbstractArrow setPierceLevel (B)V
+accessible field net/minecraft/world/entity/LivingEntity lastHurt F
