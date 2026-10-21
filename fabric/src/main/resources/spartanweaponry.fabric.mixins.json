@@ -1,0 +1,34 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.oblivioussp.spartanweaponry.fabric.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AnvilMenuMixin",
+    "BrewingStandBlockEntityMixin",
+    "BrewingStandPotionSlotMixin",
+    "ChorusFruitItemMixin",
+    "EnderManMixin",
+    "ItemEntityMixin",
+    "ItemStackMixin",
+    "LivingEntityMixin",
+    "LootTableMixin",
+    "PlayerMixin",
+    "PotionBrewingMixin",
+    "ProjectileUtilMixin",
+    "RangedBowAttackGoalMixin",
+    "ShulkerMixin",
+    "TagLoadResultMixin",
+    "ThrownEnderpearlMixin"
+  ],
+  "client": [
+    "client.GuiMixin",
+    "client.ItemInHandRendererMixin",
+    "client.ItemStackClientMixin",
+    "client.PlayerRendererMixin",
+    "client.SkullBlockRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

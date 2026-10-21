@@ -8,6 +8,14 @@
       ]
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "parrying_dagger"
+      ]
+    }
+  ],
   "group": "spartanweaponry:parrying_dagger",
   "key": {
     "#": {

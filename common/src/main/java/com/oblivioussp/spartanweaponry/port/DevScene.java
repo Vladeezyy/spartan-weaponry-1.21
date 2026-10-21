@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.port;
 
+import com.oblivioussp.spartanweaponry.api.tags.ModItemTags;
+
 import com.oblivioussp.spartanweaponry.platform.Platform;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +131,9 @@ public final class DevScene
 		at(390, mc -> mc.setScreen(new TooltipScreen(List.of(new ItemStack(ModItems.GREATSWORDS.iron.get()), oiled(ModItems.KATANAS.diamond.get()),
 				new ItemStack(ModItems.HEAVY_CROSSBOWS.iron.get()), new ItemStack(ModItems.JAVELINS.iron.get())))));
 		at(405, mc -> shot(mc, "tooltip"));
+		// The oil coating layer: the same weapons plain (top) and oiled (bottom)
+		at(406, mc -> mc.setScreen(new ItemsScreen(List.of(ModItems.KATANAS.diamond.get(), ModItems.GREATSWORDS.iron.get(), ModItems.SPEARS.gold.get(), ModItems.BATTLEAXES.netherite.get()))));
+		at(409, mc -> shot(mc, "oil_coating"));
 		at(410, mc -> { mc.setScreen(null); mc.options.hideGui = true; });
 		// Dropped weapons (#168) and heads
 		at(415, mc -> server(mc, DevScene::dropped));
@@ -846,6 +851,8 @@ public final class DevScene
 	{
 		double reach = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
 		check("Reach: a spear extends the entity interaction range", reach > 3.0, reach);
+		var offer = com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades.LVL1_TRADE.getOffer(player, player.getRandom());
+		check("weaponsmith trade offers an iron weapon (1.20.1 kept the trades on empty lists)", offer != null && offer.getResult().is(ModItemTags.OILABLE_WEAPONS), offer == null ? "none" : offer.getResult());
 		player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 	}
 
@@ -1168,6 +1175,32 @@ public final class DevScene
 					if(line.getString().contains("tooltip.spartanweaponry") || line.getString().contains("item.spartanweaponry"))
 						Log.info("[scene] CHECK FAIL untranslated tooltip line (" + line.getString() + ")");
 			}
+		}
+	}
+
+	private static class ItemsScreen extends Screen
+	{
+		private final List<Item> items;
+
+		ItemsScreen(List<Item> items)
+		{
+			super(Component.empty());
+			this.items = items;
+		}
+
+		@Override
+		public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+		{
+			graphics.fill(0, 0, width, height, 0xFF2B2B33);
+			float scale = Math.min(width / (items.size() * 20.0F), height / 40.0F);
+			graphics.pose().pushPose();
+			graphics.pose().scale(scale, scale, 1.0F);
+			for(int i = 0; i < items.size(); i++)
+			{
+				graphics.renderItem(new ItemStack(items.get(i)), 2 + i * 20, 2);
+				graphics.renderItem(oiled(items.get(i)), 2 + i * 20, 22);
+			}
+			graphics.pose().popPose();
 		}
 	}
 }

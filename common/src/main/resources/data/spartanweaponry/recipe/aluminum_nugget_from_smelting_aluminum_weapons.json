@@ -14,6 +14,18 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "aluminum"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:nuggets/aluminum"
+    }
+  ],
   "type": "spartanweaponry:tag_smelting",
   "category": "misc",
   "cookingtime": 200,

@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin",
+        "platinum"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/platinum"
+    }
+  ],
   "group": "spartanweaponry:javelin",
   "key": {
     "#": {

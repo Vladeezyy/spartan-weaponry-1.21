@@ -8,6 +8,14 @@
       ]
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "heavy_crossbow"
+      ]
+    }
+  ],
   "group": "spartanweaponry:heavy_crossbow",
   "key": {
     "#": {

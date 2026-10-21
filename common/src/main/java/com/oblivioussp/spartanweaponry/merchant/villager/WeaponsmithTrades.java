@@ -27,7 +27,7 @@ public class WeaponsmithTrades
 	
 	public static void initTradeLists()
 	{
-		LVL1_ITEMS = new ArrayList<RandomisedTradeItem>();
+		LVL1_ITEMS.clear();	// Port fix: the same list (the trades keep it; 1.20.1 made new ones, so the trades offered from an empty list)
 		addToListConditional(LVL1_ITEMS, new RandomisedTradeItem(ModItems.DAGGERS.iron.get(), 2), Config.INSTANCE.daggers.disableRecipes.get());
 		addToListConditional(LVL1_ITEMS, new RandomisedTradeItem(ModItems.LONGSWORDS.iron.get(), 3), Config.INSTANCE.longswords.disableRecipes.get());
 		addToListConditional(LVL1_ITEMS, new RandomisedTradeItem(ModItems.KATANAS.iron.get(), 3), Config.INSTANCE.katanas.disableRecipes.get());
@@ -35,7 +35,7 @@ public class WeaponsmithTrades
 		addToListConditional(LVL1_ITEMS, new RandomisedTradeItem(ModItems.FLANGED_MACES.iron.get(), 3), Config.INSTANCE.flangedMaces.disableRecipes.get());
 		addToListConditional(LVL1_ITEMS, new RandomisedTradeItem(ModItems.QUARTERSTAVES.iron.get(), 2), Config.INSTANCE.quarterstaves.disableRecipes.get());
 		
-		LVL2_ITEMS = new ArrayList<RandomisedTradeItem>();
+		LVL2_ITEMS.clear();	// Port fix: the same list (the trades keep it; 1.20.1 made new ones, so the trades offered from an empty list)
 		addToListConditional(LVL2_ITEMS, new RandomisedTradeItem(ModItems.SABERS.iron.get(), 4), Config.INSTANCE.sabers.disableRecipes.get());
 		addToListConditional(LVL2_ITEMS, new RandomisedTradeItem(ModItems.RAPIERS.iron.get(), 4), Config.INSTANCE.rapiers.disableRecipes.get());
 		addToListConditional(LVL2_ITEMS, new RandomisedTradeItem(ModItems.GREATSWORDS.iron.get(), 5), Config.INSTANCE.greatswords.disableRecipes.get());
@@ -48,7 +48,7 @@ public class WeaponsmithTrades
 		addToListConditional(LVL2_ITEMS, new RandomisedTradeItem(ModItems.GLAIVES.iron.get(), 3), Config.INSTANCE.glaives.disableRecipes.get());
 		addToListConditional(LVL2_ITEMS, new RandomisedTradeItem(ModItems.SCYTHES.iron.get(), 4), Config.INSTANCE.scythes.disableRecipes.get());
 		
-		LVL3_ITEMS = new ArrayList<RandomisedTradeItem>();
+		LVL3_ITEMS.clear();	// Port fix: the same list (the trades keep it; 1.20.1 made new ones, so the trades offered from an empty list)
 		addToListConditional(LVL3_ITEMS, new RandomisedTradeItem(ModItems.DAGGERS.diamond.get(), 4), Config.INSTANCE.daggers.disableRecipes.get());
 		addToListConditional(LVL3_ITEMS, new RandomisedTradeItem(ModItems.LONGSWORDS.diamond.get(), 6), Config.INSTANCE.longswords.disableRecipes.get());
 		addToListConditional(LVL3_ITEMS, new RandomisedTradeItem(ModItems.KATANAS.diamond.get(), 6), Config.INSTANCE.katanas.disableRecipes.get());
@@ -56,7 +56,7 @@ public class WeaponsmithTrades
 		addToListConditional(LVL3_ITEMS, new RandomisedTradeItem(ModItems.FLANGED_MACES.diamond.get(), 6), Config.INSTANCE.flangedMaces.disableRecipes.get());
 		addToListConditional(LVL3_ITEMS, new RandomisedTradeItem(ModItems.QUARTERSTAVES.diamond.get(), 4), Config.INSTANCE.quarterstaves.disableRecipes.get());
 		
-		LVL4_ITEMS = new ArrayList<RandomisedTradeItem>();
+		LVL4_ITEMS.clear();	// Port fix: the same list (the trades keep it; 1.20.1 made new ones, so the trades offered from an empty list)
 		addToListConditional(LVL4_ITEMS, new RandomisedTradeItem(ModItems.SABERS.diamond.get(), 8), Config.INSTANCE.sabers.disableRecipes.get());
 		addToListConditional(LVL4_ITEMS, new RandomisedTradeItem(ModItems.RAPIERS.diamond.get(), 8), Config.INSTANCE.rapiers.disableRecipes.get());
 		addToListConditional(LVL4_ITEMS, new RandomisedTradeItem(ModItems.GREATSWORDS.diamond.get(), 10), Config.INSTANCE.greatswords.disableRecipes.get());
@@ -69,7 +69,7 @@ public class WeaponsmithTrades
 		addToListConditional(LVL4_ITEMS, new RandomisedTradeItem(ModItems.GLAIVES.diamond.get(), 6), Config.INSTANCE.glaives.disableRecipes.get());
 		addToListConditional(LVL4_ITEMS, new RandomisedTradeItem(ModItems.SCYTHES.diamond.get(), 8), Config.INSTANCE.scythes.disableRecipes.get());
 
-		LVL5_ITEMS = new ArrayList<RandomisedTradeItem>();
+		LVL5_ITEMS.clear();	// Port fix: the same list (the trades keep it; 1.20.1 made new ones, so the trades offered from an empty list)
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.DAGGERS.diamond.get(), 6), Config.INSTANCE.daggers.disableRecipes.get());
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.LONGSWORDS.diamond.get(), 9), Config.INSTANCE.longswords.disableRecipes.get());
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.KATANAS.diamond.get(), 9), Config.INSTANCE.katanas.disableRecipes.get());

@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "longsword",
+        "constantan"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/constantan"
+    }
+  ],
   "group": "spartanweaponry:longsword",
   "key": {
     "#": {

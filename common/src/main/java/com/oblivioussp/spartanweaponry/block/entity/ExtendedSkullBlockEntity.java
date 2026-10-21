@@ -19,4 +19,11 @@ public class ExtendedSkullBlockEntity extends SkullBlockEntity
 	{
 		return ModBlockEntities.EXTENDED_SKULL_TYPE.get();
 	}
+	
+	// Vanilla checks the block against its type field (the vanilla skull type); NeoForge already asks getType()
+	@Override
+	public boolean isValidBlockState(BlockState blockState)
+	{
+		return getType().isValid(blockState);
+	}
 }

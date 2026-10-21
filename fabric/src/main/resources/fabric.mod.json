@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "Weapons Galore! A whole new arsenal of weaponry made for Minecraft.\nUnofficial port of Spartan Weaponry 3.2.1 (ObliviousSpartan, Apache-2.0) to Minecraft ${minecraft_version} / Fabric.",
+  "authors": ["${mod_authors}"],
+  "contributors": ["xwerffx (weapon ideas and art)", "Vladeezyy (port)"],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/spartan-weaponry",
+    "sources": "https://github.com/Vladeezyy/spartan-weaponry-1.21",
+    "issues": "https://github.com/Vladeezyy/spartan-weaponry-1.21/issues"
+  },
+  "license": "${license}",
+  "icon": "logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.oblivioussp.spartanweaponry.fabric.SpartanWeaponryFabric"],
+    "client": ["com.oblivioussp.spartanweaponry.fabric.SpartanWeaponryFabricClient"],
+    "jei_mod_plugin": ["com.oblivioussp.spartanweaponry.compat.jei.SpartanWeaponryPlugin"],
+    "emi": ["com.oblivioussp.spartanweaponry.compat.emi.SpartanWeaponryEMIPlugin"]
+  },
+  "mixins": ["spartanweaponry.mixins.json", "spartanweaponry.fabric.mixins.json"],
+  "accessWidener": "spartanweaponry.accesswidener",
+  "depends": {
+    "fabricloader": ">=${fabric_loader_version}",
+    "fabric-api": "*",
+    "forgeconfigapiport": ">=${forgeconfigapiport_version}",
+    "minecraft": "${minecraft_version}",
+    "java": ">=${java_version}"
+  },
+  "suggests": {
+    "modmenu": "*"
+  }
+}

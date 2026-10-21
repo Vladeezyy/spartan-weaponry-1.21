@@ -402,7 +402,14 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		return stack;
 	}
 
-	// NeoForge IItemExtension (Fabric: a mixin)
+	// Vanilla (the enchanting table on Fabric); the same value as the stack version below
+	@Override
+	public int getEnchantmentValue()
+	{
+		return getEnchantmentValue(ItemStack.EMPTY);
+	}
+	
+	// NeoForge IItemExtension (Fabric: getEnchantmentValue() above)
 	public int getEnchantmentValue(ItemStack stack) 
 	{
 		return material.getEnchantmentValue();

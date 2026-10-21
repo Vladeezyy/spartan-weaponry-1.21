@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "rapier",
+        "nickel"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/nickel"
+    }
+  ],
   "group": "spartanweaponry:rapier",
   "key": {
     "#": {

@@ -15,6 +15,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "throwing_knife",
+        "constantan"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/constantan"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_constantan_ingot": {

@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "javelin",
+        "steel"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/steel"
+    }
+  ],
   "group": "spartanweaponry:javelin",
   "key": {
     "#": {

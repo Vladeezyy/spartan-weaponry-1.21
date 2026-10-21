@@ -187,7 +187,14 @@ public class LongbowItem extends BowItem implements IReloadable
         return f;
     }
 	
-	// NeoForge IItemExtension (Fabric: a mixin)
+	// Vanilla (the enchanting table on Fabric); the same value as the stack version below
+	@Override
+	public int getEnchantmentValue()
+	{
+		return getEnchantmentValue(ItemStack.EMPTY);
+	}
+	
+	// NeoForge IItemExtension (Fabric: getEnchantmentValue() above)
 	public int getEnchantmentValue(ItemStack stack)
 	{
 		return material.getEnchantmentValue();

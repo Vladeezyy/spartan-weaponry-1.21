@@ -13,6 +13,10 @@ repositories {
 
 loom {
     accessWidenerPath = file('src/main/resources/spartanweaponry.accesswidener')
+    // One refmap for the common mixins and the Fabric ones (common/…/spartanweaponry.mixins.json names it)
+    mixin {
+        defaultRefmapName = 'spartanweaponry.mixins.refmap.json'
+    }
 }
 
 dependencies {

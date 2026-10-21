@@ -8,6 +8,14 @@
       ]
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "oil"
+      ]
+    }
+  ],
   "group": "spartanweaponry:grease_ball",
   "key": {
     "#": {

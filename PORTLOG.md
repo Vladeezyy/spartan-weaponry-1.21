@@ -228,3 +228,17 @@ Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-X
   6.7-9.6 ms; the same stands with vanilla swords 58 FPS, 4.5 ms; 40 skeletons + 40 zombies vs 30 golems 107 FPS,
   2.2 ms; 600 projectiles 99 FPS, 1.8 ms. The same as the NeoForge-only port.
 
+## Multiloader: Fabric module (2026-10-21, branch `multiloader`)
+
+- Fabric 1.21.1 (Fabric API 0.116.17, Forge Config API Port 21.1.6): the NeoForge hooks the mod relies on are
+  Fabric API events or mixins (`fabric/src/main/java/.../fabric/mixin`); the oil coating is a Model Loading API
+  wrapper; the decapitate loot modifiers read the same `loot_modifiers` JSON.
+- Fixes of the original found on the way (both loaders): the weaponsmith trades kept the empty item lists of before
+  the config was read (1.20.1 made new lists; picking such a trade threw), now the same lists are filled and an empty
+  level gives no trade; the extended heads' block entity checked the vanilla skull type (`isValidBlockState`).
+- Client scene: Fabric 52 checks (the 2 Curios checks are skipped), NeoForge 54; 0 failed. Stress scene 20/20 on
+  both. New scene shot `scene_oil_coating.png` (plain and oiled weapons) looks the same on both loaders.
+- Measured (MacBook, stress scene), Fabric / NeoForge: 400 armor stands with weapons (half oiled) + 160 frames
+  37-50 / 38-47 FPS, 6.2-9.8 / 8.6-11.3 ms server tick; vanilla swords baseline 72-75 / 60 FPS; 80 mobs vs golems
+  89-104 / 103 FPS, 2.0-2.2 ms; 600 projectiles 92-102 / 99 FPS, 1.7-1.9 ms.
+

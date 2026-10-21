@@ -14,6 +14,18 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "constantan"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:nuggets/constantan"
+    }
+  ],
   "type": "spartanweaponry:tag_smelting",
   "category": "misc",
   "cookingtime": 200,

@@ -9,6 +9,15 @@
       ]
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "arrows",
+        "explosives"
+      ]
+    }
+  ],
   "ingredients": [
     {
       "item": "minecraft:arrow"

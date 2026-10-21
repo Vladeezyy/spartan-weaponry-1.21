@@ -336,9 +336,18 @@ public final class StressScene
 		level.addFreshEntity(projectile);
 	}
 
-	/** The inventory and the landed projectiles' items before leaving (throwing weapons get a UUID in the inventory) */
-	private static final List<ItemStack> savedInventory = new ArrayList<>();
-	private static final List<ItemStack> savedProjectiles = new ArrayList<>();
+	/**
+	 * The inventory and the landed projectiles' items before leaving (throwing weapons get a UUID in the inventory), as
+	 * saved data: the stacks themselves would keep the registry entries (enchantments, potions) of the old world, which
+	 * vanilla compares by identity (NeoForge by key) and cannot save with the new registries.
+	 */
+	private static final List<net.minecraft.nbt.Tag> savedInventory = new ArrayList<>();
+	private static final List<net.minecraft.nbt.Tag> savedProjectiles = new ArrayList<>();
+
+	private static net.minecraft.nbt.Tag saved(ServerPlayer player, ItemStack stack)
+	{
+		return stack.isEmpty() ? net.minecraft.nbt.EndTag.INSTANCE : stack.save(player.registryAccess());
+	}
 
 	private static void checkProjectilesLanded(ServerPlayer player)
 	{
@@ -346,21 +355,21 @@ public final class StressScene
 		check("three projectiles in the ground before leaving", landed.size() == 3, landed);
 		savedInventory.clear();
 		for(int i = 0; i < 8; i++)
-			savedInventory.add(player.getInventory().getItem(i).copy());
+			savedInventory.add(saved(player, player.getInventory().getItem(i)));
 		savedProjectiles.clear();
-		landed.stream().filter(e -> e instanceof ThrowingWeaponEntity).forEach(e -> savedProjectiles.add(((ThrowingWeaponEntity)e).getWeaponItem().copy()));
+		landed.stream().filter(e -> e instanceof ThrowingWeaponEntity).forEach(e -> savedProjectiles.add(saved(player, ((ThrowingWeaponEntity)e).getWeaponItem())));
 	}
 
-	private static boolean sameItems(List<ItemStack> expected, java.util.function.IntFunction<ItemStack> actual, StringBuilder detail)
+	private static boolean sameItems(ServerPlayer player, List<net.minecraft.nbt.Tag> expected, java.util.function.IntFunction<ItemStack> actual, StringBuilder detail)
 	{
 		boolean ok = true;
 		for(int i = 0; i < expected.size(); i++)
 		{
 			ItemStack a = actual.apply(i);
-			if(!ItemStack.isSameItemSameComponents(expected.get(i), a) || expected.get(i).getCount() != a.getCount())
+			if(!expected.get(i).equals(saved(player, a)))
 			{
 				ok = false;
-				detail.append(i).append(": ").append(a).append(" ").append(a.getComponentsPatch()).append("; ");
+				detail.append(i).append(": ").append(a).append(" ").append(a.getComponentsPatch()).append(", expected ").append(expected.get(i)).append("; ");
 			}
 		}
 		return ok;
@@ -371,10 +380,10 @@ public final class StressScene
 		ServerLevel level = player.serverLevel();
 		List<ItemStack> expected = testItems(player);
 		StringBuilder detail = new StringBuilder();
-		check("inventory after rejoining: oils, loaded bolt, ammo, enchantments, quiver contents, tipped bolts, potion oil", sameItems(savedInventory, player.getInventory()::getItem, detail), detail.length() == 0 ? savedInventory.size() + " stacks" : detail);
+		check("inventory after rejoining: oils, loaded bolt, ammo, enchantments, quiver contents, tipped bolts, potion oil", sameItems(player, savedInventory, player.getInventory()::getItem, detail), detail.length() == 0 ? savedInventory.size() + " stacks" : detail);
 		ChestBlockEntity chest = (ChestBlockEntity)level.getBlockEntity(stage.offset(3, 0, 3));
 		StringBuilder chestDetail = new StringBuilder();
-		check("chest after rejoining", chest != null && sameItems(expected, chest::getItem, chestDetail), chestDetail.length() == 0 ? "same" : chestDetail);
+		check("chest after rejoining", chest != null && sameItems(player, expected.stream().map(stack -> saved(player, stack)).toList(), chest::getItem, chestDetail), chestDetail.length() == 0 ? "same" : chestDetail);
 		IOilHandler oil = ModCapabilities.getOil(player.getInventory().getItem(0));
 		check("oil handler reads the saved oil", oil != null && oil.isOiled() && oil.getUsesLeft() == OilEffects.UNDEAD.get().getMaxUses(), oil == null ? "none" : oil.getEffect() + " " + oil.getUsesLeft());
 		check("loaded bolt survives", HeavyCrossbowItem.getLoadedBolt(player.getInventory().getItem(2), player.registryAccess()).is(ModItems.DIAMOND_BOLT.get()), HeavyCrossbowItem.getLoadedBolt(player.getInventory().getItem(2), player.registryAccess()));
@@ -383,7 +392,7 @@ public final class StressScene
 		BoltEntity bolt = landed.stream().filter(e -> e instanceof BoltEntity).map(e -> (BoltEntity)e).findFirst().orElse(null);
 		ArrowBaseEntity arrow = landed.stream().filter(e -> e instanceof ArrowBaseEntity).map(e -> (ArrowBaseEntity)e).findFirst().orElse(null);
 		// 1.20.1 strips the enchantments of a thrown weapon that lands (anti-dupe); the rest of the item is kept
-		check("thrown javelin saved with its weapon item", javelin != null && savedProjectiles.size() == 1 && ItemStack.isSameItemSameComponents(javelin.getWeaponItem(), savedProjectiles.get(0)), javelin == null ? "gone" : javelin.getWeaponItem().getComponentsPatch());
+		check("thrown javelin saved with its weapon item", javelin != null && savedProjectiles.size() == 1 && saved(player, javelin.getWeaponItem()).equals(savedProjectiles.get(0)), javelin == null ? "gone" : javelin.getWeaponItem().getComponentsPatch());
 		check("bolt in the ground saved (1.20.1 lost it)", bolt != null && bolt.getPickupItemStackOrigin().is(ModItems.DIAMOND_BOLT.get()), bolt == null ? "gone" : bolt.getPickupItemStackOrigin());
 		check("tipped arrow saved with its potion", arrow != null && PotionHelper.getPotion(arrow.getPickupItemStackOrigin()).map(p -> p.is(Potions.POISON)).orElse(false), arrow == null ? "gone" : arrow.getPickupItemStackOrigin());
 		if(javelin != null)

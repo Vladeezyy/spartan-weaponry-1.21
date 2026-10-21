@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "tomahawk",
+        "electrum"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/electrum"
+    }
+  ],
   "group": "spartanweaponry:tomahawk",
   "key": {
     "#": {

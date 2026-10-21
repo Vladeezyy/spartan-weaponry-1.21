@@ -15,6 +15,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "greatsword",
+        "silver"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/silver"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_silver_ingot": {

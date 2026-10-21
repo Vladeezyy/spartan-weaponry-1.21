@@ -117,6 +117,8 @@ public class VillagerTrades
 		public MerchantOffer getOffer(Entity trader, RandomSource rand) 
 		{
 			// Port fix: nextInt(size) (1.20.1 used size - 1 and never offered the last item)
+			if(offeredItems.isEmpty())	// every item of the level is disabled in the config: no trade
+				return null;
 			RandomisedTradeItem offeredItem = offeredItems.get(rand.nextInt(offeredItems.size()));
 			return new MerchantOffer(new ItemCost(Items.EMERALD, offeredItem.getEmeraldCost()), offeredItem.getItemStack().copy(), maxUses, xpGiven, priceMultiplier);
 		}
@@ -136,6 +138,8 @@ public class VillagerTrades
 		public MerchantOffer getOffer(Entity trader, RandomSource rand)
 		{
 			// Port fix: nextInt(size) (1.20.1: size - 1 skipped the last item and crashed on a list of one)
+			if(offeredItems.isEmpty())	// every item of the level is disabled in the config: no trade
+				return null;
 			RandomisedTradeItem offeredItem = offeredItems.get(rand.nextInt(offeredItems.size()));
 			int level = 5 + rand.nextInt(15);
 			ItemStack enchantedStack = enchant(trader, rand, new ItemStack(offeredItem.getItemStack().getItem()), level);

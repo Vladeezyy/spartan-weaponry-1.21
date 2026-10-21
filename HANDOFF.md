@@ -33,19 +33,19 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 - Уже в neoforge (ждут модуля): CurioRenderer, OilCoated*Model, ModModelLoaders, `neoforge/mixin/ItemModelGeneratorMixin`
   (свой `spartanweaponry.neoforge.mixins.json`, добавлен в mods.toml), `loot/DecapitateLootModifier` (зовёт
   `Decapitation`), `port/NeoForgeSceneHooks`.
-- (Сделано) NeoForge-модулю зарегистрировать то, что было в DeferredRegister'ах NeoForge-реестров: GLM `decapitate`
-  (`DecapitateLootModifier.CODEC`), условие рецептов `type_disabled` (обёртка `ICondition` над
-  `TypeDisabledCondition`), аргументы команд `oil`/`potion` (`ModCommands.registerArgumentTypes`), конфиги
-  (`registerConfig` + `ModConfigEvent` → `Config.onConfigChanged`), payload'ы, capabilities, брожение
-  (`RegisterBrewingRecipesEvent` → обёртка `IBrewingRecipe`), `LivingShieldBlockEvent` → `cancelsBlock`,
-  `onArrowLoose`, `customArrow` (в common вызов убран: по умолчанию NeoForge возвращает стрелу как есть).
-- Fabric: те же методы предметов звать миксинами (getMaxDamage, атрибуты, damageItem, supportsEnchantment,
-  isPrimaryItemFor, canDisableShield, doesSneakBypassUse, getHighlightTip, getEnchantmentValue(stack));
-  `Decapitation` из миксина в LootTable по данным `loot_modifiers`; брожение — миксин в PotionBrewing.
-- Дальше: fabric-модуль (entry points, FabricPlatform, миксины: урон LivingEntity.hurt через @WrapMethod, sweep в
-  Player.attack, canDisableShield, isDamageSourceBlocked для melee block, getMaxDamage/атрибуты в ItemStack,
-  анвил, телепорты, подбор в колчан, брожение, черепа, прицел), условия рецептов скриптом
-  `tools/port/neo2fabric_conditions.py <res> spartanweaponry spartanweaponry:type_disabled`.
+- **Fabric 1.21.1 готов (2026-10-21):** `fabric/…/fabric/SpartanWeaponryFabric` (регистрация в порядке
+  BuiltInRegistries, конфиги через Forge Config API Port — слушатели до register, payload'ы, условия рецептов
+  `type_disabled` + `tag_not_empty`, команды и аргументы, сделки на первом старте сервера, лут, правый клик, теги,
+  чары через EnchantmentEvents), `SpartanWeaponryFabricClient` (клиент, HUD, тултипы, частицы, ключ колчана по
+  тику), `FabricPlatform`, `DecapitationModifiers` (те же JSON `loot_modifiers`), `OilCoatingModels` (слой масла
+  через Model Loading API), миксины в `fabric/mixin` (урон, смерть/дроп, блок, щит, взмах, атрибуты, прочность,
+  наковальня, телепорты, подбор, брожение, лут, лук у мобов, позы арбалета, головы, прицел, подпись арбалета,
+  картинка масла в тултипе). Сцена 52/52 (2 проверки Curios на Fabric пропускаются), стресс 20/20, dev-сервер
+  стартует. Условия Fabric дописаны в 923 JSON скриптом `tools/port/neo2fabric_conditions.py`.
+- Нет на Fabric: слот колчана (Curios; можно Trinkets), `customArrow`/`onArrowLoose` других модов.
+  Один прогон сцены Fabric показал «a hit uses the oil once (18/20)», три следующих — 19/20; не воспроизвелось.
+- Не сделано для обоих загрузчиков: prod-прогон jar, compat-прогон (`tools/compattest.sh` под старую раскладку),
+  README, merge в main, релиз.
 - Затем Arcana и HUD Baubles, потом ветки версий.
 
 ## Сборка / тесты

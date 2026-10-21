@@ -16,6 +16,19 @@
       }
     }
   ],
+  "fabric:load_conditions": [
+    {
+      "condition": "spartanweaponry:type_disabled",
+      "disabled": [
+        "battle_hammer",
+        "steel"
+      ]
+    },
+    {
+      "condition": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/steel"
+    }
+  ],
   "group": "spartanweaponry:battle_hammer",
   "key": {
     "#": {
