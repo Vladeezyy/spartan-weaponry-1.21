@@ -70,7 +70,7 @@ recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
    **[Fabric API](https://modrinth.com/mod/fabric-api)** and
    **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 or newer (the settings).
 
-Optional: **EMI** (tipped projectile and oil recipes), **Shoulder Surfing** 4.x / 5.x, **JEED**. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
+Optional: **JEI** (tipped projectile and oil recipes), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
 
 Both: required on the client and the server. Settings: `config/spartanweaponry-common.toml`,
 `config/spartanweaponry-client.toml`. Worlds of the 1.20.1 version open with their weapons, oils, quivers and loaded
@@ -188,7 +188,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
    **[Fabric API](https://modrinth.com/mod/fabric-api)** и
    **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 или новее (настройки).
 
-По желанию: **EMI** (рецепты наконечников и масел), **Shoulder Surfing** 4.x / 5.x, **JEED**. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
+По желанию: **JEI** (рецепты наконечников и масел), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
 
 Для обоих: нужен и на клиенте, и на сервере. Настройки: `config/spartanweaponry-common.toml`,
 `config/spartanweaponry-client.toml`. Миры версии для 1.20.1 открываются со всем оружием, маслами, колчанами и

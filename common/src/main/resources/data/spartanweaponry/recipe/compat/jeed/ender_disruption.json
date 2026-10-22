@@ -24,6 +24,12 @@
       "values": [
         "jeed"
       ]
+    },
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:true"
+      }
     }
   ],
   "effect": "spartanweaponry:ender_disruption",

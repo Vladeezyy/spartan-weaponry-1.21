@@ -16,6 +16,7 @@ import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
 import com.oblivioussp.spartanweaponry.util.Log;
 import com.oblivioussp.spartanweaponry.util.WeaponType;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
@@ -240,6 +241,10 @@ public class WeaponMaterial implements Tier, IReloadable
 	@Override
 	public Ingredient getRepairIngredient()
 	{
+		// Ingredient#isEmpty of vanilla (Fabric) only counts the tag values, not their items (NeoForge counts them): with
+		// an empty tag EMI read the first item of a "non-empty" repair ingredient
+		if(BuiltInRegistries.ITEM.getTag(repairTag).map(HolderSet::size).orElse(-1) == 0)
+			return Ingredient.EMPTY;
 		return repairMaterial.get();
 	}
 	

@@ -1112,7 +1112,7 @@ public final class DevScene
 		ItemStack longbow = new ItemStack(ModItems.LONGBOWS.iron.get());
 		check("longbow durability from the material", longbow.getMaxDamage() > 300, longbow.getMaxDamage());
 		if(Platform.INSTANCE.isModLoaded("jeed"))
-			check("JEED: effect provider recipe for Ender Disruption loaded", recipes.byKey(id("compat/jeed/ender_disruption")).isPresent(), "");
+			check("JEED: effect provider recipe for Ender Disruption loaded", recipes.byKey(id("compat/jeed/ender_disruption")).isPresent() != recipes.byKey(id("compat/jeed/ender_disruption_fabric")).isPresent(), "one per loader");
 		check("heads: 11 extended skull blocks", ModBlocks.REGISTRY.getEntries().size() >= 11, ModBlocks.REGISTRY.getEntries().size());
 	}
 
