@@ -268,3 +268,40 @@ Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-X
   jar and the release jar ran together (Fabric happened to load the scenes jar). The task now uses `mods.setFrom`, and the
   production runs were repeated with only the scenes jar: all checks pass. `fabric.mod.json` in the jar is valid JSON
   now (the description's `\n` had become a raw newline when Gradle expanded the template).
+
+## 1.21.11 (branch mc/1.21.11, 2026-10-22, 3.2.1.2+1.21.11)
+
+NeoForge 21.11.48, Fabric Loader 0.19.5 + Fabric API 0.141.6, Forge Config API Port 21.11.1, Curios 14.0.0, JEI 27.53,
+Fabric Loom 1.17.21 (Gradle 9.8.1). No Parchment for 1.21.11; EMI, JEED, ModernFix and Shoulder Surfing 4.x have no
+1.21.11 version, so their integrations are not tested here (the data stays).
+
+- **Items**: the id goes into the properties, so every item gets properties of its own (the weapon sets shared one
+  object per set before, which now gave the items each other's ids). Repair and enchantability are properties; swords
+  are items with the sword properties of their material (no SwordItem), with no attribute component of their own so the
+  mod's per-stack attributes (config, weapon_attributes data) still apply. Tooltips go through a Consumer.
+- **Looks from item definitions** (`assets/*/items`, made by `tools/port/gen_item_definitions.py` from the 1.21.1 models
+  and overrides): blocking, throwing, empty, charged and oiled conditions, pull and ammo ranges, potion and oil tints.
+  The oil coating is no longer a model loader: an oiled weapon draws its model plus a coating model tinted with the oil;
+  a plain weapon draws only its model. The vanilla swords, which can be oiled too, get definitions the same way.
+- **Rendering**: arrows, bolts and throwing weapons with render states (the bolt's own quads as one custom geometry
+  submission), quiver models with the arrow count as their state, the extra mob heads through the skull model hooks
+  (NeoForge CreateSkullModels, a Fabric mixin into SkullBlockRenderer#createModel), HUD with GUI pipelines (the
+  crosshairs invert as vanilla's; the debug 3D crosshair is the world's now), tooltip components, buttons.
+- **Recipes**: string ingredients (modding-kb `scripts/ingredients_1_21_2.py`); the tag cooking recipes are cooking
+  recipes of their own with a tag slot display; the quiver upgrades are vanilla smithing transforms (1.21's transform
+  copies the quiver contents). `spartanweaponry:tag_not_empty` reads the tags of the reload (the named sets of a first
+  load are unbound when the conditions run); NeoForge's own `not tag_empty` only asks whether a tag exists.
+  `neoforge:false` is `neoforge:never` in 21.11.
+- **Enchanting**: the swords enchantable tag is `enchantable/melee_weapon` in 1.21.11, Sweeping Edge has
+  `enchantable/sweeping`. Shield Breach disables shields through LivingEntity#getSecondsToDisableBlocking (the weapon
+  component), on both loaders.
+- **Mixins** on the 1.21.11 methods: equipment in LivingEntity, Player#doSweepAttack / createAttackSource /
+  isSweepAttack, AbstractSkeleton#canUseNonMeleeWeapon, the chorus fruit teleport in its consume effect (Fabric),
+  LivingEntity#hurtServer (Fabric). Overloaded methods are named with their descriptors (a bare name selects one).
+- JEI 27 (subtype data, the tipped projectile recipes through the vanilla recipe factory), Curios 14 (submit node
+  collector), Forge Config API Port v5.
+- **Verified**: client scene 55 checks on NeoForge, 53 on Fabric (Curios ones are NeoForge only), all pass; release jar
+  on a real NeoForge 21.11.48 server and a dedicated Fabric server; scene and stress scene on a Fabric production client;
+  compatibility runs with Sodium 0.8.14, Iris 1.10.8, Lithium, FerriteCore, Jade, Shoulder Surfing 5.2 (Fabric with the
+  Complementary shaders; NeoForge without a shader pack, Iris 1.10.8's NeoForge shadow pass crashes on enchanted items).
+  No stress scene with FPS numbers on the compatibility runs (owner's call).

@@ -2,17 +2,18 @@
 
 <img src="docs/images/logo.png" width="160" alt="Spartan Weaponry logo">
 
-# Spartan Weaponry — NeoForge & Fabric 1.21.1
+# Spartan Weaponry — NeoForge & Fabric 1.21.11
 
 **Weapons galore!**
 
-[![Minecraft 1.21.1](https://img.shields.io/badge/Minecraft-1.21.1-3c8527)](https://www.minecraft.net)
-[![NeoForge 21.1](https://img.shields.io/badge/NeoForge-21.1.197%2B-e0682b)](https://neoforged.net)
-[![Fabric 0.16](https://img.shields.io/badge/Fabric-0.16.14%2B-dbd0b4)](https://fabricmc.net)
+[![Minecraft 1.21.11](https://img.shields.io/badge/Minecraft-1.21.11-3c8527)](https://www.minecraft.net)
+[![NeoForge 21.11](https://img.shields.io/badge/NeoForge-21.11.48%2B-e0682b)](https://neoforged.net)
+[![Fabric 0.19](https://img.shields.io/badge/Fabric-0.19.5%2B-dbd0b4)](https://fabricmc.net)
 [![License LGPL-3.0](https://img.shields.io/badge/license-LGPL--3.0-blue)](LICENSE)
 
 An unofficial port of **[Spartan Weaponry](https://www.curseforge.com/minecraft/mc-mods/spartan-weaponry)** 3.2.1
-by **ObliviousSpartan** from Minecraft 1.20.1 (Forge) to **NeoForge and Fabric 1.21.1**, with all of its content.
+by **ObliviousSpartan** from Minecraft 1.20.1 (Forge) to **NeoForge and Fabric 1.21.11**, with all of its content. This is the 1.21.11
+branch; 1.21.1 is on [`main`](../../tree/main).
 
 </div>
 
@@ -57,20 +58,20 @@ thrown and ranged weapons, each with its own traits.
 
 **NeoForge**
 
-1. Install **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
-2. Put `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` from the [releases](../../releases) into `mods`.
+1. Install **NeoForge 21.11.48** or newer for Minecraft **1.21.11**.
+2. Put `spartanweaponry-neoforge-3.2.1.2+1.21.11.jar` from the [releases](../../releases) into `mods`.
 
-No other mods needed. Optional: **Curios** (quiver in the back slot), **JEI** / **EMI** (tipped projectile and oil
-recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
+No other mods needed. Optional: **Curios** (quiver in the back slot), **JEI** (tipped projectile and oil recipes),
+**Shoulder Surfing** 5.x (aims like a bow). EMI and JEED have no 1.21.11 version yet.
 
 **Fabric**
 
-1. Install **Fabric Loader 0.16.14** or newer for Minecraft **1.21.1**.
-2. Put into `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` from the [releases](../../releases),
+1. Install **Fabric Loader 0.19.5** or newer for Minecraft **1.21.11**.
+2. Put into `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.11.jar` from the [releases](../../releases),
    **[Fabric API](https://modrinth.com/mod/fabric-api)** and
-   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 or newer (the settings).
+   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.11.1 or newer (the settings).
 
-Optional: **JEI** (tipped projectile and oil recipes), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
+Optional: **JEI** (tipped projectile and oil recipes), **Shoulder Surfing** 5.x. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
 
 Both: required on the client and the server. Settings: `config/spartanweaponry-common.toml`,
 `config/spartanweaponry-client.toml`. Worlds of the 1.20.1 version open with their weapons, oils, quivers and loaded
@@ -104,17 +105,17 @@ The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORT
 
 ## ✅ Tested
 
-- **Functional** (54 checks, in English and Russian): longbow, heavy crossbow and javelin with real input, oils, traits (reach, armour piercing,
-  two-handed, block, decapitate), Lucky Throw, quivers, enchanting table, recipes, loot, mobs with longbows, saving and
-  rejoining, 1.20.1 items, data packs; dedicated servers NeoForge 21.1.197 and 21.1.259.
-- **Stress**: 600 quiver packets with bad values, 400 armor stands with 800 weapons on screen, 110 fighting mobs
-  (server tick 2 ms), 600 projectiles at once.
-- **Compatibility**: Sodium 0.6 + Iris 1.8 with Complementary shaders, Lithium, FerriteCore, ModernFix, JEI, EMI, Jade,
-  Curios, JEED, Shoulder Surfing 4.5 and 5.2.
-- **Fabric** (Loader 0.16.14, Fabric API 0.116.17, Forge Config API Port 21.1.6): the same scene (56 checks; Curios
-  ones are NeoForge only), the release jar on a dedicated Fabric server and the scenes on a production client;
-  compatibility with Sodium 0.6.13 + Iris 1.8.8 with Complementary shaders, Lithium, FerriteCore, ModernFix, Jade, EMI,
-  JEED and Shoulder Surfing 4.5.
+- **Functional** (55 checks on NeoForge 21.11.48, 53 on Fabric Loader 0.19.5 with Fabric API 0.141.6; the Curios ones
+  are NeoForge only): longbow, heavy crossbow and javelin with real input, oils (the coating layer looks as on 1.21.1),
+  traits (reach, armour piercing, two-handed, block, decapitate), Lucky Throw, quivers, mob heads, enchanting table,
+  recipes, loot, mobs with longbows, saving and rejoining, 1.20.1 items, data packs.
+- **Release jar** on a real NeoForge 21.11.48 server and a dedicated Fabric server; the scene and the stress scene on a
+  Fabric production client.
+- **Compatibility**: Sodium 0.8.14, Iris 1.10.8, Lithium 0.21.4, FerriteCore 8.2.0, Jade 21.1, Shoulder Surfing 5.2,
+  JEI 27.53, Curios 14. On Fabric with the Complementary shaders on; on NeoForge with the shader pack off, as Iris 1.10.8
+  for NeoForge crashes on any enchanted item in hand (vanilla's too) in its shadow pass.
+- Not on 1.21.11: EMI, JEED, ModernFix, Shoulder Surfing 4.x (no 1.21.11 versions). No stress scene with FPS numbers
+  for 1.21.11 yet.
 
 ## ❤️ Credits
 
@@ -123,7 +124,7 @@ The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORT
   [Modrinth](https://modrinth.com/mod/spartan-weaponry) ·
   [source](https://github.com/ObliviousSpartan/SpartanWeaponry). All the content, art and ideas are theirs.
   Translations of the original by its contributors.
-- **Port** to NeoForge and Fabric 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
+- **Port** to NeoForge and Fabric 1.21.1 and 1.21.11 — [Vladeezyy](https://github.com/Vladeezyy).
 - Bugs of **this port**: [issues](../../issues). Please don't report port bugs to the original author.
 
 ### License
@@ -145,7 +146,8 @@ Please download the mod only from the official pages.
 **Оружия — завались!**
 
 Неофициальный порт мода **[Spartan Weaponry](https://www.curseforge.com/minecraft/mc-mods/spartan-weaponry)** 3.2.1
-от **ObliviousSpartan** с Minecraft 1.20.1 на **NeoForge 1.21.1** — со всем содержимым.
+от **ObliviousSpartan** с Minecraft 1.20.1 на **NeoForge и Fabric 1.21.11** — со всем содержимым. Это ветка 1.21.11; 1.21.1 — в
+[`main`](../../tree/main).
 
 <details>
 <summary><b>⚔️ О моде</b></summary>
@@ -179,20 +181,20 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 
 **NeoForge**
 
-1. Установите **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
-2. Положите `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
+1. Установите **NeoForge 21.11.48** или новее для Minecraft **1.21.11**.
+2. Положите `spartanweaponry-neoforge-3.2.1.2+1.21.11.jar` из [релизов](../../releases) в папку `mods`.
 
-Других модов не нужно. По желанию: **Curios** (колчан на спине), **JEI** / **EMI** (рецепты наконечников и масел),
-**Shoulder Surfing** 4.x / 5.x (прицеливание как с луком), **JEED**.
+Других модов не нужно. По желанию: **Curios** (колчан на спине), **JEI** (рецепты наконечников и масел),
+**Shoulder Surfing** 5.x (прицеливание как с луком). У EMI и JEED пока нет версий под 1.21.11.
 
 **Fabric**
 
-1. Установите **Fabric Loader 0.16.14** или новее для Minecraft **1.21.1**.
-2. Положите в `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` из [релизов](../../releases),
+1. Установите **Fabric Loader 0.19.5** или новее для Minecraft **1.21.11**.
+2. Положите в `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.11.jar` из [релизов](../../releases),
    **[Fabric API](https://modrinth.com/mod/fabric-api)** и
-   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 или новее (настройки).
+   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.11.1 или новее (настройки).
 
-По желанию: **JEI** (рецепты наконечников и масел), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
+По желанию: **JEI** (рецепты наконечников и масел), **Shoulder Surfing** 5.x. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
 
 Для обоих: нужен и на клиенте, и на сервере. Настройки: `config/spartanweaponry-common.toml`,
 `config/spartanweaponry-client.toml`. Миры версии для 1.20.1 открываются со всем оружием, маслами, колчанами и
@@ -239,18 +241,17 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 <details>
 <summary><b>✅ Проверено</b></summary>
 
-- **Функционально** (54 проверки, на английском и русском): большой лук, тяжёлый арбалет и метательное копьё с настоящим вводом, масла,
-  особенности (досягаемость, бронебойность, двуручность, блок, обезглавливание), «Удачный бросок», колчаны, стол
-  зачарований, рецепты, добыча, мобы с большими луками, сохранение и перезаход, предметы из 1.20.1, датапаки;
-  выделенные серверы NeoForge 21.1.197 и 21.1.259.
-- **Нагрузка**: 600 пакетов колчана с мусорными значениями, 400 стоек с 800 предметами оружия на экране, бой 110 мобов
-  (тик сервера 2 мс), 600 снарядов одновременно.
-- **Совместимость**: Sodium 0.6 + Iris 1.8 с шейдерами Complementary, Lithium, FerriteCore, ModernFix, JEI, EMI, Jade,
-  Curios, JEED, Shoulder Surfing 4.5 и 5.2.
-- **Fabric** (Loader 0.16.14, Fabric API 0.116.17, Forge Config API Port 21.1.6): та же сцена (56 проверок; проверки
-  Curios — только на NeoForge), release jar на выделенном сервере Fabric и сцены на production-клиенте; совместимость
-  с Sodium 0.6.13 + Iris 1.8.8 с шейдерами Complementary, Lithium, FerriteCore, ModernFix, Jade, EMI, JEED и Shoulder
-  Surfing 4.5.
+- **Функционально** (55 проверок на NeoForge 21.11.48, 53 на Fabric Loader 0.19.5 с Fabric API 0.141.6; проверки Curios —
+  только на NeoForge): большой лук, тяжёлый арбалет и метательное копьё с настоящим вводом, масла (слой покрытия как
+  на 1.21.1), особенности (досягаемость, бронебойность, двуручность, блок, обезглавливание), «Удачный бросок», колчаны,
+  головы мобов, стол зачарований, рецепты, добыча, мобы с большими луками, сохранение и перезаход, предметы из 1.20.1,
+  датапаки.
+- **Release jar** на настоящем сервере NeoForge 21.11.48 и на выделенном сервере Fabric; сцена и нагрузочная сцена на
+  production-клиенте Fabric.
+- **Совместимость**: Sodium 0.8.14, Iris 1.10.8, Lithium 0.21.4, FerriteCore 8.2.0, Jade 21.1, Shoulder Surfing 5.2,
+  JEI 27.53, Curios 14. На Fabric — с шейдерами Complementary; на NeoForge — без шейдерпака: Iris 1.10.8 для NeoForge
+  падает в проходе теней с любым зачарованным предметом в руке (и ванильным тоже).
+- Нет под 1.21.11: EMI, JEED, ModernFix, Shoulder Surfing 4.x. Нагрузочной сцены с замером FPS для 1.21.11 пока нет.
 
 </details>
 
@@ -262,7 +263,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
   [Modrinth](https://modrinth.com/mod/spartan-weaponry) ·
   [исходники](https://github.com/ObliviousSpartan/SpartanWeaponry). Всё содержимое, графика и идеи — его.
   Переводы оригинала — его участников.
-- **Порт** на NeoForge и Fabric 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
+- **Порт** на NeoForge и Fabric 1.21.1 и 1.21.11 — [Vladeezyy](https://github.com/Vladeezyy).
 - О багах **порта** пишите в [issues](../../issues), а не автору оригинала.
 
 Порт распространяется под **GNU LGPL 3.0 only** ([LICENSE](LICENSE), GPL 3.0 — в [licenses/COPYING](licenses/COPYING)).
