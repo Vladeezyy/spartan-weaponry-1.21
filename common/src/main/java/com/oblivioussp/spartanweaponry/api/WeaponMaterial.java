@@ -21,7 +21,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -61,7 +60,6 @@ public class WeaponMaterial implements Tier, IReloadable
 	private final float speed;
 	private float baseDamage;
 	private final int enchantability;
-	private final LazyLoadedValue<Ingredient> repairMaterial;
 	private final TagKey<Item> repairTag;
 	
 	private final String name;
@@ -93,7 +91,6 @@ public class WeaponMaterial implements Tier, IReloadable
 		baseDamage = baseDamageIn;
 		enchantability = enchantabilityIn;
 		repairTag = repairTagIn;
-		repairMaterial = new LazyLoadedValue<Ingredient>(() -> Ingredient.of(repairTagIn));
 		traitsTag = traitsTagIn;
 		
 		ReloadableHandler.addToMaterialReloadList(this);
@@ -241,11 +238,13 @@ public class WeaponMaterial implements Tier, IReloadable
 	@Override
 	public Ingredient getRepairIngredient()
 	{
-		// Ingredient#isEmpty of vanilla (Fabric) only counts the tag values, not their items (NeoForge counts them): with
-		// an empty tag EMI read the first item of a "non-empty" repair ingredient
-		if(BuiltInRegistries.ITEM.getTag(repairTag).map(HolderSet::size).orElse(-1) == 0)
+		// Made on each call: Ingredient keeps the items of its tag from the first look, so on Fabric a data pack that
+		// filled the tag later was not seen (a kept ingredient). An empty or unknown tag gives an
+		// empty ingredient: vanilla Ingredient#isEmpty only counts the tag values (NeoForge counts the items), and EMI
+		// on Fabric read the first item of a "non-empty" repair ingredient.
+		if(BuiltInRegistries.ITEM.getTag(repairTag).map(HolderSet::size).orElse(0) == 0)
 			return Ingredient.EMPTY;
-		return repairMaterial.get();
+		return Ingredient.of(repairTag);
 	}
 	
 	public TagKey<Item> getRepairTag()

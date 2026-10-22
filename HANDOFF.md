@@ -58,10 +58,24 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   `platform/Platform`, тестовые слоты сцен за `port/SceneAccessories`. На Fabric: HUD — миксин в конце
   `Gui.renderExperienceLevel`, конфиг и экран — Forge Config API Port, событие для модов — `RenderBaubleOnHUDCallback`.
   `TranslatableEnum` в common — заглушка `common/src/stubs` (API-jar FCAP в intermediary).
-- **Все четыре мода на 1.21.1 готовы на обоих загрузчиках.** Дальше: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`,
-  `mc/26.3` для всех четырёх (как в iron-backpacks-1.21; HUD Baubles на Fabric — только 1.21.1). Не сделано ни для
-  одного: prod-прогон jar на обоих загрузчиках, compat-прогон, README, merge в main, релизы. Weaponry на Fabric:
-  слота колчана нет (Curios → можно Trinkets, как в HUD Baubles).
+- **Все четыре мода на 1.21.1 готовы на обоих загрузчиках.** Релиз 1.21.1 (2026-10-22), без стресс-тестов и замеров FPS
+  (решение владельца):
+  - prod (`NO_STRESS=1 sh tools/prodtest.sh`: NeoForge 21.1.197/259, Fabric-сервер, production-клиент Fabric):
+    - пройден: Weaponry (53/53), Shields (20/20), Arcana (с Botania и без: 34/34, 22/22);
+    - **не сделан: HUD Baubles**.
+  - compat (`NO_STRESS=1 LOADER=neoforge|fabric sh tools/compattest.sh`):
+    - пройден: Weaponry (NeoForge 58/58, Fabric 56/56, оба и с SS4), Shields (20/20 оба), Arcana (34/34 оба);
+    - **не сделан: HUD Baubles**.
+  - Осталось:
+    - тесты HUD Baubles;
+    - секции «Tested» в README (EN + RU) всех четырёх;
+    - PORTLOG;
+    - merge `multiloader` → `main`;
+    - GitHub-релизы (теги `v<версия>+1.21.1`, neoforge- и fabric-jar без `-scenes`, заметки EN; у Arcana — нужен
+      Weaponry 3.2.1.2+).
+  - Arcana: в `libs/` — jar Weaponry 3.2.1.2 этой ветки, пересобрать и скопировать при изменении Weaponry.
+- Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
+  HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
 ## Сборка / тесты
 JDK: Windows `export JAVA_HOME=~/.gradle/jdks/eclipse_adoptium-21-amd64-windows.2`, Mac
