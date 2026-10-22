@@ -111,6 +111,10 @@ The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORT
   (server tick 2 ms), 600 projectiles at once.
 - **Compatibility**: Sodium 0.6 + Iris 1.8 with Complementary shaders, Lithium, FerriteCore, ModernFix, JEI, EMI, Jade,
   Curios, JEED, Shoulder Surfing 4.5 and 5.2.
+- **Fabric** (Loader 0.16.14, Fabric API 0.116.17, Forge Config API Port 21.1.6): the same scene (56 checks; Curios
+  ones are NeoForge only), the release jar on a dedicated Fabric server and the scenes on a production client;
+  compatibility with Sodium 0.6.13 + Iris 1.8.8 with Complementary shaders, Lithium, FerriteCore, ModernFix, Jade, EMI,
+  JEED and Shoulder Surfing 4.5.
 
 ## ❤️ Credits
 
@@ -243,6 +247,10 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
   (тик сервера 2 мс), 600 снарядов одновременно.
 - **Совместимость**: Sodium 0.6 + Iris 1.8 с шейдерами Complementary, Lithium, FerriteCore, ModernFix, JEI, EMI, Jade,
   Curios, JEED, Shoulder Surfing 4.5 и 5.2.
+- **Fabric** (Loader 0.16.14, Fabric API 0.116.17, Forge Config API Port 21.1.6): та же сцена (56 проверок; проверки
+  Curios — только на NeoForge), release jar на выделенном сервере Fabric и сцены на production-клиенте; совместимость
+  с Sodium 0.6.13 + Iris 1.8.8 с шейдерами Complementary, Lithium, FerriteCore, ModernFix, Jade, EMI, JEED и Shoulder
+  Surfing 4.5.
 
 </details>
 

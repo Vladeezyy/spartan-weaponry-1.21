@@ -242,3 +242,29 @@ Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-X
   37-50 / 38-47 FPS, 6.2-9.8 / 8.6-11.3 ms server tick; vanilla swords baseline 72-75 / 60 FPS; 80 mobs vs golems
   89-104 / 103 FPS, 2.0-2.2 ms; 600 projectiles 92-102 / 99 FPS, 1.7-1.9 ms.
 
+
+## NeoForge and Fabric release check (2026-10-22, 3.2.1.2)
+
+- Release jar on real NeoForge servers 21.1.259 and 21.1.197 and on a dedicated Fabric server: starts clean. The scene on a
+  Fabric production client (intermediary names): 53/53 (the stress scene 20/20 there before the repair fix below). The test scenes used reflection with
+  Mojang names (`attackStrengthTicker`, `EnderMan#teleport`, `CreativeModeInventoryScreen#selectTab`), which fails
+  there: the first two are opened by the access transformer and widener, `selectTab` is found by its signature.
+- Compatibility on both loaders (Sodium 0.6.13, Iris 1.8.8 on Fabric with Complementary Reimagined r5.9.3, Lithium,
+  FerriteCore, ModernFix, Jade, JEED, Shoulder Surfing 4.5; JEI and Curios on NeoForge, EMI on Fabric): scene 58/58 on
+  NeoForge, 56/56 on Fabric (the Curios checks are NeoForge only), with Shoulder Surfing 4 the same.
+- Fixed for Fabric on the way:
+  - `WeaponMaterial#getRepairIngredient` returned a tag ingredient even for an empty or unknown tag. Vanilla
+    `Ingredient#isEmpty` only counts the tag values (NeoForge counts the items), so EMI read the first item of an empty
+    array: 198 "Exception thrown registering repair recipes". Now it gives `Ingredient.EMPTY` for those.
+  - The ingredient was kept in a field. A vanilla `Ingredient` keeps the items of its tag from its first look, so a
+    data pack that filled the tag later was not seen for repairs. Now it is made on each call (only anvils and
+    repair checks ask for it).
+  - The `emi` entrypoint pointed at the EMI plugin, which is commented out as in the original. Removed.
+  - The JEED Ender Disruption recipe used NeoForge's components ingredient. It now has a Fabric copy with
+    `fabric:components`, and each loader loads only its own file.
+  - JEED for Fabric 2.3.4+ is built with Loom 1.17, which Loom 1.13 cannot remap, so the compatibility run uses 2.3.3.
+- No stress scene and no FPS measurements on the compatibility run (owner's call).
+- Later the same day: Loom's `ClientProductionRunTask` also puts the project's `remapJar` into `mods`, so the scenes
+  jar and the release jar ran together (Fabric happened to load the scenes jar). The task now uses `mods.setFrom`, and the
+  production runs were repeated with only the scenes jar: all checks pass. `fabric.mod.json` in the jar is valid JSON
+  now (the description's `\n` had become a raw newline when Gradle expanded the template).

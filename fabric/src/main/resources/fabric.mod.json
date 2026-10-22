@@ -3,7 +3,7 @@
   "id": "${mod_id}",
   "version": "${version}",
   "name": "${mod_name}",
-  "description": "Weapons Galore! A whole new arsenal of weaponry made for Minecraft.\nUnofficial port of Spartan Weaponry 3.2.1 (ObliviousSpartan, Apache-2.0) to Minecraft ${minecraft_version} / Fabric.",
+  "description": "Weapons Galore! A whole new arsenal of weaponry made for Minecraft.\\nUnofficial port of Spartan Weaponry 3.2.1 (ObliviousSpartan, Apache-2.0) to Minecraft ${minecraft_version} / Fabric.",
   "authors": ["${mod_authors}"],
   "contributors": ["xwerffx (weapon ideas and art)", "Vladeezyy (port)"],
   "contact": {
