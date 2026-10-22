@@ -2,17 +2,17 @@
 
 <img src="docs/images/logo.png" width="160" alt="Spartan Weaponry logo">
 
-# Spartan Weaponry — NeoForge 1.21.1
+# Spartan Weaponry — NeoForge & Fabric 1.21.1
 
 **Weapons galore!**
 
 [![Minecraft 1.21.1](https://img.shields.io/badge/Minecraft-1.21.1-3c8527)](https://www.minecraft.net)
 [![NeoForge 21.1](https://img.shields.io/badge/NeoForge-21.1.197%2B-e0682b)](https://neoforged.net)
-[![No dependencies](https://img.shields.io/badge/dependencies-none-lightgrey)](#-installation)
+[![Fabric 0.16](https://img.shields.io/badge/Fabric-0.16.14%2B-dbd0b4)](https://fabricmc.net)
 [![License LGPL-3.0](https://img.shields.io/badge/license-LGPL--3.0-blue)](LICENSE)
 
 An unofficial port of **[Spartan Weaponry](https://www.curseforge.com/minecraft/mc-mods/spartan-weaponry)** 3.2.1
-by **ObliviousSpartan** from Minecraft 1.20.1 to **NeoForge 1.21.1**, with all of its content.
+by **ObliviousSpartan** from Minecraft 1.20.1 (Forge) to **NeoForge and Fabric 1.21.1**, with all of its content.
 
 </div>
 
@@ -55,13 +55,26 @@ thrown and ranged weapons, each with its own traits.
 
 ## 📦 Installation
 
-1. Install **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
-2. Put `SpartanWeaponry-neoforge-3.2.1.1+1.21.1.jar` from the [releases](../../releases) into `mods`.
+**NeoForge**
 
-No other mods needed. Required on both the client and the server. Optional: **Curios** (quiver in the back slot),
-**JEI** / **EMI** (tipped projectile and oil recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
-Settings: `config/spartanweaponry-common.toml`, `config/spartanweaponry-client.toml`.
-Worlds of the 1.20.1 version open with their weapons, oils, quivers and loaded crossbows.
+1. Install **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
+2. Put `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` from the [releases](../../releases) into `mods`.
+
+No other mods needed. Optional: **Curios** (quiver in the back slot), **JEI** / **EMI** (tipped projectile and oil
+recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
+
+**Fabric**
+
+1. Install **Fabric Loader 0.16.14** or newer for Minecraft **1.21.1**.
+2. Put into `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` from the [releases](../../releases),
+   **[Fabric API](https://modrinth.com/mod/fabric-api)** and
+   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 or newer (the settings).
+
+Optional: **EMI** (tipped projectile and oil recipes), **Shoulder Surfing** 4.x / 5.x, **JEED**. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
+
+Both: required on the client and the server. Settings: `config/spartanweaponry-common.toml`,
+`config/spartanweaponry-client.toml`. Worlds of the 1.20.1 version open with their weapons, oils, quivers and loaded
+crossbows.
 
 ## 🔧 What changed in the port
 
@@ -84,7 +97,7 @@ Found while porting:
 - Opening a quiver could disconnect the player (the screen arrived before the client had the quiver); a quiver with no
   ammo still moved the off-hand item away; the quiver priority slot packet took any index.
 - Copper arrows called lightning in any weather when tipped; the oil commands never suggested oils; villager trades
-  could crash; the quiver HUD and the throwing crosshair drew textures that no longer exist; Russian, Spanish and
+  could crash; the weaponsmith's weapon trades offered from an empty list (crash when a villager got one); the quiver HUD and the throwing crosshair drew textures that no longer exist; Russian, Spanish and
   Portuguese tooltips with broken numbers.
 
 The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORTLOG.md)**.
@@ -106,7 +119,7 @@ The full list, with the reasons and what 1.21 changed, is in **[PORTLOG.md](PORT
   [Modrinth](https://modrinth.com/mod/spartan-weaponry) ·
   [source](https://github.com/ObliviousSpartan/SpartanWeaponry). All the content, art and ideas are theirs.
   Translations of the original by its contributors.
-- **Port** to NeoForge 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
+- **Port** to NeoForge and Fabric 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
 - Bugs of **this port**: [issues](../../issues). Please don't report port bugs to the original author.
 
 ### License
@@ -160,13 +173,26 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 <details>
 <summary><b>📦 Установка</b></summary>
 
-1. Установите **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
-2. Положите `SpartanWeaponry-neoforge-3.2.1.1+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
+**NeoForge**
 
-Других модов не нужно. Нужен и на клиенте, и на сервере. По желанию: **Curios** (колчан на спине), **JEI** / **EMI**
-(рецепты наконечников и масел), **Shoulder Surfing** 4.x / 5.x (прицеливание как с луком), **JEED**.
-Настройки: `config/spartanweaponry-common.toml`, `config/spartanweaponry-client.toml`.
-Миры версии для 1.20.1 открываются со всем оружием, маслами, колчанами и заряженными арбалетами.
+1. Установите **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
+2. Положите `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
+
+Других модов не нужно. По желанию: **Curios** (колчан на спине), **JEI** / **EMI** (рецепты наконечников и масел),
+**Shoulder Surfing** 4.x / 5.x (прицеливание как с луком), **JEED**.
+
+**Fabric**
+
+1. Установите **Fabric Loader 0.16.14** или новее для Minecraft **1.21.1**.
+2. Положите в `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` из [релизов](../../releases),
+   **[Fabric API](https://modrinth.com/mod/fabric-api)** и
+   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 или новее (настройки).
+
+По желанию: **EMI** (рецепты наконечников и масел), **Shoulder Surfing** 4.x / 5.x, **JEED**. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
+
+Для обоих: нужен и на клиенте, и на сервере. Настройки: `config/spartanweaponry-common.toml`,
+`config/spartanweaponry-client.toml`. Миры версии для 1.20.1 открываются со всем оружием, маслами, колчанами и
+заряженными арбалетами.
 
 </details>
 
@@ -199,7 +225,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 
 Найдено при портировании: открытие колчана могло выкинуть игрока с сервера; пустой колчан всё равно убирал предмет из
 левой руки; пакет приоритетного слота принимал любой номер; медные стрелы с зельем вызывали молнию в любую погоду;
-команды масел не подсказывали масла; торговля с жителями могла уронить игру; HUD колчана и прицел метательного оружия
+команды масел не подсказывали масла; торговля с жителями могла уронить игру; сделки оружейника брали оружие из пустого списка (краш, когда житель получал такую сделку); HUD колчана и прицел метательного оружия
 рисовали несуществующие текстуры; сломанные числа в русских, испанских и португальских подсказках.
 
 Полный список с причинами — в **[PORTLOG.md](PORTLOG.md)** (на английском).
@@ -228,7 +254,7 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
   [Modrinth](https://modrinth.com/mod/spartan-weaponry) ·
   [исходники](https://github.com/ObliviousSpartan/SpartanWeaponry). Всё содержимое, графика и идеи — его.
   Переводы оригинала — его участников.
-- **Порт** на NeoForge 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
+- **Порт** на NeoForge и Fabric 1.21.1 — [Vladeezyy](https://github.com/Vladeezyy).
 - О багах **порта** пишите в [issues](../../issues), а не автору оригинала.
 
 Порт распространяется под **GNU LGPL 3.0 only** ([LICENSE](LICENSE), GPL 3.0 — в [licenses/COPYING](licenses/COPYING)).

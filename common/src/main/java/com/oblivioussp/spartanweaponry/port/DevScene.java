@@ -330,7 +330,8 @@ public final class DevScene
 		{
 			try
 			{
-				var select = CreativeModeInventoryScreen.class.getDeclaredMethod("selectTab", CreativeModeTab.class);
+				// The private selectTab(CreativeModeTab), found by its signature: its name differs on a production (intermediary) client
+				var select = java.util.Arrays.stream(CreativeModeInventoryScreen.class.getDeclaredMethods()).filter(m -> m.getReturnType() == void.class && java.util.Arrays.equals(m.getParameterTypes(), new Class<?>[] { net.minecraft.world.item.CreativeModeTab.class })).findFirst().orElseThrow(NoSuchMethodException::new);
 				select.setAccessible(true);
 				select.invoke(screen, tab);
 			}
@@ -796,16 +797,8 @@ public final class DevScene
 
 	private static void setAttackTicker(ServerPlayer player, int ticks)
 	{
-		try
-		{
-			var field = net.minecraft.world.entity.LivingEntity.class.getDeclaredField("attackStrengthTicker");
-			field.setAccessible(true);
-			field.setInt(player, ticks);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			throw new IllegalStateException(e);
-		}
+		// Opened by the access transformer / widener (by name it would be another on a production Fabric client)
+		player.attackStrengthTicker = ticks;
 	}
 
 	private static void melee(ServerPlayer player)
@@ -1048,31 +1041,14 @@ public final class DevScene
 		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION.holder(), 600));
 		Vec3 start = enderman.position();
 		boolean teleported = false;
-		try
-		{
-			var teleport = EnderMan.class.getDeclaredMethod("teleport");
-			teleport.setAccessible(true);
-			for(int i = 0; i < 30; i++)
-				teleported |= (Boolean)teleport.invoke(enderman);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			Log.error(e);
-		}
+		// EnderMan.teleport() is opened by the access transformer / widener
+		for(int i = 0; i < 30; i++)
+			teleported |= enderman.teleport();
 		check("Ender Disruption stops an enderman from teleporting", !teleported && enderman.position().equals(start), enderman.position());
 		enderman.removeAllEffects();
 		boolean free = false;
-		try
-		{
-			var teleport = EnderMan.class.getDeclaredMethod("teleport");
-			teleport.setAccessible(true);
-			for(int i = 0; i < 30 && !free; i++)
-				free = (Boolean)teleport.invoke(enderman);
-		}
-		catch(ReflectiveOperationException e)
-		{
-			Log.error(e);
-		}
+		for(int i = 0; i < 30 && !free; i++)
+			free = enderman.teleport();
 		check("without the effect it teleports", free, enderman.position());
 		enderman.discard();
 	}
