@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.neoforge;
 
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -47,13 +48,13 @@ public class NeoForgePlatform implements Platform
 	@Override
 	public boolean isClient()
 	{
-		return FMLEnvironment.dist.isClient();
+		return FMLEnvironment.getDist().isClient();
 	}
 
 	@Override
 	public boolean isDevelopment()
 	{
-		return !FMLLoader.isProduction();
+		return !FMLLoader.getCurrent().isProduction();
 	}
 
 	@Override
@@ -82,7 +83,7 @@ public class NeoForgePlatform implements Platform
 	@Override
 	public void sendToServer(CustomPacketPayload payload)
 	{
-		PacketDistributor.sendToServer(payload);
+		ClientPacketDistributor.sendToServer(payload);
 	}
 
 	@Override

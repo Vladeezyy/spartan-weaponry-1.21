@@ -1,7 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.client.renderer.entity.ModelLayers;
 import com.oblivioussp.spartanweaponry.init.ModItems;
@@ -9,123 +8,91 @@ import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class CurioRenderer implements ResourceManagerReloadListener
+/**
+ * The quivers on the back, from the Curios slot. Curios 14 (1.21.11) renders through the submit node collector; the
+ * quiver models are baked again when the entity models are (1.21.1: a client reload listener), checked per render.
+ */
+public class CurioRenderer
 {
-	public static final CurioRenderer INSTANCE = new CurioRenderer();
-	
-	public static SmallArrowQuiverModel smallArrowQuiverModel;
-	protected static final Identifier smallArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_small.png");
-	public static MediumArrowQuiverModel mediumArrowQuiverModel;
-	protected static final Identifier mediumArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_medium.png");
-	public static LargeArrowQuiverModel largeArrowQuiverModel;
-	protected static final Identifier largeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_large.png");
-	protected static final Identifier hugeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_huge.png");
-	
-	public static SmallBoltQuiverModel smallBoltQuiverModel;
-	protected static final Identifier smallBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_small.png");
-	public static MediumBoltQuiverModel mediumBoltQuiverModel;
-	protected static final Identifier mediumBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_medium.png");
-	public static LargeBoltQuiverModel largeBoltQuiverModel;
-	protected static final Identifier largeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_large.png");
-	protected static final Identifier hugeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_huge.png");
-	
-	public static final Renderer QUIVER_ARROW_SMALL_RENDERER = INSTANCE.new Renderer(smallArrowQuiverTexture);
-	public static final Renderer QUIVER_ARROW_MEDIUM_RENDERER = INSTANCE.new Renderer(mediumArrowQuiverTexture);
-	public static final Renderer QUIVER_ARROW_LARGE_RENDERER = INSTANCE.new Renderer(largeArrowQuiverTexture);
-	public static final Renderer QUIVER_ARROW_HUGE_RENDERER = INSTANCE.new Renderer(hugeArrowQuiverTexture);
-	
-	public static final Renderer QUIVER_BOLT_SMALL_RENDERER = INSTANCE.new Renderer(smallBoltQuiverTexture);
-	public static final Renderer QUIVER_BOLT_MEDIUM_RENDERER = INSTANCE.new Renderer(mediumBoltQuiverTexture);
-	public static final Renderer QUIVER_BOLT_LARGE_RENDERER = INSTANCE.new Renderer(largeBoltQuiverTexture);
-	public static final Renderer QUIVER_BOLT_HUGE_RENDERER = INSTANCE.new Renderer(hugeBoltQuiverTexture);
-	
+	private static final Identifier smallArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_small.png");
+	private static final Identifier mediumArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_medium.png");
+	private static final Identifier largeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_large.png");
+	private static final Identifier hugeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_huge.png");
+	private static final Identifier smallBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_small.png");
+	private static final Identifier mediumBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_medium.png");
+	private static final Identifier largeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_large.png");
+	private static final Identifier hugeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_huge.png");
+
+	private static EntityModelSet bakedFrom;
+	private static QuiverModelBase smallArrow, mediumArrow, largeArrow, smallBolt, mediumBolt, largeBolt;
+
 	private CurioRenderer() {}
 	
 	public static void register()
 	{
-		CuriosRendererRegistry.register(ModItems.SMALL_ARROW_QUIVER.get(), () -> QUIVER_ARROW_SMALL_RENDERER);
-		CuriosRendererRegistry.register(ModItems.MEDIUM_ARROW_QUIVER.get(), () -> QUIVER_ARROW_MEDIUM_RENDERER);
-		CuriosRendererRegistry.register(ModItems.LARGE_ARROW_QUIVER.get(), () -> QUIVER_ARROW_LARGE_RENDERER);
-		CuriosRendererRegistry.register(ModItems.HUGE_ARROW_QUIVER.get(), () -> QUIVER_ARROW_HUGE_RENDERER);
+		CuriosRendererRegistry.register(ModItems.SMALL_ARROW_QUIVER.get(), () -> new Renderer(Kind.SMALL_ARROW, smallArrowQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.MEDIUM_ARROW_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_ARROW, mediumArrowQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.LARGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, largeArrowQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.HUGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, hugeArrowQuiverTexture));
 		
-		CuriosRendererRegistry.register(ModItems.SMALL_BOLT_QUIVER.get(), () -> QUIVER_BOLT_SMALL_RENDERER);
-		CuriosRendererRegistry.register(ModItems.MEDIUM_BOLT_QUIVER.get(), () -> QUIVER_BOLT_MEDIUM_RENDERER);
-		CuriosRendererRegistry.register(ModItems.LARGE_BOLT_QUIVER.get(), () -> QUIVER_BOLT_LARGE_RENDERER);
-		CuriosRendererRegistry.register(ModItems.HUGE_BOLT_QUIVER.get(), () -> QUIVER_BOLT_HUGE_RENDERER);
+		CuriosRendererRegistry.register(ModItems.SMALL_BOLT_QUIVER.get(), () -> new Renderer(Kind.SMALL_BOLT, smallBoltQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.MEDIUM_BOLT_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_BOLT, mediumBoltQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.LARGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, largeBoltQuiverTexture));
+		CuriosRendererRegistry.register(ModItems.HUGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, hugeBoltQuiverTexture));
 	}
 
-	@Override
-	public void onResourceManagerReload(ResourceManager p_10758_) 
+	private enum Kind { SMALL_ARROW, MEDIUM_ARROW, LARGE_ARROW, SMALL_BOLT, MEDIUM_BOLT, LARGE_BOLT }
+
+	private static QuiverModelBase model(Kind kind)
 	{
-		Minecraft mc = Minecraft.getInstance();
-		smallArrowQuiverModel = new SmallArrowQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.SMALL_ARROW_QUIVER));
-		mediumArrowQuiverModel = new MediumArrowQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.MEDIUM_ARROW_QUIVER));
-		largeArrowQuiverModel = new LargeArrowQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.LARGE_ARROW_QUIVER));
-		QUIVER_ARROW_SMALL_RENDERER.setModel(smallArrowQuiverModel);
-		QUIVER_ARROW_MEDIUM_RENDERER.setModel(mediumArrowQuiverModel);
-		QUIVER_ARROW_LARGE_RENDERER.setModel(largeArrowQuiverModel);
-		QUIVER_ARROW_HUGE_RENDERER.setModel(largeArrowQuiverModel);
-		
-		smallBoltQuiverModel = new SmallBoltQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.SMALL_BOLT_QUIVER));
-		mediumBoltQuiverModel = new MediumBoltQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.MEDIUM_BOLT_QUIVER));
-		largeBoltQuiverModel = new LargeBoltQuiverModel(mc.getEntityModels().bakeLayer(ModelLayers.LARGE_BOLT_QUIVER));
-		QUIVER_BOLT_SMALL_RENDERER.setModel(smallBoltQuiverModel);
-		QUIVER_BOLT_MEDIUM_RENDERER.setModel(mediumBoltQuiverModel);
-		QUIVER_BOLT_LARGE_RENDERER.setModel(largeBoltQuiverModel);
-		QUIVER_BOLT_HUGE_RENDERER.setModel(largeBoltQuiverModel);
+		EntityModelSet models = Minecraft.getInstance().getEntityModels();
+		if(models != bakedFrom)
+		{
+			smallArrow = new SmallArrowQuiverModel(models.bakeLayer(ModelLayers.SMALL_ARROW_QUIVER));
+			mediumArrow = new MediumArrowQuiverModel(models.bakeLayer(ModelLayers.MEDIUM_ARROW_QUIVER));
+			largeArrow = new LargeArrowQuiverModel(models.bakeLayer(ModelLayers.LARGE_ARROW_QUIVER));
+			smallBolt = new SmallBoltQuiverModel(models.bakeLayer(ModelLayers.SMALL_BOLT_QUIVER));
+			mediumBolt = new MediumBoltQuiverModel(models.bakeLayer(ModelLayers.MEDIUM_BOLT_QUIVER));
+			largeBolt = new LargeBoltQuiverModel(models.bakeLayer(ModelLayers.LARGE_BOLT_QUIVER));
+			bakedFrom = models;
+		}
+		return switch(kind)
+		{
+			case SMALL_ARROW -> smallArrow;
+			case MEDIUM_ARROW -> mediumArrow;
+			case LARGE_ARROW -> largeArrow;
+			case SMALL_BOLT -> smallBolt;
+			case MEDIUM_BOLT -> mediumBolt;
+			case LARGE_BOLT -> largeBolt;
+		};
 	}
 	
-	private class Renderer implements ICurioRenderer
+	private record Renderer(Kind kind, Identifier texture) implements ICurioRenderer
 	{
-		private QuiverModelBase model;
-		private Identifier texture;
-		
-		public Renderer(Identifier texture)
-		{
-			this.texture = texture;
-		}
-		
-		public void setModel(QuiverModelBase model)
-		{
-			this.model = model;
-		}
-		
 		@Override
-		public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext,
-				PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer,
-				int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks,
-				float netHeadYaw, float headPitch) 
+		public <S extends LivingEntityRenderState, M extends EntityModel<? super S>> void render(ItemStack stack, SlotContext slotContext,
+				PoseStack poseStack, SubmitNodeCollector collector, int light, S renderState, RenderLayerParent<S, M> renderLayerParent,
+				EntityRendererProvider.Context context, float yRotation, float xRotation)
 		{
-			int arrowsToRender = 0;
-			if(stack.getItem() instanceof QuiverBaseItem)
-				arrowsToRender = ((QuiverBaseItem)stack.getItem()).getAmmoCount(stack);
-			
-			if(model != null)
-				renderQuiverModel(model, texture, arrowsToRender, slotContext, 
-					matrixStack, renderTypeBuffer, light);
-		}
-		
-		private void renderQuiverModel(QuiverModelBase model, Identifier texture, int arrowsToRender, SlotContext slotContext, PoseStack mStack, 
-				MultiBufferSource renderTypeBuffer, int packedLight)
-		{
-			VertexConsumer buffer = renderTypeBuffer.getBuffer(model.renderType(texture));
-			
-			ICurioRenderer.translateIfSneaking(mStack, slotContext.entity());
-			ICurioRenderer.rotateIfSneaking(mStack, slotContext.entity());
-			model.renderToBuffer(mStack, buffer, packedLight, OverlayTexture.NO_OVERLAY);
-			model.renderArrows(arrowsToRender, mStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, -1);
+			int arrowsToRender = stack.getItem() instanceof QuiverBaseItem quiver ? quiver.getAmmoCount(stack) : 0;
+			QuiverModelBase model = model(kind);
+			poseStack.pushPose();
+			ICurioRenderer.translateIfSneaking(poseStack, slotContext.entity());
+			ICurioRenderer.rotateIfSneaking(poseStack, slotContext.entity());
+			collector.submitModel(model, arrowsToRender, poseStack, model.renderType(texture), light, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+			poseStack.popPose();
 		}
 	}
 

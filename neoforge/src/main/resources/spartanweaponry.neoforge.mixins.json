@@ -6,7 +6,6 @@
 		"ItemStackMixin"
 	],
 	"client": [
-		"ItemModelGeneratorMixin"
 	],
 	"minVersion": "0.8"
 }

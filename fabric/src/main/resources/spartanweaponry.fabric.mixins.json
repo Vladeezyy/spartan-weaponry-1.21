@@ -7,7 +7,7 @@
     "AnvilMenuMixin",
     "BrewingStandBlockEntityMixin",
     "BrewingStandPotionSlotMixin",
-    "ChorusFruitItemMixin",
+    "TeleportRandomlyConsumeEffectMixin",
     "EnderManMixin",
     "ItemEntityMixin",
     "ItemStackMixin",
@@ -18,7 +18,6 @@
     "ProjectileUtilMixin",
     "RangedBowAttackGoalMixin",
     "ShulkerMixin",
-    "TagLoadResultMixin",
     "ThrownEnderpearlMixin"
   ],
   "client": [

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.oblivioussp.spartanweaponry.api.IWeaponTraitContainer;
 import com.oblivioussp.spartanweaponry.api.WeaponTraits;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
@@ -29,9 +29,10 @@ public class PlayerMixin
 {
 	/**
 	 * Sweep II / III traits set the sweep damage ratio. 1.20.1 redirected EnchantmentHelper.getSweepingDamageRatio;
-	 * 1.21 reads the SWEEPING_DAMAGE_RATIO attribute in Player.attack (sweep damage = 1 + ratio * damage, as before).
+	 * 1.21 reads the SWEEPING_DAMAGE_RATIO attribute in Player.attack (sweep damage = 1 + ratio * damage, as before);
+	 * 1.21.11 in Player.doSweepAttack.
 	 */
-	@WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
+	@WrapOperation(method = "doSweepAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
 	private double getSweepingDamageRatio(Player entityIn, Holder<Attribute> attribute, Operation<Double> original)
 	{
 		if(attribute == Attributes.SWEEPING_DAMAGE_RATIO)
@@ -50,28 +51,18 @@ public class PlayerMixin
 		}
 		return original.call(entityIn, attribute);
 	}	
-//	@Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;playerAttack(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"))
-	@ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;playerAttack(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"))
-	private DamageSource damagePlayerAttack(DamageSource originalSource, Entity targetIn)
+	/** 1.21.11: Player.attack takes its damage source from createAttackSource (the item's own, else playerAttack). */
+	@ModifyReturnValue(method = "createAttackSource", at = @At("RETURN"))
+	private DamageSource damagePlayerAttack(DamageSource originalSource, ItemStack weaponStack)
 	{
-//		Log.debug("Intercepted DamageSource.playerAttack() method!");
-		Player playerIn = ((Player)originalSource.getEntity());
-		ItemStack weaponStack = playerIn.getMainHandItem();
+		Player playerIn = (Player)(Object)this;
 		if(weaponStack.getItem() instanceof IWeaponTraitContainer<?> container)
 		{
 			WeaponTrait armorPiercingTrait = container.getFirstWeaponTraitWithType(WeaponTraits.TYPE_ARMOUR_PIERCING);
 			if(armorPiercingTrait != null)
-			{
-//				Log.debug("Set damage type to Armor Piercing");
-//				float armorPiercingPercentage = armorPiercingTrait.getMagnitude() / 100.0f;
-				return /*Platform.INSTANCE.isModLoaded("footwork") ? FootworkHybridDamageSource.create(playerIn, armorPiercingPercentage, originalSource) :*/
-					ModDamageTypes.armorPiercingMelee(playerIn);
-
-//				return ModDamageTypes.armorPiercingMelee(playerIn);
-			}
+				return ModDamageTypes.armorPiercingMelee(playerIn);
 		}
-		// Otherwise, return the basic player attack damage source
-//		return playerIn.damageSources().playerAttack(playerIn);
+		// Otherwise, the basic player attack damage source
 		return originalSource;
 	}
 	

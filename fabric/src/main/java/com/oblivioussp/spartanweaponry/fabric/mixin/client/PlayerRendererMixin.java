@@ -6,14 +6,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 /** NeoForge: the crossbow poses for any CrossbowItem (the heavy crossbows; vanilla: Items.CROSSBOW only). */
-@Mixin(PlayerRenderer.class)
+// 1.21.9+: PlayerRenderer is AvatarRenderer
+@Mixin(AvatarRenderer.class)
 public abstract class PlayerRendererMixin
 {
 	@WrapOperation(method = "getArmPose", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))

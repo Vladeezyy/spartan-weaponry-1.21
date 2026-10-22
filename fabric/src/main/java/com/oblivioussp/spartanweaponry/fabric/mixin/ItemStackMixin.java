@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.fabric.mixin;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.DataComponentType;
 import java.util.function.Consumer;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -43,12 +45,21 @@ public abstract class ItemStackMixin
 			cir.setReturnValue(max);
 	}
 
-	/** Both forEachModifier methods (slot group: tooltips; slot: the entity's attributes; a name alone selects one of them): IItemExtension#getDefaultAttributeModifiers(ItemStack). */
-	@WrapOperation(method = {"forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Ljava/util/function/BiConsumer;)V", "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlot;Ljava/util/function/BiConsumer;)V"}, require = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item;getDefaultAttributeModifiers()Lnet/minecraft/world/item/component/ItemAttributeModifiers;"))
-	private ItemAttributeModifiers spartanweaponry$attributes(Item item, Operation<ItemAttributeModifiers> original)
+	/**
+	 * Both forEachModifier methods (slot group: tooltips; slot: the entity's attributes): IItemExtension
+	 * #getDefaultAttributeModifiers(ItemStack), unless the stack has modifiers of its own. 1.21.2+ reads the
+	 * attribute_modifiers component (1.21.1: Item#getDefaultAttributeModifiers).
+	 */
+	@WrapOperation(method = "forEachModifier", require = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getOrDefault(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
+	private Object spartanweaponry$attributes(ItemStack stack, DataComponentType<?> type, Object fallback, Operation<Object> original)
 	{
-		ItemAttributeModifiers modifiers = FabricItemHooks.getDefaultAttributeModifiers((ItemStack)(Object)this);
-		return modifiers != null ? modifiers : original.call(item);
+		if(type == DataComponents.ATTRIBUTE_MODIFIERS && stack.getComponentsPatch().get(DataComponents.ATTRIBUTE_MODIFIERS) == null)
+		{
+			ItemAttributeModifiers modifiers = FabricItemHooks.getDefaultAttributeModifiers(stack);
+			if(modifiers != null)
+				return modifiers;
+		}
+		return original.call(stack, type, fallback);
 	}
 
 	@Inject(method = "hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;)V", at = @At("HEAD"))

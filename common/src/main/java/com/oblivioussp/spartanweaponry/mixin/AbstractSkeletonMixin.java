@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 
 @Mixin(AbstractSkeleton.class)
@@ -35,11 +34,6 @@ public class AbstractSkeletonMixin extends MobMixin
 	@Final
 	private MeleeAttackGoal meleeGoal;
 	
-	@Shadow
-	public void setItemSlot(EquipmentSlot slotIn, ItemStack item)
-	{
-		throw new IllegalStateException("Mixin failed to shadow the \"AbstractSkeleton.setItemSlot(...)\" method!");
-	}
 	
 	@Inject(at = @At("HEAD"), method = "reassessWeaponGoal()V", cancellable = true)
 	private void reassessWeaponGoal(CallbackInfo callback)
@@ -64,11 +58,11 @@ public class AbstractSkeletonMixin extends MobMixin
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
-	@Inject(at = @At("HEAD"), method = "canFireProjectileWeapon(Lnet/minecraft/world/item/ProjectileWeaponItem;)Z", cancellable = true)
-	public void canFireProjectileWeapon(ProjectileWeaponItem weaponItem, CallbackInfoReturnable<Boolean> callback)
+	// 1.21.11: canFireProjectileWeapon(ProjectileWeaponItem) became canUseNonMeleeWeapon(ItemStack)
+	@Inject(at = @At("HEAD"), method = "canUseNonMeleeWeapon(Lnet/minecraft/world/item/ItemStack;)Z", cancellable = true)
+	public void canUseNonMeleeWeapon(ItemStack weapon, CallbackInfoReturnable<Boolean> callback)
 	{
-		if(weaponItem.builtInRegistryHolder().is(ModItemTags.LONGBOWS))
+		if(weapon.is(ModItemTags.LONGBOWS))
 			callback.setReturnValue(true);
 	}
 	

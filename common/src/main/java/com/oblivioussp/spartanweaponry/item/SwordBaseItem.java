@@ -86,7 +86,7 @@ public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBa
 		// 1.21.5+: no SwordItem; a sword is an item with the sword properties of its material (durability, repair
 		// tag, enchantability, the tool rules for cobwebs and the weapon component). The attack attributes are the
 		// mod's own (getDefaultAttributeModifiers below)
-		super(prop.sword(materialIn.toolMaterial(), 0.0F, 0.0F));
+		super(prop.sword(materialIn.toolMaterial(), 0.0F, 0.0F).attributes(ItemAttributeModifiers.EMPTY));
 		material = materialIn;
 		archetype = archetypeIn;
 		setAttackDamageAndSpeed(weaponBaseDamage, weaponDamageMultiplier, weaponSpeed);
@@ -197,7 +197,7 @@ public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBa
         return super.getDestroySpeed(stack, state);
     }
 	
-	// NeoForge IItemExtension (Fabric: a mixin)
+	// 1.21.11: asked by mixin/LivingEntityMixin#getSecondsToDisableBlocking on both loaders
 	public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker)
 	{
 		return hasWeaponTrait(WeaponTraits.SHIELD_BREACH.get());

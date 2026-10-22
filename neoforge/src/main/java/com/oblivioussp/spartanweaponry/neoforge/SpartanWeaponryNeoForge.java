@@ -114,7 +114,7 @@ public class SpartanWeaponryNeoForge
 		bus.addListener((VillagerTradesEvent ev) -> CommonEventHandler.addVillagerTrades(new LoaderEvents.VillagerTrades(ev.getType(), ev.getTrades())));
 		bus.addListener((EntityTeleportEvent.EnderEntity ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getEntityLiving())));
 		bus.addListener((EntityTeleportEvent.EnderPearl ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getPlayer())));
-		bus.addListener((EntityTeleportEvent.ChorusFruit ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getEntityLiving())));
+		bus.addListener((EntityTeleportEvent.ItemConsumption ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getEntityLiving())));
 		bus.addListener(SpartanWeaponryNeoForge::anvilUpdate);
 		bus.addListener((PlayerBrewedPotionEvent ev) -> CommonEventHandler.onBrewPotion(ev.getEntity(), ev.getStack()));
 		bus.addListener(SpartanWeaponryNeoForge::rightClickBlock);
@@ -123,8 +123,9 @@ public class SpartanWeaponryNeoForge
 		bus.addListener((RegisterBrewingRecipesEvent ev) -> ModOilRecipes.initOilRecipes(recipe -> ev.getBuilder().addRecipe(new BrewingRecipeNeoForge(recipe))));
 		bus.addListener((LivingShieldBlockEvent ev) ->
 		{
+			// 21.11: not cancelled, unblocked
 			if(MeleeBlockWeaponTrait.cancelsBlock(ev.getEntity(), ev.getDamageSource()))
-				ev.setCanceled(true);
+				ev.setBlocked(false);
 		});
 
 		container.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
@@ -229,13 +230,13 @@ public class SpartanWeaponryNeoForge
 	private static void anvilUpdate(AnvilUpdateEvent ev)
 	{
 		LoaderEvents.AnvilUpdate update = new LoaderEvents.AnvilUpdate(ev.getLeft(), ev.getRight());
-		update.setCost(ev.getCost());
+		update.setCost(ev.getXpCost());
 		update.setMaterialCost(ev.getMaterialCost());
 		CommonEventHandler.handleAnvilUpdate(update);
 		if(!update.getOutput().isEmpty())
 		{
 			ev.setOutput(update.getOutput());
-			ev.setCost(update.getCost());
+			ev.setXpCost((int)update.getCost());
 			ev.setMaterialCost(update.getMaterialCost());
 		}
 	}

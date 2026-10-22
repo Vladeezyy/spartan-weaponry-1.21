@@ -8,12 +8,16 @@ The spartanweaponry:oil_coated_item loader (1.21.1: a coating layer tinted by th
 the spartanweaponry:oiled condition: when oiled, a composite of the model and a coating model (the parent of the
 variant with the coating texture as layer0, tinted by spartanweaponry:oil); not oiled, the plain model and nothing
 more to draw. Tipped projectiles and the oil bottle get their layer 1 tint, the mob heads the vanilla head renderer.
-Run from the repository root; writes the items folder and the coating models, drops loader/coating/overrides."""
+The vanilla swords (assets/minecraft/models/item, oilable too) get minecraft item definitions the same way.
+Run from the repository root on the 1.21.1 models; writes the items folders and the coating models, drops
+loader/coating/overrides."""
 import itertools, json, os
 
 ASSETS = 'common/src/main/resources/assets/spartanweaponry'
 MODELS = os.path.join(ASSETS, 'models/item')
 ITEMS = os.path.join(ASSETS, 'items')
+VANILLA_MODELS = 'common/src/main/resources/assets/minecraft/models/item'
+VANILLA_ITEMS = 'common/src/main/resources/assets/minecraft/items'
 LOADER = 'spartanweaponry:oil_coated_item'
 BOOLS = {'spartanweaponry:throwing': 'spartanweaponry:throwing', 'spartanweaponry:blocking': 'spartanweaponry:blocking',
          'spartanweaponry:empty': 'spartanweaponry:empty', 'spartanweaponry:charged': 'spartanweaponry:charged',
@@ -27,7 +31,9 @@ HEADS = ['blaze_head', 'enderman_head', 'spider_head', 'cave_spider_head', 'zomb
 HEAD_KIND = {'zombified_piglin_head': 'zombie_piglin', 'stray_skull': 'stray'}
 
 def load(model_id):
-    return json.load(open(os.path.join(MODELS, model_id.split('/', 1)[1] + '.json')))
+    namespace, path = model_id.split(':', 1)
+    folder = MODELS if namespace == 'spartanweaponry' else VANILLA_MODELS
+    return json.load(open(os.path.join(folder, path.split('/', 1)[1] + '.json')))
 
 def save(path, data):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -84,8 +90,8 @@ def tree(item, overrides, base, bools, prop, values):
         return off
     return {'type': 'minecraft:condition', 'property': BOOLS[bools[0]], 'on_true': on, 'on_false': off}
 
-def definition(item):
-    base = 'spartanweaponry:item/' + item
+def definition(item, namespace='spartanweaponry'):
+    base = namespace + ':item/' + item
     if item in HEADS:
         kind = 'spartanweaponry:' + HEAD_KIND.get(item, item.rsplit('_', 1)[0])
         return {'model': {'type': 'minecraft:special', 'base': 'minecraft:item/template_skull',
@@ -102,17 +108,19 @@ def definition(item):
 def items():
     lang = json.load(open(os.path.join(ASSETS, 'lang/en_us.json')))
     ids = {k.split('.')[2] for k in lang if k.count('.') == 2 and k.split('.')[0] in ('item', 'block') and k.split('.')[1] == 'spartanweaponry'}
+    # the tipped projectiles are named per potion (item.spartanweaponry.tipped_bolt.effect.<potion>)
+    ids |= set(TIPPED)
     return sorted(i for i in ids if os.path.exists(os.path.join(MODELS, i + '.json')))
 
 ids = items()
 for item in ids:
     save(os.path.join(ITEMS, item + '.json'), definition(item))
+vanilla = sorted(f[:-5] for f in os.listdir(VANILLA_MODELS) if f.endswith('.json'))
+for item in vanilla:
+    save(os.path.join(VANILLA_ITEMS, item + '.json'), definition(item, 'minecraft'))
 for name, (parent, texture) in coatings.items():
     save(os.path.join(MODELS, name.split('/', 1)[1] + '.json'), {'parent': parent, 'textures': {'layer0': texture}})
-for f in os.listdir(MODELS):
-    if not f.endswith('.json'):
-        continue
-    path = os.path.join(MODELS, f)
+for path in [os.path.join(d, f) for d in (MODELS, VANILLA_MODELS) for f in os.listdir(d) if f.endswith('.json')]:
     data = json.load(open(path))
     changed = data.pop('overrides', None) is not None
     if data.pop('loader', None) == LOADER:
@@ -120,4 +128,4 @@ for f in os.listdir(MODELS):
         changed = True
     if changed:
         save(path, data)
-print(len(ids), 'item definitions,', len(coatings), 'coating models')
+print(len(ids), 'item definitions,', len(vanilla), 'vanilla,', len(coatings), 'coating models')

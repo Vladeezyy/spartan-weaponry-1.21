@@ -8,13 +8,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oblivioussp.spartanweaponry.event.CommonEventHandler;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ChorusFruitItem;
+import net.minecraft.world.item.consume_effects.TeleportRandomlyConsumeEffect;
 
-/** NeoForge EntityTeleportEvent.ChorusFruit: Ender Disruption stops the teleport. */
-@Mixin(ChorusFruitItem.class)
-public abstract class ChorusFruitItemMixin
+/** NeoForge EntityTeleportEvent.ItemConsumption (1.21.1: ChorusFruit): Ender Disruption stops the teleport. 1.21.2+: chorus
+ * fruit teleports through its consume effect. */
+@Mixin(TeleportRandomlyConsumeEffect.class)
+public abstract class TeleportRandomlyConsumeEffectMixin
 {
-	@WrapOperation(method = "finishUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;randomTeleport(DDDZ)Z"))
+	@WrapOperation(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;randomTeleport(DDDZ)Z"))
 	private boolean spartanweaponry$teleport(LivingEntity entity, double x, double y, double z, boolean particles, Operation<Boolean> original)
 	{
 		return !CommonEventHandler.checkToCancelTeleport(entity) && original.call(entity, x, y, z, particles);

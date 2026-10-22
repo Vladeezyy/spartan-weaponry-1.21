@@ -8,7 +8,7 @@ import com.oblivioussp.spartanweaponry.api.crafting.condition.TypeDisabledCondit
 
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceCondition;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditionType;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.Identifier;
 
 /** spartanweaponry:type_disabled as a Fabric resource condition (the recipes carry it in "fabric:load_conditions"). */
@@ -24,7 +24,7 @@ public record TypeDisabledResourceCondition(TypeDisabledCondition condition) imp
 	}
 
 	@Override
-	public boolean test(@Nullable HolderLookup.Provider registryLookup)
+	public boolean test(@Nullable RegistryOps.RegistryInfoLookup registryInfo)
 	{
 		return condition.test();
 	}

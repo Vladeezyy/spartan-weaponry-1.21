@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "spartanweaponry:item/coating/vanilla_sword"
+  }
+}

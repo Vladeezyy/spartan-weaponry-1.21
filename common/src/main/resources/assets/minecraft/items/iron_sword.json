@@ -1,0 +1,28 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "spartanweaponry:oiled",
+    "on_true": {
+      "type": "minecraft:composite",
+      "models": [
+        {
+          "type": "minecraft:model",
+          "model": "minecraft:item/iron_sword"
+        },
+        {
+          "type": "minecraft:model",
+          "model": "spartanweaponry:item/coating_layer/handheld",
+          "tints": [
+            {
+              "type": "spartanweaponry:oil"
+            }
+          ]
+        }
+      ]
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "minecraft:item/iron_sword"
+    }
+  }
+}

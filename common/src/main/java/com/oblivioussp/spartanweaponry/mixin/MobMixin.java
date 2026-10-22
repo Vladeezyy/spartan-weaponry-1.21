@@ -32,17 +32,7 @@ public class MobMixin extends LivingEntityMixin
 	@Final
 	public GoalSelector goalSelector;
 	
-	@Shadow
-	public void setItemSlot(EquipmentSlot slotIn, ItemStack item)
-	{
-		throw new IllegalStateException("Mixin failed to shadow the \"Mob.setItemSlot(...)\" method!");
-	}
 	
-	@Shadow
-	public ItemStack getItemBySlot(EquipmentSlot p_21467_) 
-	{
-		throw new IllegalStateException("Mixin failed to shadow the \"Mob.getItemBySlot(...)\" method!");
-	}
 	
 	protected void attemptReplacingMainHandItemRandom(@NotNull TagKey<Item> itemTagIn, DifficultyInstance difficultyIn, boolean disabledIn, float chanceNormalIn, float chanceHardIn)
 	{

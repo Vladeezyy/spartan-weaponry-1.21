@@ -1,5 +1,9 @@
 package com.oblivioussp.spartanweaponry.neoforge;
 
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import com.oblivioussp.spartanweaponry.client.item.WeaponryItemModels;
+import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -26,7 +30,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -41,7 +44,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
@@ -62,16 +64,21 @@ public class SpartanWeaponryNeoForgeClient
 	{
 		modBus.addListener((FMLClientSetupEvent ev) -> ev.enqueueWork(() ->
 		{
-			ModSpartanWeaponry.clientSetup(ItemProperties::register);
+			ModSpartanWeaponry.clientSetup();
 			if(ModList.get().isLoaded("curios"))
 				CurioRenderer.register();
 		}));
 		modBus.addListener((RegisterKeyMappingsEvent ev) ->
 		{
 			KeyBinds.KEY_ACCESS_QUIVER.setKeyConflictContext(KeyConflictContext.IN_GAME);
+			ev.registerCategory(KeyBinds.CATEGORY);
 			ev.register(KeyBinds.KEY_ACCESS_QUIVER);
 		});
-		modBus.addListener((RegisterColorHandlersEvent.Item ev) -> ClientHelper.registerItemColoursHandler((colour, items) -> ev.register(colour, items)));
+		// 1.21.4+: item definitions (assets/spartanweaponry/items) with these properties and tints, instead of item
+		// properties, item colours and the oil coating model loader
+		modBus.addListener((RegisterConditionalItemModelPropertyEvent ev) -> WeaponryItemModels.registerConditionalProperties(ev::register));
+		modBus.addListener((RegisterRangeSelectItemModelPropertyEvent ev) -> WeaponryItemModels.registerRangeProperties(ev::register));
+		modBus.addListener((RegisterColorHandlersEvent.ItemTintSources ev) -> WeaponryItemModels.registerTintSources(ev::register));
 		modBus.addListener((EntityRenderersEvent.RegisterRenderers ev) -> ClientHelper.registerEntityRenders(new ClientHelper.RendererRegistrar()
 		{
 			@Override
@@ -81,18 +88,13 @@ public class SpartanWeaponryNeoForgeClient
 			}
 
 			@Override
-			public <T extends BlockEntity> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T> provider)
+			public <T extends BlockEntity, S extends BlockEntityRenderState> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T, S> provider)
 			{
 				ev.registerBlockEntityRenderer(type, provider);
 			}
 		}));
 		modBus.addListener((EntityRenderersEvent.RegisterLayerDefinitions ev) -> ClientHelper.registerModelLayers(ev::registerLayerDefinition));
-		modBus.addListener((EntityRenderersEvent.CreateSkullModels ev) -> ClientHelper.registerSkullModels(ev.getEntityModelSet(), ev::registerSkullModel));
-		modBus.addListener((RegisterClientReloadListenersEvent ev) ->
-		{
-			if(ModList.get().isLoaded("curios"))
-				ev.registerReloadListener(CurioRenderer.INSTANCE);
-		});
+		modBus.addListener((EntityRenderersEvent.CreateSkullModels ev) -> ClientHelper.registerSkullModels(ev::registerSkullModel));
 		modBus.addListener((RegisterMenuScreensEvent ev) -> ClientHelper.registerScreens(new ClientHelper.ScreenRegistrar()
 		{
 			@Override
@@ -101,7 +103,7 @@ public class SpartanWeaponryNeoForgeClient
 				ev.register(type, constructor);
 			}
 		}));
-		modBus.addListener((RegisterGuiLayersEvent ev) -> ClientHelper.registerHudOverlays(ev::registerAboveAll, (id, layer) -> ev.registerAbove(VanillaGuiLayers.CROSSHAIR, id, layer)));
+		modBus.addListener((RegisterGuiLayersEvent ev) -> ClientHelper.registerHudOverlays((id, layer) -> ev.registerAboveAll(id, layer::render), (id, layer) -> ev.registerAbove(VanillaGuiLayers.CROSSHAIR, id, layer::render)));
 		modBus.addListener((RegisterClientTooltipComponentFactoriesEvent ev) ->
 		{
 			ev.register(QuiverTooltip.class, ClientQuiverTooltip::new);

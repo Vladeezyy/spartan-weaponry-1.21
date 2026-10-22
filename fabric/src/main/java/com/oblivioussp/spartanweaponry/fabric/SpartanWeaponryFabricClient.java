@@ -1,8 +1,14 @@
 package com.oblivioussp.spartanweaponry.fabric;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.minecraft.client.color.item.ItemTintSources;
+import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperties;
+import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
+import com.oblivioussp.spartanweaponry.client.item.WeaponryItemModels;
+import net.minecraft.client.KeyMapping;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.client.KeyBinds;
@@ -15,15 +21,9 @@ import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
-import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.client.DeltaTracker;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -43,16 +43,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class SpartanWeaponryFabricClient implements ClientModInitializer
 {
-	/** The HUD layers NeoForge draws right above the vanilla crosshair (drawn by mixin/client/GuiMixin). */
-	public static final List<LayeredDraw.Layer> ABOVE_CROSSHAIR = new ArrayList<>();
-	private static final List<LayeredDraw.Layer> ABOVE_ALL = new ArrayList<>();
-	
 	@Override
 	public void onInitializeClient()
 	{
-		ModSpartanWeaponry.clientSetup(FabricModelPredicateProviderRegistry::register);
+		ModSpartanWeaponry.clientSetup();
+		KeyMapping.Category.register(KeyBinds.CATEGORY.id());
 		KeyBindingHelper.registerKeyBinding(KeyBinds.KEY_ACCESS_QUIVER);
-		ClientHelper.registerItemColoursHandler((colour, items) -> ColorProviderRegistry.ITEM.register(colour, items));
+		// 1.21.4+: item definitions (assets/spartanweaponry/items) with these properties and tints, instead of item
+		// properties, item colours and the oil coating model (1.21.1: OilCoatingModels)
+		WeaponryItemModels.registerConditionalProperties(ConditionalItemModelProperties.ID_MAPPER::put);
+		WeaponryItemModels.registerRangeProperties(RangeSelectItemModelProperties.ID_MAPPER::put);
+		WeaponryItemModels.registerTintSources(ItemTintSources.ID_MAPPER::put);
 		ClientHelper.registerEntityRenders(new ClientHelper.RendererRegistrar()
 		{
 			@Override
@@ -62,9 +63,10 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 			}
 			
 			@Override
-			public <T extends BlockEntity> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T> provider)
+			@SuppressWarnings("unchecked")
+			public <T extends BlockEntity, S extends BlockEntityRenderState> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T, S> provider)
 			{
-				BlockEntityRendererRegistry.register(type, provider);
+				BlockEntityRendererRegistry.register((BlockEntityType<T>)type, provider);
 			}
 		});
 		ClientHelper.registerModelLayers((layer, definition) -> EntityModelLayerRegistry.registerModelLayer(layer, definition::get));
@@ -85,9 +87,15 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 			}
 		});
 		TooltipComponentCallback.EVENT.register(ClientHelper::createTooltipComponent);
-		ClientHelper.registerHudOverlays((id, layer) -> ABOVE_ALL.add(layer), (id, layer) -> ABOVE_CROSSHAIR.add(layer));
-		HudRenderCallback.EVENT.register(SpartanWeaponryFabricClient::renderHud);
-		OilCoatingModels.register();
+		// The GUI layers of NeoForge: above everything, and right after the crosshair, which the weapons with their own
+		// crosshair hide (NeoForge: RenderGuiLayerEvent.Pre of the crosshair)
+		ClientHelper.registerHudOverlays((id, layer) -> HudElementRegistry.addLast(id, layer::render),
+				(id, layer) -> HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, id, layer::render));
+		HudElementRegistry.replaceElement(VanillaHudElements.CROSSHAIR, (crosshair) -> (graphics, delta) ->
+		{
+			if(!ClientEventHandler.hideVanillaCrosshair())
+				crosshair.render(graphics, delta);
+		});
 		
 		// NeoForge: the key and mouse button input events; on Fabric before the game handles the key bindings each tick
 		ClientTickEvents.START_CLIENT_TICK.register(mc ->
@@ -114,12 +122,5 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 				throw new IllegalStateException("The test scenes are not in this build", e);
 			}
 		}
-	}
-	
-	// As NeoForge's registerAboveAll layers: drawn with the GUI hidden (F1) too
-	private static void renderHud(GuiGraphics graphics, DeltaTracker delta)
-	{
-		for(LayeredDraw.Layer layer : ABOVE_ALL)
-			layer.render(graphics, delta);
 	}
 }

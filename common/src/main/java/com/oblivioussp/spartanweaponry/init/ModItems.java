@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.init;
 
+import java.util.function.Supplier;
 import com.oblivioussp.spartanweaponry.api.ItemIds;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
 import net.minecraft.core.registries.Registries;
@@ -44,28 +45,29 @@ public class ModItems
 		
 		public WeaponItemsMelee(Registrar<Item> register, String weaponName, WeaponFunction<SwordBaseItem> factory)
 		{
-			Item.Properties propVanilla = ItemIds.properties();
-			Item.Properties propModded = ItemIds.properties();
+			// 1.21.2+: each item gets properties of its own, with its id (made in the registrar's factory)
+			Supplier<Item.Properties> propVanilla = ItemIds::properties;
+			Supplier<Item.Properties> propModded = ItemIds::properties;
 			
-			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
-			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla));
-			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla));
-			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
-			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
-			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
+			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla.get()));
+			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla.get()));
+			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla.get()));
+			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla.get()));
+			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla.get()));
+			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla.get()));
 			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
-			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
-			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
-			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded));
-			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded));
-			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded));
-			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded));
-			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded));
-			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded));
-			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded));
-			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded));
-			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded));
+			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded.get()));
+			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded.get()));
+			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded.get()));
+			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded.get()));
+			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded.get()));
+			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded.get()));
+			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded.get()));
+			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded.get()));
+			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded.get()));
+			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded.get()));
+			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded.get()));
 		}
 		
 /*		public void updateSettingsFromConfig(float baseDamage, float damageMultiplier, double speed)
@@ -100,28 +102,29 @@ public class ModItems
 		
 		public WeaponItemsRanged(Registrar<Item> register, String weaponName, WeaponFunction<? extends Item> factory)
 		{
-			Item.Properties propVanilla = ItemIds.properties();
-			Item.Properties propModded = ItemIds.properties();
+			// 1.21.2+: each item gets properties of its own, with its id (made in the registrar's factory)
+			Supplier<Item.Properties> propVanilla = ItemIds::properties;
+			Supplier<Item.Properties> propModded = ItemIds::properties;
 			
-			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
-			leather = register.register("leather_" + weaponName, () -> factory.create(WeaponMaterial.LEATHER, propVanilla));
-			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla));
-			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
-			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
-			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
+			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla.get()));
+			leather = register.register("leather_" + weaponName, () -> factory.create(WeaponMaterial.LEATHER, propVanilla.get()));
+			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla.get()));
+			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla.get()));
+			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla.get()));
+			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla.get()));
 			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
-			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
-			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
-			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded));
-			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded));
-			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded));
-			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded));
-			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded));
-			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded));
-			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded));
-			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded));
-			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded));
+			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded.get()));
+			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded.get()));
+			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded.get()));
+			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded.get()));
+			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded.get()));
+			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded.get()));
+			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded.get()));
+			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded.get()));
+			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded.get()));
+			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded.get()));
+			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded.get()));
 		}
 		
 		public ImmutableList<ItemStack> getVanillaItemStacks()
@@ -151,28 +154,29 @@ public class ModItems
 		
 		public WeaponItemsThrowing(Registrar<Item> register, String weaponName, WeaponFunction<ThrowingWeaponItem> factory)
 		{
-			Item.Properties propVanilla = ItemIds.properties();
-			Item.Properties propModded = ItemIds.properties();
+			// 1.21.2+: each item gets properties of its own, with its id (made in the registrar's factory)
+			Supplier<Item.Properties> propVanilla = ItemIds::properties;
+			Supplier<Item.Properties> propModded = ItemIds::properties;
 			
-			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
-			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla));
-			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla));
-			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
-			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
-			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
+			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla.get()));
+			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla.get()));
+			copper = register.register("copper_" + weaponName, () -> factory.create(WeaponMaterial.COPPER, propVanilla.get()));
+			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla.get()));
+			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla.get()));
+			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla.get()));
 			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
-			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
-			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
-			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded));
-			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded));
-			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded));
-			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded));
-			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded));
-			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded));
-			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded));
-			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded));
-			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded));
+			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded.get()));
+			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded.get()));
+			steel = register.register("steel_" + weaponName, () -> factory.create(WeaponMaterial.STEEL, propModded.get()));
+			silver = register.register("silver_" + weaponName, () -> factory.create(WeaponMaterial.SILVER, propModded.get()));
+			electrum = register.register("electrum_" + weaponName, () -> factory.create(WeaponMaterial.ELECTRUM, propModded.get()));
+			lead = register.register("lead_" + weaponName, () -> factory.create(WeaponMaterial.LEAD, propModded.get()));
+			nickel = register.register("nickel_" + weaponName, () -> factory.create(WeaponMaterial.NICKEL, propModded.get()));
+			invar = register.register("invar_" + weaponName, () -> factory.create(WeaponMaterial.INVAR, propModded.get()));
+			constantan = register.register("constantan_" + weaponName, () -> factory.create(WeaponMaterial.CONSTANTAN, propModded.get()));
+			platinum = register.register("platinum_" + weaponName, () -> factory.create(WeaponMaterial.PLATINUM, propModded.get()));
+			aluminum = register.register("aluminum_" + weaponName, () -> factory.create(WeaponMaterial.ALUMINUM, propModded.get()));
 		}
 		
 /*		public void updateSettingsFromConfig(float baseDamage, float damageMultiplier, double speed, int chargeTicks)
