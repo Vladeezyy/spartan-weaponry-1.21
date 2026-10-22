@@ -73,10 +73,10 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   (она и так optional), вернуть, когда Botania выйдет.
 - **1.21.11 (ветки `mc/1.21.11`, рабочие папки `~/Desktop/<repo>-1.21.11` — git worktree):**
   - HUD Baubles: выпущен `v1.0.0.3+1.21.11`, только NeoForge (у Trinkets нет 1.21.11).
-  - Shields: выпущен `v3.1.1.4+1.21.11` (NeoForge + Fabric).
-  - Weaponry: в работе (worktree `spartan-weaponry-1.21.11`, Loom 1.17.21 + Gradle 9.8.1; ~800 ошибок компиляции в
-    начале).
-  - Arcana: после Weaponry, без Botania.
+  - Shields: выпущен `v3.1.1.5+1.21.11` (NeoForge + Fabric; 3.1.1.4 не грузил рецепты с `tag_not_empty`).
+  - Weaponry: выпущен `v3.2.1.2+1.21.11` (NeoForge + Fabric).
+  - Arcana: выпущен `v1.0.3.1+1.21.11` без Botania (NeoForge + Fabric; libs/ — jar'ы Weaponry 1.21.11).
+  - 1.21.11 закрыт для всех четырёх; следующий шаг — `mc/26.1.2`.
   - Скрипты порта — modding-kb `scripts/` (`port_1_21_11_scenes.py`, `fix_moved_imports.py <mc-src>`,
     `ingredients_1_21_2.py`).
   - Исходники MC 1.21.11 — распаковать `common/build/moddev/artifacts/vanilla-1.21.11-*-sources.jar`.
