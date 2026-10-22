@@ -28,7 +28,8 @@ grep -E 'Done \(|Crash report|crash report|BUILD FAILED' "$LOG" | head -3
 grep -E '/(ERROR|FATAL)\]|Caused by|Exception' "$LOG" | grep -vE 'server.properties|No data fixer registered' | cut -c1-250 | sort | uniq -c | sort -rn | head -10
 mkdir -p fabric/run-prod
 [ -f fabric/run-prod/options.txt ] || cp fabric/run/options.txt fabric/run-prod/ 2>/dev/null
-for t in Scene Stress; do
+# NO_STRESS=1: the client scene only
+for t in Scene $([ -n "$NO_STRESS" ] || echo Stress); do
 	rm -rf fabric/run-prod/saves/sw_scene fabric/run-prod/saves/sw_stress fabric/run-prod/screenshots fabric/run-prod/config/spartanweaponry-common.toml
 	LOG=build-prod$(echo $t | tr 'A-Z' 'a-z')-fabric.log
 	run_watched "$LOG" 1500 ":fabric:prod$t"
