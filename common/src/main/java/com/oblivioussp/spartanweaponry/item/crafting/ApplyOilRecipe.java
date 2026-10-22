@@ -120,14 +120,9 @@ public class ApplyOilRecipe extends CustomRecipe
 	}
 
 	// Crafting need to have a minimum of 2 slots
-	@Override
-	public boolean canCraftInDimensions(int width, int height)
-	{
-		return width * height >= 1;
-	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() 
+	public RecipeSerializer<ApplyOilRecipe> getSerializer() 
 	{
 		return ModRecipeSerializers.APPLY_OIL.get();
 	}

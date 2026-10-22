@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:javelin",
   "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:ingots/gold",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     "/#"

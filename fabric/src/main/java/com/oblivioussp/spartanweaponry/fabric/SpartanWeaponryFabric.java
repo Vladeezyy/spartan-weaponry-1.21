@@ -93,7 +93,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 			@Override
 			public Identifier getName()
 			{
-				return key.location();
+				return key.identifier();
 			}
 
 			@Override

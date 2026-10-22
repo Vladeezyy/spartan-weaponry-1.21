@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:spear",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "/": {
-      "tag": "spartanweaponry:poles"
-    }
+    "#": "#c:cobblestones",
+    "/": "#spartanweaponry:poles"
   },
   "pattern": [
     "#",

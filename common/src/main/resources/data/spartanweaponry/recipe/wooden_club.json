@@ -18,9 +18,7 @@
   ],
   "group": "spartanweaponry:club",
   "key": {
-    "#": {
-      "tag": "minecraft:logs"
-    }
+    "#": "#minecraft:logs"
   },
   "pattern": [
     " #",

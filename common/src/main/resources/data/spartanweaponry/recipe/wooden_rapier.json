@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:rapier",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#minecraft:planks",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

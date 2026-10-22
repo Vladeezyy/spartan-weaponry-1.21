@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.minecraft.world.item.component.ResolvableProfile.Dynamic;
+import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -33,7 +33,7 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 {
 	private static final String DISABLED_TYPE = "disabled_type";
 	private static final Codec<Ingredient> INPUT_CODEC = Codec.PASSTHROUGH.flatXmap(TagCookingRecipeSerializer::readInput, 
-			(ingredient) -> Ingredient.CODEC_NONEMPTY.encodeStart(JsonOps.INSTANCE, ingredient).map((json) -> new Dynamic<>(JsonOps.INSTANCE, json)));
+			(ingredient) -> Ingredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).map((json) -> new Dynamic<>(JsonOps.INSTANCE, json)));
 	
 	private final MapCodec<T> codec;
 	private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
@@ -41,7 +41,7 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 	public TagCookingRecipeSerializer(RecipeFactory<T> factoryIn, int defaultCookingTimeIn)
 	{
 		codec = RecordCodecBuilder.mapCodec((instance) -> instance.group(
-				Codec.STRING.optionalFieldOf("group", "").forGetter(ITagCookingRecipe::getGroup),
+				Codec.STRING.optionalFieldOf("group", "").forGetter(ITagCookingRecipe::group),
 				CookingBookCategory.CODEC.fieldOf("category").orElse(CookingBookCategory.MISC).forGetter(ITagCookingRecipe::getCategory),
 				INPUT_CODEC.fieldOf("ingredient").forGetter(ITagCookingRecipe::getInputIngredient),
 				TagKey.codec(Registries.ITEM).fieldOf("result_tag").forGetter(ITagCookingRecipe::getResultTag),
@@ -50,14 +50,14 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 				.apply(instance, factoryIn::create));
 		streamCodec = StreamCodec.of((buffer, recipe) -> 
 		{
-			buffer.writeUtf(recipe.getGroup());
+			buffer.writeUtf(recipe.group());
 			buffer.writeEnum(recipe.getCategory());
 			Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.getInputIngredient());
-			buffer.writeResourceLocation(recipe.getResultTag().location());
+			buffer.writeIdentifier(recipe.getResultTag().location());
 			buffer.writeFloat(recipe.getExperienceDrop());
 			buffer.writeVarInt(recipe.getCookTime());
 		}, (buffer) -> factoryIn.create(buffer.readUtf(), buffer.readEnum(CookingBookCategory.class), Ingredient.CONTENTS_STREAM_CODEC.decode(buffer),
-				TagKey.create(Registries.ITEM, buffer.readResourceLocation()), buffer.readFloat(), buffer.readVarInt()));
+				TagKey.create(Registries.ITEM, buffer.readIdentifier()), buffer.readFloat(), buffer.readVarInt()));
 	}
 
 	@Override
@@ -76,11 +76,12 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 	{
 		Optional<Stream<Dynamic<O>>> entries = input.asStreamOpt().result();
 		if(entries.isEmpty())
-			return Ingredient.CODEC_NONEMPTY.parse(input);
+			return Ingredient.CODEC.parse(input);
+		// 1.21.2+: an ingredient is a list of item ids; the entries keep {"item": ..., "disabled_type": ...}
 		List<Dynamic<O>> enabled = entries.get().filter((entry) -> entry.get(DISABLED_TYPE).asString().result()
 				.map((type) -> !TypeDisabledCondition.disabledRecipeTypes.contains(type)).orElse(true))
-				.map((entry) -> entry.remove(DISABLED_TYPE)).toList();
-		return Ingredient.CODEC_NONEMPTY.parse(input.createList(enabled.stream()));
+				.map((entry) -> entry.get("item").result().orElse(entry)).toList();
+		return Ingredient.CODEC.parse(input.createList(enabled.stream()));
 	}
 	
 	@FunctionalInterface

@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:lance",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:cobblestones",
+    "/": "spartanweaponry:pole",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

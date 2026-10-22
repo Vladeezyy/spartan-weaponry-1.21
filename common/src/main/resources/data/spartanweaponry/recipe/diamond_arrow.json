@@ -19,15 +19,9 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "F": {
-      "tag": "c:feathers"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:gems/diamond",
+    "F": "#c:feathers",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "#",

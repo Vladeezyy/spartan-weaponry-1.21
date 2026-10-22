@@ -58,7 +58,7 @@ public class HarvesterWeaponTrait extends WeaponTrait implements IActionTraitCal
 			if(applyCooldown.get())
 			{
 				player.swing(contextIn.getHand(), true);
-				player.getCooldowns().addCooldown(contextIn.getItemInHand().getItem(), 10);
+				player.getCooldowns().addCooldown(contextIn.getItemInHand(), 10);
 				return InteractionResult.CONSUME;
 			}
 			
@@ -93,7 +93,7 @@ public class HarvesterWeaponTrait extends WeaponTrait implements IActionTraitCal
 						withParameter(LootContextParams.TOOL, toolIn));
 				
 				// Remove 1 seed from this drop list
-				ItemStack targetSeed = block.getCloneItemStack(levelIn, posIn, state);
+				ItemStack targetSeed = state.getCloneItemStack(levelIn, posIn, false);
 				for(ItemStack dropStack : drops)
 				{
 					if(dropStack.is(targetSeed.getItem()))

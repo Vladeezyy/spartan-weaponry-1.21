@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:dagger",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "|": {
-      "tag": "spartanweaponry:handles"
-    }
+    "#": "#c:cobblestones",
+    "|": "#spartanweaponry:handles"
   },
   "pattern": [
     "#",

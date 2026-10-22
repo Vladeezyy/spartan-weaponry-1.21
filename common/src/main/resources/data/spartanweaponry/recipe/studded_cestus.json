@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:cestus",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "C": {
-      "item": "spartanweaponry:cestus"
-    }
+    "#": "#c:ingots/iron",
+    "C": "spartanweaponry:cestus"
   },
   "pattern": [
     "C#"

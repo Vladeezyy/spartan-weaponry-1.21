@@ -18,18 +18,10 @@
   ],
   "group": "spartanweaponry:longbow",
   "key": {
-    "#": {
-      "tag": "c:leathers"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:leathers",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle",
+    "~": "#c:strings"
   },
   "pattern": [
     "|/#",

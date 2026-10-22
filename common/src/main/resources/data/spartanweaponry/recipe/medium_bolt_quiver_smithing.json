@@ -1,15 +1,9 @@
 {
-  "type": "spartanweaponry:quiver_upgrade_smithing",
-  "addition": {
-    "item": "spartanweaponry:medium_quiver_brace"
-  },
-  "base": {
-    "item": "spartanweaponry:small_bolt_quiver"
-  },
+  "type": "minecraft:smithing_transform",
+  "addition": "spartanweaponry:medium_quiver_brace",
+  "base": "spartanweaponry:small_bolt_quiver",
   "result": {
     "id": "spartanweaponry:medium_bolt_quiver"
   },
-  "template": {
-    "item": "spartanweaponry:quiver_compartment"
-  }
+  "template": "spartanweaponry:quiver_compartment"
 }

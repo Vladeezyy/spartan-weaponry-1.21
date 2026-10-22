@@ -103,7 +103,7 @@ public final class Registrar<R>
 		public T get()
 		{
 			if(value == null)
-				throw new IllegalStateException("Registry entry not registered yet: " + key.location());
+				throw new IllegalStateException("Registry entry not registered yet: " + key.identifier());
 			return value;
 		}
 
@@ -119,7 +119,7 @@ public final class Registrar<R>
 
 		public Identifier getId()
 		{
-			return key.location();
+			return key.identifier();
 		}
 
 		@SuppressWarnings("unchecked")
@@ -127,7 +127,7 @@ public final class Registrar<R>
 		{
 			if(holder == null)
 			{
-				Registry<R> reg = (Registry<R>)BuiltInRegistries.REGISTRY.get(key.registry());
+				Registry<R> reg = (Registry<R>)BuiltInRegistries.REGISTRY.getValue(key.registry());
 				holder = reg.getOrThrow(key);
 			}
 			return holder;

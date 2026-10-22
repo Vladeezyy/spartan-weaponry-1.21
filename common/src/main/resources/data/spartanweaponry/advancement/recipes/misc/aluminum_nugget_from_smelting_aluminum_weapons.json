@@ -7,11 +7,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:nuggets/aluminum"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:nuggets/aluminum"
     }
   ],
   "fabric:load_conditions": [

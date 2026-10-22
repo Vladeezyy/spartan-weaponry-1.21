@@ -19,33 +19,15 @@
     }
   ],
   "ingredients": [
-    {
-      "tag": "c:ingots/netherite"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    },
-    {
-      "item": "spartanweaponry:diamond_arrow"
-    }
+    "#c:ingots/netherite",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow",
+    "spartanweaponry:diamond_arrow"
   ],
   "result": {
     "count": 8,

@@ -18,18 +18,10 @@
   ],
   "group": "spartanweaponry:longbow",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#minecraft:planks",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle",
+    "~": "#c:strings"
   },
   "pattern": [
     "|/#",

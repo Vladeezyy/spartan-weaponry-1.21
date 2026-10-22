@@ -17,12 +17,8 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:ingots/netherite"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:ingots/netherite",
+    "~": "#c:strings"
   },
   "pattern": [
     "~",

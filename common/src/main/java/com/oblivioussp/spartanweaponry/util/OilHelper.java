@@ -25,7 +25,7 @@ public class OilHelper
 		CompoundTag tag = ItemNbt.read(stackIn).getCompoundOrEmpty(OilHandler.NBT_OIL);
 		Identifier oil = Identifier.tryParse(tag.getStringOr(OilHandler.NBT_OIL_EFFECT, ""));
 		if(oil != null && OilEffects.OIL_REGISTRY.containsKey(oil))
-			return OilEffects.OIL_REGISTRY.get(oil);
+			return OilEffects.OIL_REGISTRY.getValue(oil);
 		return OilEffects.NONE.get();
 	}
 	

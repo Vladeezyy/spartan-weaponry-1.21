@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "spartanweaponry:pole",
   "key": {
-    "#": {
-      "tag": "minecraft:wool"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#minecraft:wool",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "|||",

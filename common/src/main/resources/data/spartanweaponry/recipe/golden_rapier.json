@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:rapier",
   "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/gold",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:lance",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#minecraft:planks",
+    "/": "spartanweaponry:pole",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

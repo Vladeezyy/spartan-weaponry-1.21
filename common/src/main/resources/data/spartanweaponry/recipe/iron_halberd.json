@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:halberd",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:ingots/iron",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     " #",

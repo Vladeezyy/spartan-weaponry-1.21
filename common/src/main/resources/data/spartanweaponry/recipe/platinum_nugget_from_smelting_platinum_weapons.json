@@ -7,11 +7,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:nuggets/platinum"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:nuggets/platinum"
     }
   ],
   "fabric:load_conditions": [

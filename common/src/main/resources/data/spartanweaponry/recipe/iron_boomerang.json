@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:boomerang",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
+    "#": "#c:ingots/iron",
+    "P": "#minecraft:planks"
   },
   "pattern": [
     "#PP",

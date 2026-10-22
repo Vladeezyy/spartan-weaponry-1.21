@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:battleaxe",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/iron",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "###",

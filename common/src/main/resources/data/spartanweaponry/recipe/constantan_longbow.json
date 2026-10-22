@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/constantan"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/constantan"
     }
   ],
   "fabric:load_conditions": [
@@ -31,18 +28,10 @@
   ],
   "group": "spartanweaponry:longbow",
   "key": {
-    "#": {
-      "tag": "c:ingots/constantan"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:ingots/constantan",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle",
+    "~": "#c:strings"
   },
   "pattern": [
     "|/#",

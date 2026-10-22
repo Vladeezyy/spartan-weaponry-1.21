@@ -3,12 +3,8 @@
   "category": "equipment",
   "group": "spartanweaponry:pole",
   "key": {
-    "#": {
-      "tag": "c:strings"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:strings",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "| ",

@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.util;
 
-import net.minecraft.world.item.component.ResolvableProfile.Dynamic;
+import com.mojang.serialization.Dynamic;
 
 import net.minecraft.SharedConstants;
 import net.minecraft.core.HolderLookup;
@@ -22,7 +22,7 @@ public final class LegacyItems
 	public static ItemStack parse(CompoundTag oldStack, HolderLookup.Provider registries)
 	{
 		Dynamic<?> updated = DataFixers.getDataFixer().update(References.ITEM_STACK, new Dynamic<>(NbtOps.INSTANCE, oldStack),
-				DATA_VERSION_1_20_1, SharedConstants.getCurrentVersion().getDataVersion().getVersion());
-		return ItemStack.parseOptional(registries, (CompoundTag)updated.getValue());
+				DATA_VERSION_1_20_1, SharedConstants.getCurrentVersion().dataVersion().version());
+		return ItemStack.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), (CompoundTag)updated.getValue()).result().orElse(ItemStack.EMPTY);
 	}
 }

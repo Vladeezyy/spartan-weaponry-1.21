@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "spartanweaponry:stray_skull"
-    }
+    "spartanweaponry:stray_skull"
   ],
   "result": {
     "count": 4,

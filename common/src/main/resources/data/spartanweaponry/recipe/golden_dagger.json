@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:dagger",
   "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "|": {
-      "tag": "spartanweaponry:handles"
-    }
+    "#": "#c:ingots/gold",
+    "|": "#spartanweaponry:handles"
   },
   "pattern": [
     "#",

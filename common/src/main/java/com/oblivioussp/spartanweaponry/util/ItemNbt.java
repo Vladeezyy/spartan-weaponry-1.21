@@ -25,10 +25,10 @@ public final class ItemNbt
 	 * The item's NBT without a copy, for reading only: never change the returned tag (it is the component's own).
 	 * {@link #get} copies the whole tag, which several per-tick and per-frame reads did for one value each.
 	 */
-	@SuppressWarnings("deprecation")
 	public static CompoundTag read(ItemStack stack)
 	{
-		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).getUnsafe();
+		// 1.21.11: no getUnsafe; the component's own tag through the access transformer / widener
+		return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).tag;
 	}
 
 	/** {@code ItemStack.hasTag()} of 1.20.1 */
@@ -41,7 +41,7 @@ public final class ItemNbt
 	public static boolean contains(ItemStack stack, String key)
 	{
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-		return data != null && data.contains(key);
+		return data != null && data.tag.contains(key);
 	}
 
 	/** Replaces the item's NBT (an empty tag removes the component) */

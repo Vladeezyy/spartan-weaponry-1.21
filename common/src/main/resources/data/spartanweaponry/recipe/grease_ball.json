@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:grease_ball",
   "key": {
-    "#": {
-      "tag": "c:foods/raw_meat"
-    },
-    "O": {
-      "tag": "c:slime_balls"
-    }
+    "#": "#c:foods/raw_meat",
+    "O": "#c:slime_balls"
   },
   "pattern": [
     " # ",

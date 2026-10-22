@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:halberd",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#minecraft:planks",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     " #",

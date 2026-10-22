@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:glaive",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#minecraft:planks",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     " #",

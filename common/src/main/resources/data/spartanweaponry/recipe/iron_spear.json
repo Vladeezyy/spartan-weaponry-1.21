@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:spear",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "/": {
-      "tag": "spartanweaponry:poles"
-    }
+    "#": "#c:ingots/iron",
+    "/": "#spartanweaponry:poles"
   },
   "pattern": [
     "#",

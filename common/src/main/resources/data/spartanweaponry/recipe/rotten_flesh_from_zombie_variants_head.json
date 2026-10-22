@@ -3,15 +3,9 @@
   "category": "misc",
   "ingredients": [
     [
-      {
-        "item": "spartanweaponry:zombified_piglin_head"
-      },
-      {
-        "item": "spartanweaponry:husk_head"
-      },
-      {
-        "item": "spartanweaponry:drowned_head"
-      }
+      "spartanweaponry:zombified_piglin_head",
+      "spartanweaponry:husk_head",
+      "spartanweaponry:drowned_head"
     ]
   ],
   "result": {

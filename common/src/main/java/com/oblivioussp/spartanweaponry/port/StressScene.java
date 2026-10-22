@@ -235,7 +235,7 @@ public final class StressScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
 	}
 
 	private static void fps(Minecraft mc, String what)

@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.event;
 
+import net.minecraft.resources.ResourceKey;
 import java.util.List;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -88,7 +89,7 @@ public final class LoaderEvents
 	}
 
 	/** NeoForge VillagerTradesEvent: trades by villager level (1 to 5). */
-	public record VillagerTrades(VillagerProfession getType, Int2ObjectMap<List<ItemListing>> getTrades) {}
+	public record VillagerTrades(ResourceKey<VillagerProfession> getType, Int2ObjectMap<List<ItemListing>> getTrades) {}
 
 	/** NeoForge AnvilUpdateEvent. */
 	public static class AnvilUpdate

@@ -17,15 +17,9 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "F": {
-      "tag": "c:feathers"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:ingots/iron",
+    "F": "#c:feathers",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "#",

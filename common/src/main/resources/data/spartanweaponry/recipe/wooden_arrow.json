@@ -17,15 +17,9 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "F": {
-      "tag": "c:feathers"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#minecraft:planks",
+    "F": "#c:feathers",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "#",

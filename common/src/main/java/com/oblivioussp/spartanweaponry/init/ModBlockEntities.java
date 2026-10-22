@@ -14,7 +14,7 @@ public class ModBlockEntities
 {
 	public static final Registrar<BlockEntityType<?>> REGISTRY = Registrar.create(Registries.BLOCK_ENTITY_TYPE);
 	
-	public static final Registrar.Entry<BlockEntityType<?>, BlockEntityType<ExtendedSkullBlockEntity>> EXTENDED_SKULL_TYPE = REGISTRY.register("skull_extended", () -> BlockEntityType.Builder.of(ExtendedSkullBlockEntity::new, 
+	public static final Registrar.Entry<BlockEntityType<?>, BlockEntityType<ExtendedSkullBlockEntity>> EXTENDED_SKULL_TYPE = REGISTRY.register("skull_extended", () -> new BlockEntityType<>(ExtendedSkullBlockEntity::new, java.util.Set.of(
 			ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(),
 			ModBlocks.ENDERMAN_HEAD.get(), ModBlocks.ENDERMAN_WALL_HEAD.get(),
 			ModBlocks.SPIDER_HEAD.get(), ModBlocks.SPIDER_WALL_HEAD.get(),
@@ -24,5 +24,5 @@ public class ModBlockEntities
 			ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(),
 			ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(),
 			ModBlocks.ILLAGER_HEAD.get(), ModBlocks.ILLAGER_WALL_HEAD.get(),
-			ModBlocks.WITCH_HEAD.get(), ModBlocks.WITCH_WALL_HEAD.get()).build(null));
+			ModBlocks.WITCH_HEAD.get(), ModBlocks.WITCH_WALL_HEAD.get())));
 }

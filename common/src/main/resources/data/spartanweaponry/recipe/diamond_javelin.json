@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:javelin",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:gems/diamond",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     "/#"

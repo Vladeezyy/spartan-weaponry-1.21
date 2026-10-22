@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.merchant.villager;
 
+import net.minecraft.server.level.ServerLevel;
 import java.util.Optional;
 
 import net.minecraft.core.HolderSet;
@@ -42,7 +43,7 @@ public class VillagerTrades
 		}
 
 		@Override
-		public MerchantOffer getOffer(Entity trader, RandomSource rand)
+		public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource rand)
 		{
 			return new MerchantOffer(cost(wantedStack), wantedStack2.isEmpty() ? Optional.empty() : Optional.of(cost(wantedStack2)), offeredStack.copy(), maxUses, xpGiven, priceMultiplier);
 		}
@@ -67,7 +68,7 @@ public class VillagerTrades
 		}
 		
 		@Override
-		public MerchantOffer getOffer(Entity trader, RandomSource rand)
+		public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource rand)
 		{
 			int level = 5 + rand.nextInt(15);
 			ItemStack enchantedStack = enchant(trader, rand, new ItemStack(offeredStack.getItem()), level);
@@ -114,7 +115,7 @@ public class VillagerTrades
 		}
 
 		@Override
-		public MerchantOffer getOffer(Entity trader, RandomSource rand) 
+		public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource rand) 
 		{
 			// Port fix: nextInt(size) (1.20.1 used size - 1 and never offered the last item)
 			if(offeredItems.isEmpty())	// every item of the level is disabled in the config: no trade
@@ -135,7 +136,7 @@ public class VillagerTrades
 		}
 		
 		@Override
-		public MerchantOffer getOffer(Entity trader, RandomSource rand)
+		public MerchantOffer getOffer(ServerLevel serverLevel, Entity trader, RandomSource rand)
 		{
 			// Port fix: nextInt(size) (1.20.1: size - 1 skipped the last item and crashed on a list of one)
 			if(offeredItems.isEmpty())	// every item of the level is disabled in the config: no trade
@@ -156,7 +157,7 @@ public class VillagerTrades
 	private static ItemStack enchant(Entity trader, RandomSource rand, ItemStack stack, int level)
 	{
 		RegistryAccess registries = trader.level().registryAccess();
-		Optional<HolderSet<Enchantment>> options = registries.lookupOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.ON_TRADED_EQUIPMENT).map((tag) -> (HolderSet<Enchantment>)tag);
+		Optional<HolderSet<Enchantment>> options = registries.lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.ON_TRADED_EQUIPMENT).map((tag) -> (HolderSet<Enchantment>)tag);
 		return EnchantmentHelper.enchantItem(rand, stack, level, registries, options);
 	}
 }

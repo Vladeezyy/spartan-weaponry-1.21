@@ -149,7 +149,10 @@ public class SpartanWeaponryNeoForge
 		}
 		// The registries of NeoForge itself
 		if(ev.getRegistryKey().equals(NeoForgeRegistries.Keys.CONDITION_CODECS))
+		{
 			ev.register(NeoForgeRegistries.Keys.CONDITION_CODECS, id("type_disabled"), () -> TypeDisabledConditionNeoForge.CODEC);
+			ev.register(NeoForgeRegistries.Keys.CONDITION_CODECS, id("tag_not_empty"), () -> TagNotEmptyConditionNeoForge.CODEC);
+		}
 		if(ev.getRegistryKey().equals(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS))
 			ev.register(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, id("decapitate"), () -> DecapitateLootModifier.CODEC);
 		if(ev.getRegistryKey().equals(Registries.COMMAND_ARGUMENT_TYPE))

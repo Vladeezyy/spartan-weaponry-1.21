@@ -24,10 +24,10 @@ public final class Decapitation
 
 	public static void apply(ObjectArrayList<ItemStack> generatedLoot, LootContext context, Item skull)
 	{
-		if(!context.hasParam(LootContextParams.ATTACKING_ENTITY))
+		if(!context.hasParameter(LootContextParams.ATTACKING_ENTITY))
 			return;
 		
-		Entity killer = context.getParam(LootContextParams.ATTACKING_ENTITY);
+		Entity killer = context.getParameter(LootContextParams.ATTACKING_ENTITY);
 		if(killer instanceof LivingEntity living)
 		{
 			ItemStack weapon = living.getMainHandItem();
@@ -39,11 +39,11 @@ public final class Decapitation
 				if(container.hasWeaponTraitWithType(WeaponTraits.TYPE_DECAPITATE))
 				{
 					ItemStack skullStack = new ItemStack(skull);
-					Entity thisEntity = context.getParam(LootContextParams.THIS_ENTITY);
+					Entity thisEntity = context.getParameter(LootContextParams.THIS_ENTITY);
 					if(thisEntity instanceof Player player)
 					{
 						// The player's head shows the player (1.20.1: SkullOwner NBT; 1.21: the profile component)
-						skullStack.set(DataComponents.PROFILE, new ResolvableProfile(player.getGameProfile()));
+						skullStack.set(DataComponents.PROFILE, ResolvableProfile.createResolved(player.getGameProfile()));
 					}
 					generatedLoot.add(skullStack);
 				}

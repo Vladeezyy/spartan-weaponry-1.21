@@ -18,18 +18,10 @@
   ],
   "group": "spartanweaponry:longbow",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:gems/diamond",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle",
+    "~": "#c:strings"
   },
   "pattern": [
     "|/#",

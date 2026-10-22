@@ -95,7 +95,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 	}
 	
 	@Shadow
-	protected boolean isInGround();
+	protected abstract boolean isInGround();
 	@Shadow
 	public int shakeTime;
 	@Shadow

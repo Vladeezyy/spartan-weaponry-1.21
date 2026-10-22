@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:club",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "C": {
-      "item": "spartanweaponry:wooden_club"
-    }
+    "#": "#c:ingots/iron",
+    "C": "spartanweaponry:wooden_club"
   },
   "pattern": [
     "C#"

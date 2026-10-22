@@ -146,12 +146,12 @@ public class ModCreativeTabs
 	
 	private static void makeTippedProjectiles(CreativeModeTab.Output output, Item item)
 	{
-		BuiltInRegistries.POTION.holders().filter((potion) -> !(potion.value().getEffects().isEmpty())).forEach((potion) -> output.accept(PotionHelper.setPotion(new ItemStack(item), potion)));
+		BuiltInRegistries.POTION.listElements().filter((potion) -> !(potion.value().getEffects().isEmpty())).forEach((potion) -> output.accept(PotionHelper.setPotion(new ItemStack(item), potion)));
 	}
 	
 	private static void makeWeaponOilVariants(CreativeModeTab.Output output)
 	{
 		OilEffects.REGISTRY.getEntries().stream().filter((oil) -> oil.get() != OilEffects.POTION.get()).forEach((oil) -> output.accept(OilHelper.makeOilStack(oil.get())));
-		BuiltInRegistries.POTION.holders().filter((potion) -> OilHelper.isValidPotion(potion)).forEach((potion) -> output.accept(OilHelper.makePotionOilStack(potion)));
+		BuiltInRegistries.POTION.listElements().filter((potion) -> OilHelper.isValidPotion(potion)).forEach((potion) -> output.accept(OilHelper.makePotionOilStack(potion)));
 	}
 }

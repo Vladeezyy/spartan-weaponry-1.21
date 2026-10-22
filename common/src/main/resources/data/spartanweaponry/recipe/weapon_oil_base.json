@@ -17,18 +17,10 @@
     }
   ],
   "ingredients": [
-    {
-      "item": "spartanweaponry:grease_ball"
-    },
-    {
-      "item": "minecraft:glass_bottle"
-    },
-    {
-      "item": "minecraft:glass_bottle"
-    },
-    {
-      "item": "minecraft:glass_bottle"
-    }
+    "spartanweaponry:grease_ball",
+    "minecraft:glass_bottle",
+    "minecraft:glass_bottle",
+    "minecraft:glass_bottle"
   ],
   "result": {
     "count": 3,

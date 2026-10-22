@@ -129,7 +129,7 @@ public class WeaponArchetype implements IReloadable
 	public void reload() 
 	{
 		Registry<WeaponTrait> registry = WeaponTraits.TRAIT_REGISTRY;
-		Optional<HolderSet.Named<WeaponTrait>> tag = registry.getTag(traitsTag);
+		Optional<HolderSet.Named<WeaponTrait>> tag = registry.get(traitsTag);
 
 		if(!(isValidTag = tag.isPresent()))
 		{

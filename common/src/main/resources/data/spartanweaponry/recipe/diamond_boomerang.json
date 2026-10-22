@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:boomerang",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
+    "#": "#c:gems/diamond",
+    "P": "#minecraft:planks"
   },
   "pattern": [
     "#PP",

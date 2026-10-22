@@ -30,7 +30,7 @@ public class PotionParser
 {
 	// Potions without effects (1.21 has no "empty" potion)
 	private static final ImmutableList<Holder<Potion>> invalidPotions = ImmutableList.of(Potions.WATER, Potions.MUNDANE, Potions.THICK, Potions.AWKWARD);
-	private static final List<Identifier> invalidPotionNames = invalidPotions.stream().map((potion) -> potion.unwrapKey().orElseThrow().location()).collect(Collectors.toUnmodifiableList());
+	private static final List<Identifier> invalidPotionNames = invalidPotions.stream().map((potion) -> potion.unwrapKey().orElseThrow().identifier()).collect(Collectors.toUnmodifiableList());
 	
 	public static final DynamicCommandExceptionType ERROR_UNKNOWN_POTION = new DynamicCommandExceptionType((object) -> 
 	{
@@ -65,7 +65,7 @@ public class PotionParser
 	{
 		int idx = reader.getCursor();
 		Identifier loc = Identifier.read(reader);
-		potion = BuiltInRegistries.POTION.getHolder(loc).orElse(null);
+		potion = BuiltInRegistries.POTION.get(loc).orElse(null);
 		
 		if(potion == null)
 		{

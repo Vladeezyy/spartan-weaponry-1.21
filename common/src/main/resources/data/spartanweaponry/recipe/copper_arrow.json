@@ -19,15 +19,9 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:ingots/copper"
-    },
-    "F": {
-      "tag": "c:feathers"
-    },
-    "|": {
-      "tag": "c:rods/wooden"
-    }
+    "#": "#c:ingots/copper",
+    "F": "#c:feathers",
+    "|": "#c:rods/wooden"
   },
   "pattern": [
     "#",

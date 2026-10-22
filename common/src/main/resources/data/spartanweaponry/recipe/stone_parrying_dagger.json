@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:parrying_dagger",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:cobblestones",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     " #",

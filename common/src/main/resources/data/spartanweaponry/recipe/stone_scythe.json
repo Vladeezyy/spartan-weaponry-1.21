@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:scythe",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:cobblestones",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     "## ",

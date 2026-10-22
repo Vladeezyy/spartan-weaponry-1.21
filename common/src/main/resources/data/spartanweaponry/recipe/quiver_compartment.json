@@ -17,12 +17,8 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:leathers"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:leathers",
+    "~": "#c:strings"
   },
   "pattern": [
     "#~#"

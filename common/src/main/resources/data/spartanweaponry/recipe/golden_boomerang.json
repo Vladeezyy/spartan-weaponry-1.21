@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:boomerang",
   "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
+    "#": "#c:ingots/gold",
+    "P": "#minecraft:planks"
   },
   "pattern": [
     "#PP",

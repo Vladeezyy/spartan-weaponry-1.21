@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.api.oil;
 
+import net.minecraft.server.level.ServerLevel;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +35,7 @@ public class PotionOilEffect extends OilEffect
 		CompoundTag oilTag = ItemNbt.read(stackIn).getCompoundOrEmpty(OilHandler.NBT_OIL);
 		Optional<Holder<Potion>> potion = PotionHelper.getPotion(oilTag);
 		if(potion.isPresent())
-			return PotionContents.getColor(potion.get());
+			return new PotionContents(potion.get()).getColor();
 		return super.getColor(stackIn);
 	}
 
@@ -51,7 +52,8 @@ public class PotionOilEffect extends OilEffect
 					// Temporarily bypass hurt time
 					int targetHurtTime = targetEntityIn.hurtTime;
 					targetEntityIn.hurtTime = 0;
-					effect.getEffect().value().applyInstantenousEffect(userEntityIn, userEntityIn, targetEntityIn, effect.getAmplifier(), 1.0d);
+					if(levelIn instanceof ServerLevel serverLevel)
+						effect.getEffect().value().applyInstantenousEffect(serverLevel, userEntityIn, userEntityIn, targetEntityIn, effect.getAmplifier(), 1.0d);
 					// Restore hurt time
 					targetEntityIn.hurtTime = targetHurtTime;
 				}

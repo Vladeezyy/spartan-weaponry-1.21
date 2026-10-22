@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:warhammer",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/iron",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     " #",

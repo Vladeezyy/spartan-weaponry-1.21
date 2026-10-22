@@ -19,33 +19,15 @@
     }
   ],
   "ingredients": [
-    {
-      "tag": "c:ingots/netherite"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    },
-    {
-      "item": "spartanweaponry:diamond_bolt"
-    }
+    "#c:ingots/netherite",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt",
+    "spartanweaponry:diamond_bolt"
   ],
   "result": {
     "count": 8,

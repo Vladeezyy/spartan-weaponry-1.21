@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/bronze"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/bronze"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:spear",
   "key": {
-    "#": {
-      "tag": "c:ingots/bronze"
-    },
-    "/": {
-      "tag": "spartanweaponry:poles"
-    }
+    "#": "#c:ingots/bronze",
+    "/": "#spartanweaponry:poles"
   },
   "pattern": [
     "#",

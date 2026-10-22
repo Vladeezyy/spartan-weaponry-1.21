@@ -1,15 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "tag": "c:ingots/netherite"
-  },
-  "base": {
-    "item": "spartanweaponry:diamond_heavy_crossbow"
-  },
+  "addition": "#c:ingots/netherite",
+  "base": "spartanweaponry:diamond_heavy_crossbow",
   "result": {
     "id": "spartanweaponry:netherite_heavy_crossbow"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

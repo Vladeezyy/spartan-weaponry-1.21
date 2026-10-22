@@ -17,12 +17,8 @@
     }
   ],
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:gems/diamond",
+    "~": "#c:strings"
   },
   "pattern": [
     "#~#",

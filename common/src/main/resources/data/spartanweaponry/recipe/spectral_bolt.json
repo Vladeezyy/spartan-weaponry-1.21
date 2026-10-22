@@ -17,15 +17,9 @@
     }
   ],
   "ingredients": [
-    {
-      "item": "spartanweaponry:bolt"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    }
+    "spartanweaponry:bolt",
+    "minecraft:glowstone_dust",
+    "minecraft:glowstone_dust"
   ],
   "result": {
     "id": "spartanweaponry:spectral_bolt"

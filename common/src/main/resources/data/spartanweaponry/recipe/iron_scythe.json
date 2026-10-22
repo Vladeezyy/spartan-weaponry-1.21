@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:scythe",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:ingots/iron",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     "## ",

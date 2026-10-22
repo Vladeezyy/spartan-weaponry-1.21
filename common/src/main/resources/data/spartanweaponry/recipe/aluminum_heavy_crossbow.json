@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "spartanweaponry:ingots/aluminum"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "spartanweaponry:ingots/aluminum"
     }
   ],
   "fabric:load_conditions": [
@@ -31,21 +28,11 @@
   ],
   "group": "spartanweaponry:heavy_crossbow",
   "key": {
-    "#": {
-      "tag": "spartanweaponry:ingots/aluminum"
-    },
-    "D": {
-      "item": "minecraft:bow"
-    },
-    "H": {
-      "item": "minecraft:tripwire_hook"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#spartanweaponry:ingots/aluminum",
+    "D": "minecraft:bow",
+    "H": "minecraft:tripwire_hook",
+    "P": "#minecraft:planks",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "#D#",

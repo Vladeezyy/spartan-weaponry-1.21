@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.init;
 
+import com.oblivioussp.spartanweaponry.util.Sounds;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.world.item.Item;
@@ -49,7 +50,7 @@ public class ModCommands
 	public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher)
 	{
 		// Command "spartanweaponry". Currently only has the "applyOil", "applyPotionOil" and "clearOil" sub-commands
-		Predicate<CommandSourceStack> requireOPPermission = (commandSource) -> commandSource.hasPermission(2);
+		Predicate<CommandSourceStack> requireOPPermission = (commandSource) -> net.minecraft.commands.Commands.hasPermission(net.minecraft.commands.Commands.LEVEL_GAMEMASTERS).test(commandSource);
 		LiteralArgumentBuilder<CommandSourceStack> command = Commands.literal("spartanweaponry").requires(requireOPPermission);
 		
     	command.then(Commands.literal("applyOil").			// Apply Oil command
@@ -85,7 +86,7 @@ public class ModCommands
 		OilEffect oilEffect = oilIn.getEffect();
 		ItemStack oilStack = OilHelper.makeOilStack(oilEffect);
 		oilHandler.setEffect(oilEffect, ItemStack.EMPTY);
-		playerIn.playNotifySound(ModSounds.OIL_APPLIED.get(), playerIn.getSoundSource(), 1.0f, 1.0f);
+		Sounds.notify(playerIn, ModSounds.OIL_APPLIED.get(), playerIn.getSoundSource(), 1.0f, 1.0f);
 		commandSourceIn.sendSuccess(() -> Component.translatable("command." + ModSpartanWeaponry.ID + ".apply_oil.success", oilStack.getHoverName(), applyStack.getItem().getName(applyStack).getString(), playerIn.getName().getString()), true);
 		return 1;
 	}
@@ -103,7 +104,7 @@ public class ModCommands
 		Holder<Potion> potion = potionIn.getEffect();
 		ItemStack oilStack = OilHelper.makePotionOilStack(potion);
 		oilHandler.setPotion(potion, ItemStack.EMPTY);
-		playerIn.playNotifySound(ModSounds.OIL_APPLIED.get(), playerIn.getSoundSource(), 1.0f, 1.0f);
+		Sounds.notify(playerIn, ModSounds.OIL_APPLIED.get(), playerIn.getSoundSource(), 1.0f, 1.0f);
 		commandSourceIn.sendSuccess(() -> Component.translatable("command." + ModSpartanWeaponry.ID + ".apply_potion_oil.success", oilStack.getHoverName(), applyStack.getItem().getName(applyStack).getString(), playerIn.getName().getString()), true);
 		return 1;
 	}

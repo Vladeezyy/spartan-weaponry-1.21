@@ -18,18 +18,10 @@
   ],
   "group": "spartanweaponry:longbow",
   "key": {
-    "#": {
-      "tag": "c:ingots/iron"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "#c:ingots/iron",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle",
+    "~": "#c:strings"
   },
   "pattern": [
     "|/#",

@@ -1,15 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "tag": "c:ingots/netherite"
-  },
-  "base": {
-    "item": "spartanweaponry:diamond_battle_hammer"
-  },
+  "addition": "#c:ingots/netherite",
+  "base": "spartanweaponry:diamond_battle_hammer",
   "result": {
     "id": "spartanweaponry:netherite_battle_hammer"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

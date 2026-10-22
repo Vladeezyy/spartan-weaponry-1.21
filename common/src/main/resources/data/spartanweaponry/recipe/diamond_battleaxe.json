@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:battleaxe",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:gems/diamond",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "###",

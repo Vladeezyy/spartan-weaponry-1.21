@@ -39,13 +39,13 @@ public final class PotionHelper
 	/** The potion of a saved entity (1.21.6+ entities save through ValueInput) */
 	public static Optional<Holder<Potion>> getPotion(ValueInput input)
 	{
-		Identifier id = input.getStringOr(TAG_POTION, "").map(Identifier::tryParse).orElse(null);
+		Identifier id = input.getString(TAG_POTION).map(Identifier::tryParse).orElse(null);
 		return id == null ? Optional.empty() : BuiltInRegistries.POTION.get(id).map((ref) -> (Holder<Potion>)ref);
 	}
 
 	public static void putPotion(CompoundTag tag, Holder<Potion> potion)
 	{
-		potion.unwrapKey().ifPresent((key) -> tag.putString(TAG_POTION, key.location().toString()));
+		potion.unwrapKey().ifPresent((key) -> tag.putString(TAG_POTION, key.identifier().toString()));
 	}
 
 	public static List<MobEffectInstance> getEffects(CompoundTag tag)
@@ -80,7 +80,7 @@ public final class PotionHelper
 
 	public static void addPotionTooltip(ItemStack stack, List<Component> tooltip, float durationFactor, float ticksPerSecond)
 	{
-		getContents(stack).addPotionTooltip(tooltip::add, durationFactor, ticksPerSecond);
+		PotionContents.addPotionTooltip(getContents(stack).getAllEffects(), tooltip::add, durationFactor, ticksPerSecond);
 	}
 
 	/** 1.21.1 Potion#getName: the prefix and the potion's base name (or its id path; "empty") */
@@ -93,6 +93,6 @@ public final class PotionHelper
 
 	public static String getId(Holder<Potion> potion)
 	{
-		return potion.unwrapKey().map((key) -> key.location().toString()).orElse("");
+		return potion.unwrapKey().map((key) -> key.identifier().toString()).orElse("");
 	}
 }

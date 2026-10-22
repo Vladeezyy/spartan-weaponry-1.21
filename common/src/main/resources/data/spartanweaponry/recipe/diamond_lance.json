@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:lance",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:gems/diamond",
+    "/": "spartanweaponry:pole",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

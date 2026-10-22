@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:boomerang",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
+    "#": "#c:cobblestones",
+    "P": "#minecraft:planks"
   },
   "pattern": [
     "#PP",

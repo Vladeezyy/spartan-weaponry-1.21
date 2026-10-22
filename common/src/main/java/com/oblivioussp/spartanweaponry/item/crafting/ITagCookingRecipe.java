@@ -9,9 +9,9 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 
 public interface ITagCookingRecipe extends Recipe<SingleRecipeInput>
 {
+	public String group();
 	public CookingBookCategory getCategory();
 	public Ingredient getInputIngredient();
-	public Ingredient getResultIngredient();
 	public TagKey<Item> getResultTag();
 	public float getExperienceDrop();
 	public int getCookTime();

@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/steel"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/steel"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:pike",
   "key": {
-    "#": {
-      "tag": "c:ingots/steel"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:ingots/steel",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     "#",

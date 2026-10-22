@@ -17,12 +17,8 @@
     }
   ],
   "key": {
-    "#": {
-      "item": "spartanweaponry:explosive_charge"
-    },
-    "~": {
-      "tag": "c:strings"
-    }
+    "#": "spartanweaponry:explosive_charge",
+    "~": "#c:strings"
   },
   "pattern": [
     "  ~",

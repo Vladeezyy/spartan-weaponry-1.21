@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/silver"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/silver"
     }
   ],
   "fabric:load_conditions": [
@@ -31,15 +28,9 @@
   ],
   "group": "spartanweaponry:lance",
   "key": {
-    "#": {
-      "tag": "c:ingots/silver"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/silver",
+    "/": "spartanweaponry:pole",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "  #",

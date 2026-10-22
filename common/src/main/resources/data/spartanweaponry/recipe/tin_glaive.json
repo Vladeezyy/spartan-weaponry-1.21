@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/tin"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/tin"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:glaive",
   "key": {
-    "#": {
-      "tag": "c:ingots/tin"
-    },
-    "/": {
-      "item": "spartanweaponry:pole"
-    }
+    "#": "#c:ingots/tin",
+    "/": "spartanweaponry:pole"
   },
   "pattern": [
     " #",

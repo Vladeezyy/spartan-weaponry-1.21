@@ -82,20 +82,10 @@ public class TippedProjectileBaseRecipe extends CustomRecipe
 		return ItemStack.EMPTY;
 	}
 
-	@Override
-	public boolean canCraftInDimensions(int width, int height) 
-	{
-		return width >= 2 && height >= 2;
-	}
 	
-	@Override
-	public boolean isSpecial() 
-	{
-		return true;
-	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer()
+	public RecipeSerializer<TippedProjectileBaseRecipe> getSerializer()
 	{
 		return ModRecipeSerializers.TIPPED_PROJECTILE_BASE.get();
 	}

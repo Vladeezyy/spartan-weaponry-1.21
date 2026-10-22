@@ -49,7 +49,7 @@ public class OilHandler implements IOilHandler
 	private static CompoundTag oilTag(ItemStack stack)
 	{
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-		return data != null && data.contains(NBT_OIL) ? data.getUnsafe().getCompoundOrEmpty(NBT_OIL) : null;
+		return data != null && data.tag.contains(NBT_OIL) ? data.tag.getCompoundOrEmpty(NBT_OIL) : null;
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class OilHandler implements IOilHandler
 		if(oil == null)
 			return false;
 		Identifier oilId = Identifier.tryParse(oil.getStringOr(NBT_OIL_EFFECT, ""));
-		return oilId != null && !oil.getStringOr(NBT_OIL_EFFECT, "").isEmpty() && OilEffects.OIL_REGISTRY.get(oilId) != OilEffects.NONE.get();
+		return oilId != null && !oil.getStringOr(NBT_OIL_EFFECT, "").isEmpty() && OilEffects.OIL_REGISTRY.getValue(oilId) != OilEffects.NONE.get();
 	}
 
 	@Override
@@ -154,7 +154,7 @@ public class OilHandler implements IOilHandler
 	{
 		String oilEffectReg = nbt.getStringOr(NBT_OIL_EFFECT, "");
 		Identifier oilId = oilEffectReg.isEmpty() ? null : Identifier.tryParse(oilEffectReg);
-		effect = oilId != null ? Optional.of(OilEffects.OIL_REGISTRY.get(oilId)) : Optional.empty();
+		effect = oilId != null ? Optional.of(OilEffects.OIL_REGISTRY.getValue(oilId)) : Optional.empty();
 		potion = PotionHelper.getPotion(nbt);
 		usesLeft = nbt.getIntOr(NBT_USES_LEFT, 0);
 	}

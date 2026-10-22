@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:explosive",
   "key": {
-    "#": {
-      "tag": "c:gunpowders"
-    },
-    "-": {
-      "tag": "c:nuggets/iron"
-    }
+    "#": "#c:gunpowders",
+    "-": "#c:nuggets/iron"
   },
   "pattern": [
     "###",

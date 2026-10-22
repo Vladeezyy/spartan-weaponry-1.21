@@ -1,15 +1,9 @@
 {
   "type": "minecraft:smithing_transform",
-  "addition": {
-    "tag": "c:ingots/netherite"
-  },
-  "base": {
-    "item": "spartanweaponry:diamond_javelin"
-  },
+  "addition": "#c:ingots/netherite",
+  "base": "spartanweaponry:diamond_javelin",
   "result": {
     "id": "spartanweaponry:netherite_javelin"
   },
-  "template": {
-    "item": "minecraft:netherite_upgrade_smithing_template"
-  }
+  "template": "minecraft:netherite_upgrade_smithing_template"
 }

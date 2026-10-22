@@ -19,12 +19,8 @@
     }
   ],
   "ingredients": [
-    {
-      "item": "minecraft:arrow"
-    },
-    {
-      "item": "spartanweaponry:explosive_charge"
-    }
+    "minecraft:arrow",
+    "spartanweaponry:explosive_charge"
   ],
   "result": {
     "id": "spartanweaponry:explosive_arrow"

@@ -1,46 +1,75 @@
 package com.oblivioussp.spartanweaponry.item.crafting;
 
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
+import net.minecraft.world.item.crafting.RecipeBookCategories;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.registries.Registries;
+import java.util.List;
 import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 
-public class TagSmeltingRecipe extends SmeltingRecipe implements ITagCookingRecipe
+/**
+ * Smelting with an item tag as the result: the first item of the tag when it is made (1.21.2+: a cooking recipe of its own,
+ * vanilla's SmeltingRecipe#getSerializer is typed to its own serializer)
+ */
+public class TagSmeltingRecipe extends AbstractCookingRecipe implements ITagCookingRecipe
 {
 	protected final TagKey<Item> resultTag;
-	protected final Ingredient result;
 	
 	public TagSmeltingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, float experienceIn, int cookTimeIn) 
 	{
 		super(groupIn, categoryIn, inputIngredientIn, ItemStack.EMPTY, experienceIn, cookTimeIn);
 		resultTag = resultTagIn;
-		result = Ingredient.of(resultTagIn);
-	}
-	
-	@Override
-	public ItemStack getResultItem(HolderLookup.Provider registries) 
-	{
-		ItemStack[] items = result.getItems();
-		return items.length > 0 ? items[0] : ItemStack.EMPTY;
 	}
 	
 	@Override
 	public ItemStack assemble(SingleRecipeInput containerIn, HolderLookup.Provider registryIn)
 	{
-		return getResultItem(registryIn).copy();
+		return registryIn.lookupOrThrow(Registries.ITEM).get(resultTag).flatMap((tag) -> tag.stream().findFirst()).map(ItemStack::new).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() 
+	public List<RecipeDisplay> display()
 	{
-		return ModRecipeSerializers.TAGGED_SMELTING.get();
+		return List.of(new FurnaceRecipeDisplay(input().display(), SlotDisplay.AnyFuel.INSTANCE, new SlotDisplay.TagSlotDisplay(resultTag),
+				new SlotDisplay.ItemSlotDisplay(furnaceIcon()), cookingTime(), experience()));
+	}
+
+	@Override
+	protected Item furnaceIcon()
+	{
+		return Items.FURNACE;
+	}
+
+	@Override
+	public RecipeSerializer<TagSmeltingRecipe> getSerializer() 
+	{
+		return (RecipeSerializer<TagSmeltingRecipe>)ModRecipeSerializers.TAGGED_SMELTING.get();
+	}
+
+	@Override
+	public RecipeType<? extends AbstractCookingRecipe> getType()
+	{
+		return RecipeType.SMELTING;
+	}
+
+	@Override
+	public RecipeBookCategory recipeBookCategory()
+	{
+		return RecipeBookCategories.FURNACE_MISC;
 	}
 
 	@Override
@@ -52,13 +81,7 @@ public class TagSmeltingRecipe extends SmeltingRecipe implements ITagCookingReci
 	@Override
 	public Ingredient getInputIngredient() 
 	{
-		return ingredient;
-	}
-
-	@Override
-	public Ingredient getResultIngredient() 
-	{
-		return result;
+		return input();
 	}
 
 	@Override
@@ -70,12 +93,12 @@ public class TagSmeltingRecipe extends SmeltingRecipe implements ITagCookingReci
 	@Override
 	public int getCookTime() 
 	{
-		return getCookingTime();
+		return cookingTime();
 	}
 
 	@Override
 	public float getExperienceDrop()
 	{
-		return getExperience();
+		return experience();
 	}
 }

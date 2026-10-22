@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:throwing_knife",
   "key": {
-    "#": {
-      "tag": "c:ingots/gold"
-    },
-    "|": {
-      "tag": "spartanweaponry:handles"
-    }
+    "#": "#c:ingots/gold",
+    "|": "#spartanweaponry:handles"
   },
   "pattern": [
     "|#"

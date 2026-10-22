@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/constantan"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/constantan"
     }
   ],
   "fabric:load_conditions": [
@@ -31,21 +28,11 @@
   ],
   "group": "spartanweaponry:heavy_crossbow",
   "key": {
-    "#": {
-      "tag": "c:ingots/constantan"
-    },
-    "D": {
-      "item": "minecraft:bow"
-    },
-    "H": {
-      "item": "minecraft:tripwire_hook"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/constantan",
+    "D": "minecraft:bow",
+    "H": "minecraft:tripwire_hook",
+    "P": "#minecraft:planks",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "#D#",

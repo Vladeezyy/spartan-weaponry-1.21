@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:dagger",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "|": {
-      "tag": "spartanweaponry:handles"
-    }
+    "#": "#c:gems/diamond",
+    "|": "#spartanweaponry:handles"
   },
   "pattern": [
     "#",

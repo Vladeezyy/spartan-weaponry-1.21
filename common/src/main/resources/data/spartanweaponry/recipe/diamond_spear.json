@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:spear",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "/": {
-      "tag": "spartanweaponry:poles"
-    }
+    "#": "#c:gems/diamond",
+    "/": "#spartanweaponry:poles"
   },
   "pattern": [
     "#",

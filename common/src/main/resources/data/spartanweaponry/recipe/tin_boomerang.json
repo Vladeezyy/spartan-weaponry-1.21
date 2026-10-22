@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/tin"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/tin"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:boomerang",
   "key": {
-    "#": {
-      "tag": "c:ingots/tin"
-    },
-    "P": {
-      "tag": "minecraft:planks"
-    }
+    "#": "#c:ingots/tin",
+    "P": "#minecraft:planks"
   },
   "pattern": [
     "#PP",

@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/electrum"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/electrum"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:tomahawk",
   "key": {
-    "#": {
-      "tag": "c:ingots/electrum"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/electrum",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "|#",

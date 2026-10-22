@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.init;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import net.minecraft.world.item.Item;
 import net.minecraft.core.registries.Registries;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
@@ -27,48 +28,48 @@ public class ModEntities
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("arrow_sw"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<ArrowExplosiveEntity>> ARROW_EXPLOSIVE = REGISTRY.register("explosive_arrow", () -> EntityType.Builder.<ArrowExplosiveEntity>of(ArrowExplosiveEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("arrow_explosive"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<BoltEntity>> BOLT = REGISTRY.register("bolt", () -> EntityType.Builder.<BoltEntity>of(BoltEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("bolt"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<BoltSpectralEntity>> BOLT_SPECTRAL = REGISTRY.register("spectral_bolt", () -> EntityType.Builder.<BoltSpectralEntity>of(BoltSpectralEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("bolt_spectral"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<ThrowingWeaponEntity>> THROWING_WEAPON = REGISTRY.register("throwing_weapon", () -> EntityType.Builder.<ThrowingWeaponEntity>of(ThrowingWeaponEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("throwing_weapon"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<ThrowingKnifeEntity>> THROWING_KNIFE = REGISTRY.register("throwing_knife", () -> EntityType.Builder.<ThrowingKnifeEntity>of(ThrowingKnifeEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("throwing_knife"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<TomahawkEntity>> TOMAHAWK = REGISTRY.register("tomahawk", () -> EntityType.Builder.<TomahawkEntity>of(TomahawkEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("tomahawk"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<JavelinEntity>> JAVELIN = REGISTRY.register("javelin", () -> EntityType.Builder.<JavelinEntity>of(JavelinEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("javelin"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<BoomerangEntity>> BOOMERANG = REGISTRY.register("boomerang", () -> EntityType.Builder.<BoomerangEntity>of(BoomerangEntity::new, MobCategory.MISC).
 			sized(0.5f, 0.5f).
-			build("boomerang"));
+			build(ItemIds.key()));
 	public static final Registrar.Entry<EntityType<?>, EntityType<DynamiteEntity>> DYNAMITE = REGISTRY.register("dynamite", () -> EntityType.Builder.<DynamiteEntity>of(DynamiteEntity::new, MobCategory.MISC).
 			clientTrackingRange(4).
 			updateInterval(20).
 			sized(0.5f, 0.5f).
-			build("dynamite"));
+			build(ItemIds.key()));
 }

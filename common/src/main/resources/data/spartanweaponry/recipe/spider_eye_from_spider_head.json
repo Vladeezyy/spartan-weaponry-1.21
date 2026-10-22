@@ -3,12 +3,8 @@
   "category": "misc",
   "ingredients": [
     [
-      {
-        "item": "spartanweaponry:spider_head"
-      },
-      {
-        "item": "spartanweaponry:cave_spider_head"
-      }
+      "spartanweaponry:spider_head",
+      "spartanweaponry:cave_spider_head"
     ]
   ],
   "result": {

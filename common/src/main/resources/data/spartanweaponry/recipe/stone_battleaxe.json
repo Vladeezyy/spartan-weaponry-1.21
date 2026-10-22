@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:battleaxe",
   "key": {
-    "#": {
-      "tag": "c:cobblestones"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:cobblestones",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "###",

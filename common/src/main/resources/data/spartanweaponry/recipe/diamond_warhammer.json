@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:warhammer",
   "key": {
-    "#": {
-      "tag": "c:gems/diamond"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:gems/diamond",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     " #",

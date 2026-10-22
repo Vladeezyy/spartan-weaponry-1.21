@@ -33,6 +33,13 @@ public final class ItemIds
 		}
 	}
 
+	/** The key of the registry entry being created (EntityType.Builder#build) */
+	@SuppressWarnings("unchecked")
+	public static <T> ResourceKey<T> key()
+	{
+		return (ResourceKey<T>)current();
+	}
+
 	/** New item properties with the id of the item being created */
 	@SuppressWarnings("unchecked")
 	public static Item.Properties properties()

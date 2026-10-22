@@ -9,11 +9,8 @@
       ]
     },
     {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "c:ingots/nickel"
-      }
+      "type": "spartanweaponry:tag_not_empty",
+      "tag": "c:ingots/nickel"
     }
   ],
   "fabric:load_conditions": [
@@ -31,12 +28,8 @@
   ],
   "group": "spartanweaponry:battle_hammer",
   "key": {
-    "#": {
-      "tag": "c:ingots/nickel"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#c:ingots/nickel",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "###",

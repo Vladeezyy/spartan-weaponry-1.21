@@ -18,15 +18,9 @@
   ],
   "group": "spartanweaponry:battleaxe",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "/": {
-      "tag": "c:rods/wooden"
-    },
-    "|": {
-      "item": "spartanweaponry:handle"
-    }
+    "#": "#minecraft:planks",
+    "/": "#c:rods/wooden",
+    "|": "spartanweaponry:handle"
   },
   "pattern": [
     "###",

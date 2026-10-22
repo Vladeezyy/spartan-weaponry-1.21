@@ -56,7 +56,7 @@ public class OilParser
 	{
 		int idx = reader.getCursor();
 		Identifier loc = Identifier.read(reader);
-		oilEffect = OilEffects.OIL_REGISTRY.containsKey(loc) ? OilEffects.OIL_REGISTRY.get(loc) : null;
+		oilEffect = OilEffects.OIL_REGISTRY.containsKey(loc) ? OilEffects.OIL_REGISTRY.getValue(loc) : null;
 		if(oilEffect == null)
 		{
 			reader.setCursor(idx);

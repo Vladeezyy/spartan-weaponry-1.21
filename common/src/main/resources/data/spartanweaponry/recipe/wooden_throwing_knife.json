@@ -18,12 +18,8 @@
   ],
   "group": "spartanweaponry:throwing_knife",
   "key": {
-    "#": {
-      "tag": "minecraft:planks"
-    },
-    "|": {
-      "tag": "spartanweaponry:handles"
-    }
+    "#": "#minecraft:planks",
+    "|": "#spartanweaponry:handles"
   },
   "pattern": [
     "|#"

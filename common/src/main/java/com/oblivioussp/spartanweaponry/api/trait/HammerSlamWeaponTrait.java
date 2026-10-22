@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.api.trait;
 
+import com.oblivioussp.spartanweaponry.util.Sounds;
 import java.util.Optional;
 
 import com.oblivioussp.spartanweaponry.init.ModSounds;
@@ -58,7 +59,7 @@ public class HammerSlamWeaponTrait extends WeaponTrait implements IActionTraitCa
 				}
 			}
 			player.swing(contextIn.getHand(), true);
-			player.playNotifySound(ModSounds.HAMMER_SLAMS_INTO_GROUND.get(), SoundSource.PLAYERS, 1.0f, 0.6f);
+			Sounds.notify(player, ModSounds.HAMMER_SLAMS_INTO_GROUND.get(), SoundSource.PLAYERS, 1.0f, 0.6f);
 			((ServerLevel)level).sendParticles(ParticleTypes.EXPLOSION, hitPos.x, hitPos.y, hitPos.z, 8, 0.0d, 0.1d, 0.0d, 0.5d);
 			player.resetAttackStrengthTicker();
 			player.getCooldowns().addCooldown(weapon, 60);

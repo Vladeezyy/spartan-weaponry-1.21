@@ -348,9 +348,9 @@ public class CommonEventHandler
 							{
 								// Find the nearest empty slot...
 								int emptySlot = -1;
-								for(int i = 0; i < player.getInventory().items.size(); i++)
+								for(int i = 0; i < player.getInventory().getNonEquipmentItems().size(); i++)
 								{
-									ItemStack playerStack = player.getInventory().items.get(i);
+									ItemStack playerStack = player.getInventory().getNonEquipmentItems().get(i);
 									if(playerStack.isEmpty())
 									{
 										emptySlot = i;
@@ -573,19 +573,19 @@ public class CommonEventHandler
 	public static void onLootTableLoad(LoaderEvents.LootTableLoad ev)
 	{
 		if(Config.INSTANCE.addIronWeaponsToVillageWeaponsmith.get() && 
-				ev.getName().equals(BuiltInLootTables.VILLAGE_WEAPONSMITH.location()))
+				ev.getName().equals(BuiltInLootTables.VILLAGE_WEAPONSMITH.identifier()))
 		{
 			Log.info("Adding Iron Weapons to the Village Weaponsmith Loot Table!");
 			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_WEAPONSMITH));
 		}
 		else if(Config.INSTANCE.addBowAndCrossbowLootToVillageFletcher.get() && 
-				ev.getName().equals(BuiltInLootTables.VILLAGE_FLETCHER.location()))
+				ev.getName().equals(BuiltInLootTables.VILLAGE_FLETCHER.identifier()))
 		{
 			Log.info("Adding Longbow and Heavy Crossbow related loot to the Village Fletcher Loot Table!");
 			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_FLETCHER));
 		}
 		else if(Config.INSTANCE.addDiamondWeaponsToEndCity.get() && 
-				ev.getName().equals(BuiltInLootTables.END_CITY_TREASURE.location()))
+				ev.getName().equals(BuiltInLootTables.END_CITY_TREASURE.identifier()))
 		{
 			Log.info("Adding Diamond Weapons to the End City Treasure Loot Table!");
 			ev.addPool(generateLootPool(ModLootTables.INJECT_END_CITY_TREASURE));

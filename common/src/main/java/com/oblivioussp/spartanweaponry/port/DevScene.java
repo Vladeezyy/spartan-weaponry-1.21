@@ -321,7 +321,7 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)
@@ -572,7 +572,7 @@ public final class DevScene
 		}
 		int left = ammo(player.getInventory().getItem(0));
 		int stacks = 0;
-		for(ItemStack s : player.getInventory().items)
+		for(ItemStack s : player.getInventory().getNonEquipmentItems())
 			if(s.is(ModItems.JAVELINS.iron.get()))
 				stacks++;
 		check("picking the javelin up gives back exactly one ammo", left == countBefore && stacks == 1, "ammo " + left + "/" + countBefore + ", stacks " + stacks);
@@ -1084,7 +1084,7 @@ public final class DevScene
 		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> r.value().getResultItem(level.registryAccess()).is(Items.IRON_NUGGET)
 				&& r.value().getIngredients().get(0).test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> r.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY));
 		// Enchanting table
-		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
+		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
 		check("enchanting table: throwing knife", offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible).containsAll(List.of("spartanweaponry:razors_edge", "spartanweaponry:propel", "spartanweaponry:lucky_throw", "minecraft:unbreaking")), offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible));
 		List<String> katana = offered(new ItemStack(ModItems.KATANAS.iron.get()), possible);
 		check("enchanting table: katana (Sweep I trait: Sweeping Edge)", katana.containsAll(List.of("minecraft:sharpness", "minecraft:looting", "minecraft:sweeping_edge")) && !katana.contains("spartanweaponry:propel"), katana);
