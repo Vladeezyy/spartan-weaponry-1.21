@@ -71,6 +71,16 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
 - Мелочь на потом: EMI пишет `Untranslated tag` — нет ключей `tag.item.<ns>.<path>` в lang (Shields, Weaponry).
 - Botania дальше 1.21.1 нет (последняя ветка `1.21.1-porting`) → на 1.21.11+ Arcana без интеграции с Botania
   (она и так optional), вернуть, когда Botania выйдет.
+- **1.21.11 (ветки `mc/1.21.11`, рабочие папки `~/Desktop/<repo>-1.21.11` — git worktree):**
+  - HUD Baubles: выпущен `v1.0.0.3+1.21.11`, только NeoForge (у Trinkets нет 1.21.11).
+  - Shields: выпущен `v3.1.1.4+1.21.11` (NeoForge + Fabric).
+  - Weaponry: в работе (worktree `spartan-weaponry-1.21.11`, Loom 1.17.21 + Gradle 9.8.1; ~800 ошибок компиляции в
+    начале).
+  - Arcana: после Weaponry, без Botania.
+  - Скрипты порта — modding-kb `scripts/` (`port_1_21_11_scenes.py`, `fix_moved_imports.py <mc-src>`,
+    `ingredients_1_21_2.py`).
+  - Исходники MC 1.21.11 — распаковать `common/build/moddev/artifacts/vanilla-1.21.11-*-sources.jar`.
+  - Тест-флаги: `NO_STRESS=1`, `NO_SHADERS=1` (Iris NeoForge 1.21.11 падает на зачарованном предмете с шейдерами).
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
