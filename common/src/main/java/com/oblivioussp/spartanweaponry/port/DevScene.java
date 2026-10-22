@@ -330,6 +330,17 @@ public final class DevScene
 		{
 			try
 			{
+				// Fabric API pages the tabs: a tab on another page is not selected without switching to its page first
+				// (FabricCreativeInventoryScreen, by reflection: the common code does not see Fabric API)
+				try
+				{
+					int page = (int)screen.getClass().getMethod("getPage", CreativeModeTab.class).invoke(screen, tab);
+					screen.getClass().getMethod("switchToPage", int.class).invoke(screen, page);
+				}
+				catch(NoSuchMethodException e)
+				{
+					// NeoForge: its own pages follow the selected tab
+				}
 				// The private selectTab(CreativeModeTab), found by its signature: its name differs on a production (intermediary) client
 				var select = java.util.Arrays.stream(CreativeModeInventoryScreen.class.getDeclaredMethods()).filter(m -> m.getReturnType() == void.class && java.util.Arrays.equals(m.getParameterTypes(), new Class<?>[] { net.minecraft.world.item.CreativeModeTab.class })).findFirst().orElseThrow(NoSuchMethodException::new);
 				select.setAccessible(true);
