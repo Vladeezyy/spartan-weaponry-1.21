@@ -112,7 +112,7 @@ public final class StressScene
 		}));
 		// Phase 2: rejoined
 		// Issue #165 of the original: heavy crossbow bolts turned black after rejoining
-		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.level(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, 0.0F, 35.0F))));
+		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.level(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, java.util.Set.of(), 0.0F, 35.0F, true))));
 		SECOND.add(Pair.of(42, mc -> { mc.options.hideGui = true; shot(mc, "rejoined_projectiles"); }));
 		SECOND.add(Pair.of(44, mc -> mc.options.hideGui = false));
 		SECOND.add(Pair.of(46, mc -> server(mc, StressScene::checkData)));
@@ -235,7 +235,7 @@ public final class StressScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, c -> Log.info("[stress] " + c.getString()));
 	}
 
 	private static void fps(Minecraft mc, String what)
@@ -253,7 +253,7 @@ public final class StressScene
 		server.overworld().getGameRules().set(GameRules.SPAWN_MOBS, false, server);
 		server.overworld().getGameRules().set(GameRules.ADVANCE_TIME, false, server);
 		server.overworld().getGameRules().set(GameRules.ADVANCE_WEATHER, false, server);
-		server.getGameRules().getRule(GameRules.RULE_MOBGRIEFING).set(false, server);
+		server.overworld().getGameRules().set(GameRules.MOB_GRIEFING, false, server);
 		level.setDayTime(6000);
 		BlockPos spawn = level.getRespawnData().pos();
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
@@ -346,7 +346,7 @@ public final class StressScene
 
 	private static net.minecraft.nbt.Tag saved(ServerPlayer player, ItemStack stack)
 	{
-		return stack.isEmpty() ? net.minecraft.nbt.EndTag.INSTANCE : stack.save(player.registryAccess());
+		return stack.isEmpty() ? net.minecraft.nbt.EndTag.INSTANCE : ItemStack.CODEC.encodeStart(player.registryAccess().createSerializationContext(net.minecraft.nbt.NbtOps.INSTANCE), stack).getOrThrow();
 	}
 
 	private static void checkProjectilesLanded(ServerPlayer player)
@@ -483,7 +483,7 @@ public final class StressScene
 		ItemStack quiver = new ItemStack(ModItems.HUGE_ARROW_QUIVER.get());
 		ModCapabilities.getQuiver(quiver).insertItem(0, new ItemStack(ModItems.IRON_ARROW.get(), 64), false);
 		player.getInventory().setItem(0, quiver);
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 	}
 
 	private static void checkSpam(ServerPlayer player)

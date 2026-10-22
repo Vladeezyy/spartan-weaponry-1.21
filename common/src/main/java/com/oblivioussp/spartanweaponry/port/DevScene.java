@@ -173,9 +173,9 @@ public final class DevScene
 		at(1200, mc -> server(mc, DevScene::checkArrowPickup));
 		// Quiver: arrows go to the off hand when a bow is selected; quiver screens (#193)
 		at(1205, mc -> server(mc, DevScene::prepareQuiver));
-		at(1215, mc -> server(mc, p -> p.getInventory().selected = 1));
+		at(1215, mc -> server(mc, p -> p.getInventory().setSelectedSlot(1)));
 		at(1235, mc -> server(mc, DevScene::checkQuiverOffhand));
-		at(1240, mc -> server(mc, p -> p.getInventory().selected = 0));
+		at(1240, mc -> server(mc, p -> p.getInventory().setSelectedSlot(0)));
 		at(1250, mc -> { mc.options.keyUse.setDown(true); });
 		at(1252, mc -> mc.options.keyUse.setDown(false));
 		at(1270, mc -> shot(mc, "quiver_small"));
@@ -208,7 +208,7 @@ public final class DevScene
 		at(1865, mc -> server(mc, DevScene::checkData));
 		// Curios: a quiver in the back slot feeds the bow too
 		at(1870, mc -> server(mc, DevScene::prepareCuriosQuiver));
-		at(1875, mc -> server(mc, p -> p.getInventory().selected = 1));
+		at(1875, mc -> server(mc, p -> p.getInventory().setSelectedSlot(1)));
 		at(1895, mc -> server(mc, DevScene::checkCuriosQuiver));
 		// Shoulder Surfing: a loaded heavy crossbow in the shoulder view (issue #192 of the original: crash)
 		at(1910, mc -> server(mc, DevScene::prepareShoulderSurfing));
@@ -321,7 +321,7 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)
@@ -352,7 +352,7 @@ public final class DevScene
 		server.overworld().getGameRules().set(GameRules.SPAWN_MOBS, false, server);
 		server.overworld().getGameRules().set(GameRules.ADVANCE_TIME, false, server);
 		server.overworld().getGameRules().set(GameRules.ADVANCE_WEATHER, false, server);
-		server.getGameRules().getRule(GameRules.RULE_MOBGRIEFING).set(false, server);
+		server.overworld().getGameRules().set(GameRules.MOB_GRIEFING, false, server);
 		player.level().setDayTime(6000);
 		player.level().setWeatherParameters(6000, 0, false, false);
 	}
@@ -365,7 +365,7 @@ public final class DevScene
 
 	private static void look(ServerPlayer player, BlockPos wall, float pitch)
 	{
-		player.teleportTo(player.level(), wall.getX() + 0.5, wall.getY() + 2, wall.getZ() - 14.5, 0.0F, pitch);
+		player.teleportTo(player.level(), wall.getX() + 0.5, wall.getY() + 2, wall.getZ() - 14.5, java.util.Set.of(), 0.0F, pitch, true);
 	}
 
 	private static void buildStage(ServerPlayer player)
@@ -445,7 +445,7 @@ public final class DevScene
 		player.level().getEntitiesOfClass(ItemEntity.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
 		BlockPos at = stage.offset(0, 0, 16);
 		List<net.minecraft.world.level.block.Block> heads = new ArrayList<>();
-		BuiltInRegistries.BLOCK.entrySet().stream().filter(e -> e.getKey().location().getNamespace().equals(ModSpartanWeaponry.ID) && !e.getKey().location().getPath().contains("wall"))
+		BuiltInRegistries.BLOCK.entrySet().stream().filter(e -> e.getKey().identifier().getNamespace().equals(ModSpartanWeaponry.ID) && !e.getKey().identifier().getPath().contains("wall"))
 				.forEach(e -> heads.add(e.getValue()));
 		for(int i = 0; i < heads.size(); i++)
 			level.setBlockAndUpdate(at.offset(i - heads.size() / 2, 0, 0), heads.get(i).defaultBlockState());
@@ -489,7 +489,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		player.getInventory().setItem(0, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.IRON_ARROW.get(), 16));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, -3.0F, true);
 		resetGolem(player);
 	}
@@ -509,7 +509,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		player.getInventory().setItem(0, new ItemStack(ModItems.HEAVY_CROSSBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.BOLT.get(), 8));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, -2.0F, true);
 		resetGolem(player);
 		Log.info("[scene] heavy crossbow load ticks " + ((HeavyCrossbowItem)ModItems.HEAVY_CROSSBOWS.iron.get()).getFullLoadTicks(player.getInventory().getItem(0)));
@@ -537,7 +537,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		ItemStack javelins = ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).makeTabStack();
 		player.getInventory().setItem(0, javelins);
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 4.5, java.util.Set.of(), 0.0F, -6.0F, true);
 		resetGolem(player);
 		countBefore = ammo(player.getInventory().getItem(0));
@@ -583,7 +583,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		player.getInventory().setItem(0, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.IRON_ARROW.get(), 10));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.teleportTo(player.level(), stage.getX() - 10.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 40.0F, true);
 	}
 
@@ -622,7 +622,7 @@ public final class DevScene
 		player.getInventory().setItem(1, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(2, new ItemStack(Items.TORCH, 4));
 		player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-		player.getInventory().selected = 2;
+		player.getInventory().setSelectedSlot(2);
 	}
 
 	private static void checkQuiverOffhand(ServerPlayer player)
@@ -644,7 +644,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		player.getInventory().setItem(1, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(2, new ItemStack(Items.TORCH, 4));
-		player.getInventory().selected = 2;
+		player.getInventory().setSelectedSlot(2);
 		ItemStack quiver = quiverWith(ModItems.MEDIUM_ARROW_QUIVER.get(), 40);
 		boolean placed = accessorySlot != null && accessorySlot.test(player, quiver);
 		check("Curios: the quiver goes into the back slot", placed, "");
@@ -674,7 +674,7 @@ public final class DevScene
 		ItemNbt.update(crossbow, nbt -> nbt.putBoolean(HeavyCrossbowItem.NBT_CHARGED, true));
 		player.getInventory().setItem(0, crossbow);
 		player.getInventory().setItem(1, new ItemStack(ModItems.JAVELINS.iron.get()));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 0.0F, true);
 	}
 
@@ -739,7 +739,7 @@ public final class DevScene
 	{
 		player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
 		player.getInventory().setItem(0, quiverWith(ModItems.HUGE_ARROW_QUIVER.get(), 100));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 	}
 
 	// ------------------------------------------------------------------------------------------------- melee
@@ -844,7 +844,7 @@ public final class DevScene
 	{
 		double reach = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
 		check("Reach: a spear extends the entity interaction range", reach > 3.0, reach);
-		var offer = com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades.LVL1_TRADE.getOffer(player, player.getRandom());
+		var offer = com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades.LVL1_TRADE.getOffer(player.level(), player, player.getRandom());
 		check("weaponsmith trade offers an iron weapon (1.20.1 kept the trades on empty lists)", offer != null && offer.getResult().is(ModItemTags.OILABLE_WEAPONS), offer == null ? "none" : offer.getResult());
 		player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 	}
@@ -893,7 +893,7 @@ public final class DevScene
 		player.removeAllEffects();
 		player.getInventory().clearContent();
 		player.getInventory().setItem(0, new ItemStack(ModItems.GREATSWORDS.iron.get()));
-		player.getInventory().selected = 0;
+		player.getInventory().setSelectedSlot(0);
 		player.setItemSlot(EquipmentSlot.OFFHAND, new ItemStack(Items.TORCH));
 	}
 
@@ -1077,12 +1077,12 @@ public final class DevScene
 	{
 		ServerLevel level = player.level();
 		var recipes = level.recipeAccess();
-		long ours = recipes.getRecipes().stream().filter(r -> r.id().getNamespace().equals(ModSpartanWeaponry.ID)).count();
+		long ours = recipes.getRecipes().stream().filter(r -> r.id().identifier().getNamespace().equals(ModSpartanWeaponry.ID)).count();
 		check("recipes loaded", ours > 200, ours + " recipes");
-		check("modded material recipes skipped without the material (no tin ingots)", recipes.byKey(id("tin_longsword")).isEmpty(), "");
-		var smelting = recipes.byKey(id("iron_nugget_from_smelting_iron_weapons"));
-		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> r.value().getResultItem(level.registryAccess()).is(Items.IRON_NUGGET)
-				&& r.value().getIngredients().get(0).test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> r.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY));
+		check("modded material recipes skipped without the material (no tin ingots)", recipes.byKey(recipe("tin_longsword")).isEmpty(), "");
+		var smelting = recipes.byKey(recipe("iron_nugget_from_smelting_iron_weapons"));
+		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> smelted(r, level).is(Items.IRON_NUGGET)
+				&& ((net.minecraft.world.item.crafting.AbstractCookingRecipe)r.value()).input().test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> smelted(r, level)).orElse(ItemStack.EMPTY));
 		// Enchanting table
 		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
 		check("enchanting table: throwing knife", offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible).containsAll(List.of("spartanweaponry:razors_edge", "spartanweaponry:propel", "spartanweaponry:lucky_throw", "minecraft:unbreaking")), offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible));
@@ -1098,7 +1098,7 @@ public final class DevScene
 		check("enchanting table: boomerang", offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible).contains("spartanweaponry:collectorang"), offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible));
 		check("Loyalty on throwing weapons (anvil)", ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).supportsEnchantment(new ItemStack(ModItems.JAVELINS.iron.get()), level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOYALTY)), "");
 		// Loot injected into the village weaponsmith chest
-		var table = level.level().getServer().reloadableRegistries().getLootTable(BuiltInLootTables.VILLAGE_WEAPONSMITH);
+		var table = level.getServer().reloadableRegistries().getLootTable(BuiltInLootTables.VILLAGE_WEAPONSMITH);
 		int found = 0;
 		for(int i = 0; i < 100; i++)
 		{
@@ -1112,14 +1112,27 @@ public final class DevScene
 		ItemStack longbow = new ItemStack(ModItems.LONGBOWS.iron.get());
 		check("longbow durability from the material", longbow.getMaxDamage() > 300, longbow.getMaxDamage());
 		if(Platform.INSTANCE.isModLoaded("jeed"))
-			check("JEED: effect provider recipe for Ender Disruption loaded", recipes.byKey(id("compat/jeed/ender_disruption")).isPresent() != recipes.byKey(id("compat/jeed/ender_disruption_fabric")).isPresent(), "one per loader");
+			check("JEED: effect provider recipe for Ender Disruption loaded", recipes.byKey(recipe("compat/jeed/ender_disruption")).isPresent() != recipes.byKey(recipe("compat/jeed/ender_disruption_fabric")).isPresent(), "one per loader");
 		check("heads: 11 extended skull blocks", ModBlocks.REGISTRY.getEntries().size() >= 11, ModBlocks.REGISTRY.getEntries().size());
+	}
+
+	/** 1.21.2+: a recipe is looked up by its key */
+	private static net.minecraft.resources.ResourceKey<net.minecraft.world.item.crafting.Recipe<?>> recipe(String path)
+	{
+		return net.minecraft.resources.ResourceKey.create(Registries.RECIPE, id(path));
+	}
+
+	/** What a tag cooking recipe makes of an iron longsword (1.21.2+: recipes have no result item to ask) */
+	private static ItemStack smelted(net.minecraft.world.item.crafting.RecipeHolder<?> recipe, ServerLevel level)
+	{
+		return recipe.value() instanceof net.minecraft.world.item.crafting.AbstractCookingRecipe cooking
+				? cooking.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(ModItems.LONGSWORDS.iron.get())), level.registryAccess()) : ItemStack.EMPTY;
 	}
 
 	private static List<String> offered(ItemStack stack, net.minecraft.core.HolderSet.Named<net.minecraft.world.item.enchantment.Enchantment> possible)
 	{
 		List<EnchantmentInstance> available = EnchantmentHelper.getAvailableEnchantmentResults(30, stack, possible.stream());
-		return available.stream().map(e -> e.enchantment.unwrapKey().get().location().toString()).distinct().sorted().toList();
+		return available.stream().map(e -> e.enchantment().unwrapKey().get().identifier().toString()).distinct().sorted().toList();
 	}
 
 	private static Identifier id(String path)
@@ -1146,7 +1159,11 @@ public final class DevScene
 			{
 				ItemStack stack = stacks.get(i);
 				List<Component> lines = Screen.getTooltipFromItem(Minecraft.getInstance(), stack);
-				graphics.renderTooltip(font, lines, stack.getTooltipImage(), (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16);
+				// 1.21.6+: one tooltip per frame is deferred; these four are drawn at once, as vanilla's tooltip
+				List<net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent> components = new ArrayList<>();
+				lines.forEach(line -> components.add(net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent.create(line.getVisualOrderText())));
+				stack.getTooltipImage().map(com.oblivioussp.spartanweaponry.client.ClientHelper::createTooltipComponent).ifPresent(image -> components.add(Math.min(1, components.size()), image));
+				graphics.renderTooltip(font, components, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16, net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner.INSTANCE, null);
 				for(Component line : lines)
 					if(line.getString().contains("tooltip.spartanweaponry") || line.getString().contains("item.spartanweaponry"))
 						Log.info("[scene] CHECK FAIL untranslated tooltip line (" + line.getString() + ")");
@@ -1169,14 +1186,14 @@ public final class DevScene
 		{
 			graphics.fill(0, 0, width, height, 0xFF2B2B33);
 			float scale = Math.min(width / (items.size() * 20.0F), height / 40.0F);
-			graphics.pose().pushPose();
-			graphics.pose().scale(scale, scale, 1.0F);
+			graphics.pose().pushMatrix();
+			graphics.pose().scale(scale, scale);
 			for(int i = 0; i < items.size(); i++)
 			{
 				graphics.renderItem(new ItemStack(items.get(i)), 2 + i * 20, 2);
 				graphics.renderItem(oiled(items.get(i)), 2 + i * 20, 22);
 			}
-			graphics.pose().popPose();
+			graphics.pose().popMatrix();
 		}
 	}
 }
