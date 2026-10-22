@@ -1,8 +1,11 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import com.oblivioussp.spartanweaponry.util.Enchants;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import com.oblivioussp.spartanweaponry.init.ModEnchantments;
@@ -97,7 +100,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 		super.tick();
 		
 		// Do nothing if the Boomerang is in the ground
-		if(inGround)
+		if(isInGround())
 		{
 			xRotO = getXRot();
 			yRotO = getYRot();
@@ -159,7 +162,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 				{
 					for(Entity entity : catchableEntities)
 					{
-						entity.startRiding(this, true);
+						entity.startRiding(this, true, true);
 						caughtItems++;
 						
 						if(caughtItems >= collectorangLevel)
@@ -188,7 +191,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
             	discard();
         	}
         }
-		if (level.isClientSide() && !inGround)
+		if (level.isClientSide() && !isInGround())
         {
 			level.addParticle(ParticleTypes.CRIT, getX(), getY(), getZ(), 0.0D, 0.0D, 0.0D);
         }
@@ -219,7 +222,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 			// To do this, calculate a reflection vector from the block that was hit.
 			// Firstly, the face that was hit for this is needed, and from that, it's normalized direction vector,
 			// as well as the current motion vector
-			Vec3i faceNormali = hitResult.getDirection().getNormal();
+			Vec3i faceNormali = hitResult.getDirection().getUnitVec3i();
 			Vec3 faceNormalVec = new Vec3(faceNormali.getX(), faceNormali.getY(), faceNormali.getZ());
 			Vec3 motionVec = getDeltaMovement();
 			// This should be normalized already, but just to ensure that it is, normalize it anyway.
@@ -262,16 +265,17 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound)
+	protected void readAdditionalSaveData(ValueInput compound)
 	{
 		super.readAdditionalSaveData(compound);
 		
-		if(compound.contains(NBT_RETURN_POSITION))
+		Optional<ValueInput> returnPosTag = compound.child(NBT_RETURN_POSITION);
+		if(returnPosTag.isPresent())
 		{
 			double x, y, z;
-			CompoundTag returnPosNBT = compound.getCompoundOrEmpty(NBT_RETURN_POSITION);
+			ValueInput returnPosNBT = returnPosTag.get();
 			
-			if(!returnPosNBT.isEmpty())
+			if(returnPosNBT.read(NBT_X, com.mojang.serialization.Codec.DOUBLE).isPresent())
 			{
 				x = returnPosNBT.getDoubleOr(NBT_X, 0.0);
 				y = returnPosNBT.getDoubleOr(NBT_Y, 0.0);
@@ -291,21 +295,18 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound)
+	protected void addAdditionalSaveData(ValueOutput compound)
 	{
 		super.addAdditionalSaveData(compound);
 		
 		if(returnPos != null)
 		{
-			CompoundTag returnPosNBT = new CompoundTag();
+			ValueOutput returnPosNBT = compound.child(NBT_RETURN_POSITION);
 			returnPosNBT.putDouble(NBT_X, returnPos.x);
 			returnPosNBT.putDouble(NBT_Y, returnPos.y);
 			returnPosNBT.putDouble(NBT_Z, returnPos.z);
-			compound.put(NBT_RETURN_POSITION, returnPosNBT);
 			compound.putDouble(NBT_DISTANCE_TO_RETURN, maxDistance);
 		}
-		else
-			compound.remove(NBT_RETURN_POSITION);
 		
 		compound.putBoolean(NBT_RETURNING, isReturning);
 	}

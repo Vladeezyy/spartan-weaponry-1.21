@@ -321,7 +321,7 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)
@@ -547,7 +547,7 @@ public final class DevScene
 	{
 		if(!(stack.getItem() instanceof ThrowingWeaponItem item))
 			return -1;
-		return item.getMaxAmmo(stack) - ItemNbt.get(stack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+		return item.getMaxAmmo(stack) - ItemNbt.get(stack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
 	}
 
 	private static void checkThrowHit(ServerPlayer player)

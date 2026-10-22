@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.core.registries.Registries;
 import java.util.Optional;
@@ -97,7 +99,7 @@ public class ArrowBaseEntity extends AbstractArrow
 		Level level = level();
 		if(level.isClientSide())
 		{
-			if(inGround)
+			if(isInGround())
 			{
 				if(inGroundTime % 5 == 0)
 					spawnPotionParticles(1);
@@ -105,7 +107,7 @@ public class ArrowBaseEntity extends AbstractArrow
 			else
 				spawnPotionParticles(2);
 		}
-		else if(inGround && inGroundTime != 0 && inGroundTime >= 600)
+		else if(isInGround() && inGroundTime != 0 && inGroundTime >= 600)
 		{
 	         level.broadcastEntityEvent(this, (byte)0);
 	         potion = Optional.empty();
@@ -206,7 +208,7 @@ public class ArrowBaseEntity extends AbstractArrow
 	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound)
+	protected void addAdditionalSaveData(ValueOutput compound)
 	{
 		super.addAdditionalSaveData(compound);
 		potion.ifPresent((potionHolder) -> compound.putString(NBT_POTION, PotionHelper.getId(potionHolder)));
@@ -214,16 +216,17 @@ public class ArrowBaseEntity extends AbstractArrow
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound)
+	protected void readAdditionalSaveData(ValueInput compound)
 	{
 		super.readAdditionalSaveData(compound);
-		if(compound.contains(NBT_ARROW, CompoundTag.TAG_COMPOUND))	// 1.20.1
-			setArrowStack(LegacyItems.parse(compound.getCompoundOrEmpty(NBT_ARROW), registryAccess()));
+		Optional<CompoundTag> legacyArrow = compound.read(NBT_ARROW, CompoundTag.CODEC);	// 1.20.1
+		if(legacyArrow.isPresent())
+			setArrowStack(LegacyItems.parse(legacyArrow.get(), registryAccess()));
 		else
 			setArrowStack(getPickupItemStackOrigin());
 
 		potion = PotionHelper.getPotion(compound);
-		getEntityData().set(COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getIntOr(NBT_POTION_COLOUR, 0) : -1);
+		getEntityData().set(COLOUR, compound.getIntOr(NBT_POTION_COLOUR, -1));
 	}
 
 	public boolean isValid()

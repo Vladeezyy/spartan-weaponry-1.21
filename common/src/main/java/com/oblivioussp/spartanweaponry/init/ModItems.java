@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.init;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
 import net.minecraft.core.registries.Registries;
 
@@ -43,8 +44,8 @@ public class ModItems
 		
 		public WeaponItemsMelee(Registrar<Item> register, String weaponName, WeaponFunction<SwordBaseItem> factory)
 		{
-			Item.Properties propVanilla = new Item.Properties();
-			Item.Properties propModded = new Item.Properties();
+			Item.Properties propVanilla = ItemIds.properties();
+			Item.Properties propModded = ItemIds.properties();
 			
 			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
 			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla));
@@ -52,7 +53,7 @@ public class ModItems
 			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
 			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
 			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
-			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, new Item.Properties().fireResistant()));
+			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
 			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
 			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
@@ -99,8 +100,8 @@ public class ModItems
 		
 		public WeaponItemsRanged(Registrar<Item> register, String weaponName, WeaponFunction<? extends Item> factory)
 		{
-			Item.Properties propVanilla = new Item.Properties();
-			Item.Properties propModded = new Item.Properties();
+			Item.Properties propVanilla = ItemIds.properties();
+			Item.Properties propModded = ItemIds.properties();
 			
 			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
 			leather = register.register("leather_" + weaponName, () -> factory.create(WeaponMaterial.LEATHER, propVanilla));
@@ -108,7 +109,7 @@ public class ModItems
 			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
 			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
 			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
-			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, new Item.Properties().fireResistant()));
+			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
 			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
 			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
@@ -150,8 +151,8 @@ public class ModItems
 		
 		public WeaponItemsThrowing(Registrar<Item> register, String weaponName, WeaponFunction<ThrowingWeaponItem> factory)
 		{
-			Item.Properties propVanilla = new Item.Properties();
-			Item.Properties propModded = new Item.Properties();
+			Item.Properties propVanilla = ItemIds.properties();
+			Item.Properties propModded = ItemIds.properties();
 			
 			wood = register.register("wooden_" + weaponName, () -> factory.create(WeaponMaterial.WOOD, propVanilla));
 			stone = register.register("stone_" + weaponName, () -> factory.create(WeaponMaterial.STONE, propVanilla));
@@ -159,7 +160,7 @@ public class ModItems
 			iron = register.register("iron_" + weaponName, () -> factory.create(WeaponMaterial.IRON, propVanilla));
 			gold = register.register("golden_" + weaponName, () -> factory.create(WeaponMaterial.GOLD, propVanilla));
 			diamond = register.register("diamond_" + weaponName, () -> factory.create(WeaponMaterial.DIAMOND, propVanilla));
-			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, new Item.Properties().fireResistant()));
+			netherite = register.register("netherite_" + weaponName, () -> factory.create(WeaponMaterial.NETHERITE, ItemIds.properties().fireResistant()));
 
 			tin = register.register("tin_" + weaponName, () -> factory.create(WeaponMaterial.TIN, propModded));
 			bronze = register.register("bronze_" + weaponName, () -> factory.create(WeaponMaterial.BRONZE, propModded));
@@ -200,12 +201,12 @@ public class ModItems
 	}
 	
 	// Basic Items
-	public static final Registrar.Entry<Item, Item> SIMPLE_HANDLE = REGISTRY.register("simple_handle", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> HANDLE = REGISTRY.register("handle", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> SIMPLE_POLE = REGISTRY.register("simple_pole", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> POLE = REGISTRY.register("pole", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> EXPLOSIVE_CHARGE = REGISTRY.register("explosive_charge", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> GREASE_BALL = REGISTRY.register("grease_ball", () -> new BasicItem(new Item.Properties()));
+	public static final Registrar.Entry<Item, Item> SIMPLE_HANDLE = REGISTRY.register("simple_handle", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> HANDLE = REGISTRY.register("handle", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> SIMPLE_POLE = REGISTRY.register("simple_pole", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> POLE = REGISTRY.register("pole", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> EXPLOSIVE_CHARGE = REGISTRY.register("explosive_charge", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> GREASE_BALL = REGISTRY.register("grease_ball", () -> new BasicItem(ItemIds.properties()));
 	
 	// Weapons
 	public static final WeaponItemsMelee DAGGERS = new WeaponItemsMelee(REGISTRY, "dagger", WeaponFactory.DAGGER);
@@ -216,11 +217,11 @@ public class ModItems
 	public static final WeaponItemsMelee RAPIERS = new WeaponItemsMelee(REGISTRY, "rapier", WeaponFactory.RAPIER);
 	public static final WeaponItemsMelee GREATSWORDS = new WeaponItemsMelee(REGISTRY, "greatsword", WeaponFactory.GREATSWORD);
 
-	public static final Registrar.Entry<Item, SwordBaseItem> WOODEN_CLUB = REGISTRY.register("wooden_club", () -> new SwordBaseItem(new Item.Properties(), WeaponMaterial.WOOD, WeaponArchetype.CLUB, Defaults.DamageBaseClub, Defaults.DamageMultiplierClub, Defaults.SpeedClub));
-	public static final Registrar.Entry<Item, SwordBaseItem> STUDDED_CLUB = REGISTRY.register("studded_club", () -> new SwordBaseItem(new Item.Properties(), WeaponMaterial.IRON, WeaponArchetype.CLUB, Defaults.DamageBaseClub, Defaults.DamageMultiplierClub, Defaults.SpeedClub));
+	public static final Registrar.Entry<Item, SwordBaseItem> WOODEN_CLUB = REGISTRY.register("wooden_club", () -> new SwordBaseItem(ItemIds.properties(), WeaponMaterial.WOOD, WeaponArchetype.CLUB, Defaults.DamageBaseClub, Defaults.DamageMultiplierClub, Defaults.SpeedClub));
+	public static final Registrar.Entry<Item, SwordBaseItem> STUDDED_CLUB = REGISTRY.register("studded_club", () -> new SwordBaseItem(ItemIds.properties(), WeaponMaterial.IRON, WeaponArchetype.CLUB, Defaults.DamageBaseClub, Defaults.DamageMultiplierClub, Defaults.SpeedClub));
 
-	public static final Registrar.Entry<Item, SwordBaseItem> CESTUS = REGISTRY.register("cestus", () -> new SwordBaseItem(new Item.Properties(), WeaponMaterial.LEATHER, WeaponArchetype.CESTUS, Defaults.DamageBaseCestus, Defaults.DamageMultiplierCestus, Defaults.SpeedCestus));
-	public static final Registrar.Entry<Item, SwordBaseItem> STUDDED_CESTUS = REGISTRY.register("studded_cestus", () -> new SwordBaseItem(new Item.Properties(), WeaponMaterial.IRON, WeaponArchetype.CESTUS, Defaults.DamageBaseCestus, Defaults.DamageMultiplierCestus, Defaults.SpeedCestus));
+	public static final Registrar.Entry<Item, SwordBaseItem> CESTUS = REGISTRY.register("cestus", () -> new SwordBaseItem(ItemIds.properties(), WeaponMaterial.LEATHER, WeaponArchetype.CESTUS, Defaults.DamageBaseCestus, Defaults.DamageMultiplierCestus, Defaults.SpeedCestus));
+	public static final Registrar.Entry<Item, SwordBaseItem> STUDDED_CESTUS = REGISTRY.register("studded_cestus", () -> new SwordBaseItem(ItemIds.properties(), WeaponMaterial.IRON, WeaponArchetype.CESTUS, Defaults.DamageBaseCestus, Defaults.DamageMultiplierCestus, Defaults.SpeedCestus));
 	
 	public static final WeaponItemsMelee BATTLE_HAMMERS = new WeaponItemsMelee(REGISTRY, "battle_hammer", WeaponFactory.BATTLE_HAMMER);
 	public static final WeaponItemsMelee WARHAMMERS = new WeaponItemsMelee(REGISTRY, "warhammer", WeaponFactory.WARHAMMER);
@@ -276,27 +277,27 @@ public class ModItems
 	public static final Registrar.Entry<Item, Item> HUGE_BOLT_QUIVER = REGISTRY.register("huge_bolt_quiver", () -> new QuiverBoltItem(Defaults.SlotsQuiverHuge));
 
 	public static final Registrar.Entry<Item, Item> QUIVER_COMPARTMENT = REGISTRY.register("quiver_compartment", () -> new QuiverSmithingTemplateItem());
-	public static final Registrar.Entry<Item, Item> MEDIUM_QUIVER_BRACE = REGISTRY.register("medium_quiver_brace", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> LARGE_QUIVER_BRACE = REGISTRY.register("large_quiver_brace", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> HUGE_QUIVER_BRACE = REGISTRY.register("huge_quiver_brace", () -> new BasicItem(new Item.Properties()));
+	public static final Registrar.Entry<Item, Item> MEDIUM_QUIVER_BRACE = REGISTRY.register("medium_quiver_brace", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> LARGE_QUIVER_BRACE = REGISTRY.register("large_quiver_brace", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> HUGE_QUIVER_BRACE = REGISTRY.register("huge_quiver_brace", () -> new BasicItem(ItemIds.properties()));
 
-/*	public static final Registrar.Entry<Item, Item> MEDIUM_QUIVER_UPGRADE_KIT = REGISTRY.register("medium_quiver_upgrade_kit", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> LARGE_QUIVER_UPGRADE_KIT = REGISTRY.register("large_quiver_upgrade_kit", () -> new BasicItem(new Item.Properties()));
-	public static final Registrar.Entry<Item, Item> HUGE_QUIVER_UPGRADE_KIT = REGISTRY.register("huge_quiver_upgrade_kit", () -> new BasicItem(new Item.Properties()));*/
+/*	public static final Registrar.Entry<Item, Item> MEDIUM_QUIVER_UPGRADE_KIT = REGISTRY.register("medium_quiver_upgrade_kit", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> LARGE_QUIVER_UPGRADE_KIT = REGISTRY.register("large_quiver_upgrade_kit", () -> new BasicItem(ItemIds.properties()));
+	public static final Registrar.Entry<Item, Item> HUGE_QUIVER_UPGRADE_KIT = REGISTRY.register("huge_quiver_upgrade_kit", () -> new BasicItem(ItemIds.properties()));*/
 	
-	public static final Registrar.Entry<Item, Item> DYNAMITE = REGISTRY.register("dynamite", () -> new DynamiteItem(new Item.Properties()));
+	public static final Registrar.Entry<Item, Item> DYNAMITE = REGISTRY.register("dynamite", () -> new DynamiteItem(ItemIds.properties()));
 	
 	public static final Registrar.Entry<Item, WeaponOilItem> WEAPON_OIL = REGISTRY.register("weapon_oil", () -> new WeaponOilItem());
 	
-	public static final Registrar.Entry<Item, Item> BLAZE_HEAD = REGISTRY.register("blaze_head", () -> new ExtendedSkullItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> ENDERMAN_HEAD = REGISTRY.register("enderman_head", () -> new ExtendedSkullItem(ModBlocks.ENDERMAN_HEAD.get(), ModBlocks.ENDERMAN_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> SPIDER_HEAD = REGISTRY.register("spider_head", () -> new ExtendedSkullItem(ModBlocks.SPIDER_HEAD.get(), ModBlocks.SPIDER_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> CAVE_SPIDER_HEAD = REGISTRY.register("cave_spider_head", () -> new ExtendedSkullItem(ModBlocks.CAVE_SPIDER_HEAD.get(), ModBlocks.CAVE_SPIDER_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> ZOMBIFIED_PIGLIN_HEAD = REGISTRY.register("zombified_piglin_head", () -> new ExtendedSkullItem(ModBlocks.ZOMBIFIED_PIGLIN_HEAD.get(), ModBlocks.ZOMBIFIED_PIGLIN_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> HUSK_HEAD = REGISTRY.register("husk_head", () -> new ExtendedSkullItem(ModBlocks.HUSK_HEAD.get(), ModBlocks.HUSK_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> STRAY_SKULL = REGISTRY.register("stray_skull", () -> new ExtendedSkullItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> DROWNED_HEAD = REGISTRY.register("drowned_head", () -> new ExtendedSkullItem(ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> ILLAGER_HEAD = REGISTRY.register("illager_head", () -> new ExtendedSkullItem(ModBlocks.ILLAGER_HEAD.get(), ModBlocks.ILLAGER_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
-	public static final Registrar.Entry<Item, Item> WITCH_HEAD = REGISTRY.register("witch_head", () -> new ExtendedSkullItem(ModBlocks.WITCH_HEAD.get(), ModBlocks.WITCH_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> BLAZE_HEAD = REGISTRY.register("blaze_head", () -> new ExtendedSkullItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> ENDERMAN_HEAD = REGISTRY.register("enderman_head", () -> new ExtendedSkullItem(ModBlocks.ENDERMAN_HEAD.get(), ModBlocks.ENDERMAN_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> SPIDER_HEAD = REGISTRY.register("spider_head", () -> new ExtendedSkullItem(ModBlocks.SPIDER_HEAD.get(), ModBlocks.SPIDER_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> CAVE_SPIDER_HEAD = REGISTRY.register("cave_spider_head", () -> new ExtendedSkullItem(ModBlocks.CAVE_SPIDER_HEAD.get(), ModBlocks.CAVE_SPIDER_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> ZOMBIFIED_PIGLIN_HEAD = REGISTRY.register("zombified_piglin_head", () -> new ExtendedSkullItem(ModBlocks.ZOMBIFIED_PIGLIN_HEAD.get(), ModBlocks.ZOMBIFIED_PIGLIN_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> HUSK_HEAD = REGISTRY.register("husk_head", () -> new ExtendedSkullItem(ModBlocks.HUSK_HEAD.get(), ModBlocks.HUSK_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> STRAY_SKULL = REGISTRY.register("stray_skull", () -> new ExtendedSkullItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> DROWNED_HEAD = REGISTRY.register("drowned_head", () -> new ExtendedSkullItem(ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> ILLAGER_HEAD = REGISTRY.register("illager_head", () -> new ExtendedSkullItem(ModBlocks.ILLAGER_HEAD.get(), ModBlocks.ILLAGER_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+	public static final Registrar.Entry<Item, Item> WITCH_HEAD = REGISTRY.register("witch_head", () -> new ExtendedSkullItem(ModBlocks.WITCH_HEAD.get(), ModBlocks.WITCH_WALL_HEAD.get(), ItemIds.properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
 	
 }

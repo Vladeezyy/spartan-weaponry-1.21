@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.util;
 
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.core.registries.Registries;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,14 @@ public final class PotionHelper
 		if(!tag.contains(TAG_POTION))
 			return Optional.empty();
 		Identifier id = Identifier.tryParse(tag.getStringOr(TAG_POTION, ""));
-		return id == null ? Optional.empty() : BuiltInRegistries.POTION.getHolder(id).map((ref) -> (Holder<Potion>)ref);
+		return id == null ? Optional.empty() : BuiltInRegistries.POTION.get(id).map((ref) -> (Holder<Potion>)ref);
+	}
+
+	/** The potion of a saved entity (1.21.6+ entities save through ValueInput) */
+	public static Optional<Holder<Potion>> getPotion(ValueInput input)
+	{
+		Identifier id = input.getStringOr(TAG_POTION, "").map(Identifier::tryParse).orElse(null);
+		return id == null ? Optional.empty() : BuiltInRegistries.POTION.get(id).map((ref) -> (Holder<Potion>)ref);
 	}
 
 	public static void putPotion(CompoundTag tag, Holder<Potion> potion)

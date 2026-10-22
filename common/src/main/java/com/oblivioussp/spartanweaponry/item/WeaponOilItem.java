@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import com.oblivioussp.spartanweaponry.util.PotionHelper;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -39,7 +40,7 @@ public class WeaponOilItem extends BasicItem
 {
 	public WeaponOilItem()
 	{
-		super(new Item.Properties().stacksTo(6).craftRemainder(Items.GLASS_BOTTLE));
+		super(ItemIds.properties().stacksTo(6).craftRemainder(Items.GLASS_BOTTLE));
 	}
 	
 	@Override
@@ -106,7 +107,7 @@ public class WeaponOilItem extends BasicItem
 						playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_applied", stack.getHoverName(), oppositeStack.getHoverName()), true);
 						playerIn.playSound(ModSounds.OIL_APPLIED.get(), 1.0f, 1.0f);
 						// Remove one from the stack and replace the container back into the inventory (a glass bottle)
-						ItemStack bottleStack = hasCraftingRemainingItem() ? new ItemStack(getCraftingRemainingItem()) : ItemStack.EMPTY;
+						ItemStack bottleStack = getCraftingRemainder().copy();
 						stack.shrink(1);
 						if(stack.getCount() == 0)
 							playerIn.setItemInHand(handIn, ItemStack.EMPTY);

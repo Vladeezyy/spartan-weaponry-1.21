@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 import com.oblivioussp.spartanweaponry.util.Enchants;
@@ -71,6 +73,21 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	 */
 	protected final IntOpenHashSet hitEntities = new IntOpenHashSet();
 	
+	/** AbstractArrow keeps its damage private in 1.21.2+ (no getter) */
+	protected double baseDamage = 2.0;
+
+	@Override
+	public void setBaseDamage(double damage)
+	{
+		super.setBaseDamage(damage);
+		baseDamage = damage;
+	}
+
+	public double getBaseDamage()
+	{
+		return baseDamage;
+	}
+
 	public ThrowingWeaponEntity(EntityType<? extends ThrowingWeaponEntity> type, Level level) 
 	{
 		super(type, level);
@@ -141,7 +158,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 					if(!isReturning)
 					{
 						setNoPhysics(true);
-						inGround = false;
+						setInGround(false);
 						isReturning = true;
 						setNoGravity(true);
 					}
@@ -174,7 +191,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 		
 		super.tick();
 		
-		if(!inGround)
+		if(!isInGround())
 			++ticksInAir;
 		else if(ticksInAir != 0)
 			ticksInAir = 0;
@@ -276,7 +293,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
                 entity.igniteForSeconds(5);
             }
             
-            if(entity.hurt(src, damage))
+            if(entity.hurtOrSimulate(src, damage))
             {
             	hitEntities.add(entity.getId());
             	boolean[] broke = {false};
@@ -284,7 +301,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
             		weapon.hurtAndBreak(1, serverLevel, null, (item) -> broke[0] = true);
             	if(broke[0])
             	{
-            		playSound(SoundEvents.ITEM_BREAK, 0.8f, 0.8f + random.nextFloat() * 0.4f);
+            		playSound(SoundEvents.ITEM_BREAK.value(), 0.8f, 0.8f + random.nextFloat() * 0.4f);
             		level.broadcastEntityEvent(this, (byte)3);
             		discard();
             	}
@@ -308,7 +325,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 
                     if (shooter != null && entitylivingbase != shooter && entitylivingbase instanceof Player && shooter instanceof ServerPlayer)
                     {
-                        ((ServerPlayer)shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+                        ((ServerPlayer)shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
                     }
                 }
 
@@ -385,13 +402,13 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	{
 		ItemStack stack = getWeaponItem();
 		removeEnchantments(stack);
-		spawnAtLocation(stack, 0.1F);
+		spawnAtLocation((net.minecraft.server.level.ServerLevel)level(), stack, 0.1F);
 	}
 	
 	@Override
 	public void playerTouch(Player entityIn)
 	{
-		if(inGround || isReturning)
+		if(isInGround() || isReturning)
 			attemptCatch(entityIn);
 	}
 	
@@ -412,7 +429,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound)
+	protected void readAdditionalSaveData(ValueInput compound)
 	{
 		super.readAdditionalSaveData(compound);
 		// The weapon is saved as the vanilla arrow "item" (1.20.1 did not save it: thrown weapons were lost on reload)
@@ -423,7 +440,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	}
 	
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound)
+	protected void addAdditionalSaveData(ValueOutput compound)
 	{
 		super.addAdditionalSaveData(compound);
 	}
@@ -482,12 +499,12 @@ public class ThrowingWeaponEntity extends AbstractArrow
 				{
 					ItemStack slotStack = player.getInventory().getItem(i);
 					if(slotStack.getItem() == weapon.getItem() && 
-							ItemNbt.read(weapon).hasUUID(ThrowingWeaponItem.NBT_UUID) && ItemNbt.read(slotStack).hasUUID(ThrowingWeaponItem.NBT_UUID) && 
-							ItemNbt.read(weapon).getUUID(ThrowingWeaponItem.NBT_UUID).equals(ItemNbt.read(slotStack).getUUID(ThrowingWeaponItem.NBT_UUID)) &&
+							ItemNbt.read(weapon).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent() && ItemNbt.read(slotStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent() && 
+							ItemNbt.read(weapon).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).orElseThrow().equals(ItemNbt.read(slotStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()) &&
 							weapon.getItem() instanceof ThrowingWeaponItem throwingWeapon)
 					{
 						int maxAmmo = throwingWeapon.getMaxAmmo(slotStack);
-						int currentAmmo = maxAmmo - ItemNbt.read(slotStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+						int currentAmmo = maxAmmo - ItemNbt.read(slotStack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
 						
 						if(currentAmmo < maxAmmo)
 						{

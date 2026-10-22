@@ -107,7 +107,7 @@ public class HudCrosshairThrowingWeapon
 	        if(ItemNbt.read(equippedStack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
 	        {
 				int maxAmmo = throwingWeapon.getMaxAmmo(equippedStack);
-	        	int ammo = maxAmmo - ItemNbt.read(equippedStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+	        	int ammo = maxAmmo - ItemNbt.read(equippedStack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
 	        	
 	        	String text = String.format("%d/%d", ammo, maxAmmo);
 				

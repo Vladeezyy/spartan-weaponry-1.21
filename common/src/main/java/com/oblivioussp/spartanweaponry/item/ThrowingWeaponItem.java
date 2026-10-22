@@ -102,7 +102,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	
 	public ThrowingWeaponItem(Item.Properties prop, WeaponMaterial materialIn, WeaponArchetype archetypeIn, float weaponBaseDamage, float weaponDamageMultiplier, float weaponSpeed, int maxAmmoCapacity, int chargeTicks)
 	{
-		super(prop.durability(materialIn.getUses() / 4));
+		super(prop.durability(materialIn.getUses() / 4).repairable(materialIn.getRepairTag()).enchantable(materialIn.getEnchantmentValue()));
 		material = materialIn;
 		setAttackDamage(weaponBaseDamage, weaponDamageMultiplier);
 		setAttackSpeed(weaponSpeed);
@@ -419,13 +419,6 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		return stack;
 	}
 
-	// Vanilla (the enchanting table on Fabric); the same value as the stack version below
-	@Override
-	public int getEnchantmentValue()
-	{
-		return getEnchantmentValue(ItemStack.EMPTY);
-	}
-	
 	// NeoForge IItemExtension (Fabric: getEnchantmentValue() above)
 	public int getEnchantmentValue(ItemStack stack) 
 	{

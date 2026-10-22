@@ -235,7 +235,7 @@ public final class StressScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
 	}
 
 	private static void fps(Minecraft mc, String what)
@@ -436,7 +436,7 @@ public final class StressScene
 		knifeTag.putInt("AmmoUsed", 3);
 		knifeTag.putBoolean("Original", true);
 		ItemStack knives = LegacyItems.parse(old("spartanweaponry:iron_throwing_knife", 1, knifeTag), registries);
-		check("1.20.1 throwing knives keep the used ammo", ItemNbt.get(knives).getInt(ThrowingWeaponItem.NBT_AMMO_USED) == 3, knives.getComponentsPatch());
+		check("1.20.1 throwing knives keep the used ammo", ItemNbt.get(knives).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0) == 3, knives.getComponentsPatch());
 
 		CompoundTag crossbowTag = new CompoundTag();
 		crossbowTag.putBoolean("Charged", true);
@@ -493,7 +493,7 @@ public final class StressScene
 		int arrows = 0;
 		for(int i = 0; i < handler.getSlots(); i++)
 			arrows += handler.getStackInSlot(i).getCount();
-		int priority = ItemNbt.get(quiver).getInt(QuiverBaseItem.NBT_PROIRITY_SLOT);
+		int priority = ItemNbt.get(quiver).getIntOr(QuiverBaseItem.NBT_PROIRITY_SLOT, 0);
 		check("600 quiver packets with bad slot numbers: no crash, arrows kept, priority slot in range", player.isAlive() && arrows == 64 && priority >= 0 && priority < handler.getSlots(), "arrows " + arrows + ", priority slot " + priority + "/" + handler.getSlots());
 	}
 

@@ -25,7 +25,8 @@ public class ExtendedSkullItem extends StandingAndWallBlockItem
 
 	public ExtendedSkullItem(Block floorBlockIn, Block wallBlockIn, Properties builder, Direction directionIn) 
 	{
-		super(floorBlockIn, wallBlockIn, builder, directionIn);
+		// 1.21.2+: the direction before the properties; the name is the block's (as BlockItem was in 1.21.1)
+		super(floorBlockIn, wallBlockIn, directionIn, builder.useBlockDescriptionPrefix());
 	}
 
 	@Override

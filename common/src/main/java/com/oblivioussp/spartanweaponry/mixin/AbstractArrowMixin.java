@@ -36,7 +36,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 	private void playerTouch(Player entityIn, CallbackInfo callback)
 	{
 		Level level = level();
-		if(!level.isClientSide() && (inGround || isNoPhysics()) && shakeTime <= 0)
+		if(!level.isClientSide() && (isInGround() || isNoPhysics()) && shakeTime <= 0)
 		{
 //			Log.debug("Player collision with arrow entity intercepted!");
 //			boolean pickupItem = pickup == Pickup.ALLOWED || pickup == Pickup.CREATIVE_ONLY && entityIn.abilities.isCreativeMode || getNoClip() && getShooter().getUniqueID() == entityIn.getUniqueID();
@@ -65,7 +65,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 						{
 							//Log.debug("Found a quiver to place the arrow into!");
 							// Make sure auto-collect is enabled.
-							if(ItemNbt.read(quiver).getBoolean(QuiverBaseItem.NBT_AMMO_COLLECT))
+							if(ItemNbt.read(quiver).getBooleanOr(QuiverBaseItem.NBT_AMMO_COLLECT, false))
 							{
 								//Log.debug("Inserting arrows into a quiver!");
 								// Attempt to place the arrows into the quiver.
@@ -95,7 +95,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 	}
 	
 	@Shadow
-	protected boolean inGround;
+	protected boolean isInGround();
 	@Shadow
 	public int shakeTime;
 	@Shadow

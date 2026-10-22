@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.core.particles.SpellParticleOption;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.init.ModEntities;
 import com.oblivioussp.spartanweaponry.init.ModItems;
@@ -40,8 +43,8 @@ public class BoltSpectralEntity extends BoltEntity
     {
     	Level level = level();
     	super.tick();
-    	if(level.isClientSide() && !inGround)
-    		level.addParticle(ParticleTypes.INSTANT_EFFECT, getX(), getY(), getZ(), 0.0d, 0.0d, 0.0d);
+    	if(level.isClientSide() && !isInGround())
+    		level.addParticle(SpellParticleOption.create(ParticleTypes.INSTANT_EFFECT, -1, 1.0F), getX(), getY(), getZ(), 0.0d, 0.0d, 0.0d);
     }
     
     @Override
@@ -65,15 +68,14 @@ public class BoltSpectralEntity extends BoltEntity
     }
     
     @Override
-    public void readAdditionalSaveData(CompoundTag compound)
+    protected void readAdditionalSaveData(ValueInput compound)
     {
     	super.readAdditionalSaveData(compound);
-    	if(compound.contains(NBT_DURATION))
-    		duration = compound.getIntOr(NBT_DURATION, 0);
+    	duration = compound.getIntOr(NBT_DURATION, duration);
     }
     
     @Override
-    public void addAdditionalSaveData(CompoundTag compound) 
+    protected void addAdditionalSaveData(ValueOutput compound) 
     {
     	super.addAdditionalSaveData(compound);
     	compound.putInt(NBT_DURATION, duration);

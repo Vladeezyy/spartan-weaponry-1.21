@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import java.util.List;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.core.registries.Registries;
 import java.util.Optional;
@@ -84,6 +87,19 @@ public class BoltEntity extends AbstractArrow
     }
     
 	
+	/** AbstractArrow keeps its damage private in 1.21.2+ (no getter) */
+	@Override
+	public void setBaseDamage(double damage)
+	{
+		super.setBaseDamage(damage);
+		baseDamage = (float)damage;
+	}
+
+	public double getBaseDamage()
+	{
+		return baseDamage;
+	}
+
 	public void initEntity(float baseDamage, float rangeMultiplier, float armorPiercingFactor, ItemStack boltStack)
 	{
 		this.baseDamage = baseDamage;
@@ -144,7 +160,7 @@ public class BoltEntity extends AbstractArrow
     	Level level = level();
 		if(level.isClientSide())
 		{
-			if(inGround)
+			if(isInGround())
 			{
 				if(inGroundTime % 5 == 0)
 					spawnPotionParticles(1);
@@ -152,7 +168,7 @@ public class BoltEntity extends AbstractArrow
 			else
 				spawnPotionParticles(2);
 		}
-		else if(inGround && inGroundTime != 0 && inGroundTime >= 600)
+		else if(isInGround() && inGroundTime != 0 && inGroundTime >= 600)
 		{
 	         level.broadcastEntityEvent(this, (byte)0);
 	         potion = Optional.empty();
@@ -206,7 +222,7 @@ public class BoltEntity extends AbstractArrow
         if(isOnFire() && !isEnderman)
         	entity.igniteForSeconds(5);
 
-        if(entity.hurt(source, (float)damage)) 
+        if(entity.hurtOrSimulate(source, (float)damage)) 
         {
         	if(isEnderman)
         		return;
@@ -229,7 +245,7 @@ public class BoltEntity extends AbstractArrow
 
         		doPostHurtEffects(livingentity);
         		if(shooter != null && livingentity != shooter && livingentity instanceof Player && shooter instanceof ServerPlayer && !isSilent())
-        			((ServerPlayer)shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+        			((ServerPlayer)shooter).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.PLAY_ARROW_HIT_SOUND, 0.0F));
 
         		if(!entity.isAlive() && piercedAndKilledEntities != null)
         			piercedAndKilledEntities.add(livingentity);
@@ -237,10 +253,11 @@ public class BoltEntity extends AbstractArrow
         		if(!level.isClientSide() && shooter instanceof ServerPlayer)
         		{
         			ServerPlayer serverplayerentity = (ServerPlayer)shooter;
-        			if (piercedAndKilledEntities != null && shotFromCrossbow()) 
-        				CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, piercedAndKilledEntities);
-        			else if (!entity.isAlive() && shotFromCrossbow())
-        				CriteriaTriggers.KILLED_BY_CROSSBOW.trigger(serverplayerentity, Arrays.asList(entity));
+        			// 1.21.2+: one trigger for arrows, the crossbow ones test the weapon
+        			if (piercedAndKilledEntities != null) 
+        				CriteriaTriggers.KILLED_BY_ARROW.trigger(serverplayerentity, piercedAndKilledEntities, getWeaponItem());
+        			else if (!entity.isAlive())
+        				CriteriaTriggers.KILLED_BY_ARROW.trigger(serverplayerentity, List.of(entity), getWeaponItem());
         		}
         	}
 
@@ -257,7 +274,7 @@ public class BoltEntity extends AbstractArrow
         	if(!level.isClientSide() && getDeltaMovement().lengthSqr() < 1.0E-7D)
         	{
         		if (pickup == AbstractArrow.Pickup.ALLOWED)
-        			spawnAtLocation(getPickupItem(), 0.1F);
+        			spawnAtLocation((net.minecraft.server.level.ServerLevel)level(), getPickupItem(), 0.1F);
 
         		discard();
         	}
@@ -311,19 +328,19 @@ public class BoltEntity extends AbstractArrow
 	}
 	
 	@Override
-	public void readAdditionalSaveData(CompoundTag compound)
+	protected void readAdditionalSaveData(ValueInput compound)
 	{
 		super.readAdditionalSaveData(compound);
 		
 		setBoltStack(getPickupItemStackOrigin());
 		potion = PotionHelper.getPotion(compound);
 		
-		getEntityData().set(DATA_COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getIntOr(NBT_POTION_COLOUR, 0) : -1);
+		getEntityData().set(DATA_COLOUR, compound.getIntOr(NBT_POTION_COLOUR, -1));
 	}
 
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag compound) 
+	protected void addAdditionalSaveData(ValueOutput compound) 
 	{
 		super.addAdditionalSaveData(compound);
 		

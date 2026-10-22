@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
@@ -29,7 +30,7 @@ public class BoltItem extends Item
 
 	public BoltItem(float damageModifier, float rangeModifier, float armorPiercingFactor) 
 	{
-		super(new Item.Properties());
+		super(ItemIds.properties());
 		this.damageModifier = damageModifier;
 		this.rangeModifier = rangeModifier;
 		this.armorPiercingFactor = armorPiercingFactor;

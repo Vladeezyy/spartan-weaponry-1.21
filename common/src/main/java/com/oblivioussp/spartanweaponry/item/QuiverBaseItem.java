@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
-import javax.annotation.Nullable;
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.server.level.ServerLevel;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
@@ -70,7 +70,7 @@ public abstract class QuiverBaseItem extends Item
 
 	public QuiverBaseItem(int inventorySize)
 	{
-		super(new Item.Properties().stacksTo(1));
+		super(ItemIds.properties().stacksTo(1));
 		
 		if(Platform.INSTANCE.isClient())
 			ClientHelper.registerQuiverPropertyOverrides(this);
@@ -125,7 +125,7 @@ public abstract class QuiverBaseItem extends Item
 		NonNullList<ItemStack> items = NonNullList.withSize(size, ItemStack.EMPTY);
 		for(int i = 0; i < list.size(); i++)
 		{
-			CompoundTag tag = list.getCompound(i);
+			CompoundTag tag = list.getCompoundOrEmpty(i);
 			int slot = tag.getIntOr(NBT_ITEM_SLOT, 0);
 			if(slot >= 0 && slot < size)
 				items.set(slot, LegacyItems.parse(tag, registries));

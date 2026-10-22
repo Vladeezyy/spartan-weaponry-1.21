@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
@@ -27,7 +28,7 @@ public class ArrowBaseItem extends ArrowItem
 	
 	public ArrowBaseItem(float damageModifier, float rangeModifier) 
 	{
-		super(new Item.Properties());
+		super(ItemIds.properties());
 		this.damageModifier = damageModifier;
 		this.rangeModifier = rangeModifier;
 	}

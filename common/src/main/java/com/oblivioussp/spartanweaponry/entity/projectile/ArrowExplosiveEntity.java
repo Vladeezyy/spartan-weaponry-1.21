@@ -48,12 +48,12 @@ public class ArrowExplosiveEntity extends ArrowEntitySW
 		super.tick();
 
 		Level level = level();
-		if (level.isClientSide() && !inGround)
+		if (level.isClientSide() && !isInGround())
         {
             level.addParticle(ParticleTypes.SMOKE, getX(), getY(), getZ(), 0.0D, 0.0D, 0.0D);
         }
 		
-		if(this.inGround)
+		if(this.isInGround())
 		{
 			explode();
 		}
@@ -64,7 +64,7 @@ public class ArrowExplosiveEntity extends ArrowEntitySW
 		Level level = level();
 		if(!level.isClientSide())
 		{
-			boolean mobGriefing = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+			boolean mobGriefing = ((net.minecraft.server.level.ServerLevel)level).getGameRules().get(GameRules.MOB_GRIEFING);
 			level.explode(this, xOld, yOld, zOld, Config.INSTANCE.arrowExplosiveExplosionStrength.get().floatValue(), !Config.INSTANCE.disableTerrainDamage.get() && mobGriefing ? ExplosionInteraction.TNT : ExplosionInteraction.NONE);
 			discard();
 		}

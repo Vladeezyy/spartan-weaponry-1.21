@@ -55,8 +55,8 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 	{
 		super(screenContainer, inv, title);
 		quiver = screenContainer.getQuiverStack();
-		prioritySlot = ItemNbt.read(quiver).getInt(QuiverBaseItem.NBT_PROIRITY_SLOT);
-		isAmmoCollectEnabled = ItemNbt.read(quiver).getBoolean(QuiverBaseItem.NBT_AMMO_COLLECT);
+		prioritySlot = ItemNbt.read(quiver).getIntOr(QuiverBaseItem.NBT_PROIRITY_SLOT, 0);
+		isAmmoCollectEnabled = ItemNbt.read(quiver).getBooleanOr(QuiverBaseItem.NBT_AMMO_COLLECT, false);
 		
 		Optional<IQuiverItemHandler> handler = Optional.ofNullable(ModCapabilities.getQuiver(quiver));
 		if(handler.isPresent())

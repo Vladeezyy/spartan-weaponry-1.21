@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
 import java.util.List;
 
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
@@ -22,33 +23,26 @@ public class QuiverSmithingTemplateItem extends SmithingTemplateItem
 	private static final Identifier EMPTY_MEDIUM_QUIVER_BRACE_SLOT = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "slots/empty_medium_quiver_brace_slot");
 	private static final Identifier EMPTY_LARGE_QUIVER_BRACE_SLOT = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "slots/empty_large_quiver_brace_slot");
 	
-	private static final String DESCRIPTION_ID = Util.makeDescriptionId("item", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment"));
 	
 	private static final ChatFormatting TITLE_FORMAT = ChatFormatting.GRAY;
 	private static final ChatFormatting DESCRIPTION_FORMAT = ChatFormatting.BLUE;
 	
 	private static final Component QUIVER_APPLIES_TO = Component.translatable(Util.makeDescriptionId("tooltip", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment.applies_to"))).withStyle(DESCRIPTION_FORMAT);
 	private static final Component QUIVER_INGREDIENTS = Component.translatable(Util.makeDescriptionId("tooltip", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment.ingredients"))).withStyle(DESCRIPTION_FORMAT);
-	private static final Component QUIVER_UPGRADE_DESC = Component.translatable(Util.makeDescriptionId("tooltip", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment.upgrade_description"))).withStyle(TITLE_FORMAT);
 	private static final Component QUIVER_BASE_SLOT_DESC = Component.translatable(Util.makeDescriptionId("tooltip", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment.base_slot_description")));
 	private static final Component QUIVER_ADDITIONAL_SLOT_DESC = Component.translatable(Util.makeDescriptionId("tooltip", Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_compartment.additonal_slot_description")));
 
 	public QuiverSmithingTemplateItem() 
 	{
+		// 1.21.2+: no upgrade description (the item name is the title), the item id from the properties
 		super(QUIVER_APPLIES_TO, 
 				QUIVER_INGREDIENTS, 
-				QUIVER_UPGRADE_DESC, 
 				QUIVER_BASE_SLOT_DESC, 
 				QUIVER_ADDITIONAL_SLOT_DESC, 
 				List.of(EMPTY_SMALL_ARROW_QUIVER_SLOT, EMPTY_MEDIUM_ARROW_QUIVER_SLOT, EMPTY_LARGE_ARROW_QUIVER_SLOT,
 						EMPTY_SMALL_BOLT_QUIVER_SLOT, EMPTY_MEDIUM_BOLT_QUIVER_SLOT, EMPTY_LARGE_BOLT_QUIVER_SLOT), 
-				List.of(EMPTY_MEDIUM_QUIVER_BRACE_SLOT, EMPTY_LARGE_QUIVER_BRACE_SLOT));
+				List.of(EMPTY_MEDIUM_QUIVER_BRACE_SLOT, EMPTY_LARGE_QUIVER_BRACE_SLOT), ItemIds.properties());
 	}
 	
-	@Override
-	public String getDescriptionId() 
-	{
-		return DESCRIPTION_ID;
-	}
 
 }

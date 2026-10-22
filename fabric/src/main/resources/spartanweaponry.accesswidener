@@ -1,18 +1,17 @@
 accessWidener v2 named
 # Spartan Weaponry: the same entries as common/accesstransformer.cfg (NeoForge)
-accessible field net/minecraft/world/entity/projectile/AbstractArrow life I
-accessible field net/minecraft/world/entity/projectile/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
-mutable field net/minecraft/world/entity/projectile/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
-accessible field net/minecraft/world/entity/projectile/AbstractArrow piercedAndKilledEntities Ljava/util/List;
+accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow life I
+accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
+mutable field net/minecraft/world/entity/projectile/arrow/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;
+accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow piercedAndKilledEntities Ljava/util/List;
 accessible field net/minecraft/world/effect/MobEffect descriptionId Ljava/lang/String;
 accessible method net/minecraft/world/entity/LivingEntity breakItem (Lnet/minecraft/world/item/ItemStack;)V
-accessible method net/minecraft/world/entity/projectile/AbstractArrow setPierceLevel (B)V
+accessible method net/minecraft/world/entity/projectile/arrow/AbstractArrow setPierceLevel (B)V
 accessible field net/minecraft/world/entity/LivingEntity lastHurt F
 accessible field net/minecraft/client/renderer/blockentity/SkullBlockRenderer SKIN_BY_TYPE Ljava/util/Map;
 accessible class net/minecraft/client/gui/screens/MenuScreens$ScreenConstructor
 accessible class net/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier
 accessible field net/minecraft/world/entity/item/ItemEntity target Ljava/util/UUID;
-accessible field net/minecraft/client/Minecraft itemColors Lnet/minecraft/client/color/item/ItemColors;
 # Fabric only: the oil coating layer (OilCoatingModels), the menu screens
 accessible method net/minecraft/client/renderer/block/model/ItemModelGenerator processFrames (ILjava/lang/String;Lnet/minecraft/client/renderer/texture/SpriteContents;)Ljava/util/List;
 accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V

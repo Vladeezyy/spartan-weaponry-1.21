@@ -10,6 +10,8 @@ import java.util.function.UnaryOperator;
 
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
+import com.oblivioussp.spartanweaponry.api.ItemIds;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -93,7 +95,7 @@ public final class Registrar<R>
 		private T create()
 		{
 			if(value == null)
-				value = factory.get();
+				value = ItemIds.creating(key, factory);
 			return value;
 		}
 

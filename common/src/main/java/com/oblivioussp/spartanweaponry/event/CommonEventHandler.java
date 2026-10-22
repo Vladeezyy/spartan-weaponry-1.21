@@ -136,7 +136,7 @@ public class CommonEventHandler
 					doTraitDamageParticles = true;
 			}
 			if(attackerStack.getItem() instanceof ThrowingWeaponItem && ItemNbt.has(attackerStack) && 
-					ItemNbt.read(attackerStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED) >= ((ThrowingWeaponItem)attackerStack.getItem()).getMaxAmmo(attackerStack))
+					ItemNbt.read(attackerStack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0) >= ((ThrowingWeaponItem)attackerStack.getItem()).getMaxAmmo(attackerStack))
 				// Only do punching damage when melee attacking using a throwing weapon without ammo
 				dmgDealt = 1.0f;
 			
@@ -292,11 +292,11 @@ public class CommonEventHandler
 						if(oppositeStack.isEmpty())
 						{
 							// If there is any offhand item data in the quiver, find it and put it back
-							CompoundTag nbt = ItemNbt.read(quiver).getCompound(QuiverBaseItem.NBT_OFFHAND_MOVED);
+							CompoundTag nbt = ItemNbt.read(quiver).getCompoundOrEmpty(QuiverBaseItem.NBT_OFFHAND_MOVED);
 							if(!nbt.isEmpty())
 							{
-								String itemId = nbt.getString(QuiverBaseItem.NBT_ITEM_ID);
-								int itemSlot = nbt.getInt(QuiverBaseItem.NBT_ITEM_SLOT);
+								String itemId = nbt.getStringOr(QuiverBaseItem.NBT_ITEM_ID, "");
+								int itemSlot = nbt.getIntOr(QuiverBaseItem.NBT_ITEM_SLOT, 0);
 								ItemStack offhandStack = player.getInventory().getItem(itemSlot);
 								// Check to see if the item in the slot is a match
 								if(BuiltInRegistries.ITEM.getKey(offhandStack.getItem()).toString().equals(itemId))
@@ -399,7 +399,7 @@ public class CommonEventHandler
 			IQuiverItemHandler quiverHandler = ModCapabilities.getQuiver(quiver);
 			ItemStack arrowStack = player.getItemBySlot(oppositeHandSlot);
 			
-			int prioritySlot = ItemNbt.read(quiver).getInt(QuiverBaseItem.NBT_PROIRITY_SLOT);
+			int prioritySlot = ItemNbt.read(quiver).getIntOr(QuiverBaseItem.NBT_PROIRITY_SLOT, 0);
 			arrowStack = quiverHandler.insertItem(prioritySlot, arrowStack, false);
 			if(!arrowStack.isEmpty())
 			{
@@ -430,7 +430,7 @@ public class CommonEventHandler
 			IQuiverItemHandler quiverHandler = ModCapabilities.getQuiver(quiver);
 			ItemStack arrowStack = ItemStack.EMPTY;
 			
-			int prioritySlot = ItemNbt.read(quiver).getInt(QuiverBaseItem.NBT_PROIRITY_SLOT);
+			int prioritySlot = ItemNbt.read(quiver).getIntOr(QuiverBaseItem.NBT_PROIRITY_SLOT, 0);
 			if(prioritySlot <= quiverHandler.getSlots())
 			{
 				arrowStack = quiverHandler.extractItem(prioritySlot, 64, false);
@@ -477,7 +477,7 @@ public class CommonEventHandler
 				if(!pickedUpStack.isEmpty() && !quiver.isEmpty() && ((QuiverBaseItem)quiver.getItem()).isAmmoValid(pickedUpStack, quiver))
 				{
 					// Make sure auto-collect is enabled.
-					if(ItemNbt.read(quiver).getBoolean(QuiverBaseItem.NBT_AMMO_COLLECT))
+					if(ItemNbt.read(quiver).getBooleanOr(QuiverBaseItem.NBT_AMMO_COLLECT, false))
 					{
 						// Attempt to place the arrows into the quiver.
 						IQuiverItemHandler quiverHandler = ModCapabilities.getQuiver(quiver);
@@ -509,13 +509,13 @@ public class CommonEventHandler
 			{
 				ItemStack slotStack = player.getInventory().getItem(i);
 				if(ItemStack.isSameItem(slotStack, pickedUpStack) && ItemNbt.has(pickedUpStack) && ItemNbt.has(slotStack) &&
-						ItemNbt.read(slotStack).hasUUID(ThrowingWeaponItem.NBT_UUID) && ItemNbt.read(pickedUpStack).hasUUID(ThrowingWeaponItem.NBT_UUID) &&
-						ItemNbt.read(pickedUpStack).getUUID(ThrowingWeaponItem.NBT_UUID).equals(ItemNbt.read(slotStack).getUUID(ThrowingWeaponItem.NBT_UUID)))
+						ItemNbt.read(slotStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent() && ItemNbt.read(pickedUpStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent() &&
+						ItemNbt.read(pickedUpStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).orElseThrow().equals(ItemNbt.read(slotStack).read(ThrowingWeaponItem.NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).orElseThrow()))
 				{
 					int maxAmmo = throwingWeapon.getMaxAmmo(slotStack);
-					int currentAmmo = maxAmmo - ItemNbt.read(slotStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
-					boolean currentNotOriginalStack = !ItemNbt.read(slotStack).getBoolean(ThrowingWeaponItem.NBT_ORIGINAL);
-					boolean pickedUpOriginalStack = ItemNbt.read(pickedUpStack).getBoolean(ThrowingWeaponItem.NBT_ORIGINAL);
+					int currentAmmo = maxAmmo - ItemNbt.read(slotStack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
+					boolean currentNotOriginalStack = !ItemNbt.read(slotStack).getBooleanOr(ThrowingWeaponItem.NBT_ORIGINAL, false);
+					boolean pickedUpOriginalStack = ItemNbt.read(pickedUpStack).getBooleanOr(ThrowingWeaponItem.NBT_ORIGINAL, false);
 					
 					if(currentAmmo < maxAmmo || (currentNotOriginalStack  && pickedUpOriginalStack))
 					{
@@ -528,14 +528,14 @@ public class CommonEventHandler
 //    						this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.8F, 0.8F + this.world.rand.nextFloat() * 0.4F);
 //    						player.renderBrokenItemStack(pickedUpStack);
 //    						player.breakItem(slotStack);
-    						level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK, player.getSoundSource(), 0.8f, 0.8f + player.getRandom().nextFloat() * 0.4f);
+    						level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK.value(), player.getSoundSource(), 0.8f, 0.8f + player.getRandom().nextFloat() * 0.4f);
 //    						if(!level.isClientSide())
 //    							((ServerLevel)level).getChunkSource().broadcast(player, new ClientboundEntityEventPacket(player, (byte) 47));
     						itemDamage -= slotStack.getMaxDamage() + 1;
     					}
     					else
     					{
-    						currentAmmo += (maxAmmo - ItemNbt.read(pickedUpStack).getInt(ThrowingWeaponItem.NBT_AMMO_USED));
+    						currentAmmo += (maxAmmo - ItemNbt.read(pickedUpStack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0));
     						currentAmmo = Mth.clamp(currentAmmo, 0, maxAmmo);
     						int ammoUsed = maxAmmo - currentAmmo;
     						ItemNbt.update(slotStack, (nbt) -> nbt.putInt(ThrowingWeaponItem.NBT_AMMO_USED, ammoUsed));
@@ -711,12 +711,12 @@ public class CommonEventHandler
 	{
 		ItemStack left = ev.getLeft();
 		ItemStack right = ev.getRight();
-		if(left.getItem() instanceof ThrowingWeaponItem && ItemNbt.has(left) && ItemNbt.read(left).getBoolean(ThrowingWeaponItem.NBT_ORIGINAL)
+		if(left.getItem() instanceof ThrowingWeaponItem && ItemNbt.has(left) && ItemNbt.read(left).getBooleanOr(ThrowingWeaponItem.NBT_ORIGINAL, false)
 				&& ItemStack.isSameItem(left, right))
 		{
 			ThrowingWeaponItem throwingWeapon = (ThrowingWeaponItem)left.getItem();
-			int leftAmmo = ItemNbt.read(left).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
-			int rightAmmo = ItemNbt.read(right).getInt(ThrowingWeaponItem.NBT_AMMO_USED);
+			int leftAmmo = ItemNbt.read(left).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
+			int rightAmmo = ItemNbt.read(right).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0);
 			
 			if(leftAmmo == 0)	// Used ammo is zero when ammo is full
 				return;

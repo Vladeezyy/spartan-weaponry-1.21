@@ -73,7 +73,7 @@ public class LongbowItem extends BowItem implements IReloadable
 	
 	public LongbowItem(Item.Properties prop, WeaponMaterial material)
 	{
-		super(prop.durability(Math.max(1, (int)(material.getUses() * 2.0f))));
+		super(prop.durability(Math.max(1, (int)(material.getUses() * 2.0f))).repairable(material.getRepairTag()).enchantable(material.getEnchantmentValue()));
 		this.material = material;
 		maxVelocity = Defaults.MultiplierLongbow;
 		
@@ -190,24 +190,12 @@ public class LongbowItem extends BowItem implements IReloadable
         return f;
     }
 	
-	// Vanilla (the enchanting table on Fabric); the same value as the stack version below
-	@Override
-	public int getEnchantmentValue()
-	{
-		return getEnchantmentValue(ItemStack.EMPTY);
-	}
-	
 	// NeoForge IItemExtension (Fabric: getEnchantmentValue() above)
 	public int getEnchantmentValue(ItemStack stack)
 	{
 		return material.getEnchantmentValue();
 	}
 
-	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) 
-	{
-		return material.getRepairIngredient().test(repair);
-	}
     
     // NeoForge IItemExtension (Fabric: a mixin)
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 

@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.item.ItemStack;
 import com.oblivioussp.spartanweaponry.init.ModEntities;
 import com.oblivioussp.spartanweaponry.init.ModItems;
 import com.oblivioussp.spartanweaponry.util.Config;
@@ -31,13 +32,13 @@ public class DynamiteEntity extends ThrowableItemProjectile
 	
 	public DynamiteEntity(double x, double y, double z, Level level)
     {
-		super(ModEntities.DYNAMITE.get(), x, y, z, level);
+		super(ModEntities.DYNAMITE.get(), x, y, z, level, new ItemStack(ModItems.DYNAMITE.get()));
 		fuseTicks = Config.INSTANCE.fuseTicksDynamite.get();
     }
 
 	public DynamiteEntity(LivingEntity thrower, Level level)
     {
-		super(ModEntities.DYNAMITE.get(), thrower, level);
+		super(ModEntities.DYNAMITE.get(), thrower, level, new ItemStack(ModItems.DYNAMITE.get()));
 		fuseTicks = Config.INSTANCE.fuseTicksDynamite.get();
     }
 	
@@ -99,7 +100,7 @@ public class DynamiteEntity extends ThrowableItemProjectile
 		Level level = level();
 		if(!level.isClientSide())
 		{
-			boolean mobGriefing = level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+			boolean mobGriefing = ((net.minecraft.server.level.ServerLevel)level).getGameRules().get(GameRules.MOB_GRIEFING);
 			level.explode(this, getX(), getY(), getZ(), Config.INSTANCE.explosionStrengthDynamite.get().floatValue(), mobGriefing && !Config.INSTANCE.disableTerrainDamage.get() ? ExplosionInteraction.TNT : ExplosionInteraction.NONE); /*ConfigHandler.enableTerrainDamage &&*/// mobGriefing);
 			this.discard();
 		}
