@@ -56,7 +56,7 @@ import com.oblivioussp.spartanweaponry.util.QuiverHelper.IQuiverInfo;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -69,8 +69,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -170,7 +170,7 @@ public class CommonEventHandler
 				ev.setAmount(dmgDealt);
 			}
 			
-			if(!level.isClientSide) 
+			if(!level.isClientSide()) 
 			{
 				// Emit particles when damage has been enhanced or mitigated, depending on what has happened
 				if(doTraitDamageParticles && dmgDealt > ev.getAmount())
@@ -212,7 +212,7 @@ public class CommonEventHandler
 				if(damageItem)
 				{
                     int itemDamage = 1 + Mth.floor(ev.getAmount());
-                    activeStack.hurtAndBreak(itemDamage, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+                    activeStack.hurtAndBreak(itemDamage, player, player.getUsedItemHand().asEquipmentSlot());
                     player.level().playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.8f, 0.8f);
                     ev.setCanceled(true);                        
 				}
@@ -529,7 +529,7 @@ public class CommonEventHandler
 //    						player.renderBrokenItemStack(pickedUpStack);
 //    						player.breakItem(slotStack);
     						level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_BREAK, player.getSoundSource(), 0.8f, 0.8f + player.getRandom().nextFloat() * 0.4f);
-//    						if(!level.isClientSide)
+//    						if(!level.isClientSide())
 //    							((ServerLevel)level).getChunkSource().broadcast(player, new ClientboundEntityEventPacket(player, (byte) 47));
     						itemDamage -= slotStack.getMaxDamage() + 1;
     					}
@@ -592,14 +592,14 @@ public class CommonEventHandler
 		}
 	}
 	
-	private static LootPool generateLootPool(ResourceLocation lootName)
+	private static LootPool generateLootPool(Identifier lootName)
 	{
 		return LootPool.lootPool().add(generateLootEntry(lootName))
 						.setBonusRolls(UniformGenerator.between(0, 1))
 						.build();
 	}
 	
-	private static LootPoolEntryContainer.Builder<?> generateLootEntry(ResourceLocation lootName)
+	private static LootPoolEntryContainer.Builder<?> generateLootEntry(Identifier lootName)
 	{
 		return NestedLootTable.lootTableReference(ResourceKey.create(Registries.LOOT_TABLE, lootName)).setWeight(1);
 	}
@@ -779,7 +779,7 @@ public class CommonEventHandler
 		Player player = ev.getEntity();
 		InteractionHand hand = ev.getHand();
 		ItemStack stack = player.getItemInHand(hand);
-		if(!stack.is(TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "rods/wooden"))) || player.getCooldowns().isOnCooldown(stack.getItem()))
+		if(!stack.is(TagKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath("c", "rods/wooden"))) || player.getCooldowns().isOnCooldown(stack))
 			return;
 
 		Level level = ev.getLevel();
@@ -801,7 +801,7 @@ public class CommonEventHandler
 				}
 			}
 			// Remove an item of the main stack
-			player.getCooldowns().addCooldown(stack.getItem(), 5);
+			player.getCooldowns().addCooldown(stack, 5);
 			stack.shrink(1);
 			if(stack.getCount() <= 0)
 			{

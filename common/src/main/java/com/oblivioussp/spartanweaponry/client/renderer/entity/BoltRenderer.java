@@ -9,10 +9,10 @@ import com.mojang.math.Axis;
 import com.oblivioussp.spartanweaponry.entity.projectile.BoltEntity;
 
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class BoltRenderer<T extends BoltEntity> extends ArrowRenderer<T> 
@@ -23,7 +23,7 @@ public class BoltRenderer<T extends BoltEntity> extends ArrowRenderer<T>
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity)
+	public Identifier getTextureLocation(T entity)
 	{
 		return entity.getTexture();
 	}

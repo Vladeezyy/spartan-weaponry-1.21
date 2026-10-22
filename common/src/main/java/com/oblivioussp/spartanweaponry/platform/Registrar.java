@@ -15,7 +15,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * The entries of one registry, registered by the loader: NeoForge in its RegisterEvent, Fabric right after the mod
@@ -43,7 +43,7 @@ public final class Registrar<R>
 
 	public <T extends R> Entry<R, T> register(String name, Supplier<T> factory)
 	{
-		Entry<R, T> entry = new Entry<>(ResourceKey.create(registry, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, name)), factory);
+		Entry<R, T> entry = new Entry<>(ResourceKey.create(registry, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, name)), factory);
 		entries.add(entry);
 		return entry;
 	}
@@ -115,7 +115,7 @@ public final class Registrar<R>
 			return key;
 		}
 
-		public ResourceLocation getId()
+		public Identifier getId()
 		{
 			return key.location();
 		}
@@ -126,7 +126,7 @@ public final class Registrar<R>
 			if(holder == null)
 			{
 				Registry<R> reg = (Registry<R>)BuiltInRegistries.REGISTRY.get(key.registry());
-				holder = reg.getHolderOrThrow(key);
+				holder = reg.getOrThrow(key);
 			}
 			return holder;
 		}

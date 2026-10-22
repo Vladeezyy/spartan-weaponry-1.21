@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * The tags of the data pack reload in progress, with their entries (filled by TagLoadResultMixin). Fabric's own
@@ -14,18 +14,18 @@ import net.minecraft.resources.ResourceLocation;
  */
 public final class LoadedTags
 {
-	private static final Map<ResourceKey<?>, Map<ResourceLocation, ? extends Collection<?>>> TAGS = new ConcurrentHashMap<>();
+	private static final Map<ResourceKey<?>, Map<Identifier, ? extends Collection<?>>> TAGS = new ConcurrentHashMap<>();
 
 	private LoadedTags() {}
 
-	public static void put(ResourceKey<?> registry, Map<ResourceLocation, ? extends Collection<?>> tags)
+	public static void put(ResourceKey<?> registry, Map<Identifier, ? extends Collection<?>> tags)
 	{
 		TAGS.put(registry, tags);
 	}
 
-	public static boolean isPopulated(ResourceKey<?> registry, ResourceLocation tag)
+	public static boolean isPopulated(ResourceKey<?> registry, Identifier tag)
 	{
-		Map<ResourceLocation, ? extends Collection<?>> tags = TAGS.get(registry);
+		Map<Identifier, ? extends Collection<?>> tags = TAGS.get(registry);
 		if(tags == null)
 			return false;
 		Collection<?> entries = tags.get(tag);

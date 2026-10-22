@@ -11,12 +11,12 @@ import com.oblivioussp.spartanweaponry.init.ModSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
@@ -30,16 +30,16 @@ public class ThrowableMeleeWeaponTrait extends WeaponTrait implements IActionTra
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(ItemStack usingStackIn, Level levelIn, Player playerIn, InteractionHand handIn)
+	public InteractionResult use(ItemStack usingStackIn, Level levelIn, Player playerIn, InteractionHand handIn)
 	{
 		playerIn.startUsingItem(handIn);
-		return InteractionResultHolder.consume(usingStackIn);
+		return InteractionResult.CONSUME;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) 
+	public ItemUseAnimation getUseAnimation(ItemStack stack) 
 	{
-		return UseAnim.SPEAR;
+		return ItemUseAnimation.SPEAR;
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class ThrowableMeleeWeaponTrait extends WeaponTrait implements IActionTra
             if(charge >= 5)
             	charge = 5;
 			
-			if (!levelIn.isClientSide && charge > 2)
+			if (!levelIn.isClientSide() && charge > 2)
 	        {
 	            ThrowingWeaponEntity thrown = new ThrowingWeaponEntity(ModEntities.THROWING_WEAPON.get(), player, levelIn);
 	            thrown.setWeapon(stackIn);

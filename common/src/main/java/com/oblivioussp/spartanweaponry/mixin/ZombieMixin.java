@@ -11,7 +11,7 @@ import com.oblivioussp.spartanweaponry.util.Config;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.monster.zombie.Zombie;
 
 @Mixin(Zombie.class)
 public class ZombieMixin extends MobMixin 

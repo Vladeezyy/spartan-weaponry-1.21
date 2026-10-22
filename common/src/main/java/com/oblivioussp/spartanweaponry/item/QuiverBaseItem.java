@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.world.entity.Entity;
 
@@ -34,7 +37,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
@@ -101,7 +104,7 @@ public abstract class QuiverBaseItem extends Item
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected)
 	{
-		if(!level.isClientSide)
+		if(!level.isClientSide())
 			migrateLegacyContents(stack, level.registryAccess());
 		super.inventoryTick(stack, level, entity, slotId, isSelected);
 	}
@@ -110,14 +113,14 @@ public abstract class QuiverBaseItem extends Item
 	{
 		if(!ItemNbt.contains(stack, NBT_AMMO))
 			return;
-		CompoundTag ammo = ItemNbt.get(stack).getCompound(NBT_AMMO);
-		ListTag list = ammo.getList("Items", Tag.TAG_COMPOUND);
-		int size = Math.max(ammo.getInt("Size"), stack.getItem() instanceof QuiverBaseItem quiver ? quiver.ammoSlots : 0);
+		CompoundTag ammo = ItemNbt.get(stack).getCompoundOrEmpty(NBT_AMMO);
+		ListTag list = ammo.getListOrEmpty("Items");
+		int size = Math.max(ammo.getIntOr("Size", 0), stack.getItem() instanceof QuiverBaseItem quiver ? quiver.ammoSlots : 0);
 		NonNullList<ItemStack> items = NonNullList.withSize(size, ItemStack.EMPTY);
 		for(int i = 0; i < list.size(); i++)
 		{
 			CompoundTag tag = list.getCompound(i);
-			int slot = tag.getInt(NBT_ITEM_SLOT);
+			int slot = tag.getIntOr(NBT_ITEM_SLOT, 0);
 			if(slot >= 0 && slot < size)
 				items.set(slot, LegacyItems.parse(tag, registries));
 		}
@@ -126,57 +129,67 @@ public abstract class QuiverBaseItem extends Item
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level levelIn, Player playerIn, InteractionHand handIn) 
+	public InteractionResult use(Level levelIn, Player playerIn, InteractionHand handIn) 
 	{
 		ItemStack heldItem = playerIn.getItemInHand(handIn);
 		
-		if(!levelIn.isClientSide)
+		if(!levelIn.isClientSide())
 			migrateLegacyContents(heldItem, levelIn.registryAccess());
 			
-		if(!levelIn.isClientSide)
+		if(!levelIn.isClientSide())
 		{
 			if(!playerIn.isCrouching())
 			{
 				SlotType slotType = handIn == InteractionHand.OFF_HAND ? SlotType.OFF_HAND : SlotType.MAIN_HAND;
 				openGui(heldItem, playerIn, slotType, -1);
-				return InteractionResultHolder.consume(heldItem);
+				return InteractionResult.CONSUME;
 			}
 			else
 			{
 				// Toggle ammo collection
-				boolean ammoCollect = !ItemNbt.read(heldItem).getBoolean(NBT_AMMO_COLLECT);
+				boolean ammoCollect = !ItemNbt.read(heldItem).getBooleanOr(NBT_AMMO_COLLECT, false);
 				ItemNbt.update(heldItem, (nbt) -> nbt.putBoolean(NBT_AMMO_COLLECT, ammoCollect));
 				
 				String collectStatus = ammoCollect ? "enabled" : "disabled";
 				ChatFormatting collectColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
 				playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".ammo_collect_toggle", Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(collectColour)), true);
-				return InteractionResultHolder.fail(heldItem);
+				return InteractionResult.FAIL;
 			}
 		}
-        return InteractionResultHolder.pass(heldItem);
+        return InteractionResult.PASS;
 	}
 	
 
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		if(ItemNbt.read(stack).contains("ClientInventory"))
-			ItemNbt.update(stack, (nbt) -> nbt.remove("ClientInventory"));
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
+		{
+			if(ItemNbt.read(stack).contains("ClientInventory"))
+				ItemNbt.update(stack, (nbt) -> nbt.remove("ClientInventory"));
 		
-		super.appendHoverText(stack, levelIn, tooltip, flagIn);
+			tooltip.flush();
+			super.appendHoverText(stack, levelIn, display, tooltipOut, flagIn);
 		
-		boolean ammoCollect = ItemNbt.read(stack).getBoolean(NBT_AMMO_COLLECT);
-		String collectStatus = ammoCollect ? "enabled" : "disabled";
-		ChatFormatting statusColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
-		tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".quiver_collect_status").append(Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(statusColour)).withStyle(ChatFormatting.DARK_AQUA));
+			boolean ammoCollect = ItemNbt.read(stack).getBooleanOr(NBT_AMMO_COLLECT, false);
+			String collectStatus = ammoCollect ? "enabled" : "disabled";
+			ChatFormatting statusColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
+			tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".quiver_collect_status").append(Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(statusColour)).withStyle(ChatFormatting.DARK_AQUA));
 		
-		if(ammoSlots != Defaults.SlotsQuiverHuge)
-			tooltip.add(Component.translatable("tooltip."+ ModSpartanWeaponry.ID + ".quiver_upgrade").withStyle(ChatFormatting.YELLOW));
+			if(ammoSlots != Defaults.SlotsQuiverHuge)
+				tooltip.add(Component.translatable("tooltip."+ ModSpartanWeaponry.ID + ".quiver_upgrade").withStyle(ChatFormatting.YELLOW));
+		}
+		finally
+		{
+			tooltip.flush();
+		}
 	}
 	
 	public Optional<TooltipComponent> makeTooltipImage(ItemStack stackIn, boolean isBoltQuiver)
 	{
-		int prioritySlot = ItemNbt.read(stackIn).getInt(NBT_PROIRITY_SLOT);
+		int prioritySlot = ItemNbt.read(stackIn).getIntOr(NBT_PROIRITY_SLOT, 0);
 		
 		NonNullList<ItemStack> items = NonNullList.withSize(ammoSlots, ItemStack.EMPTY);
 		stackIn.getOrDefault(ModDataComponents.QUIVER_CONTENTS.get(), ItemContainerContents.EMPTY).copyInto(items);

@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Item;
 
@@ -26,9 +29,19 @@ public class ExtendedSkullItem extends StandingAndWallBlockItem
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + BuiltInRegistries.ITEM.getKey(this).getPath() + ".desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-		super.appendHoverText(stack, levelIn, tooltip, flagIn);
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
+		{
+			tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + BuiltInRegistries.ITEM.getKey(this).getPath() + ".desc").withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+			tooltip.flush();
+			super.appendHoverText(stack, levelIn, display, tooltipOut, flagIn);
+		}
+		finally
+		{
+			tooltip.flush();
+		}
 	}
 }

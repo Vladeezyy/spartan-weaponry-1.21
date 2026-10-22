@@ -10,10 +10,6 @@ repositories {
 
 neoForge {
     version = neo_version
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
     accessTransformers.from(rootProject.file('common/accesstransformer.cfg'))
     runs {
         configureEach {
@@ -55,7 +51,6 @@ configurations {
 dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    compileOnly "maven.modrinth:emi:${emi_version}+neoforge"
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     compileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+neoforge"
     // Dev runs: JEI and Curios (-Pno_compat_mods to run without them)
@@ -69,11 +64,8 @@ dependencies {
         localRuntime "maven.modrinth:iris:${compat_iris}"
         localRuntime "maven.modrinth:lithium:${compat_lithium}"
         localRuntime "maven.modrinth:ferrite-core:${compat_ferritecore}"
-        localRuntime "maven.modrinth:modernfix:${compat_modernfix}"
         localRuntime "maven.modrinth:jade:${compat_jade}"
-        localRuntime "maven.modrinth:emi:${emi_version}+neoforge"
-        localRuntime "maven.modrinth:just-enough-effect-descriptions-jeed:${compat_jeed}"
-        localRuntime "maven.modrinth:shoulder-surfing-reloaded:${project.hasProperty('with_ss4') ? compat_shoulder_surfing_4 : shoulder_surfing_version}+neoforge"
+        localRuntime "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+neoforge"
     }
 }
 

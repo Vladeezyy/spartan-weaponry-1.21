@@ -14,16 +14,16 @@ import com.oblivioussp.spartanweaponry.util.Defaults;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffects;
 
 public class OilEffects 
 {
-	public static final ResourceLocation REGISTRY_NAME = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil_effects");
+	public static final Identifier REGISTRY_NAME = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil_effects");
 	public static final ResourceKey<Registry<OilEffect>> REGISTRY_KEY = ResourceKey.createRegistryKey(REGISTRY_NAME);
 	public static final Registrar<OilEffect> REGISTRY = Registrar.create(REGISTRY_KEY);
 	/** The oil effect registry (synced to clients; unknown oils read as "none") */
-	public static final Registry<OilEffect> OIL_REGISTRY = Platform.INSTANCE.createRegistry(REGISTRY_KEY, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "none"));
+	public static final Registry<OilEffect> OIL_REGISTRY = Platform.INSTANCE.createRegistry(REGISTRY_KEY, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "none"));
 	
 	public static final Registrar.Entry<OilEffect, OilEffect> NONE = REGISTRY.register("none", () -> new OilEffect("none", OilEffectType.NONE, 0xE2C467, 0, 0.0f, OilEffect.USE_NOTHING));
 	public static final Registrar.Entry<OilEffect, OilEffect> UNDEAD = REGISTRY.register("undead", () -> new OilEffect("undead", OilEffectType.STANDARD, 0xFFE600, Defaults.OIL_USES_NORMAL, Defaults.OIL_DAMAGE_MODIFIER_NORMAL, OilEffect.USE_UNDEAD));

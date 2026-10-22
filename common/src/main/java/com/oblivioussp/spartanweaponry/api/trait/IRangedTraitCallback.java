@@ -2,7 +2,7 @@ package com.oblivioussp.spartanweaponry.api.trait;
 
 import com.oblivioussp.spartanweaponry.api.WeaponMaterial;
 
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 /**
  * Callback class for Ranged Weapon Traits; Implement this in your weapon trait class to implement custom behavior for your weapon
  * @author ObliviousSpartan

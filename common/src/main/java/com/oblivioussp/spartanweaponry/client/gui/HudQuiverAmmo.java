@@ -22,14 +22,14 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.gui.Gui;
 
 public class HudQuiverAmmo
 {
 	// 1.20.1: textures/gui/widgets.png (the off hand slot of the hotbar), a sprite since 1.20.2
-	protected static final ResourceLocation OFFHAND_SLOT = ResourceLocation.withDefaultNamespace("hud/hotbar_offhand_left");
+	protected static final Identifier OFFHAND_SLOT = Identifier.withDefaultNamespace("hud/hotbar_offhand_left");
 
 	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight) 
 	{

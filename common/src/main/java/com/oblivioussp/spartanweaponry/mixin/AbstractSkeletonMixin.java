@@ -19,7 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
-import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
@@ -45,7 +45,7 @@ public class AbstractSkeletonMixin extends MobMixin
 	private void reassessWeaponGoal(CallbackInfo callback)
 	{
 		Level level = level();
-		if(level != null && !level.isClientSide)
+		if(level != null && !level.isClientSide())
 		{
 			ItemStack bowStack = getItemInHand(InteractionHand.MAIN_HAND);
 			if(bowStack.is(ModItemTags.LONGBOWS))

@@ -42,7 +42,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,16 +55,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.npc.villager.Villager;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,7 +73,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.WorldDataConfiguration;
@@ -123,7 +123,7 @@ public final class DevScene
 		// Creative tab and tooltip
 		at(355, mc -> {
 			mc.options.hideGui = false;
-			mc.getToasts().clear();
+			mc.getToastManager().clear();
 			mc.setScreen(new CreativeModeInventoryScreen(mc.player, mc.player.connection.enabledFeatures(), true));
 		});
 		at(365, mc -> selectTab(mc, ModCreativeTabs.BASIC.get()));
@@ -259,12 +259,12 @@ public final class DevScene
 				return;
 			}
 			opened = true;
-			GLFW.glfwSetWindowSize(mc.getWindow().getWindow(), 1600, 900);
+			GLFW.glfwSetWindowSize(mc.getWindow().handle(), 1600, 900);
 			if(mc.getLevelSource().levelExists(WORLD))
 				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.setScreen(new TitleScreen()));
 			else
 			{
-				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(), WorldDataConfiguration.DEFAULT);
+				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS), WorldDataConfiguration.DEFAULT);
 				mc.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(1234L, false, false), WorldPresets::createNormalWorldDimensions, new TitleScreen());
 			}
 			return;
@@ -273,7 +273,7 @@ public final class DevScene
 			return;
 		mc.options.pauseOnLostFocus = false;
 		mc.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);
-		mc.getToasts().clear();
+		mc.getToastManager().clear();
 		if(mc.screen instanceof PauseScreen)
 			mc.setScreen(null);
 		tick++;
@@ -321,7 +321,7 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)
@@ -346,15 +346,15 @@ public final class DevScene
 
 	private static void setup(ServerPlayer player)
 	{
-		MinecraftServer server = player.getServer();
+		MinecraftServer server = player.level().getServer();
 		player.setGameMode(GameType.CREATIVE);
 		server.setDifficulty(Difficulty.NORMAL, true);
-		server.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);
-		server.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, server);
-		server.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, server);
+		server.overworld().getGameRules().set(GameRules.SPAWN_MOBS, false, server);
+		server.overworld().getGameRules().set(GameRules.ADVANCE_TIME, false, server);
+		server.overworld().getGameRules().set(GameRules.ADVANCE_WEATHER, false, server);
 		server.getGameRules().getRule(GameRules.RULE_MOBGRIEFING).set(false, server);
-		player.serverLevel().setDayTime(6000);
-		player.serverLevel().setWeatherParameters(6000, 0, false, false);
+		player.level().setDayTime(6000);
+		player.level().setWeatherParameters(6000, 0, false, false);
 	}
 
 	/** Item frame wall n (0 vanilla materials, 1 modded materials, 2 ammo): its centre */
@@ -365,13 +365,13 @@ public final class DevScene
 
 	private static void look(ServerPlayer player, BlockPos wall, float pitch)
 	{
-		player.teleportTo(player.serverLevel(), wall.getX() + 0.5, wall.getY() + 2, wall.getZ() - 14.5, 0.0F, pitch);
+		player.teleportTo(player.level(), wall.getX() + 0.5, wall.getY() + 2, wall.getZ() - 14.5, 0.0F, pitch);
 	}
 
 	private static void buildStage(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		BlockPos spawn = level.getSharedSpawnPos();
+		ServerLevel level = player.level();
+		BlockPos spawn = level.getRespawnData().pos();
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
 		// In the air, above the terrain (no overhang shading the walls)
 		stage = new BlockPos(spawn.getX(), Math.max(y + 40, 140), spawn.getZ());
@@ -385,7 +385,7 @@ public final class DevScene
 		frames(level, wall(0), tabItems(level, ModCreativeTabs.BASIC.get(), false), 26);
 		frames(level, wall(1), tabItems(level, ModCreativeTabs.MODDED.get(), false), 26);
 		frames(level, wall(2), tabItems(level, ModCreativeTabs.ARROWS_BOLTS.get(), true), 13);
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 0.0F);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 0.0F, true);
 	}
 
 	/** The tab's items, one stack per item (tipped projectiles: the first potion only) */
@@ -425,7 +425,7 @@ public final class DevScene
 
 	private static void dropped(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		BlockPos at = stage.offset(0, 0, 10);
 		Item[] items = { Items.IRON_SWORD, ModItems.BATTLEAXES.iron.get(), ModItems.LONGSWORDS.iron.get(), ModItems.WARHAMMERS.iron.get(), ModItems.GREATSWORDS.iron.get(), ModItems.HALBERDS.iron.get() };
 		for(int i = 0; i < items.length; i++)
@@ -436,13 +436,13 @@ public final class DevScene
 			entity.setUnlimitedLifetime();
 			level.addFreshEntity(entity);
 		}
-		player.teleportTo(level, at.getX() + 0.5, at.getY(), at.getZ() - 3.0, 0.0F, 30.0F);
+		player.teleportTo(level, at.getX() + 0.5, at.getY(), at.getZ() - 3.0, java.util.Set.of(), 0.0F, 30.0F, true);
 	}
 
 	private static void heads(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		player.serverLevel().getEntitiesOfClass(ItemEntity.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
+		ServerLevel level = player.level();
+		player.level().getEntitiesOfClass(ItemEntity.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
 		BlockPos at = stage.offset(0, 0, 16);
 		List<net.minecraft.world.level.block.Block> heads = new ArrayList<>();
 		BuiltInRegistries.BLOCK.entrySet().stream().filter(e -> e.getKey().location().getNamespace().equals(ModSpartanWeaponry.ID) && !e.getKey().location().getPath().contains("wall"))
@@ -450,16 +450,16 @@ public final class DevScene
 		for(int i = 0; i < heads.size(); i++)
 			level.setBlockAndUpdate(at.offset(i - heads.size() / 2, 0, 0), heads.get(i).defaultBlockState());
 		check("extended heads placed", heads.size() == 10, heads.size());
-		player.teleportTo(level, at.getX() + 0.5, at.getY() + 0.5, at.getZ() - 4.0, 0.0F, 15.0F);
+		player.teleportTo(level, at.getX() + 0.5, at.getY() + 0.5, at.getZ() - 4.0, java.util.Set.of(), 0.0F, 15.0F, true);
 	}
 
 	private static void firstPerson(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.setItemSlot(EquipmentSlot.MAINHAND, oiled(ModItems.KATANAS.diamond.get()));
 		player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 10.0F);
-		IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(0, 0, 12), MobSpawnType.COMMAND);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 10.0F, true);
+		IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(0, 0, 12), EntitySpawnReason.COMMAND);
 		golem.setNoAi(true);
 		golem.setYRot(180.0F);
 		golemId = golem.getId();
@@ -467,7 +467,7 @@ public final class DevScene
 
 	private static IronGolem golem(ServerPlayer player)
 	{
-		IronGolem golem = (IronGolem)player.serverLevel().getEntity(golemId);
+		IronGolem golem = (IronGolem)player.level().getEntity(golemId);
 		return golem;
 	}
 
@@ -490,7 +490,7 @@ public final class DevScene
 		player.getInventory().setItem(0, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.IRON_ARROW.get(), 16));
 		player.getInventory().selected = 0;
-		player.teleportTo(player.serverLevel(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, -3.0F);
+		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, -3.0F, true);
 		resetGolem(player);
 	}
 
@@ -505,12 +505,12 @@ public final class DevScene
 
 	private static void prepareHeavyCrossbow(ServerPlayer player)
 	{
-		player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
+		player.level().getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
 		player.getInventory().clearContent();
 		player.getInventory().setItem(0, new ItemStack(ModItems.HEAVY_CROSSBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.BOLT.get(), 8));
 		player.getInventory().selected = 0;
-		player.teleportTo(player.serverLevel(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, -2.0F);
+		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, -2.0F, true);
 		resetGolem(player);
 		Log.info("[scene] heavy crossbow load ticks " + ((HeavyCrossbowItem)ModItems.HEAVY_CROSSBOWS.iron.get()).getFullLoadTicks(player.getInventory().getItem(0)));
 	}
@@ -533,12 +533,12 @@ public final class DevScene
 
 	private static void prepareThrow(ServerPlayer player)
 	{
-		player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
+		player.level().getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(40)).forEach(Entity::discard);
 		player.getInventory().clearContent();
 		ItemStack javelins = ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).makeTabStack();
 		player.getInventory().setItem(0, javelins);
 		player.getInventory().selected = 0;
-		player.teleportTo(player.serverLevel(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 4.5, 0.0F, -6.0F);
+		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 4.5, java.util.Set.of(), 0.0F, -6.0F, true);
 		resetGolem(player);
 		countBefore = ammo(player.getInventory().getItem(0));
 	}
@@ -556,13 +556,13 @@ public final class DevScene
 		int left = ammo(player.getInventory().getItem(0));
 		check("javelin thrown (real input) uses one ammo", left == countBefore - 1, countBefore + " -> " + left);
 		check("the javelin hits the golem", golem.getHealth() < golemHealth, golemHealth + " -> " + golem.getHealth());
-		List<ThrowingWeaponEntity> thrown = player.serverLevel().getEntitiesOfClass(ThrowingWeaponEntity.class, new AABB(stage).inflate(40));
+		List<ThrowingWeaponEntity> thrown = player.level().getEntitiesOfClass(ThrowingWeaponEntity.class, new AABB(stage).inflate(40));
 		check("one thrown javelin in the world", thrown.size() == 1, thrown.size());
 	}
 
 	private static void checkThrowPickup(ServerPlayer player)
 	{
-		List<ThrowingWeaponEntity> thrown = player.serverLevel().getEntitiesOfClass(ThrowingWeaponEntity.class, new AABB(stage).inflate(40));
+		List<ThrowingWeaponEntity> thrown = player.level().getEntitiesOfClass(ThrowingWeaponEntity.class, new AABB(stage).inflate(40));
 		if(!thrown.isEmpty())
 		{
 			ThrowingWeaponEntity javelin = thrown.get(0);
@@ -584,24 +584,24 @@ public final class DevScene
 		player.getInventory().setItem(0, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		player.getInventory().setItem(8, new ItemStack(ModItems.IRON_ARROW.get(), 10));
 		player.getInventory().selected = 0;
-		player.teleportTo(player.serverLevel(), stage.getX() - 10.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 40.0F);
+		player.teleportTo(player.level(), stage.getX() - 10.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 40.0F, true);
 	}
 
 	private static void walkToArrow(ServerPlayer player)
 	{
-		List<AbstractArrow> arrows = player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(-10, 0, 0)).inflate(12));
+		List<AbstractArrow> arrows = player.level().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(-10, 0, 0)).inflate(12));
 		check("the arrow is in the ground", arrows.size() == 1, arrows.size());
 		if(!arrows.isEmpty())
 		{
 			AbstractArrow arrow = arrows.get(0);
-			player.teleportTo(player.serverLevel(), arrow.getX(), arrow.getY(), arrow.getZ(), 0.0F, 70.0F);
+			player.teleportTo(player.level(), arrow.getX(), arrow.getY(), arrow.getZ(), java.util.Set.of(), 0.0F, 70.0F, true);
 		}
 	}
 
 	private static void checkArrowPickup(ServerPlayer player)
 	{
 		int arrows = player.getInventory().countItem(ModItems.IRON_ARROW.get());
-		long left = player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(-10, 0, 0)).inflate(12)).size();
+		long left = player.level().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(-10, 0, 0)).inflate(12)).size();
 		check("issue #188: shooting and picking the arrow up gives back one arrow, not two", arrows == 10 && left == 0, arrows + " arrows, " + left + " left in the world");
 	}
 
@@ -675,7 +675,7 @@ public final class DevScene
 		player.getInventory().setItem(0, crossbow);
 		player.getInventory().setItem(1, new ItemStack(ModItems.JAVELINS.iron.get()));
 		player.getInventory().selected = 0;
-		player.teleportTo(player.serverLevel(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 0.0F);
+		player.teleportTo(player.level(), stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 0.0F, true);
 	}
 
 	/** Through the API by reflection (the 4.x and 5.x API classes differ, the scene compiles against neither) */
@@ -708,7 +708,7 @@ public final class DevScene
 
 	private static void traitDataPack(ServerPlayer player)
 	{
-		MinecraftServer server = player.getServer();
+		MinecraftServer server = player.level().getServer();
 		try
 		{
 			java.nio.file.Path pack = server.getWorldPath(net.minecraft.world.level.storage.LevelResource.DATAPACK_DIR).resolve("sw_traits");
@@ -749,7 +749,7 @@ public final class DevScene
 		player.getInventory().clearContent();
 		player.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.KATANAS.iron.get()));
 		player.setItemSlot(EquipmentSlot.OFFHAND, OilHelper.makeOilStack(OilEffects.UNDEAD.get()));
-		player.getOffhandItem().use(player.serverLevel(), player, InteractionHand.OFF_HAND);
+		player.getOffhandItem().use(player.level(), player, InteractionHand.OFF_HAND);
 		IOilHandler handler = ModCapabilities.getOil(player.getMainHandItem());
 		check("weapon oil applies to the katana in the other hand", handler != null && handler.isOiled() && handler.getEffect().map(e -> e == OilEffects.UNDEAD.get()).orElse(false), handler == null ? "no handler" : handler.getEffect());
 		check("the oil bottle is used up (glass bottle back)", player.getOffhandItem().isEmpty() && player.getInventory().countItem(Items.GLASS_BOTTLE) == 1, player.getOffhandItem());
@@ -758,8 +758,8 @@ public final class DevScene
 
 	private static Zombie target(ServerPlayer player, double dz, boolean armored)
 	{
-		ServerLevel level = player.serverLevel();
-		Zombie zombie = EntityType.ZOMBIE.spawn(level, BlockPos.containing(player.getX(), player.getY(), player.getZ() + dz), MobSpawnType.COMMAND);
+		ServerLevel level = player.level();
+		Zombie zombie = EntityType.ZOMBIE.spawn(level, BlockPos.containing(player.getX(), player.getY(), player.getZ() + dz), EntitySpawnReason.COMMAND);
 		zombie.setNoAi(true);
 		for(EquipmentSlot slot : EquipmentSlot.values())
 			zombie.setItemSlot(slot, ItemStack.EMPTY);
@@ -781,7 +781,7 @@ public final class DevScene
 
 	private static void prepareMelee(ServerPlayer player)
 	{
-		player.teleportTo(player.serverLevel(), stage.getX() + 20.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 0.0F);
+		player.teleportTo(player.level(), stage.getX() + 20.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 0.0F, true);
 		meleeKatana = player.getMainHandItem();
 	}
 
@@ -831,7 +831,7 @@ public final class DevScene
 	/** Armour piercing: the warhammer against diamond armour beats the vanilla armour formula */
 	private static void armourPiercing(ServerPlayer player)
 	{
-		Zombie armored = (Zombie)player.serverLevel().getEntity(armoredId);
+		Zombie armored = (Zombie)player.level().getEntity(armoredId);
 		float attack = (float)player.getAttributeValue(Attributes.ATTACK_DAMAGE);
 		float dealt = hit(player, armored);
 		float vanilla = CombatRules.getDamageAfterAbsorb(armored, attack, player.damageSources().playerAttack(player), (float)armored.getArmorValue(), (float)armored.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
@@ -861,7 +861,7 @@ public final class DevScene
 	/** Issue #186: a weapon thrown down onto a mob hit it every time the hurt cooldown ran out */
 	private static void throwDown(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		Zombie zombie = target(player, 6.0, false);
 		fallingZombieId = zombie.getId();
 		ItemStack javelin = new ItemStack(ModItems.JAVELINS.iron.get());
@@ -875,17 +875,17 @@ public final class DevScene
 
 	private static void throwDownFirstHit(ServerPlayer player)
 	{
-		Zombie zombie = (Zombie)player.serverLevel().getEntity(fallingZombieId);
+		Zombie zombie = (Zombie)player.level().getEntity(fallingZombieId);
 		fallingHealth = zombie.getHealth();
 		check("the javelin thrown down hits the zombie", fallingHealth < 200.0F, fallingHealth);
 	}
 
 	private static void throwDownLater(ServerPlayer player)
 	{
-		Zombie zombie = (Zombie)player.serverLevel().getEntity(fallingZombieId);
+		Zombie zombie = (Zombie)player.level().getEntity(fallingZombieId);
 		check("issue #186: it hits once, not every time the hurt cooldown ends", zombie.getHealth() == fallingHealth, fallingHealth + " after the hit, " + zombie.getHealth() + " 5 s later");
 		zombie.discard();
-		player.serverLevel().getEntitiesOfClass(ThrowingWeaponEntity.class, zombie.getBoundingBox().inflate(10)).forEach(Entity::discard);
+		player.level().getEntitiesOfClass(ThrowingWeaponEntity.class, zombie.getBoundingBox().inflate(10)).forEach(Entity::discard);
 	}
 
 	private static void prepareTwoHanded(ServerPlayer player)
@@ -899,16 +899,16 @@ public final class DevScene
 
 	private static void checkTwoHanded(ServerPlayer player)
 	{
-		MobEffectInstance fatigue = player.getEffect(MobEffects.DIG_SLOWDOWN);
+		MobEffectInstance fatigue = player.getEffect(MobEffects.MINING_FATIGUE);
 		check("Two-Handed: greatsword with an off hand item gives Mining Fatigue", fatigue != null, fatigue);
 		player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
 		player.removeAllEffects();
-		player.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, MobEffectInstance.INFINITE_DURATION, 0));
+		player.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, MobEffectInstance.INFINITE_DURATION, 0));
 	}
 
 	private static void checkInfiniteFatigue(ServerPlayer player)
 	{
-		MobEffectInstance fatigue = player.getEffect(MobEffects.DIG_SLOWDOWN);
+		MobEffectInstance fatigue = player.getEffect(MobEffects.MINING_FATIGUE);
 		check("issue #169: a two-handed weapon keeps Mining Fatigue from other sources", fatigue != null && fatigue.isInfiniteDuration(), fatigue);
 		player.removeAllEffects();
 	}
@@ -941,7 +941,7 @@ public final class DevScene
 
 	private static void decapitate(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.SCYTHES.iron.get()));
 		int heads = 0, kills = 0;
 		for(; kills < 60; kills++)
@@ -970,7 +970,7 @@ public final class DevScene
 
 	private static int fleshFromThrownKills(ServerPlayer player, ItemStack weapon, int kills)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		int flesh = 0;
 		for(int i = 0; i < kills; i++)
 		{
@@ -991,9 +991,9 @@ public final class DevScene
 		player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 		ItemStack plain = new ItemStack(ModItems.THROWING_KNIVES.iron.get());
 		ItemStack lucky = plain.copy();
-		var enchantments = player.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+		var enchantments = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 		ItemEnchantments.Mutable ench = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-		ench.set(enchantments.getHolderOrThrow(ModEnchantments.LUCKY_THROW), 3);
+		ench.set(enchantments.getOrThrow(ModEnchantments.LUCKY_THROW), 3);
 		lucky.set(DataComponents.ENCHANTMENTS, ench.toImmutable());
 		int plainFlesh = fleshFromThrownKills(player, plain, 40);
 		int luckyFlesh = fleshFromThrownKills(player, lucky, 40);
@@ -1005,13 +1005,13 @@ public final class DevScene
 
 	private static void prepareSkeleton(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.setGameMode(GameType.CREATIVE);
 		BlockPos at = stage.offset(-30, 0, 0);
-		Skeleton skeleton = EntityType.SKELETON.spawn(level, at, MobSpawnType.COMMAND);
+		Skeleton skeleton = EntityType.SKELETON.spawn(level, at, EntitySpawnReason.COMMAND);
 		skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 		skeleton.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.LONGBOWS.iron.get()));
-		Villager villager = EntityType.VILLAGER.spawn(level, at.offset(0, 0, 10), MobSpawnType.COMMAND);
+		Villager villager = EntityType.VILLAGER.spawn(level, at.offset(0, 0, 10), EntitySpawnReason.COMMAND);
 		villager.setNoAi(true);
 		villager.getAttribute(Attributes.MAX_HEALTH).setBaseValue(500.0);
 		villager.setHealth(500.0F);
@@ -1022,7 +1022,7 @@ public final class DevScene
 
 	private static void checkSkeleton(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		Skeleton skeleton = (Skeleton)level.getEntity(skeletonId);
 		Villager villager = (Villager)level.getEntity(villagerId);
 		long arrows = level.getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(-30, 0, 0)).inflate(20)).stream().filter(a -> a.getOwner() == skeleton).count();
@@ -1035,8 +1035,8 @@ public final class DevScene
 
 	private static void enderDisruption(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		EnderMan enderman = EntityType.ENDERMAN.spawn(level, stage.offset(30, 0, 0), MobSpawnType.COMMAND);
+		ServerLevel level = player.level();
+		EnderMan enderman = EntityType.ENDERMAN.spawn(level, stage.offset(30, 0, 0), EntitySpawnReason.COMMAND);
 		enderman.setNoAi(true);
 		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION.holder(), 600));
 		Vec3 start = enderman.position();
@@ -1055,7 +1055,7 @@ public final class DevScene
 
 	private static void explosive(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		ArrowExplosiveEntity arrow = new ArrowExplosiveEntity(level, player, new ItemStack(ModItems.LONGBOWS.iron.get()));
 		arrow.setPos(stage.getX() + 40.5, stage.getY() + 6, stage.getZ() + 0.5);
 		arrow.setDeltaMovement(0.0, -1.5, 0.0);
@@ -1067,7 +1067,7 @@ public final class DevScene
 
 	private static void checkExplosive(ServerPlayer player)
 	{
-		long arrows = player.serverLevel().getEntitiesOfClass(ArrowExplosiveEntity.class, new AABB(stage.offset(40, 0, 0)).inflate(10)).size();
+		long arrows = player.level().getEntitiesOfClass(ArrowExplosiveEntity.class, new AABB(stage.offset(40, 0, 0)).inflate(10)).size();
 		check("explosive arrow explodes on impact", arrows == 0, arrows + " left");
 	}
 
@@ -1075,8 +1075,8 @@ public final class DevScene
 
 	private static void checkData(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		var recipes = level.getRecipeManager();
+		ServerLevel level = player.level();
+		var recipes = level.recipeAccess();
 		long ours = recipes.getRecipes().stream().filter(r -> r.id().getNamespace().equals(ModSpartanWeaponry.ID)).count();
 		check("recipes loaded", ours > 200, ours + " recipes");
 		check("modded material recipes skipped without the material (no tin ingots)", recipes.byKey(id("tin_longsword")).isEmpty(), "");
@@ -1084,7 +1084,7 @@ public final class DevScene
 		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> r.value().getResultItem(level.registryAccess()).is(Items.IRON_NUGGET)
 				&& r.value().getIngredients().get(0).test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> r.value().getResultItem(level.registryAccess())).orElse(ItemStack.EMPTY));
 		// Enchanting table
-		var possible = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
+		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
 		check("enchanting table: throwing knife", offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible).containsAll(List.of("spartanweaponry:razors_edge", "spartanweaponry:propel", "spartanweaponry:lucky_throw", "minecraft:unbreaking")), offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible));
 		List<String> katana = offered(new ItemStack(ModItems.KATANAS.iron.get()), possible);
 		check("enchanting table: katana (Sweep I trait: Sweeping Edge)", katana.containsAll(List.of("minecraft:sharpness", "minecraft:looting", "minecraft:sweeping_edge")) && !katana.contains("spartanweaponry:propel"), katana);
@@ -1096,9 +1096,9 @@ public final class DevScene
 		check("enchanting table: heavy crossbow", crossbow.containsAll(List.of("spartanweaponry:sharpshooter", "minecraft:piercing")), crossbow);
 		check("enchanting table: longbow", offered(new ItemStack(ModItems.LONGBOWS.iron.get()), possible).contains("minecraft:power"), offered(new ItemStack(ModItems.LONGBOWS.iron.get()), possible));
 		check("enchanting table: boomerang", offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible).contains("spartanweaponry:collectorang"), offered(new ItemStack(ModItems.BOOMERANGS.iron.get()), possible));
-		check("Loyalty on throwing weapons (anvil)", ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).supportsEnchantment(new ItemStack(ModItems.JAVELINS.iron.get()), level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.LOYALTY)), "");
+		check("Loyalty on throwing weapons (anvil)", ((ThrowingWeaponItem)ModItems.JAVELINS.iron.get()).supportsEnchantment(new ItemStack(ModItems.JAVELINS.iron.get()), level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOYALTY)), "");
 		// Loot injected into the village weaponsmith chest
-		var table = level.getServer().reloadableRegistries().getLootTable(BuiltInLootTables.VILLAGE_WEAPONSMITH);
+		var table = level.level().getServer().reloadableRegistries().getLootTable(BuiltInLootTables.VILLAGE_WEAPONSMITH);
 		int found = 0;
 		for(int i = 0; i < 100; i++)
 		{
@@ -1122,9 +1122,9 @@ public final class DevScene
 		return available.stream().map(e -> e.enchantment.unwrapKey().get().location().toString()).distinct().sorted().toList();
 	}
 
-	private static ResourceLocation id(String path)
+	private static Identifier id(String path)
 	{
-		return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, path);
+		return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, path);
 	}
 
 	/** Shows the tooltips of some items side by side */

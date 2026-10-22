@@ -6,13 +6,13 @@ import java.util.Optional;
 import com.oblivioussp.spartanweaponry.api.ModToolActions;
 
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
 
 public class MeleeBlockWeaponTrait extends WeaponTrait implements IActionTraitCallback
@@ -30,19 +30,19 @@ public class MeleeBlockWeaponTrait extends WeaponTrait implements IActionTraitCa
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(ItemStack usingStackIn, Level levelIn, Player playerIn,
+	public InteractionResult use(ItemStack usingStackIn, Level levelIn, Player playerIn,
 			InteractionHand handIn)
 	{
 		if(playerIn.isCrouching())
-			return InteractionResultHolder.fail(usingStackIn);
+			return InteractionResult.FAIL;
 		playerIn.startUsingItem(handIn);
-		return InteractionResultHolder.consume(usingStackIn);
+		return InteractionResult.CONSUME;
 	}
 
 	@Override
-	public UseAnim getUseAnimation(ItemStack stackIn) 
+	public ItemUseAnimation getUseAnimation(ItemStack stackIn) 
 	{
-		return UseAnim.BLOCK;
+		return ItemUseAnimation.BLOCK;
 	}
 	
 	@Override

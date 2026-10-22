@@ -6,7 +6,7 @@ import com.oblivioussp.spartanweaponry.init.ModItems;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -40,7 +40,7 @@ public class BoltSpectralEntity extends BoltEntity
     {
     	Level level = level();
     	super.tick();
-    	if(level.isClientSide && !inGround)
+    	if(level.isClientSide() && !inGround)
     		level.addParticle(ParticleTypes.INSTANT_EFFECT, getX(), getY(), getZ(), 0.0d, 0.0d, 0.0d);
     }
     
@@ -59,9 +59,9 @@ public class BoltSpectralEntity extends BoltEntity
     }
     
     @Override
-    public ResourceLocation getTexture() 
+    public Identifier getTexture() 
     {
-    	return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/spectral_bolt.png");
+    	return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/spectral_bolt.png");
     }
     
     @Override
@@ -69,7 +69,7 @@ public class BoltSpectralEntity extends BoltEntity
     {
     	super.readAdditionalSaveData(compound);
     	if(compound.contains(NBT_DURATION))
-    		duration = compound.getInt(NBT_DURATION);
+    		duration = compound.getIntOr(NBT_DURATION, 0);
     }
     
     @Override

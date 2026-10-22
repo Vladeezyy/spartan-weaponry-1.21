@@ -15,7 +15,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -23,9 +23,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 @JeiPlugin
 public class SpartanWeaponryPlugin implements IModPlugin
 {
-	private final ResourceLocation PLUGIN_UID = ResourceLocation.fromNamespaceAndPath("spartanweaponry", "jei_plugin");
+	private final Identifier PLUGIN_UID = Identifier.fromNamespaceAndPath("spartanweaponry", "jei_plugin");
 
-	public ResourceLocation getPluginUid()
+	public Identifier getPluginUid()
 	{ 
 		return PLUGIN_UID;
 	}

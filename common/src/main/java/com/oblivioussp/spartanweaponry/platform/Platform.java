@@ -7,7 +7,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,7 +41,7 @@ public interface Platform
 	CreativeModeTab.Builder creativeTabBuilder(ResourceKey<CreativeModeTab> after);
 
 	/** A synced registry, created before the registration of the entries; defaultKey may be null. */
-	<T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, ResourceLocation defaultKey);
+	<T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, Identifier defaultKey);
 
 	void sendToServer(CustomPacketPayload payload);
 

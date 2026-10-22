@@ -51,19 +51,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.decoration.ItemFrame;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.monster.zombie.Zombie;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.LevelSettings;
 import net.minecraft.world.level.WorldDataConfiguration;
@@ -104,15 +104,15 @@ public final class StressScene
 		FIRST.add(Pair.of(120, mc -> server(mc, StressScene::checkProjectilesLanded)));
 		FIRST.add(Pair.of(130, mc -> {
 			Log.info("[stress] leaving the world");
-			mc.level.disconnect();
-			mc.disconnect(new TitleScreen());
+			mc.level.disconnect(net.minecraft.network.chat.Component.empty());
+			mc.disconnect(new TitleScreen(), false);
 			opened = false;
 			phase = 2;
 			tick = 0;
 		}));
 		// Phase 2: rejoined
 		// Issue #165 of the original: heavy crossbow bolts turned black after rejoining
-		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.serverLevel(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, 0.0F, 35.0F))));
+		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.level(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, 0.0F, 35.0F))));
 		SECOND.add(Pair.of(42, mc -> { mc.options.hideGui = true; shot(mc, "rejoined_projectiles"); }));
 		SECOND.add(Pair.of(44, mc -> mc.options.hideGui = false));
 		SECOND.add(Pair.of(46, mc -> server(mc, StressScene::checkData)));
@@ -173,7 +173,7 @@ public final class StressScene
 				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.setScreen(new TitleScreen()));
 			else
 			{
-				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(), WorldDataConfiguration.DEFAULT);
+				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS), WorldDataConfiguration.DEFAULT);
 				mc.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(4321L, false, false), WorldPresets::createNormalWorldDimensions, new TitleScreen());
 			}
 			return;
@@ -182,7 +182,7 @@ public final class StressScene
 			return;
 		mc.options.pauseOnLostFocus = false;
 		mc.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);
-		mc.getToasts().clear();
+		mc.getToastManager().clear();
 		if(mc.screen instanceof PauseScreen)
 			mc.setScreen(null);
 		tick++;
@@ -235,7 +235,7 @@ public final class StressScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), c -> Log.info("[stress] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, c -> Log.info("[stress] " + c.getString()));
 	}
 
 	private static void fps(Minecraft mc, String what)
@@ -247,21 +247,21 @@ public final class StressScene
 
 	private static void setup(ServerPlayer player)
 	{
-		MinecraftServer server = player.getServer();
-		ServerLevel level = player.serverLevel();
+		MinecraftServer server = player.level().getServer();
+		ServerLevel level = player.level();
 		player.setGameMode(GameType.CREATIVE);
-		server.getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(false, server);
-		server.getGameRules().getRule(GameRules.RULE_DAYLIGHT).set(false, server);
-		server.getGameRules().getRule(GameRules.RULE_WEATHER_CYCLE).set(false, server);
+		server.overworld().getGameRules().set(GameRules.SPAWN_MOBS, false, server);
+		server.overworld().getGameRules().set(GameRules.ADVANCE_TIME, false, server);
+		server.overworld().getGameRules().set(GameRules.ADVANCE_WEATHER, false, server);
 		server.getGameRules().getRule(GameRules.RULE_MOBGRIEFING).set(false, server);
 		level.setDayTime(6000);
-		BlockPos spawn = level.getSharedSpawnPos();
+		BlockPos spawn = level.getRespawnData().pos();
 		int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn.getX(), spawn.getZ());
 		stage = new BlockPos(spawn.getX(), Math.max(y + 40, 140), spawn.getZ());
 		for(int dx = -40; dx <= 40; dx++)
 			for(int dz = -20; dz <= 60; dz++)
 				level.setBlockAndUpdate(stage.offset(dx, -1, dz), Blocks.POLISHED_ANDESITE.defaultBlockState());
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, 0.0F, 10.0F);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 10.0F, true);
 	}
 
 	// ------------------------------------------------------------------------------------------------ save data
@@ -269,9 +269,9 @@ public final class StressScene
 	private static ItemStack enchanted(Item item, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> key, int level, ServerPlayer player)
 	{
 		ItemStack stack = new ItemStack(item);
-		var enchantments = player.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+		var enchantments = player.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
 		ItemEnchantments.Mutable ench = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-		ench.set(enchantments.getHolderOrThrow(key), level);
+		ench.set(enchantments.getOrThrow(key), level);
 		stack.set(DataComponents.ENCHANTMENTS, ench.toImmutable());
 		return stack;
 	}
@@ -306,7 +306,7 @@ public final class StressScene
 
 	private static void writeData(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.getInventory().clearContent();
 		List<ItemStack> items = testItems(player);
 		for(int i = 0; i < items.size(); i++)
@@ -351,7 +351,7 @@ public final class StressScene
 
 	private static void checkProjectilesLanded(ServerPlayer player)
 	{
-		List<AbstractArrow> landed = player.serverLevel().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(0, 0, 6)).inflate(8));
+		List<AbstractArrow> landed = player.level().getEntitiesOfClass(AbstractArrow.class, new AABB(stage.offset(0, 0, 6)).inflate(8));
 		check("three projectiles in the ground before leaving", landed.size() == 3, landed);
 		savedInventory.clear();
 		for(int i = 0; i < 8; i++)
@@ -377,7 +377,7 @@ public final class StressScene
 
 	private static void checkData(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		List<ItemStack> expected = testItems(player);
 		StringBuilder detail = new StringBuilder();
 		check("inventory after rejoining: oils, loaded bolt, ammo, enchantments, quiver contents, tipped bolts, potion oil", sameItems(player, savedInventory, player.getInventory()::getItem, detail), detail.length() == 0 ? savedInventory.size() + " stacks" : detail);
@@ -501,7 +501,7 @@ public final class StressScene
 
 	private static void renderStress(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.getInventory().clearContent();
 		List<Item> weapons = new ArrayList<>();
 		for(var holder : ModItems.REGISTRY.getEntries())
@@ -514,8 +514,8 @@ public final class StressScene
 		for(int x = 0; x < 20; x++)
 			for(int z = 0; z < 20; z++)
 			{
-				ArmorStand stand = EntityType.ARMOR_STAND.create(level);
-				stand.moveTo(stage.getX() - 19 + x * 2 + 0.5, stage.getY(), stage.getZ() + 6 + z * 2 + 0.5, 180.0F, 0.0F);
+				ArmorStand stand = EntityType.ARMOR_STAND.create(level, EntitySpawnReason.COMMAND);
+				stand.snapTo(stage.getX() - 19 + x * 2 + 0.5, stage.getY(), stage.getZ() + 6 + z * 2 + 0.5, 180.0F, 0.0F);
 				stand.setShowArms(true);
 				stand.setNoBasePlate(true);
 				ItemStack weapon = new ItemStack(weapons.get(n++ % weapons.size()));
@@ -535,13 +535,13 @@ public final class StressScene
 			level.addFreshEntity(frame);
 			mobs.add(frame.getId());
 		}
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 4, stage.getZ() - 4.5, 0.0F, 20.0F);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 4, stage.getZ() - 4.5, java.util.Set.of(), 0.0F, 20.0F, true);
 		stat("weapon kinds on the stands", weapons.size());
 	}
 
 	private static void vanillaBaseline(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		for(int id : mobs)
 		{
 			Entity e = level.getEntity(id);
@@ -559,7 +559,7 @@ public final class StressScene
 
 	private static void combatStress(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		for(int id : mobs)
 		{
 			Entity e = level.getEntity(id);
@@ -568,17 +568,17 @@ public final class StressScene
 		}
 		mobs.clear();
 		player.setGameMode(GameType.SPECTATOR);
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 12, stage.getZ() - 10.5, 0.0F, 35.0F);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 12, stage.getZ() - 10.5, java.util.Set.of(), 0.0F, 35.0F, true);
 		List<Item> melee = List.of(ModItems.KATANAS.iron.get(), ModItems.GREATSWORDS.diamond.get(), ModItems.WARHAMMERS.iron.get(), ModItems.SPEARS.gold.get(),
 				ModItems.HALBERDS.iron.get(), ModItems.SCYTHES.iron.get(), ModItems.BATTLEAXES.netherite.get(), ModItems.DAGGERS.stone.get());
 		for(int i = 0; i < 40; i++)
 		{
-			Skeleton skeleton = EntityType.SKELETON.spawn(level, stage.offset(-20 + i, 0, 0), MobSpawnType.COMMAND);
+			Skeleton skeleton = EntityType.SKELETON.spawn(level, stage.offset(-20 + i, 0, 0), EntitySpawnReason.COMMAND);
 			skeleton.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(i % 2 == 0 ? ModItems.LONGBOWS.iron.get() : ModItems.LONGBOWS.wood.get()));
 			skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 			skeleton.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION));
 			mobs.add(skeleton.getId());
-			Zombie zombie = EntityType.ZOMBIE.spawn(level, stage.offset(-20 + i, 0, 4), MobSpawnType.COMMAND);
+			Zombie zombie = EntityType.ZOMBIE.spawn(level, stage.offset(-20 + i, 0, 4), EntitySpawnReason.COMMAND);
 			zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(melee.get(i % melee.size())));
 			zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 			zombie.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION));
@@ -586,7 +586,7 @@ public final class StressScene
 		}
 		for(int i = 0; i < 30; i++)
 		{
-			IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(-15 + i, 0, 20), MobSpawnType.COMMAND);
+			IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(-15 + i, 0, 20), EntitySpawnReason.COMMAND);
 			mobs.add(golem.getId());
 		}
 		for(int id : mobs)
@@ -597,8 +597,8 @@ public final class StressScene
 
 	private static void checkCombatStress(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		double tickMs = player.getServer().getAverageTickTimeNanos() / 1.0E6;
+		ServerLevel level = player.level();
+		double tickMs = player.level().getServer().getAverageTickTimeNanos() / 1.0E6;
 		long arrows = level.getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(80)).size();
 		long alive = mobs.stream().filter(id -> level.getEntity(id) != null && level.getEntity(id).isAlive()).count();
 		stat("mobs alive after 30 s (of 110)", alive);
@@ -619,7 +619,7 @@ public final class StressScene
 
 	private static void projectileStress(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
+		ServerLevel level = player.level();
 		player.setGameMode(GameType.CREATIVE);
 		var random = level.random;
 		List<Item> throwing = List.of(ModItems.THROWING_KNIVES.iron.get(), ModItems.TOMAHAWKS.diamond.get(), ModItems.JAVELINS.gold.get(), ModItems.BOOMERANGS.wood.get());
@@ -645,13 +645,13 @@ public final class StressScene
 			arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 			level.addFreshEntity(arrow);
 		}
-		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 6, stage.getZ() - 12.5, 0.0F, 15.0F);
+		player.teleportTo(level, stage.getX() + 0.5, stage.getY() + 6, stage.getZ() - 12.5, java.util.Set.of(), 0.0F, 15.0F, true);
 	}
 
 	private static void checkProjectileStress(ServerPlayer player)
 	{
-		ServerLevel level = player.serverLevel();
-		double tickMs = player.getServer().getAverageTickTimeNanos() / 1.0E6;
+		ServerLevel level = player.level();
+		double tickMs = player.level().getServer().getAverageTickTimeNanos() / 1.0E6;
 		List<AbstractArrow> all = level.getEntitiesOfClass(AbstractArrow.class, new AABB(stage).inflate(80));
 		long flying = all.stream().filter(a -> a.getY() > stage.getY() + 1.0).count();
 		stat("projectiles left in the world / still above the floor after 9 s", all.size() + " / " + flying);

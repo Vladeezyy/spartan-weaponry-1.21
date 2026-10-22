@@ -3,7 +3,7 @@ package com.oblivioussp.spartanweaponry.client;
 import com.oblivioussp.spartanweaponry.platform.Platform;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 
 import com.oblivioussp.spartanweaponry.api.tags.ModItemTags;
@@ -38,7 +38,7 @@ public class OilCoatingColours
 			colour = 0;
 		else
 			// ARGB: the oil colour, opaque; not oiled = fully transparent coating layer (as in 1.20.1)
-			colour = OilHandler.isOiled(stack) ? FastColor.ARGB32.opaque(OilHelper.getOilFromStack(stack).getColor(stack)) : 0x00000000;
+			colour = OilHandler.isOiled(stack) ? ARGB.opaque(OilHelper.getOilFromStack(stack).getColor(stack)) : 0x00000000;
 		lastData = data;
 		lastColour = colour;
 		return colour;

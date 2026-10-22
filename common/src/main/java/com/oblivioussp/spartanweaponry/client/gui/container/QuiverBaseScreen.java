@@ -29,23 +29,23 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContainerScreen<T> 
 {
-	protected final ResourceLocation GUI_TEXTURE_SMALL = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_small.png");
-	protected final ResourceLocation GUI_TEXTURE_MEDIUM = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_medium.png");
-	protected final ResourceLocation GUI_TEXTURE_LARGE = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_large.png");
-	protected final ResourceLocation GUI_TEXTURE_HUGE = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_huge.png");
+	protected final Identifier GUI_TEXTURE_SMALL = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_small.png");
+	protected final Identifier GUI_TEXTURE_MEDIUM = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_medium.png");
+	protected final Identifier GUI_TEXTURE_LARGE = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_large.png");
+	protected final Identifier GUI_TEXTURE_HUGE = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/quiver_huge.png");
 	
 	protected final Component PRIORITY_BUTTON_TOOLTIP = Component.literal("[").append(Component.translatable("gui." + ModSpartanWeaponry.ID + ".set_priority_slot")).append(Component.literal("]"));
 	protected final Component AMMO_COLLECT_ENABLED_BUTTON_TOOLTIP = Component.translatable("gui." + ModSpartanWeaponry.ID + ".ammo_collect_enabled");
 	protected final Component AMMO_COLLECT_DISABLED_BUTTON_TOOLTIP = Component.translatable("gui." + ModSpartanWeaponry.ID + ".ammo_collect_disabled");
 	
-	protected final ResourceLocation texture;
+	protected final Identifier texture;
 	protected final ItemStack quiver;
 	protected final int ammoSlots;
 	protected int prioritySlot = 0;
@@ -79,7 +79,7 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 			texture = GUI_TEXTURE_SMALL;
 			break;
 		default:
-			texture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/missingno.png");
+			texture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/missingno.png");
 			Log.error("Missing texture for GUI for quiver: " + quiver.getHoverName().toString());
 			break;
 		}

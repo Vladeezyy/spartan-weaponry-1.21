@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.api.trait;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.minecraft.core.Holder;
 
@@ -18,7 +18,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class SpeedModifierWeaponTrait extends WeaponTrait implements IMeleeTraitCallback, IRangedTraitCallback, IThrowingTraitCallback
 {
-	public static final ResourceLocation SPEED_MODIFIER = ResourceLocation.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, "trait.attack_speed");
+	public static final Identifier SPEED_MODIFIER = Identifier.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, "trait.attack_speed");
 	
 	public SpeedModifierWeaponTrait(String type, TraitQuality quality)
 	{

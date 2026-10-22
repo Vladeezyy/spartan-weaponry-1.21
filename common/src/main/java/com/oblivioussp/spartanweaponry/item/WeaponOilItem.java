@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.core.Holder;
 
@@ -18,9 +21,9 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -39,19 +42,29 @@ public class WeaponOilItem extends BasicItem
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		super.appendHoverText(stack, levelIn, tooltip, flagIn);
-		OilEffect oil = OilHelper.getOilFromStack(stack);
-		if(oil != OilEffects.NONE.get())
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
 		{
-			tooltip.add(Component.empty());
-			oil.getTooltip(stack, tooltip);
-			tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".weapon_oil.uses", oil.getMaxUses()).withStyle(ChatFormatting.DARK_GREEN));
+			tooltip.flush();
+			super.appendHoverText(stack, levelIn, display, tooltipOut, flagIn);
+			OilEffect oil = OilHelper.getOilFromStack(stack);
+			if(oil != OilEffects.NONE.get())
+			{
+				tooltip.add(Component.empty());
+				oil.getTooltip(stack, tooltip);
+				tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".weapon_oil.uses", oil.getMaxUses()).withStyle(ChatFormatting.DARK_GREEN));
+			}
+			else
+			{
+				tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".weapon_oil.base"));
+			}
 		}
-		else
+		finally
 		{
-			tooltip.add(Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".weapon_oil.base"));
+			tooltip.flush();
 		}
 	}
 	
@@ -60,13 +73,13 @@ public class WeaponOilItem extends BasicItem
 	{
 		OilEffect oil = OilHelper.getOilFromStack(stack);
 		Optional<Holder<Potion>> potion = OilHelper.getPotionFromStack(stack);
-		ResourceLocation itemLoc = BuiltInRegistries.ITEM.getKey(this);
+		Identifier itemLoc = BuiltInRegistries.ITEM.getKey(this);
 		Component baseName = Component.translatable("item." + itemLoc.getNamespace() + "." + itemLoc.getPath() + "." + OilEffects.OIL_REGISTRY.getKey(oil).getPath());
 		return potion.isEmpty() ? baseName : Component.translatable(Potion.getName(potion, "item.spartanweaponry.proj_tipped.effect."), baseName);
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level levelIn, Player playerIn, InteractionHand handIn) 
+	public InteractionResult use(Level levelIn, Player playerIn, InteractionHand handIn) 
 	{
 		ItemStack stack = playerIn.getItemInHand(handIn);
 		OilEffect oil = OilHelper.getOilFromStack(stack);

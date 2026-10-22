@@ -2,7 +2,7 @@ package com.oblivioussp.spartanweaponry.api.trait;
 
 import com.oblivioussp.spartanweaponry.api.SpartanWeaponryAPI;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import net.minecraft.core.Holder;
 
@@ -15,7 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ReachWeaponTrait extends MeleeCallbackWeaponTrait
 {
-	public static final ResourceLocation ATTACK_REACH_MODIFIER = ResourceLocation.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, "trait.reach");
+	public static final Identifier ATTACK_REACH_MODIFIER = Identifier.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, "trait.reach");
 	
 	public ReachWeaponTrait(String propType, String propModId) 
 	{

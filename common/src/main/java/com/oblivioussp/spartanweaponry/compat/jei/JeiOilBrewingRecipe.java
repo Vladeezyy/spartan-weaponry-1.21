@@ -14,7 +14,7 @@ import com.oblivioussp.spartanweaponry.item.crafting.OilBrewingRecipe;
 import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import mezz.jei.api.recipe.vanilla.IJeiBrewingRecipe;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 
@@ -23,7 +23,7 @@ public class JeiOilBrewingRecipe implements IJeiBrewingRecipe
 	private final List<ItemStack> baseOils;
 	private final List<ItemStack> ingredients;
 	private final ItemStack output;
-	private final ResourceLocation uid;
+	private final Identifier uid;
 	private int brewingSteps = Integer.MAX_VALUE;
 	
 	public JeiOilBrewingRecipe(List<ItemStack> baseOilsIn, List<ItemStack> ingredientsIn, ItemStack outputIn)
@@ -31,8 +31,8 @@ public class JeiOilBrewingRecipe implements IJeiBrewingRecipe
 		baseOils = ImmutableList.copyOf(baseOilsIn);
 		ingredients = ImmutableList.copyOf(ingredientsIn);
 		output = outputIn;
-		ResourceLocation outputLocation = BuiltInRegistries.ITEM.getKey(outputIn.getItem());
-		uid = ResourceLocation.fromNamespaceAndPath(outputLocation.getNamespace(), outputLocation.getPath() + "." + OilEffects.OIL_REGISTRY.getKey(OilHelper.getOilFromStack(outputIn)).getPath() + "_from_brewing");
+		Identifier outputLocation = BuiltInRegistries.ITEM.getKey(outputIn.getItem());
+		uid = Identifier.fromNamespaceAndPath(outputLocation.getNamespace(), outputLocation.getPath() + "." + OilEffects.OIL_REGISTRY.getKey(OilHelper.getOilFromStack(outputIn)).getPath() + "_from_brewing");
 	}
 	
 	@Override
@@ -67,7 +67,7 @@ public class JeiOilBrewingRecipe implements IJeiBrewingRecipe
 	}
 
 	@Override
-	public @Nullable ResourceLocation getUid() 
+	public @Nullable Identifier getUid() 
 	{
 		return uid;
 	}

@@ -12,7 +12,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,20 +26,20 @@ public class CurioRenderer implements ResourceManagerReloadListener
 	public static final CurioRenderer INSTANCE = new CurioRenderer();
 	
 	public static SmallArrowQuiverModel smallArrowQuiverModel;
-	protected static final ResourceLocation smallArrowQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_small.png");
+	protected static final Identifier smallArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_small.png");
 	public static MediumArrowQuiverModel mediumArrowQuiverModel;
-	protected static final ResourceLocation mediumArrowQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_medium.png");
+	protected static final Identifier mediumArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_medium.png");
 	public static LargeArrowQuiverModel largeArrowQuiverModel;
-	protected static final ResourceLocation largeArrowQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_large.png");
-	protected static final ResourceLocation hugeArrowQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_huge.png");
+	protected static final Identifier largeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_large.png");
+	protected static final Identifier hugeArrowQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_arrow_huge.png");
 	
 	public static SmallBoltQuiverModel smallBoltQuiverModel;
-	protected static final ResourceLocation smallBoltQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_small.png");
+	protected static final Identifier smallBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_small.png");
 	public static MediumBoltQuiverModel mediumBoltQuiverModel;
-	protected static final ResourceLocation mediumBoltQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_medium.png");
+	protected static final Identifier mediumBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_medium.png");
 	public static LargeBoltQuiverModel largeBoltQuiverModel;
-	protected static final ResourceLocation largeBoltQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_large.png");
-	protected static final ResourceLocation hugeBoltQuiverTexture = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_huge.png");
+	protected static final Identifier largeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_large.png");
+	protected static final Identifier hugeBoltQuiverTexture = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/model/quiver_bolt_huge.png");
 	
 	public static final Renderer QUIVER_ARROW_SMALL_RENDERER = INSTANCE.new Renderer(smallArrowQuiverTexture);
 	public static final Renderer QUIVER_ARROW_MEDIUM_RENDERER = INSTANCE.new Renderer(mediumArrowQuiverTexture);
@@ -90,9 +90,9 @@ public class CurioRenderer implements ResourceManagerReloadListener
 	private class Renderer implements ICurioRenderer
 	{
 		private QuiverModelBase model;
-		private ResourceLocation texture;
+		private Identifier texture;
 		
-		public Renderer(ResourceLocation texture)
+		public Renderer(Identifier texture)
 		{
 			this.texture = texture;
 		}
@@ -117,7 +117,7 @@ public class CurioRenderer implements ResourceManagerReloadListener
 					matrixStack, renderTypeBuffer, light);
 		}
 		
-		private void renderQuiverModel(QuiverModelBase model, ResourceLocation texture, int arrowsToRender, SlotContext slotContext, PoseStack mStack, 
+		private void renderQuiverModel(QuiverModelBase model, Identifier texture, int arrowsToRender, SlotContext slotContext, PoseStack mStack, 
 				MultiBufferSource renderTypeBuffer, int packedLight)
 		{
 			VertexConsumer buffer = renderTypeBuffer.getBuffer(model.renderType(texture));

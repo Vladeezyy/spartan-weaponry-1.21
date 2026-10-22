@@ -10,7 +10,7 @@ import com.oblivioussp.spartanweaponry.util.Defaults;
 import com.oblivioussp.spartanweaponry.util.QuiverHelper;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -27,12 +27,12 @@ public abstract class QuiverBaseMenu extends AbstractContainerMenu
 
 	protected final IQuiverItemHandler handler;
 	protected final Predicate<ItemStack> slotFilter;
-	protected final ResourceLocation emptySlotTexture;
+	protected final Identifier emptySlotTexture;
 	
 	protected int playerInvStart, playerInvEnd, hotbarStart, hotbarEnd;
 	
 
-	protected QuiverBaseMenu(MenuType<?> type, int id, Inventory inventory, ItemStack quiverStackIn, Predicate<ItemStack> slotFilterIn, ResourceLocation emptySlotTextureIn)
+	protected QuiverBaseMenu(MenuType<?> type, int id, Inventory inventory, ItemStack quiverStackIn, Predicate<ItemStack> slotFilterIn, Identifier emptySlotTextureIn)
 	{
 		super(type, id);
 		slotFilter = slotFilterIn;
@@ -113,7 +113,7 @@ public abstract class QuiverBaseMenu extends AbstractContainerMenu
 		addSlot(new Slot(inventory, 40, -21, handler.getSlots() == Defaults.SlotsQuiverHuge ? 127 : 109)
 		{
 			@Override
-			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon()
+			public Pair<Identifier, Identifier> getNoItemIcon()
 			{
 				return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
 			}

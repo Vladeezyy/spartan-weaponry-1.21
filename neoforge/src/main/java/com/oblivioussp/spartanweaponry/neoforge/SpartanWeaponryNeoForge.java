@@ -26,7 +26,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -68,8 +68,8 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 public class SpartanWeaponryNeoForge
 {
 	/** The oil and quiver capabilities of the NeoForge port, kept for other mods (the mod itself reads the components). */
-	public static final ItemCapability<IOilHandler, Void> OIL_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil"), IOilHandler.class);
-	public static final ItemCapability<IQuiverItemHandler, Void> QUIVER_ITEM_CAPABILITY = ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_items"), IQuiverItemHandler.class);
+	public static final ItemCapability<IOilHandler, Void> OIL_CAPABILITY = ItemCapability.createVoid(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil"), IOilHandler.class);
+	public static final ItemCapability<IQuiverItemHandler, Void> QUIVER_ITEM_CAPABILITY = ItemCapability.createVoid(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_items"), IQuiverItemHandler.class);
 
 	public SpartanWeaponryNeoForge(IEventBus modBus, ModContainer container)
 	{
@@ -100,7 +100,7 @@ public class SpartanWeaponryNeoForge
 		bus.addListener((LootTableLoadEvent ev) -> CommonEventHandler.onLootTableLoad(new LoaderEvents.LootTableLoad()
 		{
 			@Override
-			public ResourceLocation getName()
+			public Identifier getName()
 			{
 				return ev.getName();
 			}
@@ -163,9 +163,9 @@ public class SpartanWeaponryNeoForge
 			});
 	}
 
-	private static ResourceLocation id(String path)
+	private static Identifier id(String path)
 	{
-		return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, path);
+		return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, path);
 	}
 
 	private static void registerPayloads(RegisterPayloadHandlersEvent ev)

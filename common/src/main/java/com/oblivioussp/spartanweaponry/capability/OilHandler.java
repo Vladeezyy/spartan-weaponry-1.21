@@ -13,7 +13,7 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +49,7 @@ public class OilHandler implements IOilHandler
 	private static CompoundTag oilTag(ItemStack stack)
 	{
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-		return data != null && data.contains(NBT_OIL) ? data.getUnsafe().getCompound(NBT_OIL) : null;
+		return data != null && data.contains(NBT_OIL) ? data.getUnsafe().getCompoundOrEmpty(NBT_OIL) : null;
 	}
 	
 	/**
@@ -61,8 +61,8 @@ public class OilHandler implements IOilHandler
 		CompoundTag oil = oilTag(stack);
 		if(oil == null)
 			return false;
-		ResourceLocation oilId = ResourceLocation.tryParse(oil.getString(NBT_OIL_EFFECT));
-		return oilId != null && !oil.getString(NBT_OIL_EFFECT).isEmpty() && OilEffects.OIL_REGISTRY.get(oilId) != OilEffects.NONE.get();
+		Identifier oilId = Identifier.tryParse(oil.getStringOr(NBT_OIL_EFFECT, ""));
+		return oilId != null && !oil.getStringOr(NBT_OIL_EFFECT, "").isEmpty() && OilEffects.OIL_REGISTRY.get(oilId) != OilEffects.NONE.get();
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class OilHandler implements IOilHandler
 		{
 			if(potion.isPresent())
 				PotionHelper.putPotion(nbt, potion.get());
-			ResourceLocation loc = OilEffects.OIL_REGISTRY.getKey(effect.get());
+			Identifier loc = OilEffects.OIL_REGISTRY.getKey(effect.get());
 			nbt.putString(NBT_OIL_EFFECT, loc.toString());
 			nbt.putInt(NBT_USES_LEFT, usesLeft);
 		}
@@ -152,10 +152,10 @@ public class OilHandler implements IOilHandler
 	@Override
 	public void deserializeNBT(CompoundTag nbt) 
 	{
-		String oilEffectReg = nbt.getString(NBT_OIL_EFFECT);
-		ResourceLocation oilId = oilEffectReg.isEmpty() ? null : ResourceLocation.tryParse(oilEffectReg);
+		String oilEffectReg = nbt.getStringOr(NBT_OIL_EFFECT, "");
+		Identifier oilId = oilEffectReg.isEmpty() ? null : Identifier.tryParse(oilEffectReg);
 		effect = oilId != null ? Optional.of(OilEffects.OIL_REGISTRY.get(oilId)) : Optional.empty();
 		potion = PotionHelper.getPotion(nbt);
-		usesLeft = nbt.getInt(NBT_USES_LEFT);
+		usesLeft = nbt.getIntOr(NBT_USES_LEFT, 0);
 	}
 }

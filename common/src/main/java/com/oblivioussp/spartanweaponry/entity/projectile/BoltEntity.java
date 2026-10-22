@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.core.registries.Registries;
 import java.util.Optional;
 
@@ -7,7 +8,7 @@ import com.oblivioussp.spartanweaponry.util.PotionHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 
 import java.util.Arrays;
 
@@ -25,7 +26,7 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,7 +36,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -141,7 +142,7 @@ public class BoltEntity extends AbstractArrow
     	super.tick();
     	
     	Level level = level();
-		if(level.isClientSide)
+		if(level.isClientSide())
 		{
 			if(inGround)
 			{
@@ -213,7 +214,7 @@ public class BoltEntity extends AbstractArrow
         	if(entity instanceof LivingEntity) 
         	{
         		LivingEntity livingentity = (LivingEntity)entity;
-        		if(!level.isClientSide && getPierceLevel() <= 0)
+        		if(!level.isClientSide() && getPierceLevel() <= 0)
         			livingentity.setArrowCount(livingentity.getArrowCount() + 1);
 
         		if(getKnockback() > 0)
@@ -233,7 +234,7 @@ public class BoltEntity extends AbstractArrow
         		if(!entity.isAlive() && piercedAndKilledEntities != null)
         			piercedAndKilledEntities.add(livingentity);
 
-        		if(!level.isClientSide && shooter instanceof ServerPlayer)
+        		if(!level.isClientSide() && shooter instanceof ServerPlayer)
         		{
         			ServerPlayer serverplayerentity = (ServerPlayer)shooter;
         			if (piercedAndKilledEntities != null && shotFromCrossbow()) 
@@ -253,7 +254,7 @@ public class BoltEntity extends AbstractArrow
         	setDeltaMovement(getDeltaMovement().scale(-0.1D));
         	setYRot(getYRot() + 180.0f);
         	yRotO += 180.0F;
-        	if(!level.isClientSide && getDeltaMovement().lengthSqr() < 1.0E-7D)
+        	if(!level.isClientSide() && getDeltaMovement().lengthSqr() < 1.0E-7D)
         	{
         		if (pickup == AbstractArrow.Pickup.ALLOWED)
         			spawnAtLocation(getPickupItem(), 0.1F);
@@ -286,10 +287,10 @@ public class BoltEntity extends AbstractArrow
 			// Roll a chance to spawn lightning under the right circumstances
 			if(random.nextInt(4) < 1)	// ~25%
 			{
-				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
+				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
 				if(lightning != null)
 				{
-					lightning.moveTo(Vec3.atBottomCenterOf(living.blockPosition()));
+					lightning.snapTo(Vec3.atBottomCenterOf(living.blockPosition()));
 					lightning.setCause(getOwner() instanceof ServerPlayer player ? player : null);
 					level.addFreshEntity(lightning);
 				}
@@ -317,7 +318,7 @@ public class BoltEntity extends AbstractArrow
 		setBoltStack(getPickupItemStackOrigin());
 		potion = PotionHelper.getPotion(compound);
 		
-		getEntityData().set(DATA_COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getInt(NBT_POTION_COLOUR) : -1);
+		getEntityData().set(DATA_COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getIntOr(NBT_POTION_COLOUR, 0) : -1);
 	}
 
 
@@ -350,7 +351,7 @@ public class BoltEntity extends AbstractArrow
 	    	Level level = level();
 	        for(int i = 0; i < particleCount; i++)
 	        {
-	        	level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.opaque(colour)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
+	        	level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.opaque(colour)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
 	        }
 		}
 	}
@@ -360,11 +361,11 @@ public class BoltEntity extends AbstractArrow
 		return !getEntityData().get(DATA_BOLT).isEmpty();
 	}
 	
-	public ResourceLocation getTexture()
+	public Identifier getTexture()
 	{
 		ItemStack boltStack = getEntityData().get(DATA_BOLT);
 		if(boltStack.isEmpty())
-			return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "missing_stack");
+			return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "missing_stack");
 					
 		String boltRegName = BuiltInRegistries.ITEM.getKey(boltStack.getItem()).getPath();
 		
@@ -374,6 +375,6 @@ public class BoltEntity extends AbstractArrow
 		{
 			boltRegName = boltRegName.substring(idx + prefix.length());
 		}
-		return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/" + boltRegName + ".png");
+		return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/" + boltRegName + ".png");
 	}
 }

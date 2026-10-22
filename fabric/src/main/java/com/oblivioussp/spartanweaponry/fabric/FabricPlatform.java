@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -71,7 +71,7 @@ public class FabricPlatform implements Platform
 	}
 
 	@Override
-	public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, ResourceLocation defaultKey)
+	public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, Identifier defaultKey)
 	{
 		FabricRegistryBuilder<T, ?> builder = defaultKey != null ? FabricRegistryBuilder.createDefaulted(key, defaultKey) : FabricRegistryBuilder.createSimple(key);
 		return builder.attribute(RegistryAttribute.SYNCED).buildAndRegister();

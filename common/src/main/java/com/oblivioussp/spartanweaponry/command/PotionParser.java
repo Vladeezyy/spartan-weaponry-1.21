@@ -19,7 +19,7 @@ import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.alchemy.Potion;
@@ -30,7 +30,7 @@ public class PotionParser
 {
 	// Potions without effects (1.21 has no "empty" potion)
 	private static final ImmutableList<Holder<Potion>> invalidPotions = ImmutableList.of(Potions.WATER, Potions.MUNDANE, Potions.THICK, Potions.AWKWARD);
-	private static final List<ResourceLocation> invalidPotionNames = invalidPotions.stream().map((potion) -> potion.unwrapKey().orElseThrow().location()).collect(Collectors.toUnmodifiableList());
+	private static final List<Identifier> invalidPotionNames = invalidPotions.stream().map((potion) -> potion.unwrapKey().orElseThrow().location()).collect(Collectors.toUnmodifiableList());
 	
 	public static final DynamicCommandExceptionType ERROR_UNKNOWN_POTION = new DynamicCommandExceptionType((object) -> 
 	{
@@ -64,7 +64,7 @@ public class PotionParser
 	public void read() throws CommandSyntaxException
 	{
 		int idx = reader.getCursor();
-		ResourceLocation loc = ResourceLocation.read(reader);
+		Identifier loc = Identifier.read(reader);
 		potion = BuiltInRegistries.POTION.getHolder(loc).orElse(null);
 		
 		if(potion == null)
@@ -89,7 +89,7 @@ public class PotionParser
 	
 	private CompletableFuture<Suggestions> suggestPotionEffect(SuggestionsBuilder builderIn, Registry<Potion> potionRegistryIn)
 	{
-		Set<ResourceLocation> suggestions = potionRegistryIn.keySet().stream().filter((potion) -> !invalidPotionNames.contains(potion)).collect(Collectors.toSet());
+		Set<Identifier> suggestions = potionRegistryIn.keySet().stream().filter((potion) -> !invalidPotionNames.contains(potion)).collect(Collectors.toSet());
 		return SharedSuggestionProvider.suggestResource(suggestions, builderIn);
 	}
 	

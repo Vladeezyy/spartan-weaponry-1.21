@@ -19,7 +19,7 @@ import com.oblivioussp.spartanweaponry.api.oil.OilEffect;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class OilParser 
 {
@@ -55,7 +55,7 @@ public class OilParser
 	public void read() throws CommandSyntaxException
 	{
 		int idx = reader.getCursor();
-		ResourceLocation loc = ResourceLocation.read(reader);
+		Identifier loc = Identifier.read(reader);
 		oilEffect = OilEffects.OIL_REGISTRY.containsKey(loc) ? OilEffects.OIL_REGISTRY.get(loc) : null;
 		if(oilEffect == null)
 		{
@@ -81,7 +81,7 @@ public class OilParser
 	private CompletableFuture<Suggestions> suggestOilEffect(SuggestionsBuilder builderIn, Registry<OilEffect> oilRegistryIn)
 	{
 		// Port fix: 1.20.1 used || here and suggested "none" and "potion", which the command rejects
-		Set<ResourceLocation> suggestions = oilRegistryIn.keySet().stream().filter((oil) -> !oil.equals(OilEffects.NONE.getId()) && !oil.equals(OilEffects.POTION.getId())).collect(Collectors.toSet());
+		Set<Identifier> suggestions = oilRegistryIn.keySet().stream().filter((oil) -> !oil.equals(OilEffects.NONE.getId()) && !oil.equals(OilEffects.POTION.getId())).collect(Collectors.toSet());
 		return SharedSuggestionProvider.suggestResource(suggestions, builderIn);
 	}
 	

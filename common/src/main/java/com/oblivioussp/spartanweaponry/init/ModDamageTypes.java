@@ -6,7 +6,7 @@ import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
@@ -28,26 +28,26 @@ public class ModDamageTypes
 	
 	public static DamageSource armorPiercingMelee(Entity source)
 	{
-		return new DamageSource(source.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(KEY_ARMOR_PIERCING_MELEE), source);
+		return new DamageSource(source.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(KEY_ARMOR_PIERCING_MELEE), source);
 	}
 	
 	public static DamageSource armorPiercingProjectile(Entity source, Entity indirect)
 	{
-		return new DamageSource(source.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(KEY_ARMOR_PIERCING_BOLT), source, indirect);
+		return new DamageSource(source.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(KEY_ARMOR_PIERCING_BOLT), source, indirect);
 	}
 	
 	public static DamageSource thrownWeaponPlayer(Entity source, Entity thrownWeapon)
 	{
-		return new DamageSource(source.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(KEY_THROWN_WEAPON_PLAYER), source, thrownWeapon);
+		return new DamageSource(source.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(KEY_THROWN_WEAPON_PLAYER), source, thrownWeapon);
 	}
 	
 	public static DamageSource thrownWeaponMob(Entity source, Entity thrownWeapon)
 	{
-		return new DamageSource(source.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(KEY_THROWN_WEAPON_MOB), source, thrownWeapon);
+		return new DamageSource(source.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(KEY_THROWN_WEAPON_MOB), source, thrownWeapon);
 	}
 	
 	private static ResourceKey<DamageType> createKey(String keyName)
 	{
-		return ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, keyName));
+		return ResourceKey.create(Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, keyName));
 	}
 }

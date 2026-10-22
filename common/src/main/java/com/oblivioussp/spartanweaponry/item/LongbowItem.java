@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
 import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.server.level.ServerLevel;
 
@@ -42,7 +44,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
@@ -162,7 +164,7 @@ public class LongbowItem extends BowItem implements IReloadable
 	
 	                    level.addFreshEntity(entityarrow);
                 	}
-                    stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+                    stack.hurtAndBreak(1, player, player.getUsedItemHand().asEquipmentSlot());
                 }
 
                 level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 1.0F, 1.0F / (level.random.nextFloat() * 0.4f + 1.2f) + f * 0.5f);
@@ -229,56 +231,65 @@ public class LongbowItem extends BowItem implements IReloadable
 	}
     
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, List<Component> tooltip, TooltipFlag flagIn)
+    public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn)
     {
-		boolean isShiftPressed = Screen.hasShiftDown();
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
+		{
+			boolean isShiftPressed = net.minecraft.client.Minecraft.getInstance().hasShiftDown();
 		
-		if(doCraftCheck && contextIn.registries() != null)
-    	{
-    		if(!ClientConfig.INSTANCE.forceDisableUncraftableTooltips.get() && material.getModId() == ModSpartanWeaponry.ID)
-    		{
-        		if(!WeaponAttributes.isTagFilled(material.getRepairTag()))
-	    			canBeCrafted = false;
-    		}
-	    	doCraftCheck = false;
-    	}
+			if(doCraftCheck && contextIn.registries() != null)
+	    	{
+	    		if(!ClientConfig.INSTANCE.forceDisableUncraftableTooltips.get() && material.getModId() == ModSpartanWeaponry.ID)
+	    		{
+	        		if(!WeaponAttributes.isTagFilled(material.getRepairTag()))
+		    			canBeCrafted = false;
+	    		}
+		    	doCraftCheck = false;
+	    	}
 
-    	if(!canBeCrafted)
-    		tooltip.add(Component.translatable(String.format("tooltip.%s.uncraftable_missing_material", ModSpartanWeaponry.ID), material.getRepairTagName()).withStyle(ChatFormatting.RED));
+	    	if(!canBeCrafted)
+	    		tooltip.add(Component.translatable(String.format("tooltip.%s.uncraftable_missing_material", ModSpartanWeaponry.ID), material.getRepairTagName()).withStyle(ChatFormatting.RED));
 
-    	material.addTagErrorTooltip(stack, tooltip);
+	    	material.addTagErrorTooltip(stack, tooltip);
 		
-    	if(material.hasAnyBonusTraits(type))
-    	{
-			if(rangedTraits != null && !rangedTraits.isEmpty())
-			{
-				if(isShiftPressed)
-					tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
-				else
-					tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.DARK_AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
-				tooltip.add(Component.translatable(String.format("tooltip.%s.trait.material_bonus", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.AQUA));
+	    	if(material.hasAnyBonusTraits(type))
+	    	{
+				if(rangedTraits != null && !rangedTraits.isEmpty())
+				{
+					if(isShiftPressed)
+						tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+					else
+						tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.DARK_AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+					tooltip.add(Component.translatable(String.format("tooltip.%s.trait.material_bonus", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.AQUA));
 				
-				rangedTraits.forEach((trait) -> trait.addTooltip(stack, tooltip, isShiftPressed));
-	        	tooltip.add(Component.empty());
-			}
-    	}
+					rangedTraits.forEach((trait) -> trait.addTooltip(stack, tooltip, isShiftPressed));
+		        	tooltip.add(Component.empty());
+				}
+	    	}
 		
-    	if(isShiftPressed)
-    	{
-			tooltip.add(Component.translatable(String.format("tooltip.%s.description", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
-    		tooltip.add(Component.translatable(String.format("tooltip.%s.longbow.desc", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    		tooltip.add(Component.translatable(String.format("tooltip.%s.longbow.desc_2", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-    	}
-    	else
-			tooltip.add(Component.translatable(String.format("tooltip.%s.description", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+	    	if(isShiftPressed)
+	    	{
+				tooltip.add(Component.translatable(String.format("tooltip.%s.description", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+	    		tooltip.add(Component.translatable(String.format("tooltip.%s.longbow.desc", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+	    		tooltip.add(Component.translatable(String.format("tooltip.%s.longbow.desc_2", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+	    	}
+	    	else
+				tooltip.add(Component.translatable(String.format("tooltip.%s.description", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
    	
     	
-    	tooltip.add(Component.empty());
-    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.ammo.type", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.ammo.arrow", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
-    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.longbow.draw_length", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.longbow.draw_length.value", ModSpartanWeaponry.ID), drawTime).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
-    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.longbow.speed_multiplier", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.longbow.speed_multiplier.value", ModSpartanWeaponry.ID), maxVelocity).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
-    	tooltip.add(Component.empty());
-    }
+	    	tooltip.add(Component.empty());
+	    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.ammo.type", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.ammo.arrow", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+	    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.longbow.draw_length", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.longbow.draw_length.value", ModSpartanWeaponry.ID), drawTime).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+	    	tooltip.add(Component.translatable(String.format("tooltip.%s.modifiers.longbow.speed_multiplier", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.modifiers.longbow.speed_multiplier.value", ModSpartanWeaponry.ID), maxVelocity).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+	    	tooltip.add(Component.empty());
+		}
+		finally
+		{
+			tooltip.flush();
+		}
+	}
 	
 	// ---- ---- ---- ---- ---- ---- ---- ----
 	// Internal methods

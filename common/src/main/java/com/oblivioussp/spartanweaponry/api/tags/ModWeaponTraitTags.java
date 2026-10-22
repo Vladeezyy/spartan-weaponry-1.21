@@ -4,7 +4,7 @@ import com.oblivioussp.spartanweaponry.api.SpartanWeaponryAPI;
 import com.oblivioussp.spartanweaponry.api.WeaponTraits;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 
 /**
@@ -61,18 +61,18 @@ public class ModWeaponTraitTags
 	public static final TagKey<WeaponTrait> PLATINUM = create("materials/platinum");
 	public static final TagKey<WeaponTrait> ALUMINUM = create("materials/aluminum");
 	
-	public static TagKey<WeaponTrait> create(ResourceLocation loc)
+	public static TagKey<WeaponTrait> create(Identifier loc)
 	{
 		return TagKey.create(WeaponTraits.REGISTRY_KEY, loc);
 	}
 	
 	public static TagKey<WeaponTrait> create(String namespace, String path)
 	{
-		return create(ResourceLocation.fromNamespaceAndPath(namespace, path));
+		return create(Identifier.fromNamespaceAndPath(namespace, path));
 	}
 	
 	public static TagKey<WeaponTrait> create(String path)
 	{
-		return create(ResourceLocation.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, path));
+		return create(Identifier.fromNamespaceAndPath(SpartanWeaponryAPI.MOD_ID, path));
 	}
 }

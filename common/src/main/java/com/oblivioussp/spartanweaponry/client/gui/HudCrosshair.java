@@ -19,7 +19,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
@@ -31,11 +31,11 @@ import net.minecraft.client.gui.Gui;
 
 public class HudCrosshair
 {
-	public static final ResourceLocation CROSSHAIR_TEXTURES = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/crosshairs.png");
+	public static final Identifier CROSSHAIR_TEXTURES = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/crosshairs.png");
 	// 1.20.1 drew these from textures/gui/icons.png, which is a set of sprites since 1.20.2
-	public static final ResourceLocation ATTACK_INDICATOR_FULL = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_full");
-	public static final ResourceLocation ATTACK_INDICATOR_BACKGROUND = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_background");
-	public static final ResourceLocation ATTACK_INDICATOR_PROGRESS = ResourceLocation.withDefaultNamespace("hud/crosshair_attack_indicator_progress");
+	public static final Identifier ATTACK_INDICATOR_FULL = Identifier.withDefaultNamespace("hud/crosshair_attack_indicator_full");
+	public static final Identifier ATTACK_INDICATOR_BACKGROUND = Identifier.withDefaultNamespace("hud/crosshair_attack_indicator_background");
+	public static final Identifier ATTACK_INDICATOR_PROGRESS = Identifier.withDefaultNamespace("hud/crosshair_attack_indicator_progress");
 	protected static boolean isVanillaCrosshairDisabled = false;
 	
 	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)

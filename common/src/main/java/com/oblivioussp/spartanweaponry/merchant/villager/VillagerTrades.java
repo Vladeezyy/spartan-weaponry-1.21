@@ -13,7 +13,7 @@ import java.util.List;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -156,7 +156,7 @@ public class VillagerTrades
 	private static ItemStack enchant(Entity trader, RandomSource rand, ItemStack stack, int level)
 	{
 		RegistryAccess registries = trader.level().registryAccess();
-		Optional<HolderSet<Enchantment>> options = registries.registryOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.ON_TRADED_EQUIPMENT).map((tag) -> (HolderSet<Enchantment>)tag);
+		Optional<HolderSet<Enchantment>> options = registries.lookupOrThrow(Registries.ENCHANTMENT).getTag(EnchantmentTags.ON_TRADED_EQUIPMENT).map((tag) -> (HolderSet<Enchantment>)tag);
 		return EnchantmentHelper.enchantItem(rand, stack, level, registries, options);
 	}
 }

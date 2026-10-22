@@ -2,7 +2,7 @@ package com.oblivioussp.spartanweaponry.api;
 
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * Contains the values used for overrides in Spartan Weaponry's model files
@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class ModelOverrides
 {
-	public static final ResourceLocation THROWING = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "throwing");
-	public static final ResourceLocation BLOCKING = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "blocking");
-	public static final ResourceLocation PULLING = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "pulling");
-	public static final ResourceLocation PULL = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "pull");
-	public static final ResourceLocation CHARGED = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "charged");
-	public static final ResourceLocation EMPTY = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "empty");
-	public static final ResourceLocation ARROW = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "arrow");
+	public static final Identifier THROWING = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "throwing");
+	public static final Identifier BLOCKING = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "blocking");
+	public static final Identifier PULLING = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "pulling");
+	public static final Identifier PULL = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "pull");
+	public static final Identifier CHARGED = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "charged");
+	public static final Identifier EMPTY = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "empty");
+	public static final Identifier ARROW = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "arrow");
 }

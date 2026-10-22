@@ -42,7 +42,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -148,7 +148,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 //					Vec3 distance = new Vec3(thrower.getX() - getX(), thrower.getEyeY() - getY(), thrower.getZ() - getZ());
 					Vec3 distance = thrower.getEyePosition().subtract(position());
 					setPosRaw(getX(), getY() + distance.y * 0.015 * (double)returnLevel, getZ());
-					if(level.isClientSide)
+					if(level.isClientSide())
 					{
 						yOld = getY();
 					}
@@ -328,7 +328,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
                 yRotO += 180.0F;
                 ticksInAir = 0;
 
-                if (!level.isClientSide && getDeltaMovement().lengthSqr() < 1.0e-7d)
+                if (!level.isClientSide() && getDeltaMovement().lengthSqr() < 1.0e-7d)
                 {
                 	if(getEntityData().get(DATA_RETURN) > 0 && !isNoPhysics())
                 		setNoPhysics(true);
@@ -352,7 +352,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 		Level level = level();
     	if(hitResult.getType() == Type.BLOCK)
     	{
-    		if(!level.isClientSide)
+    		if(!level.isClientSide())
     		{
     			BlockState state = level.getBlockState(hitResult.getBlockPos());
     			((ServerLevel)level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), getX(), getY(), getZ(), 5, 0.1d, 0.1d, 0.1d, 0.05d);
@@ -376,7 +376,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
     		EnchantmentHelper.setEnchantments(stack, ItemEnchantments.EMPTY);
 
     		// Spawn magic dispersal particles
-    		if(!level.isClientSide)
+    		if(!level.isClientSide())
     			((ServerLevel)level).sendParticles(ParticleTypes.WITCH, getX(), getY(), getZ(), 10, 0.1d, 0.1d, 0.1d, 0.2d);
 		}
 	}
@@ -468,7 +468,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 	protected boolean attemptCatch(Player player)
 	{
 		Level level = level();
-		if(!level.isClientSide && shakeTime <= 0)
+		if(!level.isClientSide() && shakeTime <= 0)
 		{
 			boolean canBePickedUp = pickup == AbstractArrow.Pickup.ALLOWED || pickup == AbstractArrow.Pickup.CREATIVE_ONLY && player.getAbilities().instabuild;
 			

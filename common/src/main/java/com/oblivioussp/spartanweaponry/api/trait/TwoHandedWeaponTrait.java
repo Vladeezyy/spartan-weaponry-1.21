@@ -31,7 +31,7 @@ public class TwoHandedWeaponTrait extends MeleeCallbackWeaponTrait
 	{
 		ItemStack mainHand = entity.getMainHandItem();
 		ItemStack offHand = entity.getOffhandItem();
-		MobEffectInstance effect = entity.getEffect(MobEffects.DIG_SLOWDOWN);
+		MobEffectInstance effect = entity.getEffect(MobEffects.MINING_FATIGUE);
 		
 		// If the weapon is equipped in the main-hand and anything else is equipped in the off-hand, give mining fatigue
 		if((isSelected && ItemStack.isSameItem(stack, mainHand) && !offHand.isEmpty()) ||
@@ -39,7 +39,7 @@ public class TwoHandedWeaponTrait extends MeleeCallbackWeaponTrait
 		{
 			// Apply Mining Fatigue as often as needed.
 			if(effect == null || effect.endsWithin(1))
-				entity.addEffect(new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 20, this.level == 2 ? 3 : 2, false, false));
+				entity.addEffect(new MobEffectInstance(MobEffects.MINING_FATIGUE, 20, this.level == 2 ? 3 : 2, false, false));
 		}
 		// Port fix (issue #169): 1.20.1 removed Mining Fatigue here when its duration was <= 0, which is any effect of
 		// infinite duration (-1), whatever gave it; the 20 tick effect given above simply runs out

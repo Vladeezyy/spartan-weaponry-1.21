@@ -5,7 +5,7 @@ import com.oblivioussp.spartanweaponry.init.ModMenus;
 import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class QuiverArrowMenu extends QuiverBaseMenu
 {
-	public static final ResourceLocation EMPTY_ARROW_SLOT = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "slots/empty_arrow_slot");
+	public static final Identifier EMPTY_ARROW_SLOT = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "slots/empty_arrow_slot");
 	
 	public QuiverArrowMenu(int id, Inventory inventory, ItemStack quiverStack)
 	{

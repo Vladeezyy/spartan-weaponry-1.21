@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.entity.projectile;
 
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.core.registries.Registries;
 import java.util.Optional;
 
@@ -20,16 +21,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -94,7 +95,7 @@ public class ArrowBaseEntity extends AbstractArrow
 	{
 		super.tick();
 		Level level = level();
-		if(level.isClientSide)
+		if(level.isClientSide())
 		{
 			if(inGround)
 			{
@@ -152,10 +153,10 @@ public class ArrowBaseEntity extends AbstractArrow
 			// Roll a chance to spawn lightning under the right circumstances
 			if(random.nextInt(4) < 1)	// ~25%
 			{
-				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level);
+				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
 				if(lightning != null)
 				{
-					lightning.moveTo(Vec3.atBottomCenterOf(living.blockPosition()));
+					lightning.snapTo(Vec3.atBottomCenterOf(living.blockPosition()));
 					// The shooter caused it (1.20.1 credited the entity that was hit)
 					lightning.setCause(getOwner() instanceof ServerPlayer player ? player : null);
 					level.addFreshEntity(lightning);
@@ -174,7 +175,7 @@ public class ArrowBaseEntity extends AbstractArrow
 			{
 	           for(int j = 0; j < 20; ++j)
 	           {
-	              level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.opaque(i)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
+	              level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.opaque(i)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
 	           }
 			}
 		}
@@ -217,12 +218,12 @@ public class ArrowBaseEntity extends AbstractArrow
 	{
 		super.readAdditionalSaveData(compound);
 		if(compound.contains(NBT_ARROW, CompoundTag.TAG_COMPOUND))	// 1.20.1
-			setArrowStack(LegacyItems.parse(compound.getCompound(NBT_ARROW), registryAccess()));
+			setArrowStack(LegacyItems.parse(compound.getCompoundOrEmpty(NBT_ARROW), registryAccess()));
 		else
 			setArrowStack(getPickupItemStackOrigin());
 
 		potion = PotionHelper.getPotion(compound);
-		getEntityData().set(COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getInt(NBT_POTION_COLOUR) : -1);
+		getEntityData().set(COLOUR, compound.contains(NBT_POTION_COLOUR) ? compound.getIntOr(NBT_POTION_COLOUR, 0) : -1);
 	}
 
 	public boolean isValid()
@@ -230,7 +231,7 @@ public class ArrowBaseEntity extends AbstractArrow
 		return !getEntityData().get(ARROW).isEmpty();
 	}
 
-	public ResourceLocation getTexture()
+	public Identifier getTexture()
 	{
 		String arrowRegName = BuiltInRegistries.ITEM.getKey(getEntityData().get(ARROW).getItem()).getPath();
 
@@ -240,7 +241,7 @@ public class ArrowBaseEntity extends AbstractArrow
 		{
 			arrowRegName = arrowRegName.substring(idx + prefix.length());
 		}
-		return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/" + arrowRegName + ".png");
+		return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/" + arrowRegName + ".png");
 	}
 
 	public void setPotionEffect(ItemStack stack)
@@ -256,7 +257,7 @@ public class ArrowBaseEntity extends AbstractArrow
 		{
 	        for(int i = 0; i < particleCount; i++)
 	        {
-	        	level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, FastColor.ARGB32.opaque(colour)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
+	        	level().addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, ARGB.opaque(colour)), getRandomX(0.5d), getRandomY(), getRandomZ(0.5d), 0.0d, 0.0d, 0.0d);
 	        }
 		}
 	}

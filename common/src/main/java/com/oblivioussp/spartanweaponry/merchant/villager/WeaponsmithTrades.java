@@ -9,7 +9,7 @@ import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.Randomis
 import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.RandomisedTradeItem;
 import com.oblivioussp.spartanweaponry.util.Config;
 
-import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 
 public class WeaponsmithTrades
 {

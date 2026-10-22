@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.util;
 
-import com.mojang.serialization.Dynamic;
+import net.minecraft.world.item.component.ResolvableProfile.Dynamic;
 
 import net.minecraft.SharedConstants;
 import net.minecraft.core.HolderLookup;

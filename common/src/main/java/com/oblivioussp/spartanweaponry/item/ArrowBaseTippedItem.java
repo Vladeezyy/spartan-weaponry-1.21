@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.item.Item;
@@ -11,7 +14,7 @@ import com.oblivioussp.spartanweaponry.entity.projectile.ArrowBaseEntity;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.Potion;
@@ -43,11 +46,21 @@ public class ArrowBaseTippedItem extends ArrowBaseItem
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext levelIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		super.appendHoverText(stack, levelIn, tooltip, flagIn);
-		tooltip.add(Component.empty());
-		PotionHelper.addPotionTooltip(stack, tooltip, 0.125f, levelIn.tickRate());
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
+		{
+			tooltip.flush();
+			super.appendHoverText(stack, levelIn, display, tooltipOut, flagIn);
+			tooltip.add(Component.empty());
+			PotionHelper.addPotionTooltip(stack, tooltip, 0.125f, levelIn.tickRate());
+		}
+		finally
+		{
+			tooltip.flush();
+		}
 	}
 
 	@Override

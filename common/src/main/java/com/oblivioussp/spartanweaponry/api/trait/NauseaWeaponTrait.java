@@ -32,7 +32,7 @@ public class NauseaWeaponTrait extends MeleeCallbackWeaponTrait
 	{
 		if(target.getItemBySlot(EquipmentSlot.HEAD).isEmpty())
 		{
-			target.addEffect(new MobEffectInstance(MobEffects.CONFUSION, (int)(getMagnitude() * 20.0f), 1));
+			target.addEffect(new MobEffectInstance(MobEffects.NAUSEA, (int)(getMagnitude() * 20.0f), 1));
 		}
 	}
 

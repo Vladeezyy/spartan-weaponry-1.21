@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -44,7 +44,7 @@ public class HammerSlamWeaponTrait extends WeaponTrait implements IActionTraitCa
 		Vec3 hitPos = contextIn.getClickLocation();
 		ItemStack weapon = contextIn.getItemInHand();
 		
-		if(!level.isClientSide && !player.getCooldowns().isOnCooldown(weapon.getItem()) && player.getAttackStrengthScale(0.0f) == 1.0f)
+		if(!level.isClientSide() && !player.getCooldowns().isOnCooldown(weapon) && player.getAttackStrengthScale(0.0f) == 1.0f)
 		{
 			for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, AABB.ofSize(hitPos, 3.0f, 3.0f, 3.0f)))
 			{
@@ -54,23 +54,23 @@ public class HammerSlamWeaponTrait extends WeaponTrait implements IActionTraitCa
 					final float halfPi = (float)Math.PI / 180.0f;
 					entity.knockback(1.0f, Mth.sin(yRot * halfPi), -Mth.cos(yRot * halfPi));
 					entity.hurt(player.damageSources().playerAttack(player), (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) / 2.0d));
-					weapon.hurtAndBreak(1, player, LivingEntity.getSlotForHand(contextIn.getHand()));
+					weapon.hurtAndBreak(1, player, contextIn.getHand().asEquipmentSlot());
 				}
 			}
 			player.swing(contextIn.getHand(), true);
 			player.playNotifySound(ModSounds.HAMMER_SLAMS_INTO_GROUND.get(), SoundSource.PLAYERS, 1.0f, 0.6f);
 			((ServerLevel)level).sendParticles(ParticleTypes.EXPLOSION, hitPos.x, hitPos.y, hitPos.z, 8, 0.0d, 0.1d, 0.0d, 0.5d);
 			player.resetAttackStrengthTicker();
-			player.getCooldowns().addCooldown(weapon.getItem(), 60);
+			player.getCooldowns().addCooldown(weapon, 60);
 		}
 		
 		return InteractionResult.PASS;
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(ItemStack usingStackIn, Level levelIn, Player playerIn,
+	public InteractionResult use(ItemStack usingStackIn, Level levelIn, Player playerIn,
 			InteractionHand handIn) 
 	{
-		return InteractionResultHolder.pass(usingStackIn);
+		return InteractionResult.PASS;
 	}
 }

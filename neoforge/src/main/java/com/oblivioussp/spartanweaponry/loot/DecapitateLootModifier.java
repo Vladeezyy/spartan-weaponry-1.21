@@ -52,10 +52,10 @@ public class DecapitateLootModifier extends LootModifier
 	{
 		
 		@Override
-		public DecapitateLootModifier read(ResourceLocation location, JsonObject object,
+		public DecapitateLootModifier read(Identifier location, JsonObject object,
 				LootItemCondition[] lootConditions) 
 		{
-			Item skullItem = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(GsonHelper.getAsString(object, "skull")));
+			Item skullItem = BuiltInRegistries.ITEM.getValue(Identifier.parse(GsonHelper.getAsString(object, "skull")));
 			return new DecapitateLootModifier(lootConditions, skullItem);
 		}
 

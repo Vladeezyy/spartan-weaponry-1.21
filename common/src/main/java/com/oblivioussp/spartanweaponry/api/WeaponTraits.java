@@ -26,12 +26,12 @@ import com.oblivioussp.spartanweaponry.api.trait.WeaponTraitWithMagnitude;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 
 public class WeaponTraits 
 {
-	public static final ResourceKey<Registry<WeaponTrait>> REGISTRY_KEY = ResourceKey.createRegistryKey(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "weapon_traits"));
+	public static final ResourceKey<Registry<WeaponTrait>> REGISTRY_KEY = ResourceKey.createRegistryKey(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "weapon_traits"));
 	public static final Registrar<WeaponTrait> REGISTRY = Registrar.create(REGISTRY_KEY);
 	/** The weapon trait registry (synced to clients; its tags assign traits to weapons and materials) */
 	public static final Registry<WeaponTrait> TRAIT_REGISTRY = Platform.INSTANCE.createRegistry(REGISTRY_KEY, null);

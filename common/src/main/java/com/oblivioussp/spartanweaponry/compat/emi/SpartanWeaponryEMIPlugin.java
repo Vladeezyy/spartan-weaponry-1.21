@@ -18,7 +18,7 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -70,7 +70,7 @@ public class SpartanWeaponryEMIPlugin implements EmiPlugin
 				EmiIngredient arrowIngredient = EmiIngredient.of(Ingredient.of(arrowItem));
 				EmiIngredient potionIngredient = EmiIngredient.of(Ingredient.of(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), potionType)));
 				ItemStack outputStack = PotionUtils.setPotion(new ItemStack(tippedArrowItem, 8), potionType);
-				ResourceLocation recipeResLoc = ResourceLocation.fromNamespaceAndPath("spartanweaponry", "/crafting/tipped_projectile." + BuiltInRegistries.ITEM.getKey(outputStack.getItem()).getPath() + potionType.getName(".effect."));
+				Identifier recipeResLoc = Identifier.fromNamespaceAndPath("spartanweaponry", "/crafting/tipped_projectile." + BuiltInRegistries.ITEM.getKey(outputStack.getItem()).getPath() + potionType.getName(".effect."));
 				List<EmiIngredient> ingredients = ImmutableList.of(
 						arrowIngredient, arrowIngredient, arrowIngredient, 
 						arrowIngredient, potionIngredient, arrowIngredient,

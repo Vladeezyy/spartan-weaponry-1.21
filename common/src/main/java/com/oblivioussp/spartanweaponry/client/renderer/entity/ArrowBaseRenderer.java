@@ -4,7 +4,7 @@ import com.oblivioussp.spartanweaponry.entity.projectile.ArrowBaseEntity;
 
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ArrowBaseRenderer<T extends ArrowBaseEntity> extends ArrowRenderer<T> 
 {
@@ -14,7 +14,7 @@ public class ArrowBaseRenderer<T extends ArrowBaseEntity> extends ArrowRenderer<
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(T entity)
+	public Identifier getTextureLocation(T entity)
 	{
 		return entity.getTexture();
 	}

@@ -11,7 +11,7 @@ import com.oblivioussp.spartanweaponry.init.ModItems;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +23,7 @@ public class OilHelper
 	public static OilEffect getOilFromStack(ItemStack stackIn)
 	{
 		CompoundTag tag = ItemNbt.read(stackIn).getCompound(OilHandler.NBT_OIL);
-		ResourceLocation oil = ResourceLocation.tryParse(tag.getString(OilHandler.NBT_OIL_EFFECT));
+		Identifier oil = Identifier.tryParse(tag.getString(OilHandler.NBT_OIL_EFFECT));
 		if(oil != null && OilEffects.OIL_REGISTRY.containsKey(oil))
 			return OilEffects.OIL_REGISTRY.get(oil);
 		return OilEffects.NONE.get();

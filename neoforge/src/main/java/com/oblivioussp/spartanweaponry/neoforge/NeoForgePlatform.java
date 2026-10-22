@@ -10,7 +10,7 @@ import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.core.Registry;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +69,7 @@ public class NeoForgePlatform implements Platform
 	}
 
 	@Override
-	public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, ResourceLocation defaultKey)
+	public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, Identifier defaultKey)
 	{
 		RegistryBuilder<T> builder = new RegistryBuilder<>(key).sync(true);
 		if(defaultKey != null)

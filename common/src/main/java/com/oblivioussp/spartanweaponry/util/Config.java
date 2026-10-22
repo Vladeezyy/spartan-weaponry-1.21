@@ -20,7 +20,7 @@ import com.oblivioussp.spartanweaponry.api.oil.OilEffect;
 import com.oblivioussp.spartanweaponry.init.ModItems;
 import com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
@@ -32,7 +32,7 @@ public class Config
 	public static final Config INSTANCE;
 	public static final ModConfigSpec CONFIG_SPEC;
 	
-	protected final Predicate<Object> IS_VALID_RESOURCE_LOCATION = (entry) -> ResourceLocation.tryParse(entry.toString()) != null;
+	protected final Predicate<Object> IS_VALID_RESOURCE_LOCATION = (entry) -> Identifier.tryParse(entry.toString()) != null;
 	
 	static
 	{
@@ -202,7 +202,7 @@ public class Config
 			builder.pop();
 			quiverBowBlacklist = builder.comment("Bows in this blacklist will not get Arrows pulled out of the Arrow Quiver. Use the registry ID of the bow to add to this. e.g. \"minecraft:bow\"")
 								.translation("config." + ModSpartanWeaponry.ID + ".projectile.quiver_bow_blacklist")
-//								.<String>defineList("quiver_bow_blacklist", Defaults.QuiverArrowBlacklist, /*(value) -> BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse((String)value))*/ (value) -> value.getClass() == String.class);
+//								.<String>defineList("quiver_bow_blacklist", Defaults.QuiverArrowBlacklist, /*(value) -> BuiltInRegistries.ITEM.containsKey(Identifier.parse((String)value))*/ (value) -> value.getClass() == String.class);
 								.<String>defineListAllowEmpty(List.of("quiver_bow_blacklist"), () -> Defaults.QuiverArrowBlacklist, IS_VALID_RESOURCE_LOCATION);
 		builder.pop();
 		

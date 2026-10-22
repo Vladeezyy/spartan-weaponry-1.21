@@ -46,6 +46,6 @@ public final class WeaponAttributes
 	/** {@code ITagManager.isKnownTagName(tag) && !getTag(tag).isEmpty()} of 1.20.1 */
 	public static boolean isTagFilled(TagKey<Item> tag)
 	{
-		return BuiltInRegistries.ITEM.getTag(tag).map((set) -> set.size() > 0).orElse(false);
+		return BuiltInRegistries.ITEM.get(tag).map((set) -> set.size() > 0).orElse(false);
 	}
 }

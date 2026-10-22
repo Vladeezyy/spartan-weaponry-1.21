@@ -3,7 +3,7 @@ package com.oblivioussp.spartanweaponry.client.renderer.entity;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ModelLayers 
 {
@@ -28,6 +28,6 @@ public class ModelLayers
 
 	public static ModelLayerLocation createMainModelLayer(String location)
 	{
-		return new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, location), "main");
+		return new ModelLayerLocation(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, location), "main");
 	}
 }

@@ -1,6 +1,11 @@
 
 package com.oblivioussp.spartanweaponry.item;
 
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.component.DataComponents;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
 import net.minecraft.core.registries.Registries;
 import com.oblivioussp.spartanweaponry.api.ToolAction;
 import com.oblivioussp.spartanweaponry.platform.Platform;
@@ -38,7 +43,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,9 +53,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -60,7 +64,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.registries.BuiltInRegistries;
 
-public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<SwordBaseItem>, IReloadable, ToolAction.IToolActionItem
+public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBaseItem>, IReloadable, ToolAction.IToolActionItem
 {
 	protected float attackDamage = 1.0f;
 	protected double attackSpeed = 0.0D;
@@ -81,7 +85,10 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	
 	public SwordBaseItem(Item.Properties prop, WeaponMaterial materialIn, WeaponArchetype archetypeIn, float weaponBaseDamage, float weaponDamageMultiplier, double weaponSpeed) 
 	{
-		super(materialIn, prop.durability(materialIn.getUses()));
+		// 1.21.5+: no SwordItem; a sword is an item with the sword properties of its material (durability, repair
+		// tag, enchantability, the tool rules for cobwebs and the weapon component). The attack attributes are the
+		// mod's own (getDefaultAttributeModifiers below)
+		super(prop.sword(materialIn.toolMaterial(), 0.0F, 0.0F));
 		material = materialIn;
 		archetype = archetypeIn;
 		setAttackDamageAndSpeed(weaponBaseDamage, weaponDamageMultiplier, weaponSpeed);
@@ -143,7 +150,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
+		return WeaponAttributes.forStack(stack, defaultModifiers, components().getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY));
     }
 	
 	/**
@@ -151,8 +158,11 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
      * update it's contents.
      */
 	@Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected)
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot)
     {
+		// 1.21.5+: server side only, with the equipment slot instead of the inventory slot and "selected"
+		int itemSlot = slot == null ? -1 : slot.getIndex();
+		boolean isSelected = slot == EquipmentSlot.MAINHAND;
 		// Check for two-handed traits, and other such effects
 		if(entity instanceof LivingEntity)
 		{
@@ -206,9 +216,10 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		boolean isShiftPressed = Screen.hasShiftDown();
+		List<Component> tooltip = new ArrayList<>();
+		boolean isShiftPressed = net.minecraft.client.Minecraft.getInstance().hasShiftDown();
 
     	if(doCraftCheck && contextIn.registries() != null)
     	{
@@ -237,8 +248,8 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 //			tooltip.add(Component.empty());
 		}
     	material.addTraitsToTooltip(stack, archetype.getType(), tooltip, isShiftPressed);
-		
-		super.appendHoverText(stack, contextIn, tooltip, flagIn);
+		tooltip.forEach(tooltipOut);
+		super.appendHoverText(stack, contextIn, display, tooltipOut, flagIn);
 	}
 	
 	public float getDirectAttackDamage()
@@ -247,12 +258,12 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
 		traits.forEach((trait) -> 
 			trait.getMeleeCallback().ifPresent((callback) -> callback.onHitEntity(material, stack, target, attacker, null)));
 		
-        return super.hurtEnemy(stack, target, attacker);
+        super.hurtEnemy(stack, target, attacker);
     }
 	
 	@Override
@@ -269,7 +280,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level levelIn, Player player, InteractionHand hand)
+	public InteractionResult use(Level levelIn, Player player, InteractionHand hand)
 	{
 		ItemStack stack = player.getItemInHand(hand);
 		Optional<WeaponTrait> actionTrait = archetype.getActionTrait();
@@ -283,13 +294,13 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-	public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) 
+	public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft) 
 	{
 		Optional<WeaponTrait> actionTrait = archetype.getActionTrait();
 		actionTrait.ifPresent((trait) -> 
 			trait.getActionCallback().ifPresent((callback) -> 
 				callback.releaseUsing(stack, level, entityLiving, timeLeft, getDirectAttackDamage())));
-		super.releaseUsing(stack, level, entityLiving, timeLeft);
+		return super.releaseUsing(stack, level, entityLiving, timeLeft);
 	}
 	
 	@Override
@@ -317,7 +328,7 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) 
+	public ItemUseAnimation getUseAnimation(ItemStack stack) 
 	{
 		Optional<WeaponTrait> actionTrait = archetype.getActionTrait();
 		if(actionTrait.isPresent())
@@ -343,10 +354,10 @@ public class SwordBaseItem extends SwordItem implements IWeaponTraitContainer<Sw
 	}
 	
 	@Override
-	public void onCraftedBy(ItemStack stack, Level levelIn, Player playerIn) 
+	public void onCraftedBy(ItemStack stack, Player playerIn) 
 	{
 		traits.forEach((trait) -> getGenericCallback(trait).ifPresent((callback) -> callback.onCreateItem(material, stack)));
-		super.onCraftedBy(stack, levelIn, playerIn);
+		super.onCraftedBy(stack, playerIn);
 	}
 	
 	// NeoForge's canPerformAction(ItemStack, ItemAbility) calls this (a mixin of the NeoForge module)

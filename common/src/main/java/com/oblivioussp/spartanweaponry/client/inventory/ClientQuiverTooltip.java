@@ -16,14 +16,14 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 
 public class ClientQuiverTooltip implements ClientTooltipComponent 
 {
-	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/tooltip/quiver.png");
+	private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/gui/tooltip/quiver.png");
 	private static final int SLOT_SIZE_X = 18;
 	private static final int SLOT_SIZE_Y = 18;
 	private static final int BORDER_WIDTH_LEFT = 7;

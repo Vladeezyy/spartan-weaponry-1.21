@@ -19,8 +19,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow.Pickup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
@@ -36,7 +36,7 @@ public abstract class AbstractArrowMixin extends ProjectileMixin
 	private void playerTouch(Player entityIn, CallbackInfo callback)
 	{
 		Level level = level();
-		if(!level.isClientSide && (inGround || isNoPhysics()) && shakeTime <= 0)
+		if(!level.isClientSide() && (inGround || isNoPhysics()) && shakeTime <= 0)
 		{
 //			Log.debug("Player collision with arrow entity intercepted!");
 //			boolean pickupItem = pickup == Pickup.ALLOWED || pickup == Pickup.CREATIVE_ONLY && entityIn.abilities.isCreativeMode || getNoClip() && getShooter().getUniqueID() == entityIn.getUniqueID();

@@ -17,7 +17,7 @@ import com.oblivioussp.spartanweaponry.util.Log;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElement;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -26,7 +26,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelBaker;
 import net.minecraft.client.resources.model.ModelState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.NeoForgeRenderTypes;
 import net.neoforged.neoforge.client.RenderTypeGroup;
 import net.neoforged.neoforge.client.model.ExtraFaceData;
@@ -46,10 +46,10 @@ public class OilCoatedItemModel implements IUnbakedGeometry<OilCoatedItemModel>
 	protected ImmutableList<Material> textures;
 	protected Material coatingTexture;
 	protected final Int2ObjectMap<ExtraFaceData> faceData;
-	protected final Int2ObjectMap<ResourceLocation> renderTypeNames;
+	protected final Int2ObjectMap<Identifier> renderTypeNames;
 
 	public OilCoatedItemModel(@Nullable ImmutableList<Material> texturesIn, @Nullable Material coatingTextureIn, Int2ObjectMap<ExtraFaceData> faceDataIn,
-			Int2ObjectMap<ResourceLocation> renderTypeNamesIn) 
+			Int2ObjectMap<Identifier> renderTypeNamesIn) 
 	{
 		textures = texturesIn;
 		coatingTexture = coatingTextureIn;
@@ -94,7 +94,7 @@ public class OilCoatedItemModel implements IUnbakedGeometry<OilCoatedItemModel>
 			TextureAtlasSprite sprite = spriteGetter.apply(textures.get(i));
 			List<BlockElement> unbakedElements = UnbakedGeometryHelper.createUnbakedItemElements(i, sprite, faceData.get(i));
 			List<BakedQuad> bakedQuads = UnbakedGeometryHelper.bakeElements(unbakedElements, mat -> sprite, modelState);
-			ResourceLocation renderTypeName = renderTypeNames.get(i);
+			Identifier renderTypeName = renderTypeNames.get(i);
 			RenderTypeGroup renderTypes = renderTypeName != null ? context.getRenderType(renderTypeName) : normalRenderTypes;
 			builder.addQuads(renderTypes, bakedQuads);
 		}
@@ -106,7 +106,7 @@ public class OilCoatedItemModel implements IUnbakedGeometry<OilCoatedItemModel>
 			TextureAtlasSprite sprite = spriteGetter.apply(coatingTexture);
 			List<BlockElement> unbakedElements = UnbakedGeometryHelper.createUnbakedItemElements(coatingLayer, sprite, faceData.get(coatingLayer));
 			List<BakedQuad> bakedQuads = UnbakedGeometryHelper.bakeElements(unbakedElements, mat -> sprite, modelState);
-			ResourceLocation renderTypeName = renderTypeNames.get(coatingLayer);
+			Identifier renderTypeName = renderTypeNames.get(coatingLayer);
 			RenderTypeGroup renderTypes = renderTypeName != null ? context.getRenderType(renderTypeName) : normalRenderTypes;
 			builder.addCoatedQuads(renderTypes, bakedQuads);
 		}
@@ -122,13 +122,13 @@ public class OilCoatedItemModel implements IUnbakedGeometry<OilCoatedItemModel>
 		public OilCoatedItemModel read(JsonObject jsonObject, JsonDeserializationContext deserializationContext)
 				throws JsonParseException 
 		{
-			Int2ObjectOpenHashMap<ResourceLocation> renderTypeNames = new Int2ObjectOpenHashMap<ResourceLocation>();
+			Int2ObjectOpenHashMap<Identifier> renderTypeNames = new Int2ObjectOpenHashMap<Identifier>();
 			if(jsonObject.has("render_types"))
 			{
 				JsonObject renderTypes = jsonObject.getAsJsonObject("render_types");
 				for(Map.Entry<String, JsonElement> entry : renderTypes.entrySet())
 				{
-					ResourceLocation renderType = ResourceLocation.parse(entry.getKey());
+					Identifier renderType = Identifier.parse(entry.getKey());
 					for(JsonElement layer : entry.getValue().getAsJsonArray())
 					{
 						if(renderTypeNames.put(layer.getAsInt(), renderType) != null)

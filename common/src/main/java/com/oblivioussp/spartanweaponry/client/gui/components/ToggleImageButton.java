@@ -6,18 +6,18 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ToggleImageButton extends Button
 {
-	protected final ResourceLocation textureLocation;
+	protected final Identifier textureLocation;
 	protected final int texStartU, texStartV;
 	protected final int toggleDiffU, hoverDiffV;
 	protected final int textureWidth, textureHeight;
 	private boolean toggleState;
 
 	public ToggleImageButton(boolean isToggled, int xPos, int yPos, int width, int height, int texU, int texV,
-			int texToggleDiffU, int texHoverDiffV, ResourceLocation textureLoc, int texWidth, int texHeight, OnPress onPress,
+			int texToggleDiffU, int texHoverDiffV, Identifier textureLoc, int texWidth, int texHeight, OnPress onPress,
 			Component component) 
 	{
 		super(xPos, yPos, width, height, component, onPress, DEFAULT_NARRATION);

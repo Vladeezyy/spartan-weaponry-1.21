@@ -18,7 +18,7 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import mezz.jei.api.recipe.vanilla.IJeiBrewingRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -51,10 +51,10 @@ public class OilBrewingRecipeMaker
 				{
 					ItemStack potionStack = PotionContents.createItemStack(Items.POTION, potion);
 					ItemStack oilStack = OilHelper.makePotionOilStack(potion);
-					ResourceLocation potionLocation = potion.key().location();
+					Identifier potionLocation = potion.key().location();
 					
 					recipes.add(vanillaRecipeFactoryIn.createBrewingRecipe(ImmutableList.of(new ItemStack(ModItems.GREASE_BALL.get())), ImmutableList.of(potionStack), oilStack, 
-							ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, potionLocation.getNamespace() + "." + potionLocation.getPath() + "_oil_from_brewing")));
+							Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, potionLocation.getNamespace() + "." + potionLocation.getPath() + "_oil_from_brewing")));
 				}
 			}
 		}

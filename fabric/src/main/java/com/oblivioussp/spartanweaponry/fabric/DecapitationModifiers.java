@@ -17,7 +17,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
@@ -33,7 +33,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 public final class DecapitationModifiers implements SimpleSynchronousResourceReloadListener
 {
 	public static final DecapitationModifiers INSTANCE = new DecapitationModifiers();
-	private static final ResourceLocation LIST = ResourceLocation.fromNamespaceAndPath("neoforge", "loot_modifiers/global_loot_modifiers.json");
+	private static final Identifier LIST = Identifier.fromNamespaceAndPath("neoforge", "loot_modifiers/global_loot_modifiers.json");
 	private static final String TYPE = ModSpartanWeaponry.ID + ":decapitate";
 
 	private record Modifier(List<LootItemCondition> conditions, Item skull) {}
@@ -44,16 +44,16 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 	private DecapitationModifiers() {}
 
 	@Override
-	public ResourceLocation getFabricId()
+	public Identifier getFabricId()
 	{
-		return ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "decapitate_loot_modifiers");
+		return Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "decapitate_loot_modifiers");
 	}
 
 	@Override
 	public void onResourceManagerReload(ResourceManager manager)
 	{
 		// The entries of every pack, in order; "replace" drops the ones before (as NeoForge's LootModifierManager)
-		List<ResourceLocation> entries = new ArrayList<>();
+		List<Identifier> entries = new ArrayList<>();
 		for(Resource resource : manager.getResourceStack(LIST))
 		{
 			try(Reader reader = resource.openAsReader())
@@ -63,7 +63,7 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 					entries.clear();
 				for(JsonElement entry : list.getAsJsonArray("entries"))
 				{
-					ResourceLocation id = ResourceLocation.parse(entry.getAsString());
+					Identifier id = Identifier.parse(entry.getAsString());
 					if(!entries.contains(id))
 						entries.add(id);
 				}
@@ -74,7 +74,7 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 			}
 		}
 		List<JsonObject> found = new ArrayList<>();
-		for(ResourceLocation id : entries)
+		for(Identifier id : entries)
 		{
 			Optional<Resource> resource = manager.getResource(id.withPath(path -> "loot_modifiers/" + path + ".json"));
 			if(resource.isEmpty())
@@ -133,7 +133,7 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 			try
 			{
 				List<LootItemCondition> conditions = LootItemCondition.DIRECT_CODEC.listOf().parse(ops, modifier.get("conditions")).getOrThrow();
-				Item skull = BuiltInRegistries.ITEM.get(ResourceLocation.parse(modifier.get("skull").getAsString()));
+				Item skull = BuiltInRegistries.ITEM.get(Identifier.parse(modifier.get("skull").getAsString()));
 				list.add(new Modifier(conditions, skull));
 			}
 			catch(Exception e)

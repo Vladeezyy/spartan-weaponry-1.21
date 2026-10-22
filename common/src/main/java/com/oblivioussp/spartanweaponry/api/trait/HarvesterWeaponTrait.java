@@ -10,7 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -47,7 +47,7 @@ public class HarvesterWeaponTrait extends WeaponTrait implements IActionTraitCal
 		BlockPos clickedPos = contextIn.getClickedPos();
 		Player player = contextIn.getPlayer();
 		
-		if(!level.isClientSide)
+		if(!level.isClientSide())
 		{
 			AtomicBoolean applyCooldown = new AtomicBoolean(false);
 			BlockPos.betweenClosed(clickedPos.getX() - 1, clickedPos.getY(), clickedPos.getZ() - 1, clickedPos.getX() + 1, clickedPos.getY(), clickedPos.getZ() + 1).
@@ -67,10 +67,10 @@ public class HarvesterWeaponTrait extends WeaponTrait implements IActionTraitCal
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(ItemStack usingStackIn, Level levelIn, Player playerIn,
+	public InteractionResult use(ItemStack usingStackIn, Level levelIn, Player playerIn,
 			InteractionHand handIn) 
 	{
-		return InteractionResultHolder.pass(usingStackIn);
+		return InteractionResult.PASS;
 	}
 
 	@SuppressWarnings("deprecation")

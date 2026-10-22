@@ -4,7 +4,7 @@ import com.oblivioussp.spartanweaponry.init.ModItems;
 import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.BuyEnchantedItemWithEmeraldsTrade;
 import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.BuyItemWithEmeraldsTrade;
 
-import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.item.ItemStack;
 
 public class FletcherTrades

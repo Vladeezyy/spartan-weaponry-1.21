@@ -40,11 +40,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades.ItemListing;
+import net.minecraft.world.entity.npc.villager.VillagerProfession;
+import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.fml.config.ModConfig;
@@ -81,7 +81,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 			@Override
 			public <A extends com.mojang.brigadier.arguments.ArgumentType<?>, T extends net.minecraft.commands.synchronization.ArgumentTypeInfo.Template<A>> void register(String name, Class<A> argumentClass, net.minecraft.commands.synchronization.ArgumentTypeInfo<A, T> info)
 			{
-				ArgumentTypeRegistry.registerArgumentType(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, name), argumentClass, info);
+				ArgumentTypeRegistry.registerArgumentType(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, name), argumentClass, info);
 			}
 		});
 
@@ -91,7 +91,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 		LootTableEvents.MODIFY.register((key, table, source, registries) -> CommonEventHandler.onLootTableLoad(new LoaderEvents.LootTableLoad()
 		{
 			@Override
-			public ResourceLocation getName()
+			public Identifier getName()
 			{
 				return key.location();
 			}
@@ -108,7 +108,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 			CommonEventHandler.onItemRightClick(click);
 			InteractionResult result = click.getCancellationResult();
 			// A client result other than SUCCESS would not send the click to the server (NeoForge sends it)
-			return level.isClientSide && result != InteractionResult.PASS ? InteractionResult.SUCCESS : result;
+			return level.isClientSide() && result != InteractionResult.PASS ? InteractionResult.SUCCESS : result;
 		});
 		// NeoForge IItemExtension#supportsEnchantment (anvil, /enchant) and #isPrimaryItemFor (enchanting table)
 		EnchantmentEvents.ALLOW_ENCHANTING.register((enchantment, stack, context) -> FabricItemHooks.allowEnchanting(stack, enchantment, context == EnchantingContext.PRIMARY));

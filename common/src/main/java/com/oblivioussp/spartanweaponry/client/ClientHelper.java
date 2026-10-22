@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.client;
 
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -30,7 +30,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 
 import net.minecraft.world.level.block.SkullBlock;
 
-import net.minecraft.client.model.SkullModelBase;
+import net.minecraft.client.model.object.skull.SkullModelBase;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
@@ -96,17 +96,17 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.PiglinHeadModel;
-import net.minecraft.client.model.SkullModel;
+import net.minecraft.client.model.object.skull.PiglinHeadModel;
+import net.minecraft.client.model.object.skull.SkullModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import com.oblivioussp.spartanweaponry.util.PotionHelper;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.LayeredDraw;
@@ -122,11 +122,11 @@ public class ClientHelper
 	public static final LayeredDraw.Layer NEW_CROSSHAIR = (graphics, delta) -> HudCrosshair.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
 	
 	// 1.21: item colours are ARGB (an alpha of 0 hides the layer); -1 = no tint
-	public static final ItemColor COLOR_TIPPED_PROJECTILE = (stack, idx) -> idx == 1 ? FastColor.ARGB32.opaque(PotionHelper.getColor(stack)) : -1;
+	public static final ItemColor COLOR_TIPPED_PROJECTILE = (stack, idx) -> idx == 1 ? ARGB.opaque(PotionHelper.getColor(stack)) : -1;
 	public static final ItemColor COLOR_OIL = (stack, idx) ->
 		{
 			OilEffect oilEffect = OilHelper.getOilFromStack(stack);
-			return idx == 1 ? FastColor.ARGB32.opaque(oilEffect.getColor(stack)) : -1;
+			return idx == 1 ? ARGB.opaque(oilEffect.getColor(stack)) : -1;
 		};
 	
 	public static void registerItemColoursHandler(BiConsumer<ItemColor, Item[]> ev)
@@ -246,7 +246,7 @@ public class ClientHelper
 		Log.info("Registering Entity Renderers!");
 		ev.entity(ModEntities.ARROW_SW.get(), ArrowBaseRenderer::new);
 		ev.entity(ModEntities.ARROW_EXPLOSIVE.get(), (rendererProvider) -> 
-			new SimpleArrowRenderer<ArrowExplosiveEntity>(rendererProvider, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/explosive_arrow.png")));
+			new SimpleArrowRenderer<ArrowExplosiveEntity>(rendererProvider, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/projectiles/explosive_arrow.png")));
 		ev.entity(ModEntities.BOLT.get(), BoltRenderer::new);
 		ev.entity(ModEntities.BOLT_SPECTRAL.get(), BoltRenderer::new);
 		ev.entity(ModEntities.THROWING_WEAPON.get(), ThrowingWeaponRenderer::new);
@@ -302,16 +302,16 @@ public class ClientHelper
 	
 	public static void registerSkullTextures()
 	{
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.BLAZE, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/blaze.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ENDERMAN, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/enderman_head.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.SPIDER, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/spider/spider.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.CAVE_SPIDER, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/spider/cave_spider.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ZOMBIE_PIGLIN, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/piglin/zombified_piglin.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.HUSK, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/zombie/husk.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.STRAY, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/stray_skull.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.DROWNED, ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/drowned_head.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ILLAGER, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/illager/pillager.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.WITCH, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/witch.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.BLAZE, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/blaze.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ENDERMAN, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/enderman_head.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.SPIDER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/spider/spider.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.CAVE_SPIDER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/spider/cave_spider.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ZOMBIE_PIGLIN, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/piglin/zombified_piglin.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.HUSK, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/zombie/husk.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.STRAY, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/stray_skull.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.DROWNED, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/drowned_head.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ILLAGER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/illager/pillager.png"));
+		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.WITCH, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/witch.png"));
 	}
 	
 	public static void registerScreens(ScreenRegistrar ev)
@@ -327,12 +327,12 @@ public class ClientHelper
 	@FunctionalInterface
 	public interface ItemPropertyRegistrar
 	{
-		void register(Item item, ResourceLocation name, ClampedItemPropertyFunction property);
+		void register(Item item, Identifier name, ClampedItemPropertyFunction property);
 	}
 
 	private static ItemPropertyRegistrar propertyRegistrar;
 
-	private static void itemProperty(Item item, ResourceLocation name, ClampedItemPropertyFunction property)
+	private static void itemProperty(Item item, Identifier name, ClampedItemPropertyFunction property)
 	{
 		propertyRegistrar.register(item, name, property);
 	}
@@ -351,12 +351,12 @@ public class ClientHelper
 	}
 	
 	/** The HUD layers: above everything (aboveAll) or right above the vanilla crosshair (aboveCrosshair). */
-	public static void registerHudOverlays(BiConsumer<ResourceLocation, LayeredDraw.Layer> aboveAll, BiConsumer<ResourceLocation, LayeredDraw.Layer> aboveCrosshair)
+	public static void registerHudOverlays(BiConsumer<Identifier, LayeredDraw.Layer> aboveAll, BiConsumer<Identifier, LayeredDraw.Layer> aboveCrosshair)
 	{
-		aboveAll.accept(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "load_state"), LOAD_STATE);
-		aboveAll.accept(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_ammo"), QUIVER_AMMO);
-		aboveAll.accept(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil_uses"), OIL_USES);
-		aboveCrosshair.accept(ResourceLocation.fromNamespaceAndPath(ModSpartanWeaponry.ID, "crosshair"), NEW_CROSSHAIR);
+		aboveAll.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "load_state"), LOAD_STATE);
+		aboveAll.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_ammo"), QUIVER_AMMO);
+		aboveAll.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "oil_uses"), OIL_USES);
+		aboveCrosshair.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "crosshair"), NEW_CROSSHAIR);
 	}
 
 	/** The tooltip pictures of quivers and oiled weapons. */

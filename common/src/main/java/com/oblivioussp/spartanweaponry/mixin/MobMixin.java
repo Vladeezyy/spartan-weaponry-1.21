@@ -53,7 +53,7 @@ public class MobMixin extends LivingEntityMixin
 			
 			if(rand > 1 - chance)
 			{
-				Optional<HolderSet.Named<Item>> tag = BuiltInRegistries.ITEM.getTag(itemTagIn);
+				Optional<HolderSet.Named<Item>> tag = BuiltInRegistries.ITEM.get(itemTagIn);
 				if(tag.isPresent() && tag.get().size() > 0)
 				{
 					ItemStack weapon = ItemStack.EMPTY;

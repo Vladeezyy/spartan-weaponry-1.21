@@ -21,7 +21,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -172,13 +172,13 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 			if(ticksUntilSound <= 0 && !isNoPhysics())
 			{
 				ticksUntilSound = TICKS_PER_SOUND;
-				if(!level.isClientSide)
+				if(!level.isClientSide())
 					level.playSound((Player)null, getX(), getY(), getZ(), getFlySound(), SoundSource.NEUTRAL, 2.0f, 0.5f);
 			}
 			
 			--ticksUntilSound;
 		}
-		if (!level.isClientSide && tickCount > 200)
+		if (!level.isClientSide() && tickCount > 200)
         {
             if(getEntityData().get(DATA_RETURN) > 0 && !isNoPhysics())
             	setNoPhysics(true);
@@ -188,7 +188,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
             	discard();
         	}
         }
-		if (level.isClientSide && !inGround)
+		if (level.isClientSide() && !inGround)
         {
 			level.addParticle(ParticleTypes.CRIT, getX(), getY(), getZ(), 0.0D, 0.0D, 0.0D);
         }
@@ -269,25 +269,25 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 		if(compound.contains(NBT_RETURN_POSITION))
 		{
 			double x, y, z;
-			CompoundTag returnPosNBT = compound.getCompound(NBT_RETURN_POSITION);
+			CompoundTag returnPosNBT = compound.getCompoundOrEmpty(NBT_RETURN_POSITION);
 			
 			if(!returnPosNBT.isEmpty())
 			{
-				x = returnPosNBT.getDouble(NBT_X);
-				y = returnPosNBT.getDouble(NBT_Y);
-				z = returnPosNBT.getDouble(NBT_Z);
+				x = returnPosNBT.getDoubleOr(NBT_X, 0.0);
+				y = returnPosNBT.getDoubleOr(NBT_Y, 0.0);
+				z = returnPosNBT.getDoubleOr(NBT_Z, 0.0);
 				
 				returnPos = new Vec3(x, y, z);
 			}
 			else
 				returnPos = null;
 			
-			maxDistance = compound.getDouble(NBT_DISTANCE_TO_RETURN);
+			maxDistance = compound.getDoubleOr(NBT_DISTANCE_TO_RETURN, 0.0);
 		}
 		else
 			returnPos = null;
 		
-		isReturning = compound.getBoolean(NBT_RETURNING);
+		isReturning = compound.getBooleanOr(NBT_RETURNING, false);
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ public abstract class ItemEntityMixin
 	private void spartanweaponry$pickup(Player player, CallbackInfo ci)
 	{
 		ItemEntity self = (ItemEntity)(Object)this;
-		if(!self.level().isClientSide)
+		if(!self.level().isClientSide())
 			CommonEventHandler.onPlayerPickup(new LoaderEvents.ItemPickup(player, self));
 	}
 }

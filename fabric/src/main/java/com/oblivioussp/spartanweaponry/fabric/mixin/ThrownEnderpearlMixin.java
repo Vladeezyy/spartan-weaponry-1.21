@@ -8,7 +8,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.oblivioussp.spartanweaponry.event.CommonEventHandler;
 
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.entity.projectile.ThrownEnderpearl;
+import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEnderpearl;
 
 /** NeoForge EntityTeleportEvent.EnderPearl: a disrupted player is not teleported (nor hurt, nor followed by an endermite). */
 @Mixin(ThrownEnderpearl.class)

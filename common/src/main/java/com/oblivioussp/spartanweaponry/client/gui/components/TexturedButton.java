@@ -3,7 +3,7 @@ package com.oblivioussp.spartanweaponry.client.gui.components;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 /**
  * The 1.20.1 ImageButton: a region of a GUI texture, the hovered version yDiffTex below it. 1.21's ImageButton takes
@@ -11,11 +11,11 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class TexturedButton extends Button
 {
-	protected final ResourceLocation texture;
+	protected final Identifier texture;
 	protected final int xTexStart, yTexStart, yDiffTex;
 	protected final int textureWidth, textureHeight;
 
-	public TexturedButton(int x, int y, int width, int height, int xTexStart, int yTexStart, int yDiffTex, ResourceLocation texture,
+	public TexturedButton(int x, int y, int width, int height, int xTexStart, int yTexStart, int yDiffTex, Identifier texture,
 			int textureWidth, int textureHeight, OnPress onPress, Component message)
 	{
 		super(x, y, width, height, message, onPress, DEFAULT_NARRATION);

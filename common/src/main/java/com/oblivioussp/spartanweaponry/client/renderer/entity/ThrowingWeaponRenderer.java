@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -55,7 +55,7 @@ public class ThrowingWeaponRenderer<T extends ThrowingWeaponEntity> extends Enti
 	}
 	
 	@Override
-	public ResourceLocation getTextureLocation(T entity)
+	public Identifier getTextureLocation(T entity)
 	{
 		return TextureAtlas.LOCATION_BLOCKS;
 	}

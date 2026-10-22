@@ -23,9 +23,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.Registry;
@@ -33,16 +31,20 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 
 @SuppressWarnings("deprecation")
-public class WeaponMaterial implements Tier, IReloadable
+/**
+ * A weapon material. 1.21.2+: no Tier; {@link #toolMaterial()} gives the vanilla ToolMaterial with the same numbers
+ * (durability, repair tag and enchantability go into the item properties).
+ */
+public class WeaponMaterial implements IReloadable
 {
-	public static final WeaponMaterial WOOD = new WeaponMaterial("wood", SpartanWeaponryAPI.MOD_ID, Tiers.WOOD, ItemTags.PLANKS, ModWeaponTraitTags.WOOD);
-	public static final WeaponMaterial STONE = new WeaponMaterial("stone", SpartanWeaponryAPI.MOD_ID, Tiers.STONE, ModItemTags.COBBLESTONE, ModWeaponTraitTags.STONE);
+	public static final WeaponMaterial WOOD = new WeaponMaterial("wood", SpartanWeaponryAPI.MOD_ID, ToolMaterial.WOOD, ItemTags.PLANKS, ModWeaponTraitTags.WOOD);
+	public static final WeaponMaterial STONE = new WeaponMaterial("stone", SpartanWeaponryAPI.MOD_ID, ToolMaterial.STONE, ModItemTags.COBBLESTONE, ModWeaponTraitTags.STONE);
 	public static final WeaponMaterial LEATHER = new WeaponMaterial("leather", SpartanWeaponryAPI.MOD_ID, 128, 2.0f, 0.0f, 5, ModItemTags.LEATHER, ModWeaponTraitTags.LEATHER);
 	public static final WeaponMaterial COPPER = new WeaponMaterial("copper", SpartanWeaponryAPI.MOD_ID, APIConstants.DefaultMaterialDurabilityCopper, 5.0f, APIConstants.DefaultMaterialDamageCopper, 8, ModItemTags.COPPER_INGOT, ModWeaponTraitTags.COPPER);
-	public static final WeaponMaterial IRON = new WeaponMaterial("iron", SpartanWeaponryAPI.MOD_ID, Tiers.IRON, ModItemTags.IRON_INGOT, ModWeaponTraitTags.IRON);
-	public static final WeaponMaterial GOLD = new WeaponMaterial("gold", SpartanWeaponryAPI.MOD_ID, Tiers.GOLD, ModItemTags.GOLD_INGOT, ModWeaponTraitTags.GOLD);
-	public static final WeaponMaterial DIAMOND = new WeaponMaterial("diamond", SpartanWeaponryAPI.MOD_ID, Tiers.DIAMOND, ModItemTags.DIAMOND, ModWeaponTraitTags.DIAMOND);
-	public static final WeaponMaterial NETHERITE = new WeaponMaterial("netherite", SpartanWeaponryAPI.MOD_ID, Tiers.NETHERITE, ModItemTags.NETHERITE_INGOT, ModWeaponTraitTags.NETHERITE);
+	public static final WeaponMaterial IRON = new WeaponMaterial("iron", SpartanWeaponryAPI.MOD_ID, ToolMaterial.IRON, ModItemTags.IRON_INGOT, ModWeaponTraitTags.IRON);
+	public static final WeaponMaterial GOLD = new WeaponMaterial("gold", SpartanWeaponryAPI.MOD_ID, ToolMaterial.GOLD, ModItemTags.GOLD_INGOT, ModWeaponTraitTags.GOLD);
+	public static final WeaponMaterial DIAMOND = new WeaponMaterial("diamond", SpartanWeaponryAPI.MOD_ID, ToolMaterial.DIAMOND, ModItemTags.DIAMOND, ModWeaponTraitTags.DIAMOND);
+	public static final WeaponMaterial NETHERITE = new WeaponMaterial("netherite", SpartanWeaponryAPI.MOD_ID, ToolMaterial.NETHERITE, ModItemTags.NETHERITE_INGOT, ModWeaponTraitTags.NETHERITE);
 	
 	public static final WeaponMaterial TIN = new WeaponMaterial("tin", SpartanWeaponryAPI.MOD_ID, 0xBEBED8, 0xD2D2FF, APIConstants.DefaultMaterialDurabilityTin, 5.25f, APIConstants.DefaultMaterialDamageTin, 6, ModItemTags.TIN_INGOT, ModWeaponTraitTags.TIN);
 	public static final WeaponMaterial BRONZE = new WeaponMaterial("bronze", SpartanWeaponryAPI.MOD_ID, 0xB36D0A, 0xCC9636, APIConstants.DefaultMaterialDurabilityBronze, 5.75f, APIConstants.DefaultMaterialDamageBronze, 12, ModItemTags.BRONZE_INGOT, ModWeaponTraitTags.BRONZE);
@@ -101,17 +103,17 @@ public class WeaponMaterial implements Tier, IReloadable
 		this(unlocName, modIdIn, 0x7F7F7F, 0xFFFFFF, maxUses, efficiency, baseDamage, enchantability, tag, traitsTagIn);
 	}
 	
-	public WeaponMaterial(String nameIn, String modIdIn, Tier itemTierIn, TagKey<Item> tagIn, TagKey<WeaponTrait> traitsTagIn)
+	public WeaponMaterial(String nameIn, String modIdIn, ToolMaterial itemTierIn, TagKey<Item> tagIn, TagKey<WeaponTrait> traitsTagIn)
 	{
-		this(nameIn, modIdIn, 0x7F7F7F, 0xFFFFFF, itemTierIn.getUses(), itemTierIn.getSpeed(), 
-				itemTierIn.getAttackDamageBonus(), itemTierIn.getEnchantmentValue(), tagIn, traitsTagIn);
+		this(nameIn, modIdIn, 0x7F7F7F, 0xFFFFFF, itemTierIn.durability(), itemTierIn.speed(), 
+				itemTierIn.attackDamageBonus(), itemTierIn.enchantmentValue(), tagIn, traitsTagIn);
 	}
 	
 	@Override
 	public void reload()
 	{
 		Registry<WeaponTrait> registry = WeaponTraits.TRAIT_REGISTRY;
-		Optional<HolderSet.Named<WeaponTrait>> tagHolder = registry.getTag(traitsTag);
+		Optional<HolderSet.Named<WeaponTrait>> tagHolder = registry.get(traitsTag);
 		// Verify the tag and Initialize Weapon Traits
 		ImmutableList.Builder<WeaponTrait> builder = ImmutableList.builder();
 		
@@ -193,7 +195,6 @@ public class WeaponMaterial implements Tier, IReloadable
 		return modId;
 	}
 
-	@Override
 	public int getUses() 
 	{
 		return this.durability;
@@ -204,13 +205,11 @@ public class WeaponMaterial implements Tier, IReloadable
 		this.durability = maxUses;
 	}
 
-	@Override
 	public float getSpeed() 
 	{
 		return this.speed;
 	}
 
-	@Override
 	public float getAttackDamageBonus()
 	{
 		return this.baseDamage;
@@ -223,30 +222,28 @@ public class WeaponMaterial implements Tier, IReloadable
 
 
 	// 1.20.1 returned harvest level 0 (wood) for every material
-	@Override
 	public TagKey<Block> getIncorrectBlocksForDrops()
 	{
 		return BlockTags.INCORRECT_FOR_WOODEN_TOOL;
 	}
 
-	@Override
 	public int getEnchantmentValue() 
 	{
 		return this.enchantability;
 	}
 
-	@Override
-	public Ingredient getRepairIngredient()
+	/** The vanilla tool material with these numbers (its repair items are the repair tag) */
+	public ToolMaterial toolMaterial()
 	{
-		// Made on each call: Ingredient keeps the items of its tag from the first look, so on Fabric a data pack that
-		// filled the tag later was not seen (a kept ingredient). An empty or unknown tag gives an
-		// empty ingredient: vanilla Ingredient#isEmpty only counts the tag values (NeoForge counts the items), and EMI
-		// on Fabric read the first item of a "non-empty" repair ingredient.
-		if(BuiltInRegistries.ITEM.getTag(repairTag).map(HolderSet::size).orElse(0) == 0)
-			return Ingredient.EMPTY;
-		return Ingredient.of(repairTag);
+		return new ToolMaterial(getIncorrectBlocksForDrops(), durability, speed, baseDamage, enchantability, repairTag);
 	}
-	
+
+	/** A repair item of this material (1.21.2+ items repair through their repairable component; this is for checks) */
+	public boolean isRepairItem(ItemStack stack)
+	{
+		return stack.is(repairTag);
+	}
+
 	public TagKey<Item> getRepairTag()
 	{
 		return repairTag;

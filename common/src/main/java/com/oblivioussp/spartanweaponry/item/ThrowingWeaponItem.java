@@ -1,5 +1,7 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.TooltipLines;
+import net.minecraft.world.item.component.TooltipDisplay;
 import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.server.level.ServerLevel;
 
@@ -54,7 +56,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,11 +64,11 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -189,7 +191,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 			LivingEntity entityLiving)
 	{
 		// Make the throwing weapon take damage when digging
-		if(!level.isClientSide && state.getDestroySpeed(level, pos) != 0.0f)
+		if(!level.isClientSide() && state.getDestroySpeed(level, pos) != 0.0f)
 		{
 			damageThrowingWeapon(stack, 2, entityLiving);
 		}
@@ -199,7 +201,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	public void damageThrowingWeapon(ItemStack stack, int damage, LivingEntity entity)
 	{
 		//stack.damageItem(damage, entity);
-		if(stack.isDamageableItem() && ItemNbt.read(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack) && 
+		if(stack.isDamageableItem() && ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) < getMaxAmmo(stack) && 
 				(!(entity instanceof Player) || !((Player)entity).getAbilities().instabuild) && entity.level() instanceof ServerLevel serverLevel)
 		{
 			if(ItemDamage.hurt(stack, damage, serverLevel, entity instanceof ServerPlayer ? (ServerPlayer)entity : null))
@@ -208,7 +210,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 				if(breakSlot != null)
 					entity.onEquippedItemBroken(stack.getItem(), breakSlot);
 				
-				int ammo = ItemNbt.read(stack).getInt(NBT_AMMO_USED) + 1;
+				int ammo = ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) + 1;
 				ItemNbt.update(stack, (nbt) -> nbt.putInt(NBT_AMMO_USED, ammo));
 				
 				if(entity instanceof Player)
@@ -230,48 +232,58 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, List<Component> tooltip, TooltipFlag flagIn) 
+	public void appendHoverText(ItemStack stack, Item.TooltipContext contextIn, TooltipDisplay display, Consumer<Component> tooltipOut, TooltipFlag flagIn) 
 	{
-		boolean isShiftPressed = Screen.hasShiftDown();
-
-    	if(doCraftCheck && contextIn.registries() != null)
-    	{
-    		if(!ClientConfig.INSTANCE.forceDisableUncraftableTooltips.get() && material.getModId() == ModSpartanWeaponry.ID)
-    		{
-        		if(!WeaponAttributes.isTagFilled(material.getRepairTag()))
-	    			canBeCrafted = false;
-    		}
-	    	doCraftCheck = false;
-    	}
-
-    	if(!canBeCrafted)
-    		tooltip.add(Component.translatable(String.format("tooltip.%s.uncraftable_missing_material", ModSpartanWeaponry.ID), material.getRepairTagName()).withStyle(ChatFormatting.RED));
-    	
-    	archetype.addTagErrorTooltip(stack, tooltip);
-    	material.addTagErrorTooltip(stack, tooltip);
-    	
-    	if(ItemNbt.read(stack).contains(NBT_ORIGINAL) && !ItemNbt.read(stack).getBoolean(NBT_ORIGINAL))
-    		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.not_original", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.DARK_RED));
-    	if(ItemNbt.read(stack).hasUUID(NBT_UUID) && flagIn.isAdvanced())
-    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.read(stack).getUUID(NBT_UUID).toString()).withStyle(ChatFormatting.DARK_PURPLE));
-    	int mxAmmo = getMaxAmmo(stack);
-    	tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.ammo", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.ammo.value", ModSpartanWeaponry.ID), mxAmmo - ItemNbt.read(stack).getInt(NBT_AMMO_USED), mxAmmo).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
-		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.charge_time", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.charge_time.value", ModSpartanWeaponry.ID), getMaxChargeTicks(stack) / 20.0f).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
-    	
-		if(traits != null && !traits.isEmpty())
+		// 1.21.5+: a Consumer (TooltipLines keeps the List code of 1.21.1)
+		TooltipLines tooltip = new TooltipLines(tooltipOut);
+		try
 		{
-			if(isShiftPressed)
-				tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
-			else
-				tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+			boolean isShiftPressed = net.minecraft.client.Minecraft.getInstance().hasShiftDown();
 
-			archetype.addTraitsToTooltip(stack, tooltip, isShiftPressed);
+	    	if(doCraftCheck && contextIn.registries() != null)
+	    	{
+	    		if(!ClientConfig.INSTANCE.forceDisableUncraftableTooltips.get() && material.getModId() == ModSpartanWeaponry.ID)
+	    		{
+	        		if(!WeaponAttributes.isTagFilled(material.getRepairTag()))
+		    			canBeCrafted = false;
+	    		}
+		    	doCraftCheck = false;
+	    	}
+
+	    	if(!canBeCrafted)
+	    		tooltip.add(Component.translatable(String.format("tooltip.%s.uncraftable_missing_material", ModSpartanWeaponry.ID), material.getRepairTagName()).withStyle(ChatFormatting.RED));
+    	
+	    	archetype.addTagErrorTooltip(stack, tooltip);
+	    	material.addTagErrorTooltip(stack, tooltip);
+    	
+	    	if(ItemNbt.read(stack).contains(NBT_ORIGINAL) && !ItemNbt.read(stack).getBooleanOr(NBT_ORIGINAL, false))
+	    		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.not_original", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.DARK_RED));
+	    	if(ItemNbt.read(stack).hasUUID(NBT_UUID) && flagIn.isAdvanced())
+	    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.read(stack).getUUID(NBT_UUID).toString()).withStyle(ChatFormatting.DARK_PURPLE));
+	    	int mxAmmo = getMaxAmmo(stack);
+	    	tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.ammo", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.ammo.value", ModSpartanWeaponry.ID), mxAmmo - ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0), mxAmmo).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+			tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.charge_time", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.charge_time.value", ModSpartanWeaponry.ID), getMaxChargeTicks(stack) / 20.0f).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
+    	
+			if(traits != null && !traits.isEmpty())
+			{
+				if(isShiftPressed)
+					tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".showing_details").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+				else
+					tooltip.add(Component.translatable(String.format("tooltip.%s.traits", ModSpartanWeaponry.ID), Component.translatable("tooltip." + ModSpartanWeaponry.ID + ".show_details", ChatFormatting.AQUA.toString() + "SHIFT").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GOLD));
+
+				archetype.addTraitsToTooltip(stack, tooltip, isShiftPressed);
 			
-	    	material.addTraitsToTooltip(stack, archetype.getType(), tooltip, isShiftPressed);
-			tooltip.add(Component.empty());
-		}
+		    	material.addTraitsToTooltip(stack, archetype.getType(), tooltip, isShiftPressed);
+				tooltip.add(Component.empty());
+			}
 
-		super.appendHoverText(stack, contextIn, tooltip, flagIn);
+			tooltip.flush();
+			super.appendHoverText(stack, contextIn, display, tooltipOut, flagIn);
+		}
+		finally
+		{
+			tooltip.flush();
+		}
 	}
 
 	@Override
@@ -280,20 +292,20 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		traits.forEach((trait) -> trait.getMeleeCallback().ifPresent((callback) -> callback.onHitEntity(material, stack, target, attacker, null)));
     	
 		// Deal double durability damage when used as a melee weapon
-    	if(ItemNbt.read(stack).getInt(NBT_AMMO_USED) < getMaxAmmo(stack))
+    	if(ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) < getMaxAmmo(stack))
     		damageThrowingWeapon(stack, 2, attacker);
     	
         return true;
     }
 	
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level levelIn, Player player, InteractionHand hand)
+	public InteractionResult use(Level levelIn, Player player, InteractionHand hand)
 	{
 		ItemStack stack = player.getItemInHand(hand);
-		if(ItemNbt.read(stack).getInt(NBT_AMMO_USED) == getMaxAmmo(stack))
-			return InteractionResultHolder.fail(stack);
+		if(ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) == getMaxAmmo(stack))
+			return InteractionResult.FAIL;
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResult.CONSUME;
 	}
 	
 	@Override
@@ -302,7 +314,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		if(entityLiving instanceof Player)
 		{
 			int maxAmmo = getMaxAmmo(stack);
-			int ammoCount = maxAmmo - ItemNbt.read(stack).getInt(NBT_AMMO_USED);
+			int ammoCount = maxAmmo - ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0);
 			
 			if(ammoCount > 0)
 			{
@@ -311,7 +323,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 				int maxCharge = getMaxChargeTicks(stack);
 	            int charge = Math.min(getUseDuration(stack, entityLiving) - timeLeft, maxCharge);
 				
-				if (!levelIn.isClientSide && charge > 2)
+				if (!levelIn.isClientSide() && charge > 2)
 		        {
 		            ThrowingWeaponEntity thrown = createThrowingWeaponEntity(levelIn, player, stack, charge);
 		            float chargePerc = (charge / (float)maxCharge);
@@ -352,7 +364,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		            	ItemNbt.update(stack, (nbt) -> nbt.putInt(NBT_AMMO_USED, ammoUsed));
 		            	
 		            	// If there is no ammo left and the stack isn't original (picked up from the ground to create a new stack), then delete the stack
-		            	if(ammoCount == 0 && !ItemNbt.read(stack).getBoolean(NBT_ORIGINAL))
+		            	if(ammoCount == 0 && !ItemNbt.read(stack).getBooleanOr(NBT_ORIGINAL, false))
 		            	{
 			                stack.shrink(1);
 			                if(stack.getCount() <= 0)
@@ -381,9 +393,9 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 	
 	@Override
-	public UseAnim getUseAnimation(ItemStack stack) 
+	public ItemUseAnimation getUseAnimation(ItemStack stack) 
 	{
-		return UseAnim.SPEAR;
+		return ItemUseAnimation.SPEAR;
 	}
 
 	@Override
