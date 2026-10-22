@@ -53,9 +53,15 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   (`~/Desktop/mod-scout/src/Botania`, `:Fabric:remapJar`, `:NeoForge:build`) в `arcana/libs/botania/{xplat,neoforge,fabric}`
   (не в git); Fabric-сборке нужны Loom 1.15.5 и Loader 0.17.3. Jar'ы Weaponry в `arcana/libs/` пересобирать после
   изменений Weaponry (`:common:jar :neoforge:jar :fabric:remapJar`).
-- **Дальше:** HUD Baubles (NeoForge + Fabric 1.21.1, на Fabric — Trinkets), затем ветки версий `mc/<версия>` для
-  всех четырёх. Не сделано для Weaponry и Arcana: prod-прогон jar на обоих загрузчиках, compat-прогон, README,
-  merge в main, релизы. Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
+- **HUD Baubles готов на NeoForge (Curios) + Fabric (Trinkets) 1.21.1 (2026-10-22)**:
+  `spartan-hud-baubles-1.21@multiloader`. Сцена 84/84, стресс 13/13, сеть 6/6 на обоих. Аксессуары за
+  `platform/Platform`, тестовые слоты сцен за `port/SceneAccessories`. На Fabric: HUD — миксин в конце
+  `Gui.renderExperienceLevel`, конфиг и экран — Forge Config API Port, событие для модов — `RenderBaubleOnHUDCallback`.
+  `TranslatableEnum` в common — заглушка `common/src/stubs` (API-jar FCAP в intermediary).
+- **Все четыре мода на 1.21.1 готовы на обоих загрузчиках.** Дальше: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`,
+  `mc/26.3` для всех четырёх (как в iron-backpacks-1.21; HUD Baubles на Fabric — только 1.21.1). Не сделано ни для
+  одного: prod-прогон jar на обоих загрузчиках, compat-прогон, README, merge в main, релизы. Weaponry на Fabric:
+  слота колчана нет (Curios → можно Trinkets, как в HUD Baubles).
 
 ## Сборка / тесты
 JDK: Windows `export JAVA_HOME=~/.gradle/jdks/eclipse_adoptium-21-amd64-windows.2`, Mac
