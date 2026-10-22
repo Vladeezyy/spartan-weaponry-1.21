@@ -133,7 +133,7 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 			try
 			{
 				List<LootItemCondition> conditions = LootItemCondition.DIRECT_CODEC.listOf().parse(ops, modifier.get("conditions")).getOrThrow();
-				Item skull = BuiltInRegistries.ITEM.get(Identifier.parse(modifier.get("skull").getAsString()));
+				Item skull = BuiltInRegistries.ITEM.getValue(Identifier.parse(modifier.get("skull").getAsString()));
 				list.add(new Modifier(conditions, skull));
 			}
 			catch(Exception e)

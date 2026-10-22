@@ -50,7 +50,7 @@ public abstract class ItemStackMixin
 	 * #getDefaultAttributeModifiers(ItemStack), unless the stack has modifiers of its own. 1.21.2+ reads the
 	 * attribute_modifiers component (1.21.1: Item#getDefaultAttributeModifiers).
 	 */
-	@WrapOperation(method = "forEachModifier", require = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getOrDefault(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
+	@WrapOperation(method = {"forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V", "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlot;Ljava/util/function/BiConsumer;)V"}, require = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getOrDefault(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
 	private Object spartanweaponry$attributes(ItemStack stack, DataComponentType<?> type, Object fallback, Operation<Object> original)
 	{
 		if(type == DataComponents.ATTRIBUTE_MODIFIERS && stack.getComponentsPatch().get(DataComponents.ATTRIBUTE_MODIFIERS) == null)

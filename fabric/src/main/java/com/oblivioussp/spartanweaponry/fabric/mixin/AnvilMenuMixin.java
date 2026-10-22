@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.fabric.mixin;
 
+import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,9 +30,9 @@ public abstract class AnvilMenuMixin extends ItemCombinerMenu
 	@Final
 	private DataSlot cost;
 
-	private AnvilMenuMixin(MenuType<?> type, int containerId, Inventory playerInventory, ContainerLevelAccess access)
+	private AnvilMenuMixin(MenuType<?> type, int containerId, Inventory playerInventory, ContainerLevelAccess access, ItemCombinerMenuSlotDefinition slots)
 	{
-		super(type, containerId, playerInventory, access);
+		super(type, containerId, playerInventory, access, slots);
 	}
 
 	@Inject(method = "createResult", at = @At("HEAD"), cancellable = true)

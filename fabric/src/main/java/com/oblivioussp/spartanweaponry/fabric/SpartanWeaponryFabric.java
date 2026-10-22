@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.fabric;
 
+import net.minecraft.resources.ResourceKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,8 @@ import com.oblivioussp.spartanweaponry.platform.Registrar;
 import com.oblivioussp.spartanweaponry.util.ClientConfig;
 import com.oblivioussp.spartanweaponry.util.Config;
 
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeConfigRegistry;
-import fuzs.forgeconfigapiport.fabric.api.neoforge.v4.NeoForgeModConfigEvents;
+import fuzs.forgeconfigapiport.fabric.api.v5.ConfigRegistry;
+import fuzs.forgeconfigapiport.fabric.api.v5.ModConfigEvents;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -63,10 +64,10 @@ public class SpartanWeaponryFabric implements ModInitializer
 		registerAll();
 
 		// Forge Config API Port loads a common config right in register(): the listeners come first
-		NeoForgeModConfigEvents.loading(ModSpartanWeaponry.ID).register(config -> Config.onConfigChanged(config.getFileName(), config.getSpec()));
-		NeoForgeModConfigEvents.reloading(ModSpartanWeaponry.ID).register(config -> Config.onConfigChanged(config.getFileName(), config.getSpec()));
-		NeoForgeConfigRegistry.INSTANCE.register(ModSpartanWeaponry.ID, ModConfig.Type.COMMON, Config.CONFIG_SPEC);
-		NeoForgeConfigRegistry.INSTANCE.register(ModSpartanWeaponry.ID, ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
+		ModConfigEvents.loading(ModSpartanWeaponry.ID).register(config -> Config.onConfigChanged(config.getFileName(), config.getSpec()));
+		ModConfigEvents.reloading(ModSpartanWeaponry.ID).register(config -> Config.onConfigChanged(config.getFileName(), config.getSpec()));
+		ConfigRegistry.INSTANCE.register(ModSpartanWeaponry.ID, ModConfig.Type.COMMON, Config.CONFIG_SPEC);
+		ConfigRegistry.INSTANCE.register(ModSpartanWeaponry.ID, ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
 		ModSpartanWeaponry.setup();
 
 		registerPayloads();
@@ -169,7 +170,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 		if(tradesAdded)
 			return;
 		tradesAdded = true;
-		for(VillagerProfession profession : List.of(VillagerProfession.WEAPONSMITH, VillagerProfession.FLETCHER))
+		for(ResourceKey<VillagerProfession> profession : List.of(VillagerProfession.WEAPONSMITH, VillagerProfession.FLETCHER))
 		{
 			Int2ObjectOpenHashMap<List<ItemListing>> trades = new Int2ObjectOpenHashMap<>();
 			for(int level = 1; level <= 5; level++)
