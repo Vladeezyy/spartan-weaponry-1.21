@@ -58,22 +58,19 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   `platform/Platform`, тестовые слоты сцен за `port/SceneAccessories`. На Fabric: HUD — миксин в конце
   `Gui.renderExperienceLevel`, конфиг и экран — Forge Config API Port, событие для модов — `RenderBaubleOnHUDCallback`.
   `TranslatableEnum` в common — заглушка `common/src/stubs` (API-jar FCAP в intermediary).
-- **Все четыре мода на 1.21.1 готовы на обоих загрузчиках.** Релиз 1.21.1 (2026-10-22), без стресс-тестов и замеров FPS
-  (решение владельца):
-  - prod (`NO_STRESS=1 sh tools/prodtest.sh`: NeoForge 21.1.197/259, Fabric-сервер, production-клиент Fabric):
-    - пройден: Weaponry (53/53), Shields (20/20), Arcana (с Botania и без: 34/34, 22/22);
-    - **не сделан: HUD Baubles**.
-  - compat (`NO_STRESS=1 LOADER=neoforge|fabric sh tools/compattest.sh`):
-    - пройден: Weaponry (NeoForge 58/58, Fabric 56/56, оба и с SS4), Shields (20/20 оба), Arcana (34/34 оба);
-    - **не сделан: HUD Baubles**.
-  - Осталось:
-    - тесты HUD Baubles;
-    - секции «Tested» в README (EN + RU) всех четырёх;
-    - PORTLOG;
-    - merge `multiloader` → `main`;
-    - GitHub-релизы (теги `v<версия>+1.21.1`, neoforge- и fabric-jar без `-scenes`, заметки EN; у Arcana — нужен
-      Weaponry 3.2.1.2+).
-  - Arcana: в `libs/` — jar Weaponry 3.2.1.2 этой ветки, пересобрать и скопировать при изменении Weaponry.
+- **1.21.1 выпущен (2026-10-22) на NeoForge и Fabric**, `multiloader` слит в `main` (fast-forward), релизы:
+  - Weaponry `v3.2.1.2+1.21.1`;
+  - Shields `v3.1.1.4+1.21.1`;
+  - Arcana `v1.0.3.1+1.21.1`;
+  - HUD Baubles `v1.0.0.3+1.21.1`.
+  Проверки (без стресса и FPS, решение владельца) — в PORTLOG каждого мода, раздел «NeoForge and Fabric release
+  check»:
+  - prod: `NO_STRESS=1 sh tools/prodtest.sh`;
+  - compat: `NO_STRESS=1 LOADER=… sh tools/compattest.sh`.
+  Arcana: `libs/` — jar Weaponry 3.2.1.2; при изменении Weaponry пересобрать и скопировать.
+- Мелочь на потом: EMI пишет `Untranslated tag` — нет ключей `tag.item.<ns>.<path>` в lang (Shields, Weaponry).
+- Botania дальше 1.21.1 нет (последняя ветка `1.21.1-porting`) → на 1.21.11+ Arcana без интеграции с Botania
+  (она и так optional), вернуть, когда Botania выйдет.
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
