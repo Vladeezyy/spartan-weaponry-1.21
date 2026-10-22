@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import com.oblivioussp.spartanweaponry.util.PotionHelper;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
@@ -75,7 +76,7 @@ public class WeaponOilItem extends BasicItem
 		Optional<Holder<Potion>> potion = OilHelper.getPotionFromStack(stack);
 		Identifier itemLoc = BuiltInRegistries.ITEM.getKey(this);
 		Component baseName = Component.translatable("item." + itemLoc.getNamespace() + "." + itemLoc.getPath() + "." + OilEffects.OIL_REGISTRY.getKey(oil).getPath());
-		return potion.isEmpty() ? baseName : Component.translatable(Potion.getName(potion, "item.spartanweaponry.proj_tipped.effect."), baseName);
+		return potion.isEmpty() ? baseName : Component.translatable(PotionHelper.getName(potion, "item.spartanweaponry.proj_tipped.effect."), baseName);
 	}
 	
 	@Override

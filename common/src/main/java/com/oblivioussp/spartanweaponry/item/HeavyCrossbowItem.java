@@ -151,7 +151,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
+		return WeaponAttributes.forStack(stack, defaultModifiers, components().getOrDefault(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY));
     }
 	
 	// 1.20.1 returned the material's durability here while the item was created with 1.5x of it (the tooltip and the
@@ -181,7 +181,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 	}
 	
 	@Override
-	public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) 
+	public boolean releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) 
 	{
 		if(entityLiving instanceof Player)
 		{
@@ -217,7 +217,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
                 
 	            int i = this.getUseDuration(stack, entityLiving) - timeLeft;
 	            
-	            if (i < 0 || !ItemNbt.read(stack).getBooleanOr(NBT_CHARGED, false)) return;
+	            if (i < 0 || !ItemNbt.read(stack).getBooleanOr(NBT_CHARGED, false)) return false;
 	
 	            if (!itemstack.isEmpty() || isCreativeOrInfinite)
 	            {
@@ -264,6 +264,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 	            }
     		}
 		}
+		return false;
 	}
 	
     /**

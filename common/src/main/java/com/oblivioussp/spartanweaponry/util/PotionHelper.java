@@ -75,6 +75,14 @@ public final class PotionHelper
 		getContents(stack).addPotionTooltip(tooltip::add, durationFactor, ticksPerSecond);
 	}
 
+	/** 1.21.1 Potion#getName: the prefix and the potion's base name (or its id path; "empty") */
+	public static String getName(Optional<Holder<Potion>> potion, String prefix)
+	{
+		if(potion.isPresent() && potion.get().value().name() != null)
+			return prefix + potion.get().value().name();
+		return prefix + potion.flatMap(Holder::unwrapKey).map(key -> key.identifier().getPath()).orElse("empty");
+	}
+
 	public static String getId(Holder<Potion> potion)
 	{
 		return potion.unwrapKey().map((key) -> key.location().toString()).orElse("");

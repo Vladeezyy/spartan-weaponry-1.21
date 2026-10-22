@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import javax.annotation.Nullable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.server.level.ServerLevel;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
@@ -102,11 +105,14 @@ public abstract class QuiverBaseItem extends Item
 	
 	/** Moves the inventory of a quiver from 1.20.1 (its "Ammo" NBT) into the quiver_contents component */
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected)
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot equipmentSlot)
 	{
+		// 1.21.5+: server side only, with the equipment slot instead of the inventory slot and "selected"
+		int slotId = equipmentSlot == null ? -1 : equipmentSlot.getIndex();
+		boolean isSelected = equipmentSlot == EquipmentSlot.MAINHAND;
 		if(!level.isClientSide())
 			migrateLegacyContents(stack, level.registryAccess());
-		super.inventoryTick(stack, level, entity, slotId, isSelected);
+		super.inventoryTick(stack, level, entity, equipmentSlot);
 	}
 	
 	public static void migrateLegacyContents(ItemStack stack, HolderLookup.Provider registries)

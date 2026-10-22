@@ -58,7 +58,7 @@ public class BoltDiamondTippedItem extends BoltDiamondItem
 	@Override
 	public Component getName(ItemStack stack)
 	{
-		String potionKey = Potion.getName(PotionHelper.getPotion(stack), "item.spartanweaponry.proj_tipped.effect.");
+		String potionKey = PotionHelper.getName(PotionHelper.getPotion(stack), "item.spartanweaponry.proj_tipped.effect.");
 		return Component.translatable(potionKey, Component.translatable("item." + ModSpartanWeaponry.ID + "." + baseName));
 	}
 }

@@ -34,7 +34,7 @@ public class WeaponOilSubtypeInterpreter implements IIngredientSubtypeInterprete
 		if(weaponOil == OilEffects.POTION.get())
 		{
 			StringBuilder stringBuilder = new StringBuilder(result);
-			stringBuilder.append(Potion.getName(potion, ":"));
+			stringBuilder.append(PotionHelper.getName(potion, ":"));
 			for(MobEffectInstance mobEffect : PotionHelper.getEffects(ItemNbt.read(itemStack).getCompound(OilHandler.NBT_OIL)))
 			{
 				stringBuilder.append(";").append(mobEffect);

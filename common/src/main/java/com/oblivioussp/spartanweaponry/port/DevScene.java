@@ -321,7 +321,7 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, 1, 1, 1, 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)

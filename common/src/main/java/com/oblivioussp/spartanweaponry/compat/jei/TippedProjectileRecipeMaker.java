@@ -49,7 +49,7 @@ public class TippedProjectileRecipeMaker
 						projIngredient, projIngredient, projIngredient});
 				
         		// The leading "/" marks the id as synthetic (EMI reads the JEI recipes and looks them up otherwise)
-        		Identifier recipeResLoc = Identifier.fromNamespaceAndPath("spartanweaponry", "/tipped_projectile." + BuiltInRegistries.ITEM.getKey(outputStack.getItem()).getPath() + Potion.getName(Optional.of(potionType), ".effect."));
+        		Identifier recipeResLoc = Identifier.fromNamespaceAndPath("spartanweaponry", "/tipped_projectile." + BuiltInRegistries.ITEM.getKey(outputStack.getItem()).getPath() + PotionHelper.getName(Optional.of(potionType), ".effect."));
         		ShapedRecipe recipe = new ShapedRecipe(recipeGroup, CraftingBookCategory.MISC, new ShapedRecipePattern(3, 3, recipeIngredients, Optional.empty()), outputStack);
         		list.add(new RecipeHolder<>(recipeResLoc, recipe));
       		} 

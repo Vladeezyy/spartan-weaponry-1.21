@@ -22,7 +22,7 @@ public class TippedProjectileSubtypeInterpreter implements IIngredientSubtypeInt
 		if (contents.potion().isEmpty() && !contents.hasEffects())
 			return IIngredientSubtypeInterpreter.NONE;
 		
-		String potionTypeString = Potion.getName(contents.potion(), "");
+		String potionTypeString = PotionHelper.getName(contents.potion(), "");
 		StringBuilder stringBuilder = new StringBuilder(potionTypeString);
 		for (MobEffectInstance effect : contents.getAllEffects()) 
 		{

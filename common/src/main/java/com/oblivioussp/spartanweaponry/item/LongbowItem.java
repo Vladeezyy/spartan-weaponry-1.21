@@ -114,7 +114,7 @@ public class LongbowItem extends BowItem implements IReloadable
 	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
     {
-		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
+		return WeaponAttributes.forStack(stack, defaultModifiers, components().getOrDefault(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY));
     }
 	
 	// Port fix (issue #167 of the original): durability follows the material config (1.20.1 kept the value from
@@ -131,17 +131,17 @@ public class LongbowItem extends BowItem implements IReloadable
      * Power, Punch, Flame and Piercing work as on a vanilla bow (1.20.1 applied the first three by hand, same numbers).
      */
 	@Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft)
+    public boolean releaseUsing(ItemStack stack, Level level, LivingEntity entityLiving, int timeLeft)
     {
         if (entityLiving instanceof Player player)
         {
             ItemStack itemstack = player.getProjectile(stack);
             if (itemstack.isEmpty())
-            	return;
+            	return false;
 
             int i = this.getUseDuration(stack, entityLiving) - timeLeft;
             i = Platform.INSTANCE.onArrowLoose(stack, level, player, i, true);
-            if (i < 0) return;
+            if (i < 0) return false;
 
             float f = getArrowSpeed(i);
 
@@ -171,7 +171,8 @@ public class LongbowItem extends BowItem implements IReloadable
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }
-    }
+		return false;
+	}
 
 		/**
      * Gets the velocity of the arrow entity from the longbow's charge

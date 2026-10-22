@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.item;
 
+import javax.annotation.Nullable;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import com.oblivioussp.spartanweaponry.platform.Platform;
@@ -154,7 +155,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	// NeoForge IItemExtension (Fabric: a mixin)
 	public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack)
 	{
-		return WeaponAttributes.forStack(stack, defaultModifiers, getDefaultAttributeModifiers());
+		return WeaponAttributes.forStack(stack, defaultModifiers, components().getOrDefault(net.minecraft.core.component.DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY));
 	}
 	
 	// Port fix: durability follows the material config (1.20.1 kept the value from item creation, like issue #167)
@@ -165,8 +166,11 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 	
 	@Override
-    public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected)
-    {
+    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot equipmentSlot)
+	{
+		// 1.21.5+: server side only, with the equipment slot instead of the inventory slot and "selected"
+		int itemSlot = equipmentSlot == null ? -1 : equipmentSlot.getIndex();
+		boolean isSelected = equipmentSlot == EquipmentSlot.MAINHAND;
 		initNBT(stack, true);
 		
 		if(entity instanceof LivingEntity)
@@ -258,8 +262,8 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
     	
 	    	if(ItemNbt.read(stack).contains(NBT_ORIGINAL) && !ItemNbt.read(stack).getBooleanOr(NBT_ORIGINAL, false))
 	    		tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.not_original", ModSpartanWeaponry.ID)).withStyle(ChatFormatting.DARK_RED));
-	    	if(ItemNbt.read(stack).hasUUID(NBT_UUID) && flagIn.isAdvanced())
-	    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.read(stack).getUUID(NBT_UUID).toString()).withStyle(ChatFormatting.DARK_PURPLE));
+	    	if(ItemNbt.read(stack).read(NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent() && flagIn.isAdvanced())
+	    		tooltip.add(Component.literal("UUID: " + ChatFormatting.GRAY.toString() + ItemNbt.read(stack).read(NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).orElseThrow().toString()).withStyle(ChatFormatting.DARK_PURPLE));
 	    	int mxAmmo = getMaxAmmo(stack);
 	    	tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.ammo", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.ammo.value", ModSpartanWeaponry.ID), mxAmmo - ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0), mxAmmo).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
 			tooltip.add(Component.translatable(String.format("tooltip.%s.throwable.charge_time", ModSpartanWeaponry.ID), Component.translatable(String.format("tooltip.%s.throwable.charge_time.value", ModSpartanWeaponry.ID), getMaxChargeTicks(stack) / 20.0f).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_AQUA));
@@ -287,7 +291,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 
 	@Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
+    public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
     {
 		traits.forEach((trait) -> trait.getMeleeCallback().ifPresent((callback) -> callback.onHitEntity(material, stack, target, attacker, null)));
     	
@@ -295,7 +299,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
     	if(ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) < getMaxAmmo(stack))
     		damageThrowingWeapon(stack, 2, attacker);
     	
-        return true;
+        return;
     }
 	
 	@Override
@@ -309,7 +313,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 	
 	@Override
-	public void releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) 
+	public boolean releaseUsing(ItemStack stack, Level levelIn, LivingEntity entityLiving, int timeLeft) 
 	{
 		if(entityLiving instanceof Player)
 		{
@@ -328,7 +332,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		            ThrowingWeaponEntity thrown = createThrowingWeaponEntity(levelIn, player, stack, charge);
 		            float chargePerc = (charge / (float)maxCharge);
 		            
-		            if(thrown == null)	return;
+		            if(thrown == null)	return false;
 		            
 		            thrown.setWeapon(stack);
 		            int velocityBonus = Enchants.level(stack, ModEnchantments.PROPEL);
@@ -384,6 +388,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 			}
 		}
 		super.releaseUsing(stack, levelIn, entityLiving, timeLeft);
+		return false;
 	}
 
 	@Override
@@ -399,7 +404,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
 
 	@Override
-	public void onCraftedBy(ItemStack stack, Level levelIn, Player playerIn) 
+	public void onCraftedBy(ItemStack stack, Player playerIn) 
 	{
 		traits.forEach((trait) -> getGenericCallback(trait).ifPresent((callback) -> callback.onCreateItem(material, stack)));
 		
@@ -562,7 +567,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	{
 		// runs every tick for every throwing weapon in an inventory: nothing to copy once the tags are there
 		CompoundTag current = ItemNbt.read(stack);
-		if(current.contains(NBT_AMMO_USED) && (!initUUID || current.hasUUID(NBT_UUID)))
+		if(current.contains(NBT_AMMO_USED) && (!initUUID || current.read(NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent()))
 			return;
 		CompoundTag tag = ItemNbt.get(stack);
 		boolean changed = false;
@@ -575,9 +580,9 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 			changed = true;
 		}
 		// Initialise UUID tag if necessary, and flag as original stack
-	    if(initUUID && !tag.hasUUID(NBT_UUID))
+	    if(initUUID && !tag.read(NBT_UUID, net.minecraft.core.UUIDUtil.CODEC).isPresent())
 	    {
-			tag.putUUID(NBT_UUID, UUID.randomUUID());
+			tag.store(NBT_UUID, net.minecraft.core.UUIDUtil.CODEC, UUID.randomUUID());
 			tag.putBoolean(NBT_ORIGINAL, true);
 			changed = true;
 	    }
