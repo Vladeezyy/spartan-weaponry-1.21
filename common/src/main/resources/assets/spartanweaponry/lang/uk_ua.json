@@ -978,6 +978,7 @@
   "effect.spartanweaponry.ender_disruption": "Ендер-завада",
   "effect.spartanweaponry.ender_disruption.description": "Не дає ураженим мобам телепортуватися перлинами Енду, плодами хоруса й власними здібностями ендер-мобів",
   "key.spartanweaponry.category.title": "Spartan Weaponry",
+  "key.category.spartanweaponry.title": "Spartan Weaponry",
   "key.spartanweaponry.access_quiver": "Відкрити вдягнений сагайдак",
   "attribute.spartanweaponry.attack_reach": "Дальність атаки",
   "dev.spartanweaponry.wip": "У розробці",

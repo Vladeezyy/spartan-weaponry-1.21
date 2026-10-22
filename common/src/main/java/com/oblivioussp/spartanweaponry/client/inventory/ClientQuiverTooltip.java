@@ -1,24 +1,21 @@
 package com.oblivioussp.spartanweaponry.client.inventory;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import com.oblivioussp.spartanweaponry.client.ClientHelper;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.inventory.QuiverArrowMenu;
 import com.oblivioussp.spartanweaponry.inventory.QuiverBoltMenu;
 import com.oblivioussp.spartanweaponry.inventory.tooltip.QuiverTooltip;
 import com.oblivioussp.spartanweaponry.util.Defaults;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 
 public class ClientQuiverTooltip implements ClientTooltipComponent 
@@ -31,7 +28,6 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 	private static final int BORDER_HEIGHT = 2;
 	private static final int MAX_SLOTS_X = 9;
 	private static final int TEXTURE_SIZE = 128;
-	private static final int BLIT_OFFSET = 0;
 	
 	private final NonNullList<ItemStack> items;
 	private final int itemsSize;
@@ -49,7 +45,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 	}
 
 	@Override
-	public int getHeight() 
+	public int getHeight(Font font) 
 	{
 		return gridSizeY() * SLOT_SIZE_Y + BORDER_HEIGHT + BORDER_HEIGHT + 2;
 	}
@@ -71,7 +67,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 	}
 
 	@Override
-	public void renderImage(Font fontIn, int posXIn, int posYIn, GuiGraphics guiGraphics) 
+	public void renderImage(Font fontIn, int posXIn, int posYIn, int widthIn, int heightIn, GuiGraphics guiGraphics) 
 	{
 		
 		// Left Border
@@ -104,14 +100,11 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 
 		blitPart(guiGraphics, slotX, slotY, TexturePart.SLOT);
 		
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		Minecraft mc = Minecraft.getInstance();
-		TextureAtlasSprite sprite = mc.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(isBoltQuiver ? QuiverBoltMenu.EMPTY_BOLT_SLOT : QuiverArrowMenu.EMPTY_ARROW_SLOT);
-//		RenderSystem.setShaderTexture(0, sprite.atlasLocation());
-		guiGraphics.blit(slotX + 1, slotY + 1, BLIT_OFFSET, 16, 16, sprite);
+		// 1.21.4+: the slot icons are GUI sprites
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isBoltQuiver ? QuiverBoltMenu.EMPTY_BOLT_SLOT : QuiverArrowMenu.EMPTY_ARROW_SLOT, slotX + 1, slotY + 1, 16, 16);
 		
 		if(slotIdxIn == prioritySlot)
-			ClientHelper.renderSlotHighlight(guiGraphics, slotX + 1, slotY + 1, BLIT_OFFSET + 10, 0x8040C040);
+			ClientHelper.renderSlotHighlight(guiGraphics, slotX + 1, slotY + 1, 0, 0x8040C040);
 		if(!stackToDraw.isEmpty())
 		{
 			guiGraphics.renderItem(stackToDraw, slotX + 1, slotY + 1);
@@ -121,8 +114,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 	
 	protected void blitPart(GuiGraphics guiGraphics, int posXIn, int posYIn, TexturePart partIn)
 	{
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		guiGraphics.blit(TEXTURE, posXIn, posYIn, BLIT_OFFSET, partIn.x, partIn.y, partIn.width, partIn.height, TEXTURE_SIZE, TEXTURE_SIZE);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, posXIn, posYIn, partIn.x, partIn.y, partIn.width, partIn.height, TEXTURE_SIZE, TEXTURE_SIZE);
 	}
 	
 	protected enum TexturePart

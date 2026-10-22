@@ -1,10 +1,10 @@
 package com.oblivioussp.spartanweaponry.client.gui.components;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -32,28 +32,25 @@ public class ToggleImageButton extends Button
 	}
 	
 	@Override
-	public void onPress()
+	public void onPress(InputWithModifiers input)
 	{
 		toggleState = !toggleState;
-		super.onPress();
+		super.onPress(input);
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int renderX, int renderY, float p_94285_) 
+	protected void renderContents(GuiGraphics guiGraphics, int renderX, int renderY, float p_94285_) 
 	{
-		super.renderWidget(guiGraphics, renderX, renderY, p_94285_);
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderTexture(0, textureLocation);
-		float u = texStartU;
-		float v = texStartV;
+		renderDefaultSprite(guiGraphics);
+		int u = texStartU;
+		int v = texStartV;
 		
 		if(toggleState)
 			u += toggleDiffU;
 		if(isHovered())
 			v += hoverDiffV;
 		
-		RenderSystem.enableDepthTest();
-		guiGraphics.blit(textureLocation, getX(), getY(), u, v, width, height, textureWidth, textureHeight);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, textureLocation, getX(), getY(), u, v, width, height, textureWidth, textureHeight);
 //		if(isHovered)
 //			renderToolTip(guiGraphics, renderX, renderY);
 	}

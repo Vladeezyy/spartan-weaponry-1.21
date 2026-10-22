@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import net.minecraft.core.registries.Registries;
 import com.oblivioussp.spartanweaponry.api.ToolAction;
-import com.oblivioussp.spartanweaponry.platform.Platform;
 import com.oblivioussp.spartanweaponry.util.WeaponAttributes;
 
 import net.minecraft.world.item.component.ItemAttributeModifiers;
@@ -33,7 +32,6 @@ import com.oblivioussp.spartanweaponry.api.WeaponTraits;
 import com.oblivioussp.spartanweaponry.api.trait.IGenericTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.VersatileWeaponTrait;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.util.ClientConfig;
 import com.oblivioussp.spartanweaponry.util.WeaponArchetype;
 
@@ -95,8 +93,6 @@ public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBa
 		
 		ReloadableHandler.addToItemReloadList(this);
 		
-		if(Platform.INSTANCE.isClient())
-			ClientHelper.registerMeleeWeaponPropertyOverrides(this);
 	}
 	
 	public SwordBaseItem(Item.Properties prop, WeaponMaterial materialIn, WeaponArchetype archetypeIn, float weaponBaseDamage, float weaponDamageMultiplier, double weaponSpeed, String customDisplayNameIn)

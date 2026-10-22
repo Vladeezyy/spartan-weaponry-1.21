@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.gui.components;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -28,13 +29,13 @@ public class TexturedButton extends Button
 	}
 
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		int v = yTexStart;
 		if(!isActive())
 			v += yDiffTex * 2;
 		else if(isHoveredOrFocused())
 			v += yDiffTex;
-		guiGraphics.blit(texture, getX(), getY(), xTexStart, v, width, height, textureWidth, textureHeight);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, getX(), getY(), xTexStart, v, width, height, textureWidth, textureHeight);
 	}
 }

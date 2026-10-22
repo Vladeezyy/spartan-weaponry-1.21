@@ -3,7 +3,6 @@ package com.oblivioussp.spartanweaponry.item;
 import javax.annotation.Nullable;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
-import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.server.level.ServerLevel;
 
 import com.oblivioussp.spartanweaponry.util.ItemDamage;
@@ -37,7 +36,6 @@ import com.oblivioussp.spartanweaponry.api.WeaponTraits;
 import com.oblivioussp.spartanweaponry.api.trait.IGenericTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.IThrowingTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.client.gui.HudCrosshairThrowingWeapon;
 import com.oblivioussp.spartanweaponry.client.gui.ICrosshairOverlay;
 import com.oblivioussp.spartanweaponry.entity.projectile.ThrowingWeaponEntity;
@@ -109,8 +107,6 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		maxAmmo = maxAmmoCapacity;
 		setChargeTicks(chargeTicks);
 
-		if(Platform.INSTANCE.isClient())
-			ClientHelper.registerThrowingWeaponPropertyOverrides(this);
 		
 		archetype = archetypeIn;
 		ReloadableHandler.addToItemReloadList(this);

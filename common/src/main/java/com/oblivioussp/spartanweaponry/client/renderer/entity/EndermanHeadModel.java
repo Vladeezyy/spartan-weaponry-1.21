@@ -1,9 +1,7 @@
 package com.oblivioussp.spartanweaponry.client.renderer.entity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.model.object.skull.SkullModelBase;
+import net.minecraft.client.model.object.skull.SkullModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -12,18 +10,15 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-public class EndermanHeadModel extends SkullModelBase
+public class EndermanHeadModel extends SkullModel
 {
 	private static final String PART_HEAD = "head";
 	private static final String PART_JAW = "jaw";
 	
-	private ModelPart root;
-	private ModelPart head;
 	
 	public EndermanHeadModel(ModelPart modelRoot)
 	{
-		root = modelRoot;
-		head = modelRoot.getChild(PART_HEAD);
+		super(modelRoot);
 	}
 	
 	public static LayerDefinition createLayer()
@@ -37,16 +32,5 @@ public class EndermanHeadModel extends SkullModelBase
 		return LayerDefinition.create(meshDef, 32, 32);
 	}
 
-	@Override
-	public void setupAnim(float p_170950_, float p_170951_, float p_170952_)
-	{
-		head.yRot = p_170951_ * ((float)Math.PI / 180.0f);
-		head.xRot = p_170952_ * ((float)Math.PI / 180.0f);
-	}
 
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int p_103113_, int p_103114_, int color) 
-	{
-		root.render(poseStack, vertexConsumer, p_103113_, p_103114_, color);
-	}
 }

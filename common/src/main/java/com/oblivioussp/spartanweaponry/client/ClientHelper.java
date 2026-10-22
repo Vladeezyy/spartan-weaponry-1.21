@@ -1,5 +1,8 @@
 package com.oblivioussp.spartanweaponry.client;
 
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import java.util.function.Function;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.rendertype.RenderType;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -34,7 +37,6 @@ import net.minecraft.client.model.object.skull.SkullModelBase;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 
 import java.util.function.Supplier;
 
@@ -94,7 +96,6 @@ import com.oblivioussp.spartanweaponry.item.ThrowingWeaponItem;
 import com.oblivioussp.spartanweaponry.util.Log;
 import com.oblivioussp.spartanweaponry.util.OilHelper;
 
-import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.object.skull.PiglinHeadModel;
 import net.minecraft.client.model.object.skull.SkullModel;
@@ -102,144 +103,31 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import com.oblivioussp.spartanweaponry.util.PotionHelper;
 import net.minecraft.util.ARGB;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.gui.LayeredDraw;
 
 /** The client registrations of the mod; NeoForge and Fabric call these from their client setup. */
 public class ClientHelper 
 {
 	
 	// 1.21: GUI layers (1.20.1: Forge overlays with the same render methods)
-	public static final LayeredDraw.Layer LOAD_STATE = (graphics, delta) -> HudLoadState.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
-	public static final LayeredDraw.Layer QUIVER_AMMO = (graphics, delta) -> HudQuiverAmmo.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
-	public static final LayeredDraw.Layer OIL_USES = (graphics, delta) -> HudOilUses.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
-	public static final LayeredDraw.Layer NEW_CROSSHAIR = (graphics, delta) -> HudCrosshair.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
+	public static final HudLayer LOAD_STATE = (graphics, delta) -> HudLoadState.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
+	public static final HudLayer QUIVER_AMMO = (graphics, delta) -> HudQuiverAmmo.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
+	public static final HudLayer OIL_USES = (graphics, delta) -> HudOilUses.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
+	public static final HudLayer NEW_CROSSHAIR = (graphics, delta) -> HudCrosshair.render(Minecraft.getInstance().gui, graphics, delta.getGameTimeDeltaPartialTick(false), graphics.guiWidth(), graphics.guiHeight());
 	
-	// 1.21: item colours are ARGB (an alpha of 0 hides the layer); -1 = no tint
-	public static final ItemColor COLOR_TIPPED_PROJECTILE = (stack, idx) -> idx == 1 ? ARGB.opaque(PotionHelper.getColor(stack)) : -1;
-	public static final ItemColor COLOR_OIL = (stack, idx) ->
-		{
-			OilEffect oilEffect = OilHelper.getOilFromStack(stack);
-			return idx == 1 ? ARGB.opaque(oilEffect.getColor(stack)) : -1;
-		};
-	
-	public static void registerItemColoursHandler(BiConsumer<ItemColor, Item[]> ev)
+	/** A HUD layer (NeoForge GuiLayer, Fabric HudElement). */
+	@FunctionalInterface
+	public interface HudLayer
 	{
-		ev.accept(COLOR_TIPPED_PROJECTILE, new Item[] {ModItems.TIPPED_WOODEN_ARROW.get(), 
-				ModItems.TIPPED_COPPER_ARROW.get(),
-				ModItems.TIPPED_IRON_ARROW.get(),
-				ModItems.TIPPED_DIAMOND_ARROW.get(),
-				ModItems.TIPPED_NETHERITE_ARROW.get(),
-				ModItems.TIPPED_BOLT.get(),
-				ModItems.TIPPED_COPPER_BOLT.get(),
-				ModItems.TIPPED_DIAMOND_BOLT.get(),
-				ModItems.TIPPED_NETHERITE_BOLT.get()});
-		ev.accept(COLOR_OIL, new Item[] {ModItems.WEAPON_OIL.get()});
+		void render(GuiGraphics graphics, DeltaTracker delta);
 	}
 	
-	
-	public static void registerMeleeWeaponPropertyOverrides(SwordBaseItem meleeWeapon)
-	{
-		PENDING_PROPERTIES.add(() ->
-		{
-			itemProperty(meleeWeapon, ModelOverrides.BLOCKING, (stack, world, living, value) ->
-			{
-				return ToolAction.canPerform(stack, ModToolActions.MELEE_BLOCK) &&  living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0f : 0.0f;
-			});
-			Item weapon = meleeWeapon.getAsItem();
-			itemProperty(weapon, ModelOverrides.THROWING, (stack, world, living, value) ->
-			{
-				if(living == null || !meleeWeapon.hasWeaponTrait(WeaponTraits.THROWABLE.get()) || !stack.is(living.getUseItem().getItem()))	return 0.0f;
-				return living.getTicksUsingItem() > 0 ? 1.0f : 0.0f;
-			});
-		});
-	}
-
-	public static void registerHeavyCrossbowPropertyOverrides(HeavyCrossbowItem crossbow)
-	{
-		PENDING_PROPERTIES.add(() ->
-		{
-			itemProperty(crossbow, ModelOverrides.PULL, (stack, world, living, value) ->
-			{
-				if(living != null /*&& stack.getItem() == crossbow*/)
-					return crossbow.isLoaded(stack) ? 0.0f : (float)(crossbow.getLoadingTicks(stack, living)) / crossbow.getFullLoadTicks(stack);
-				return 0.0f;
-			});
-			itemProperty(crossbow, ModelOverrides.PULLING, (stack, world, living, value) ->
-			{
-				return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0f : 0.0f;
-			});
-			itemProperty(crossbow, ModelOverrides.CHARGED, (stack, world, living, value) ->
-			{
-				return crossbow.isLoaded(stack) ? 1.0f : 0.0f;
-			});
-		});
-	}
-	
-	public static void registerLongbowPropertyOverrides(LongbowItem longbow)
-	{
-		PENDING_PROPERTIES.add(() ->
-		{
-			itemProperty(longbow, ModelOverrides.PULLING, (stack, world, living, value) ->
-			{
-				return living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0f : 0.0f;
-			});
-			itemProperty(longbow, ModelOverrides.PULL, (stack, world, shooter, value) -> 
-			{
-				return shooter != null && shooter.getUseItem() == stack ? longbow.getNockProgress(stack, shooter) : 0.0f;
-			});
-		});
-	}
-	
-	public static void registerThrowingWeaponPropertyOverrides(ThrowingWeaponItem throwingWeapon)
-	{
-		PENDING_PROPERTIES.add(() ->
-		{
-	//		Log.debug("Registering Throwing Weapon Property Overrides for item: \"" + throwingWeapon.getRegistryName().toString() + "\"");
-			itemProperty(throwingWeapon, ModelOverrides.THROWING, (stack, world, living, value) ->
-			{
-				if(living == null || !stack.is(living.getUseItem().getItem()))	return 0.0f;
-				return living.getTicksUsingItem() > 0 ? 1.0f : 0.0f;
-			});
-			itemProperty(throwingWeapon, ModelOverrides.EMPTY, (stack, world, living, value) ->
-			{
-				return ItemNbt.read(stack).getIntOr(ThrowingWeaponItem.NBT_AMMO_USED, 0) == ((ThrowingWeaponItem)throwingWeapon).getMaxAmmo(stack) ? 1 : 0;
-			});
-		});
-	}
-	
-	public static void registerQuiverPropertyOverrides(QuiverBaseItem quiver)
-	{
-		PENDING_PROPERTIES.add(() ->
-		{
-			itemProperty(quiver, ModelOverrides.ARROW, (stack, world, living, value) ->
-			{
-				return quiver.getAmmoCount(stack);
-			});
-		});
-	}
-	
-/*	public static void registerMeleeWeaponBlockingPropertyOverrides(Item meleeWeapon)
-	{
-		itemProperty(meleeWeapon, Const.MODEL, (stack, world, living, value) ->
-		{
-			return GearData.getModelIndex(stack);
-		});
-		itemProperty(meleeWeapon, Const.BROKEN_PROPERTY, (stack, world, living, value) ->
-		{
-			return GearHelper.isBroken(stack) ? 0 : 1;
-		});
-		itemProperty(meleeWeapon, ModelOverrides.BLOCKING, (stack, world, living, value) ->
-		{
-			return ToolAction.canPerform(stack, ModToolActions.MELEE_BLOCK) && living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0f : 0.0f;
-		});
-	}*/
+	// 1.21.4+: item model properties and tints are in WeaponryItemModels, used by the item definitions
 	
 	public static void registerEntityRenders(RendererRegistrar ev)
 	{
@@ -285,33 +173,27 @@ public class ClientHelper
 	}
 	
 	
-	/** NeoForge: EntityRenderersEvent.CreateSkullModels, Fabric: a mixin in SkullBlockRenderer.createSkullRenderers. */
-	public static void registerSkullModels(EntityModelSet entityModelSet, BiConsumer<SkullBlock.Type, SkullModelBase> ev)
+	/** The models and textures of the extra mob heads (NeoForge: EntityRenderersEvent.CreateSkullModels, Fabric: a
+	 * mixin in SkullBlockRenderer#createModel); 1.21.11 makes the skull models when an item model or the block entity
+	 * renderer asks for them. */
+	public static void registerSkullModels(SkullRegistrar ev)
 	{
-		ev.accept(ExtendedSkullBlock.Types.BLAZE, new SkullModel(entityModelSet.bakeLayer(ModelLayers.BLAZE_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.ENDERMAN, new EndermanHeadModel(entityModelSet.bakeLayer(ModelLayers.ENDERMAN_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.SPIDER, new SkullModel(entityModelSet.bakeLayer(ModelLayers.SPIDER_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.CAVE_SPIDER, new SkullModel(entityModelSet.bakeLayer(ModelLayers.CAVE_SPIDER_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.ZOMBIE_PIGLIN, new PiglinHeadModel(entityModelSet.bakeLayer(ModelLayers.ZOMBIFIED_PIGLIN_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.HUSK, new SkullModel(entityModelSet.bakeLayer(ModelLayers.HUSK_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.STRAY, new SkullModel(entityModelSet.bakeLayer(ModelLayers.STRAY_SKULL)));
-		ev.accept(ExtendedSkullBlock.Types.DROWNED, new SkullModel(entityModelSet.bakeLayer(ModelLayers.DROWNED_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.ILLAGER, new SkullModel(entityModelSet.bakeLayer(ModelLayers.ILLAGER_HEAD)));
-		ev.accept(ExtendedSkullBlock.Types.WITCH, new SkullModel(entityModelSet.bakeLayer(ModelLayers.WITCH_HEAD)));
+		ev.register(ExtendedSkullBlock.Types.BLAZE, (models) -> new SkullModel(models.bakeLayer(ModelLayers.BLAZE_HEAD)), Identifier.withDefaultNamespace("textures/entity/blaze.png"));
+		ev.register(ExtendedSkullBlock.Types.ENDERMAN, (models) -> new EndermanHeadModel(models.bakeLayer(ModelLayers.ENDERMAN_HEAD)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/enderman_head.png"));
+		ev.register(ExtendedSkullBlock.Types.SPIDER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.SPIDER_HEAD)), Identifier.withDefaultNamespace("textures/entity/spider/spider.png"));
+		ev.register(ExtendedSkullBlock.Types.CAVE_SPIDER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.CAVE_SPIDER_HEAD)), Identifier.withDefaultNamespace("textures/entity/spider/cave_spider.png"));
+		ev.register(ExtendedSkullBlock.Types.ZOMBIE_PIGLIN, (models) -> new PiglinHeadModel(models.bakeLayer(ModelLayers.ZOMBIFIED_PIGLIN_HEAD)), Identifier.withDefaultNamespace("textures/entity/piglin/zombified_piglin.png"));
+		ev.register(ExtendedSkullBlock.Types.HUSK, (models) -> new SkullModel(models.bakeLayer(ModelLayers.HUSK_HEAD)), Identifier.withDefaultNamespace("textures/entity/zombie/husk.png"));
+		ev.register(ExtendedSkullBlock.Types.STRAY, (models) -> new SkullModel(models.bakeLayer(ModelLayers.STRAY_SKULL)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/stray_skull.png"));
+		ev.register(ExtendedSkullBlock.Types.DROWNED, (models) -> new SkullModel(models.bakeLayer(ModelLayers.DROWNED_HEAD)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/drowned_head.png"));
+		ev.register(ExtendedSkullBlock.Types.ILLAGER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.ILLAGER_HEAD)), Identifier.withDefaultNamespace("textures/entity/illager/pillager.png"));
+		ev.register(ExtendedSkullBlock.Types.WITCH, (models) -> new SkullModel(models.bakeLayer(ModelLayers.WITCH_HEAD)), Identifier.withDefaultNamespace("textures/entity/witch.png"));
 	}
 	
-	public static void registerSkullTextures()
+	@FunctionalInterface
+	public interface SkullRegistrar
 	{
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.BLAZE, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/blaze.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ENDERMAN, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/enderman_head.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.SPIDER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/spider/spider.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.CAVE_SPIDER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/spider/cave_spider.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ZOMBIE_PIGLIN, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/piglin/zombified_piglin.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.HUSK, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/zombie/husk.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.STRAY, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/stray_skull.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.DROWNED, Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/drowned_head.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.ILLAGER, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/illager/pillager.png"));
-		SkullBlockRenderer.SKIN_BY_TYPE.put(ExtendedSkullBlock.Types.WITCH, Identifier.fromNamespaceAndPath("minecraft", "textures/entity/witch.png"));
+		void register(SkullBlock.Type type, Function<EntityModelSet, SkullModelBase> model, Identifier texture);
 	}
 	
 	public static void registerScreens(ScreenRegistrar ev)
@@ -320,38 +202,15 @@ public class ClientHelper
 		ev.register(ModMenus.QUIVER_BOLT.get(), QuiverBoltScreen::new);
 	}
 	
-	/** Item model properties, queued by the items' constructors and registered in client setup (1.21) */
-	private static final List<Runnable> PENDING_PROPERTIES = new ArrayList<>();
-	
-	/** ItemProperties.register (NeoForge makes it public, Fabric has its own registry for it). */
-	@FunctionalInterface
-	public interface ItemPropertyRegistrar
-	{
-		void register(Item item, Identifier name, ClampedItemPropertyFunction property);
-	}
-
-	private static ItemPropertyRegistrar propertyRegistrar;
-
-	private static void itemProperty(Item item, Identifier name, ClampedItemPropertyFunction property)
-	{
-		propertyRegistrar.register(item, name, property);
-	}
-
-	public static void registerPendingItemProperties(ItemPropertyRegistrar registrar)
-	{
-		propertyRegistrar = registrar;
-		PENDING_PROPERTIES.forEach(Runnable::run);
-		PENDING_PROPERTIES.clear();
-	}
-	
 	/** AbstractContainerScreen.renderSlotHighlight with a colour (NeoForge adds that overload). */
 	public static void renderSlotHighlight(GuiGraphics guiGraphics, int x, int y, int blitOffset, int colour)
 	{
-		guiGraphics.fillGradient(RenderType.guiOverlay(), x, y, x + 16, y + 16, colour, colour, blitOffset);
+		// 1.21.6+: the GUI is drawn in order, the offset is gone
+		guiGraphics.fill(x, y, x + 16, y + 16, colour);
 	}
 	
 	/** The HUD layers: above everything (aboveAll) or right above the vanilla crosshair (aboveCrosshair). */
-	public static void registerHudOverlays(BiConsumer<Identifier, LayeredDraw.Layer> aboveAll, BiConsumer<Identifier, LayeredDraw.Layer> aboveCrosshair)
+	public static void registerHudOverlays(BiConsumer<Identifier, HudLayer> aboveAll, BiConsumer<Identifier, HudLayer> aboveCrosshair)
 	{
 		aboveAll.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "load_state"), LOAD_STATE);
 		aboveAll.accept(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "quiver_ammo"), QUIVER_AMMO);
@@ -374,7 +233,7 @@ public class ClientHelper
 	{
 		<T extends Entity> void entity(EntityType<? extends T> type, EntityRendererProvider<T> provider);
 
-		<T extends BlockEntity> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T> provider);
+		<T extends BlockEntity, S extends BlockEntityRenderState> void blockEntity(BlockEntityType<? extends T> type, BlockEntityRendererProvider<T, S> provider);
 	}
 
 	/** MenuScreens.register. */

@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.gui;
 
+import org.joml.Matrix3x2fStack;
 import net.minecraft.core.Holder;
 
 import org.joml.Matrix4fStack;
@@ -18,7 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
@@ -61,25 +61,18 @@ public class HudOilUses
 		offsetX = AlignmentHelper.getAlignedX(align, ClientConfig.INSTANCE.oilUsesHudOffsetX.get(), 22);
 		offsetY = AlignmentHelper.getAlignedY(align, ClientConfig.INSTANCE.oilUsesHudOffsetY.get(), 22);
 
-		Matrix4fStack poseStack = RenderSystem.getModelViewStack();
-		poseStack.pushMatrix();
-        poseStack.translate((float)(0.0d), (float)(0.0d), (float)(200.0d));
 //        MultiBufferSource.BufferSource renderBuffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.enableBlend();
         
         guiGraphics.renderFakeItem(oilStack, offsetX - 17, offsetY);
         
-		PoseStack guiPose = guiGraphics.pose();
-		guiPose.pushPose();
-		guiPose.setIdentity();
-        guiGraphics.drawString(font, usesStr, offsetX , offsetY + 6, 0xFFFFFF);
-		guiPose.popPose();
+		Matrix3x2fStack guiPose = guiGraphics.pose();
+		guiPose.pushMatrix();
+		guiPose.identity();
+        guiGraphics.drawString(font, usesStr, offsetX , offsetY + 6, 0xFFFFFFFF);
+		guiPose.popMatrix();
 //		font.drawInBatch(usesStr, offsetX , offsetY + 6, 0xFFFFFF, true, poseStack.last().pose(), renderBuffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
 		
 //		renderBuffer.endBatch();
-		poseStack.popMatrix();
 	}
 }

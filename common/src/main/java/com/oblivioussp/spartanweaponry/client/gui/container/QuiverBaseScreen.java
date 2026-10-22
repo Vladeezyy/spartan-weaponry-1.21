@@ -1,5 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.gui.container;
 
+import net.minecraft.client.renderer.RenderPipelines;
 import com.oblivioussp.spartanweaponry.client.ClientHelper;
 
 import com.oblivioussp.spartanweaponry.client.gui.components.TexturedButton;
@@ -27,7 +28,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -135,11 +135,9 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
 	{
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		guiGraphics.blit(texture, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
 		int offhandY = ammoSlots == Defaults.SlotsQuiverHuge ? 122 : 104;
-		guiGraphics.blit(texture, leftPos - 27, topPos + offhandY, 178, offhandY, 27, 29);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos - 27, topPos + offhandY, 178, offhandY, 27, 29, 256, 256);
 
 		Slot highlightedSlot = menu.slots.get(prioritySlot);
 		ClientHelper.renderSlotHighlight(guiGraphics, leftPos + highlightedSlot.x, topPos + highlightedSlot.y, 0, 0x8040C040);
@@ -149,8 +147,8 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) 
 	{
 		String name = quiver.getHoverName().getString();
-		guiGraphics.drawString(font, quiver.getHoverName(), imageWidth / 2 - font.width(name) / 2, 5, 0x404040, false);
-		guiGraphics.drawString(font, playerInventoryTitle, 8, 42 + (ammoSlots == Defaults.SlotsQuiverHuge ? 18 : 0), 0x404040, false);
+		guiGraphics.drawString(font, quiver.getHoverName(), imageWidth / 2 - font.width(name) / 2, 5, 0xFF404040, false);
+		guiGraphics.drawString(font, playerInventoryTitle, 8, 42 + (ammoSlots == Defaults.SlotsQuiverHuge ? 18 : 0), 0xFF404040, false);
 	}
 	
 /*	protected void drawButtonTooltip(Button button, PoseStack poseStack, int x, int y)

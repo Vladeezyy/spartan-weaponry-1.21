@@ -1,6 +1,5 @@
 package com.oblivioussp.spartanweaponry.event;
 
-import com.oblivioussp.spartanweaponry.platform.Platform;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.List;
 import com.oblivioussp.spartanweaponry.api.IReloadable;
 import com.oblivioussp.spartanweaponry.api.ReloadableHandler;
 import com.oblivioussp.spartanweaponry.api.WeaponMaterial;
-import com.oblivioussp.spartanweaponry.client.OilCoatingColours;
 import com.oblivioussp.spartanweaponry.init.ModOilRecipes;
 import com.oblivioussp.spartanweaponry.util.Log;
 import com.oblivioussp.spartanweaponry.util.WeaponArchetype;
@@ -26,8 +24,6 @@ public class ReloadResourceEventHandler
 		long start = System.nanoTime();
 		// Enforce an order of materials being reloaded first to ensure that items can fetch the appropriate traits from their materials
 		// to prevent NullPointerExceptions!
-		if(Platform.INSTANCE.isClient())
-			OilCoatingColours.reload();
 		materialReloadList.forEach((material) -> material.reload());
 		WeaponArchetype.ALL_ARCHETYPES.forEach((archetype) -> archetype.reload());
 		itemReloadList.forEach((item) -> item.reload());

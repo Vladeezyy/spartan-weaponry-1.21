@@ -1,6 +1,7 @@
 package com.oblivioussp.spartanweaponry.client.gui;
 
-import org.joml.Matrix4fStack;
+import org.joml.Matrix3x2fStack;
+import net.minecraft.client.renderer.RenderPipelines;
 
 import com.oblivioussp.spartanweaponry.util.ItemNbt;
 
@@ -16,7 +17,6 @@ import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -41,14 +41,8 @@ public class HudCrosshairThrowingWeapon
 				offset *= (1.0f - percentage);
 			}
 			
-			Matrix4fStack poseStack = RenderSystem.getModelViewStack();
-			poseStack.pushMatrix();
 			
-			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
-			RenderSystem.enableBlend();
 	
-	        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 //	        RenderSystem.setShaderTexture(0, HudCrosshair.CROSSHAIR_TEXTURES);
 			
 			if(ClientConfig.INSTANCE.forceCompatibilityCrosshairs.get())
@@ -57,22 +51,20 @@ public class HudCrosshairThrowingWeapon
 				int crossOriginY = (mc.getWindow().getGuiScaledHeight() - 15) / 2;
 				
 				offset = Mth.floor(Math.sqrt((offset * offset) / 2.0));
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 - offset, 11, 12, 4, 4);			// Top-Left Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 - offset, 18, 12, 4, 4);		// Top-Right Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 + 7 + offset, 11, 19, 4, 4);		// Bottom-Left Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 + 7 + offset, 18, 19, 4, 4);	// Bottom-Right Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 - offset, 11, 12, 4, 4, 256, 256);			// Top-Left Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 - offset, 18, 12, 4, 4, 256, 256);		// Top-Right Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 + 7 + offset, 11, 19, 4, 4, 256, 256);		// Bottom-Left Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 + 7 + offset, 18, 19, 4, 4, 256, 256);	// Bottom-Right Part
 			}
 			else
 			{
 				int centreOriginX = (mc.getWindow().getGuiScaledWidth() - 9) / 2;
 				int centreOriginY = (mc.getWindow().getGuiScaledHeight() - 5) / 2;
 				
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY - 2, 12, 1, 9, 5);
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY - 2 - 3 - offset, 12, 1, 9, 5);
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY - 2, 12, 1, 9, 5, 256, 256);
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY - 2 - 3 - offset, 12, 1, 9, 5, 256, 256);
 			}
 	        
-	        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 //	        RenderSystem.setShaderTexture(0, HudCrosshair.ICONS_LOCATION);
 	        
 	        // Render the attack indicator if applicable
@@ -92,17 +84,16 @@ public class HudCrosshairThrowingWeapon
 	
 	            if (flag)
 	            {
-	            	guiGraphics.blitSprite(HudCrosshair.ATTACK_INDICATOR_FULL, j, i, 16, 16);
+	            	guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, HudCrosshair.ATTACK_INDICATOR_FULL, j, i, 16, 16);
 	            }
 	            else if (f < 1.0F)
 	            {
 	                int k = (int)(f * 17.0F);
-	                guiGraphics.blitSprite(HudCrosshair.ATTACK_INDICATOR_BACKGROUND, j, i, 16, 4);
-	                guiGraphics.blitSprite(HudCrosshair.ATTACK_INDICATOR_PROGRESS, 16, 4, 0, 0, j, i, k, 4);
+	                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, HudCrosshair.ATTACK_INDICATOR_BACKGROUND, j, i, 16, 4);
+	                guiGraphics.blitSprite(RenderPipelines.CROSSHAIR, HudCrosshair.ATTACK_INDICATOR_PROGRESS, 16, 4, 0, 0, j, i, k, 4);
 	            }
 	        }
 
-	        RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 	        
 	        if(ItemNbt.read(equippedStack).contains(ThrowingWeaponItem.NBT_AMMO_USED))
 	        {
@@ -117,16 +108,15 @@ public class HudCrosshairThrowingWeapon
 				int textY = screenHeight / 2 + 20;
 //				mc.font.drawInBatch(text, textX - (mc.font.width(text) / 2), textY, 0xFFFFFFFF,
 //						true, poseStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
-				PoseStack guiPose = guiGraphics.pose();
-				guiPose.pushPose();
-				guiPose.setIdentity();
+				Matrix3x2fStack guiPose = guiGraphics.pose();
+				guiPose.pushMatrix();
+				guiPose.identity();
 				guiGraphics.drawString(mc.font, text, textX - (mc.font.width(text) / 2), textY, 0xFFFFFFFF);
-				guiPose.popPose();
+				guiPose.popMatrix();
 
 //				buffer.endBatch();
 	        }
 	        
-			poseStack.popMatrix();
 		}
 	}
 

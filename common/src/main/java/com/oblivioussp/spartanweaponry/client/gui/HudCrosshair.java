@@ -1,11 +1,10 @@
 package com.oblivioussp.spartanweaponry.client.gui;
 
+import net.minecraft.client.gui.components.debug.DebugScreenEntries;
 import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.util.Mth;
 
-import org.joml.Matrix4fStack;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
@@ -13,7 +12,6 @@ import com.oblivioussp.spartanweaponry.compat.shouldersurfing.ShoulderSurfingCom
 import com.oblivioussp.spartanweaponry.item.IHudCrosshair;
 import com.oblivioussp.spartanweaponry.util.ClientConfig;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.GuiGraphics;
@@ -72,24 +70,13 @@ public class HudCrosshair
 				if((options.getCameraType().isFirstPerson() || Platform.INSTANCE.isModLoaded("leawind_third_person") || (!ClientConfig.INSTANCE.disableShoulderSurfingIntegration.get() && Platform.INSTANCE.isModLoaded("shouldersurfing") && ShoulderSurfingCompat.isShoulderSurfing())) 				
 						&& (mc.gameMode.getPlayerMode() != GameType.SPECTATOR || canRenderCrosshairForSpectator(mc)))
 				{
-					// Do the debug rendering for crosshairs even with the custom crosshairs enabled
-		            if (mc.getDebugOverlay().showDebugScreen() && !options.hideGui && !player.isReducedDebugInfo() && !options.reducedDebugInfo().get())
-		            {
-		               Camera camera = mc.gameRenderer.getMainCamera();
-		               Matrix4fStack posestack = RenderSystem.getModelViewStack();
-		               posestack.pushMatrix();
-		               posestack.mul(guiGraphics.pose().last().pose());
-		               posestack.translate((float)(screenWidth / 2), (float)(screenHeight / 2), 0.0f);
-		               posestack.rotateX(-camera.getXRot() * Mth.DEG_TO_RAD);
-		               posestack.rotateY(camera.getYRot() * Mth.DEG_TO_RAD);
-		               posestack.scale(-1.0F, -1.0F, -1.0F);
-		               RenderSystem.applyModelViewMatrix();
-		               RenderSystem.renderCrosshair(10);
-		               posestack.popMatrix();
-		               RenderSystem.applyModelViewMatrix();
-		            }
-		            else
-		            	crosshairItem.getCrosshairHudElement().render(gui, guiGraphics, partialTicks, screenWidth, screenHeight, equipStack);
+					// 1.21.9+: the game renderer draws the debug 3D crosshair in the world, when that debug entry is on
+					if(!mc.debugEntries.isCurrentlyEnabled(DebugScreenEntries.THREE_DIMENSIONAL_CROSSHAIR))
+					{
+						// A stratum of its own, as vanilla: the crosshair inverts what is drawn below it
+						guiGraphics.nextStratum();
+						crosshairItem.getCrosshairHudElement().render(gui, guiGraphics, partialTicks, screenWidth, screenHeight, equipStack);
+					}
 				}
 			}
 		}

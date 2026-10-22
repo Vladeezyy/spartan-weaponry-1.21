@@ -1,7 +1,8 @@
 package com.oblivioussp.spartanweaponry.compat.jei;
 
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.oblivioussp.spartanweaponry.platform.Platform;
-import java.util.Arrays;
 
 import com.oblivioussp.spartanweaponry.api.tags.ModItemTags;
 import com.oblivioussp.spartanweaponry.init.ModItems;
@@ -44,7 +45,7 @@ public class SpartanWeaponryPlugin implements IModPlugin
 		subtypeRegistry.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModItems.TIPPED_COPPER_BOLT.get(), TippedProjectileSubtypeInterpreter.INSTANCE);
 		subtypeRegistry.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModItems.TIPPED_DIAMOND_BOLT.get(), TippedProjectileSubtypeInterpreter.INSTANCE);
 		subtypeRegistry.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModItems.TIPPED_NETHERITE_BOLT.get(), TippedProjectileSubtypeInterpreter.INSTANCE);*/
-		subtypeRegistry.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModItems.WEAPON_OIL.get(), WeaponOilSubtypeInterpreter.INSTANCE);
+		subtypeRegistry.registerSubtypeInterpreter(ModItems.WEAPON_OIL.get(), WeaponOilSubtypeInterpreter.INSTANCE);
 	}
 
 	public void registerRecipes(IRecipeRegistration reg)
@@ -52,30 +53,30 @@ public class SpartanWeaponryPlugin implements IModPlugin
 		// Does EMI already cover this?
 //		if(Platform.INSTANCE.isModLoaded("emi")) return;
 		
-		reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.BOLT.get(), ModItems.TIPPED_BOLT.get()));
+		reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.BOLT.get(), ModItems.TIPPED_BOLT.get()));
 		
 		if (!Config.INSTANCE.disableNewArrowRecipes.get())
 		{
-			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.WOODEN_ARROW.get(), ModItems.TIPPED_WOODEN_ARROW.get()));
-			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.IRON_ARROW.get(), ModItems.TIPPED_IRON_ARROW.get()));
+			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.WOODEN_ARROW.get(), ModItems.TIPPED_WOODEN_ARROW.get()));
+			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.IRON_ARROW.get(), ModItems.TIPPED_IRON_ARROW.get()));
 		} 
 		if (!Config.INSTANCE.disableCopperAmmoRecipes.get()) 
 		{
-			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.COPPER_BOLT.get(), ModItems.TIPPED_COPPER_BOLT.get()));
+			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.COPPER_BOLT.get(), ModItems.TIPPED_COPPER_BOLT.get()));
 			if (!((Boolean)Config.INSTANCE.disableNewArrowRecipes.get()).booleanValue())
-				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.COPPER_ARROW.get(), ModItems.TIPPED_COPPER_ARROW.get())); 
+				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.COPPER_ARROW.get(), ModItems.TIPPED_COPPER_ARROW.get())); 
 		} 
 		if (!Config.INSTANCE.disableDiamondAmmoRecipes.get()) 
 		{
-			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.DIAMOND_BOLT.get(), ModItems.TIPPED_DIAMOND_BOLT.get()));
+			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.DIAMOND_BOLT.get(), ModItems.TIPPED_DIAMOND_BOLT.get()));
 			if (!((Boolean)Config.INSTANCE.disableNewArrowRecipes.get()).booleanValue())
-				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.DIAMOND_ARROW.get(), ModItems.TIPPED_DIAMOND_ARROW.get())); 
+				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.DIAMOND_ARROW.get(), ModItems.TIPPED_DIAMOND_ARROW.get())); 
 		} 
 		if (!Config.INSTANCE.disableNetheriteAmmoRecipes.get()) 
 		{
-			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.NETHERITE_BOLT.get(), ModItems.TIPPED_NETHERITE_BOLT.get()));
+			reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.NETHERITE_BOLT.get(), ModItems.TIPPED_NETHERITE_BOLT.get()));
 			if (!((Boolean)Config.INSTANCE.disableNewArrowRecipes.get()).booleanValue())
-				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(ModItems.NETHERITE_ARROW.get(), ModItems.TIPPED_NETHERITE_ARROW.get())); 
+				reg.addRecipes(RecipeTypes.CRAFTING, TippedProjectileRecipeMaker.getRecipes(reg.getVanillaRecipeFactory(), ModItems.NETHERITE_ARROW.get(), ModItems.TIPPED_NETHERITE_ARROW.get())); 
 		}
 		
 //		if(!Platform.INSTANCE.isModLoaded("emi"))
@@ -180,6 +181,6 @@ public class SpartanWeaponryPlugin implements IModPlugin
 	
 	private void removeItemTagFromJEI(IJeiRuntime jeiRuntime, TagKey<Item> tag)
 	{
-		jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, Arrays.asList(Ingredient.of(tag).getItems()));		
+		jeiRuntime.getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, BuiltInRegistries.ITEM.get(tag).map((set) -> set.stream().map(ItemStack::new).toList()).orElse(java.util.List.of()));		
 	}
 }

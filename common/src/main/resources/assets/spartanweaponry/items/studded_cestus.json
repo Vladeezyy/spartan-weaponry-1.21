@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "spartanweaponry:throwing",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "spartanweaponry:item/studded_cestus_throwing"
+    },
+    "on_false": {
+      "type": "minecraft:condition",
+      "property": "spartanweaponry:blocking",
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "spartanweaponry:item/studded_cestus_blocking"
+      },
+      "on_false": {
+        "type": "minecraft:model",
+        "model": "spartanweaponry:item/studded_cestus"
+      }
+    }
+  }
+}

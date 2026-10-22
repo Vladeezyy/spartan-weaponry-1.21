@@ -1011,6 +1011,7 @@
   "effect.spartanweaponry.ender_disruption": "末影干扰",
   "effect.spartanweaponry.ender_disruption.description": "阻止受影响的生物使用末影珍珠、紫颂果和末影生物的自然能力传送",
   "key.spartanweaponry.category.title": "斯巴达武器",
+  "key.category.spartanweaponry.title": "斯巴达武器",
   "key.spartanweaponry.access_quiver": "访问已装备箭袋",
   "attribute.spartanweaponry.attack_reach": "攻击距离",
   "dev.spartanweaponry.wip": "目前正在进行中（WIP）",

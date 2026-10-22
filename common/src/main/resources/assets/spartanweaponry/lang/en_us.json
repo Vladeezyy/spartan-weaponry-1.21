@@ -978,6 +978,7 @@
   "effect.spartanweaponry.ender_disruption": "Ender Disruption",
   "effect.spartanweaponry.ender_disruption.description": "Prevents inflicted mobs from teleporting using Ender Pearls, Chorus Fruit and natural abilities of Ender mobs",
   "key.spartanweaponry.category.title": "Spartan Weaponry",
+  "key.category.spartanweaponry.title": "Spartan Weaponry",
   "key.spartanweaponry.access_quiver": "Access Equipped Quiver",
   "attribute.spartanweaponry.attack_reach": "Attack Reach",
   "dev.spartanweaponry.wip": "Currently a Work In Progress (WIP)",

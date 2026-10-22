@@ -1,31 +1,22 @@
 package com.oblivioussp.spartanweaponry.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
-public abstract class QuiverModelBase extends Model
+
+
+/**
+ * 1.21.2+: a model with a render state, here the number of arrows or bolts to show (1.21.1: renderToBuffer and
+ * renderArrows); the arrow parts are hidden in setupAnim and the whole root is drawn.
+ */
+public abstract class QuiverModelBase extends Model<Integer>
 {
-	protected int arrowsToRender = 0;
-
-	protected ModelPart root;
+	protected final ModelPart root;
 	
 	public QuiverModelBase(ModelPart rootModel) 
 	{
-		super(RenderType::entityCutoutNoCull);
-//		super(RenderType::getEntitySolid);
+		super(rootModel, RenderTypes::entityCutoutNoCull);
 		root = rootModel;
 	}
-    
-//    public abstract void rotate(HumanoidModel<LivingEntity> model);
-
-    public void setArrowsToRender(int arrowsToRender) 
-    {
-		this.arrowsToRender = arrowsToRender;
-	}
-    
-    protected abstract void renderArrows(int arrows, PoseStack mStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color);
 }

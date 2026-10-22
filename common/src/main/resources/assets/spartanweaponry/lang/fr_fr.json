@@ -596,6 +596,7 @@
   "message.spartanweaponry.ammo_collect_toggle": "Collecte de munitions : %s",
   "message.spartanweaponry.quiver_not_found": "Aucun carquois trouvé !",
   "key.spartanweaponry.category.title": "Spartan Weaponry",
+  "key.category.spartanweaponry.title": "Spartan Weaponry",
   "key.spartanweaponry.access_quiver": "Accès au carquois équipé",
   "attribute.spartanweaponry.attack_reach": "Attaquer portée",
   "dev.spartanweaponry.wip": "Actuellement en cours de développement (WIP)",

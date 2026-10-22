@@ -1,6 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.gui;
 
-import org.joml.Matrix4fStack;
+import net.minecraft.client.renderer.RenderPipelines;
 
 import com.oblivioussp.spartanweaponry.util.ItemNbt;
 
@@ -14,7 +14,6 @@ import com.oblivioussp.spartanweaponry.util.ClientConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.client.gui.Gui;
@@ -41,13 +40,7 @@ public class HudCrosshairHeavyCrossbow
 				offset *= (1.0f - percentage);
 			}
 
-            Matrix4fStack poseStack = RenderSystem.getModelViewStack();
-			poseStack.pushMatrix();
 			
-			RenderSystem.blendFuncSeparate(SourceFactor.ONE_MINUS_DST_COLOR, DestFactor.ONE_MINUS_SRC_COLOR, SourceFactor.ONE, DestFactor.ZERO);
-			RenderSystem.enableBlend();
-	        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-	        RenderSystem.setShader(GameRenderer::getPositionTexShader);
 //	        RenderSystem.setShaderTexture(0, );
 //            gui.setupOverlayRenderState(true, false);
 			
@@ -57,10 +50,10 @@ public class HudCrosshairHeavyCrossbow
 				int crossOriginY = (mc.getWindow().getGuiScaledHeight() - 15) / 2;
 				
 				offset = Mth.floor(Math.sqrt((offset * offset) / 2.0));
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 - offset, 11, 12, 4, 4);	// Top-Left Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 - offset, 18, 12, 4, 4);	// Top-Right Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 + 7 + offset, 11, 19, 4, 4);	// Bottom-Left Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 + 7 + offset, 18, 19, 4, 4);	// Bottom-Right Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 - offset, 11, 12, 4, 4, 256, 256);	// Top-Left Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 - offset, 18, 12, 4, 4, 256, 256);	// Top-Right Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 - offset, crossOriginY + 2 + 7 + offset, 11, 19, 4, 4, 256, 256);	// Bottom-Left Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, crossOriginX + 2 + 7 + offset, crossOriginY + 2 + 7 + offset, 18, 19, 4, 4, 256, 256);	// Bottom-Right Part
 			}
 			else
 			{
@@ -68,15 +61,13 @@ public class HudCrosshairHeavyCrossbow
 				int centreOriginY = (mc.getWindow().getGuiScaledHeight() - 3) / 2;
 				
 				//offset = 0;
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY, 4, 4, 3, 3);		// Center Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 1, centreOriginY - 4 - offset, 5, 0, 1, 4);	// Top Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 1, centreOriginY + 3 + offset, 5, 7, 1, 4);	// Bottom Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX - 4 - offset, centreOriginY + 1, 0, 5, 4, 1);	// Left Part
-				guiGraphics.blit(HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 3 + offset, centreOriginY + 1, 0, 5, 4, 1);	// Right Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX, centreOriginY, 4, 4, 3, 3, 256, 256);		// Center Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 1, centreOriginY - 4 - offset, 5, 0, 1, 4, 256, 256);	// Top Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 1, centreOriginY + 3 + offset, 5, 7, 1, 4, 256, 256);	// Bottom Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX - 4 - offset, centreOriginY + 1, 0, 5, 4, 1, 256, 256);	// Left Part
+				guiGraphics.blit(RenderPipelines.CROSSHAIR, HudCrosshair.CROSSHAIR_TEXTURES, centreOriginX + 3 + offset, centreOriginY + 1, 0, 5, 4, 1, 256, 256);	// Right Part
 			}
 			
-			RenderSystem.blendFuncSeparate(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA, SourceFactor.ONE, DestFactor.ZERO);
-			poseStack.popMatrix();
 		}
 	}
 }

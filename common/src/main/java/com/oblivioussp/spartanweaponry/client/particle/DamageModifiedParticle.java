@@ -3,18 +3,19 @@ package com.oblivioussp.spartanweaponry.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.SingleQuadParticle;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-public class DamageModifiedParticle extends TextureSheetParticle 
+public class DamageModifiedParticle extends SingleQuadParticle 
 {
 	DamageModifiedParticle(ClientLevel levelIn, double xPos, double yPos, double zPos,
-			double xDel, double yDel, double zDel) 
+			double xDel, double yDel, double zDel, TextureAtlasSprite spriteIn) 
 	{
-		super(levelIn, xPos, yPos, zPos, xDel, yDel, zDel);
+		super(levelIn, xPos, yPos, zPos, xDel, yDel, zDel, spriteIn);
 		friction = 0.7f;
 		gravity = 0.5f;
 		xd *= 0.1f;
@@ -42,9 +43,9 @@ public class DamageModifiedParticle extends TextureSheetParticle
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() 
+	public SingleQuadParticle.Layer getLayer() 
 	{
-		return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+		return SingleQuadParticle.Layer.OPAQUE;
 	}
 
 	public static class DamageBoostedProvider implements ParticleProvider<SimpleParticleType>
@@ -58,13 +59,12 @@ public class DamageModifiedParticle extends TextureSheetParticle
 
 		@Override
 		public Particle createParticle(SimpleParticleType typeIn, ClientLevel levelIn, double xPos,
-				double yPos, double zPos, double xDel, double yDel, double zDel)
+				double yPos, double zPos, double xDel, double yDel, double zDel, RandomSource randomIn)
 		{
-			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel);
+			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel, spriteSet.get(randomIn));
 			particle.rCol = 0.5f;
 			particle.gCol = 1.0f;
 			particle.bCol = 0.2f;
-			particle.pickSprite(spriteSet);
 			return particle;
 		}
 	}
@@ -80,13 +80,12 @@ public class DamageModifiedParticle extends TextureSheetParticle
 
 		@Override
 		public Particle createParticle(SimpleParticleType typeIn, ClientLevel levelIn, double xPos,
-				double yPos, double zPos, double xDel, double yDel, double zDel)
+				double yPos, double zPos, double xDel, double yDel, double zDel, RandomSource randomIn)
 		{
-			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel);
+			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel, spriteSet.get(randomIn));
 			particle.rCol = 0.5f;
 			particle.gCol = 0.2f;
 			particle.bCol = 0.5f;
-			particle.pickSprite(spriteSet);
 			return particle;
 		}
 	}
@@ -102,13 +101,12 @@ public class DamageModifiedParticle extends TextureSheetParticle
 
 		@Override
 		public Particle createParticle(SimpleParticleType typeIn, ClientLevel levelIn, double xPos,
-				double yPos, double zPos, double xDel, double yDel, double zDel)
+				double yPos, double zPos, double xDel, double yDel, double zDel, RandomSource randomIn)
 		{
-			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel);
+			DamageModifiedParticle particle = new DamageModifiedParticle(levelIn, xPos, yPos, zPos, xDel, yDel, zDel, spriteSet.get(randomIn));
 			particle.rCol = 1.0f;
 			particle.gCol = 0.75f;
 			particle.bCol = 0.25f;
-			particle.pickSprite(spriteSet);
 			return particle;
 		}
 	}

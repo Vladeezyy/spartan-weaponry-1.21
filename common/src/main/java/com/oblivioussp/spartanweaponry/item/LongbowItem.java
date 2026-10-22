@@ -28,7 +28,6 @@ import com.oblivioussp.spartanweaponry.api.WeaponMaterial;
 import com.oblivioussp.spartanweaponry.api.trait.IGenericTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.IRangedTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.util.ClientConfig;
 import com.oblivioussp.spartanweaponry.util.Defaults;
 import com.oblivioussp.spartanweaponry.util.WeaponType;
@@ -77,8 +76,6 @@ public class LongbowItem extends BowItem implements IReloadable
 		this.material = material;
 		maxVelocity = Defaults.MultiplierLongbow;
 		
-		if(Platform.INSTANCE.isClient())
-			ClientHelper.registerLongbowPropertyOverrides(this);
 		
 		ReloadableHandler.addToItemReloadList(this);
 	}

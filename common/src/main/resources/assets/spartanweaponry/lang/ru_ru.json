@@ -950,6 +950,7 @@
   "effect.spartanweaponry.ender_disruption": "Нарушение края",
   "effect.spartanweaponry.ender_disruption.description": "Предотвращает телепортацию пораженных мобов с помощью жемчуга Края, плода коруса и естественных способностей мобов Края.",
   "key.spartanweaponry.category.title": "Спартанское вооружение",
+  "key.category.spartanweaponry.title": "Спартанское вооружение",
   "key.spartanweaponry.access_quiver": "Доступ к снаряжённому колчану.",
   "attribute.spartanweaponry.attack_reach": "Дальность атаки",
   "dev.spartanweaponry.wip": "В данный момент в стадии разработки (ВСР).",

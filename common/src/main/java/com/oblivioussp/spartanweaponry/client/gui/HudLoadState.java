@@ -47,7 +47,7 @@ public class HudLoadState
 				if(!isOffhand)
 				{
 					// An optimization/bug-fix; the current main-hand item slot in the hotbar is already stored. Let's use that!
-					loadSlot = player.getInventory().selected;
+					loadSlot = player.getInventory().getSelectedSlot();
 				}
 			
 				int posX = isOffhand ? mc.getWindow().getGuiScaledWidth() / 2 - 117 : mc.getWindow().getGuiScaledWidth() / 2 - 88 + (loadSlot * 20);
@@ -60,7 +60,7 @@ public class HudLoadState
 					posY = mc.getWindow().getGuiScaledHeight() - 3 - Mth.clamp(Mth.floor((16 * loadProgress) + partialTicks), 0, 16);
 		
 				if(loadSlot != -1 || isOffhand)
-					guiGraphics.fill(RenderType.guiOverlay(), posX, posY, posX + 16, (mc.getWindow().getGuiScaledHeight() - 19) + 16, colour);
+					guiGraphics.fill(posX, posY, posX + 16, (mc.getWindow().getGuiScaledHeight() - 19) + 16, colour);
 			}
 		}
 	}

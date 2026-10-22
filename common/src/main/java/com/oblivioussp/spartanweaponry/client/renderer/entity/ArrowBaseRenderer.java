@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.Identifier;
 
-public class ArrowBaseRenderer<T extends ArrowBaseEntity> extends ArrowRenderer<T> 
+public class ArrowBaseRenderer<T extends ArrowBaseEntity> extends ArrowRenderer<T, ArrowTextureRenderState> 
 {
 	public ArrowBaseRenderer(EntityRendererProvider.Context rendererProvider) 
 	{
@@ -14,9 +14,22 @@ public class ArrowBaseRenderer<T extends ArrowBaseEntity> extends ArrowRenderer<
 	}
 
 	@Override
-	public Identifier getTextureLocation(T entity)
+	public ArrowTextureRenderState createRenderState()
 	{
-		return entity.getTexture();
+		return new ArrowTextureRenderState();
+	}
+
+	@Override
+	public void extractRenderState(T entity, ArrowTextureRenderState state, float partialTicks)
+	{
+		super.extractRenderState(entity, state, partialTicks);
+		state.texture = entity.getTexture();
+	}
+
+	@Override
+	protected Identifier getTextureLocation(ArrowTextureRenderState state)
+	{
+		return state.texture;
 	}
 
 }

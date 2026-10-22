@@ -1,0 +1,6 @@
+{
+  "parent": "spartanweaponry:item/base/scythe_throwing",
+  "textures": {
+    "layer0": "spartanweaponry:item/coating/scythe"
+  }
+}

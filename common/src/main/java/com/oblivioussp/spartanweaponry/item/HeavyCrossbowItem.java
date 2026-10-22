@@ -2,7 +2,6 @@ package com.oblivioussp.spartanweaponry.item;
 
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
-import com.oblivioussp.spartanweaponry.platform.Platform;
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
@@ -43,7 +42,6 @@ import com.oblivioussp.spartanweaponry.api.tags.ModItemTags;
 import com.oblivioussp.spartanweaponry.api.trait.IGenericTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.IRangedTraitCallback;
 import com.oblivioussp.spartanweaponry.api.trait.WeaponTrait;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.client.gui.HudCrosshairHeavyCrossbow;
 import com.oblivioussp.spartanweaponry.client.gui.ICrosshairOverlay;
 import com.oblivioussp.spartanweaponry.entity.projectile.BoltEntity;
@@ -109,8 +107,6 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 		aimTicks = Defaults.CrossbowInaccuracyTicks;
 		
 		// Add property overrides on client only
-		if(Platform.INSTANCE.isClient())
-			ClientHelper.registerHeavyCrossbowPropertyOverrides(this);
 		
 		ReloadableHandler.addToItemReloadList(this);
 	}

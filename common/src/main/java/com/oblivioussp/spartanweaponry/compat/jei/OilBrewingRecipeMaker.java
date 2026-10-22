@@ -39,19 +39,19 @@ public class OilBrewingRecipeMaker
 				ItemStack fromStack = OilHelper.makeOilStack(mix.from);
 				ItemStack toStack = OilHelper.makeOilStack(mix.to);
 				
-				recipes.add(new JeiOilBrewingRecipe(ImmutableList.of(fromStack), ImmutableList.copyOf(mix.brewingIngredient.getItems()), toStack));
+				recipes.add(new JeiOilBrewingRecipe(ImmutableList.of(fromStack), mix.brewingIngredient.items().map(ItemStack::new).toList(), toStack));
 			}
 		}
 		
 		if(!Config.INSTANCE.disableOilRecipes.get() && ModOilRecipes.potionToOilRecipes != null)
 		{
-			for(Holder.Reference<Potion> potion : BuiltInRegistries.POTION.holders().toList())
+			for(Holder.Reference<Potion> potion : BuiltInRegistries.POTION.listElements().toList())
 			{
 				if(OilHelper.isValidPotion(potion))
 				{
 					ItemStack potionStack = PotionContents.createItemStack(Items.POTION, potion);
 					ItemStack oilStack = OilHelper.makePotionOilStack(potion);
-					Identifier potionLocation = potion.key().location();
+					Identifier potionLocation = potion.key().identifier();
 					
 					recipes.add(vanillaRecipeFactoryIn.createBrewingRecipe(ImmutableList.of(new ItemStack(ModItems.GREASE_BALL.get())), ImmutableList.of(potionStack), oilStack, 
 							Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, potionLocation.getNamespace() + "." + potionLocation.getPath() + "_oil_from_brewing")));

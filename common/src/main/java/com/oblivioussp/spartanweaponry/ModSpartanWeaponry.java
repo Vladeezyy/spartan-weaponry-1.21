@@ -3,7 +3,6 @@ package com.oblivioussp.spartanweaponry;
 import com.oblivioussp.spartanweaponry.api.OilEffects;
 import com.oblivioussp.spartanweaponry.api.SpartanWeaponryAPI;
 import com.oblivioussp.spartanweaponry.api.WeaponTraits;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.init.ModBlockEntities;
 import com.oblivioussp.spartanweaponry.init.ModBlocks;
 import com.oblivioussp.spartanweaponry.init.ModCreativeTabs;
@@ -61,10 +60,8 @@ public class ModSpartanWeaponry
 	}
 
 	/** After registration on the client (NeoForge: client setup, on the main thread). */
-	public static void clientSetup(ClientHelper.ItemPropertyRegistrar properties)
+	public static void clientSetup()
 	{
 		Log.info("Setting up Client for " + NAME + "!");
-		ClientHelper.registerSkullTextures();
-		ClientHelper.registerPendingItemProperties(properties);
 	}
 }

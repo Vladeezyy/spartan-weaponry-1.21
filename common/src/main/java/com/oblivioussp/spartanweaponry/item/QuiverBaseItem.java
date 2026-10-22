@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerLevel;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
 import net.minecraft.world.item.component.TooltipDisplay;
 import java.util.function.Consumer;
-import com.oblivioussp.spartanweaponry.platform.Platform;
 import net.minecraft.world.entity.Entity;
 
 import net.minecraft.core.HolderLookup;
@@ -27,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.capability.IQuiverItemHandler;
 import com.oblivioussp.spartanweaponry.capability.QuiverItemStackHandler;
-import com.oblivioussp.spartanweaponry.client.ClientHelper;
 import com.oblivioussp.spartanweaponry.init.ModCapabilities;
 import com.oblivioussp.spartanweaponry.inventory.tooltip.QuiverTooltip;
 import com.oblivioussp.spartanweaponry.util.Defaults;
@@ -72,8 +70,6 @@ public abstract class QuiverBaseItem extends Item
 	{
 		super(ItemIds.properties().stacksTo(1));
 		
-		if(Platform.INSTANCE.isClient())
-			ClientHelper.registerQuiverPropertyOverrides(this);
 		
 		ammoSlots = inventorySize;
 	}

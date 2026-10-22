@@ -1,8 +1,6 @@
 package com.oblivioussp.spartanweaponry.client.model;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -115,27 +113,14 @@ public class SmallBoltQuiverModel extends QuiverModelBase
         this.setRotateAngle(arrow_3_2, 0.0F, -0.7853981633974483F, -0.5235987755982988F);*/
 	}
 
-	@Override
-	public void renderToBuffer(PoseStack mStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color)
-	{
-		ImmutableList.of(quiver, strapFront, strapTop, strapBack, strapBottom).forEach((part) -> part.render(mStack, buffer, packedLight, packedOverlay, color));
-	}
 
 	@Override
-	protected void renderArrows(int arrows, PoseStack mStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) 
+	public void setupAnim(Integer arrows)
 	{
-		if(arrows >= 1)
-		{
-			ImmutableList.of(arrow1Part1, arrow1Part2).forEach((part) -> part.render(mStack, buffer, packedLight, packedOverlay, color));
-		}
-		if(arrows >= 2)
-		{
-			ImmutableList.of(arrow2Part1, arrow2Part2).forEach((part) -> part.render(mStack, buffer, packedLight, packedOverlay, color));
-		}
-		if(arrows >= 3)
-		{
-			ImmutableList.of(arrow3Part1, arrow3Part2).forEach((part) -> part.render(mStack, buffer, packedLight, packedOverlay, color));
-		}
+		super.setupAnim(arrows);
+		arrow1Part1.visible = arrow1Part2.visible = arrows >= 1;
+		arrow2Part1.visible = arrow2Part2.visible = arrows >= 2;
+		arrow3Part1.visible = arrow3Part2.visible = arrows >= 3;
 	}
 	
     /*public LightBoltQuiverModel() 

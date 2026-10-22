@@ -978,6 +978,7 @@
   "effect.spartanweaponry.ender_disruption": "Enderstörung",
   "effect.spartanweaponry.ender_disruption.description": "Verhindert, dass betroffene Mobs sich mit Enderperlen, Chorusfrüchten oder den Fähigkeiten von Ender-Mobs teleportieren",
   "key.spartanweaponry.category.title": "Spartan Weaponry",
+  "key.category.spartanweaponry.title": "Spartan Weaponry",
   "key.spartanweaponry.access_quiver": "Angelegten Köcher öffnen",
   "attribute.spartanweaponry.attack_reach": "Angriffsreichweite",
   "dev.spartanweaponry.wip": "In Arbeit",

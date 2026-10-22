@@ -791,6 +791,7 @@
   "message.spartanweaponry.ammo_collect_toggle": "Munição Coletada: %s",
   "message.spartanweaponry.quiver_not_found": "Aljava não encontrada!",
   "key.spartanweaponry.category.title": "Spartan Weaponry",
+  "key.category.spartanweaponry.title": "Spartan Weaponry",
   "key.spartanweaponry.access_quiver": "Acesse a Aljava Equipada",
   "attribute.spartanweaponry.attack_reach": "Alcance de Ataque",
   "dev.spartanweaponry.wip": "Atualmente em desenvolvimento (WIP)",
