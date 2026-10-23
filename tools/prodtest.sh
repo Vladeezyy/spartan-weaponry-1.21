@@ -11,6 +11,7 @@ JAR=neoforge/build/libs/$MOD-neoforge-$VERSION.jar
 for dir in prodtest/*/; do
 	[ -f "$dir/run.sh" ] || continue
 	rm -f "$dir"/mods/SpartanWeaponry-neoforge-*.jar "$dir"/mods/spartanweaponry-neoforge-*.jar
+	mkdir -p "$dir/mods"
 	cp "$JAR" "$dir/mods/"
 	echo "=== NeoForge server $(grep -o 'neoforge/[0-9.]*' "$dir/run.sh" | head -1): $(ls "$dir/mods" | tr '\n' ' ')"
 	(cd "$dir" && sh ../serve.sh)

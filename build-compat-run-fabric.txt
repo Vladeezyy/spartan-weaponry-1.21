@@ -1,0 +1,5 @@
+=== build-compat-fabric-scene.out: 56 checks, DONE, failed checks: 0
+--- errors
+   1 java.lang.RuntimeException: Unknown variable: BIOME_SULFUR_CAVES
+   1 [IO-Worker-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+   1 [Download-3/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC

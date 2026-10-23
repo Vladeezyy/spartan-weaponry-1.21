@@ -305,3 +305,38 @@ Fabric Loom 1.17.21 (Gradle 9.8.1). No Parchment for 1.21.11; EMI, JEED, ModernF
   compatibility runs with Sodium 0.8.14, Iris 1.10.8, Lithium, FerriteCore, Jade, Shoulder Surfing 5.2 (Fabric with the
   Complementary shaders; NeoForge without a shader pack, Iris 1.10.8's NeoForge shadow pass crashes on enchanted items).
   No stress scene with FPS numbers on the compatibility runs (owner's call).
+
+## 26.1.2 (branch mc/26.1.2, 2026-10-23, 3.2.1.2+26.1.2)
+
+NeoForge 26.1.2.122, Fabric Loader 0.19.5 + Fabric API 0.155.3, Forge Config API Port 26.1.5, Curios 15.0.0, JEI 29.47,
+Java 25, Fabric Loom 1.18 (26.x has no obfuscation: no mappings, no remapped jar). EMI, JEED and Shoulder Surfing 4.x
+have no 26.1.2 version, so their integrations are not tested here (the data stays).
+
+- **Villager trades are data in 26.1** (no VillagerTradesEvent, no ItemListing). The trades of 1.20.1 are
+  `data/spartanweaponry/villager_trade/{weaponsmith,fletcher}/<level>/*.json` (made by `tools/port/gen_villager_trades.py`),
+  added to the vanilla level tags `minecraft:<profession>/level_N`. The weaponsmith's random weapon of a level keeps its
+  config lists: the loot function `spartanweaponry:weaponsmith_trade_item` picks an enabled weapon and sets its price as
+  the additional trade cost. The fletcher trades check the config through the merchant predicate
+  `spartanweaponry:trade_enabled`. A disabled trade is skipped and the villager picks another one, as before.
+- **Global loot modifiers**: NeoForge 26.1 loads every file of `data/<namespace>/loot_modifiers/`; the list file is gone.
+  The Fabric reader of the decapitate modifiers reads the same files. `LootModifier(conditions, priority)`.
+- **Recipes**: serializers are records of the two codecs; the tag cooking recipes take CommonInfo / CookingBookInfo and a
+  placeholder result (never made; assemble and the display use the tag); `assemble` has no registries.
+- **Item stacks as templates**: quiver contents and charged bolts are ItemStackTemplate (counted without copies), the
+  oil bottle's remainder is a template.
+- **GUI** is extraction (`GuiGraphicsExtractor`, `extractBackground`, `extractImage` / `extractText` of the tooltip
+  components); the mod's own HUD layer keeps `render`. `RenderTypes.entityCutout` is the no-cull type now (the quiver
+  model).
+- **Fabric mixins**: `ItemStack#is(Item)` is the generic `TypedInstance#is(T)`, so the crossbow pose mixins target
+  `is(Ljava/lang/Object;)Z`; the held item name mixin targets `Gui#extractSelectedItemName`; the attribute mixin asks
+  `ItemStack#hasNonDefault` (no patch copy). Fabric API 0.155: `menu.v1.ExtendedMenuType` / `ExtendedMenuProvider`,
+  `ParticleProviderRegistry`, `ClientTooltipComponentCallback`, `FabricRegistryBuilder.create`.
+- **Mob heads**: vanilla moved the blaze and witch textures into folders (`entity/blaze/blaze.png`,
+  `entity/witch/witch.png`); with the old paths the heads drew black.
+- `CreativeModeTab.Output` is protected in vanilla: a compile-time access transformer for the common project.
+- **Verified**: client scene 56 checks on NeoForge, 54 on Fabric (the Curios ones are NeoForge only), all pass, including
+  the weaponsmith trade and its price; release jar on a real NeoForge 26.1.2.122 server and a dedicated Fabric server;
+  scene and stress scene on a Fabric production client; compatibility runs with Sodium 0.9.2, Iris 1.11.4, Lithium
+  0.24.7, FerriteCore 9.0.0, Jade 26.1, Shoulder Surfing 5.1.1 (+ ModernFix 5.27.24 on NeoForge): Fabric with the
+  Complementary shaders; NeoForge without a shader pack, Iris 1.11.4's NeoForge shadow pass still crashes on enchanted
+  items ("Missing sampler Sampler1"). No stress scene with FPS numbers (owner's call).
