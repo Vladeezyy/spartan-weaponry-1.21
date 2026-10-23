@@ -98,7 +98,7 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   - Curios 16 с `logoFile` открывает экран предупреждений NeoForge: сцены его пропускают, сетевая жмёт «Proceed».
   - Все тест-скрипты со сторожем зависаний (`STALL`, по умолчанию 90 с): modding-kb `testing/hang-watchdog.md`.
 - **26.3 (ветки `mc/26.3`, папки `~/Desktop/<repo>-26.3`, 2026-10-23):** выпущены `v1.0.0.3+26.3`, `v3.1.1.5+26.3`,
-  `v3.2.1.2+26.3`, `v1.0.3.1+26.3` (на CurseForge ещё нет; MC 26.3 → 17045). NeoForge 26.3.0.95, Fabric API 0.165.0,
+  `v3.2.1.2+26.3`, `v1.0.3.1+26.3`, на CurseForge выложены (файлы 9301472–9301479; MC 26.3 → 17045). NeoForge 26.3.0.95, Fabric API 0.165.0,
   Curios 17.0.0-beta.3 (бета), FCAP 26.3.1.
   - Данные: `tools/port/convert_263.py` (конвертер Rats + villager_trade); варка масел — рецепт-подкласс `CodeBrewingRecipe`.
   - Ввод SDL: modding-kb `scripts/port_263_input.py`; цели миксинов по дескрипторам — `scripts/mixin_targets.py`.
