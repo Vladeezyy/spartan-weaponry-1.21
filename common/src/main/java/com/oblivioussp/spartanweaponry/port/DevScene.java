@@ -704,7 +704,15 @@ public final class DevScene
 			return;
 		try
 		{
-			Class<?> api = Class.forName("com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing");
+			Class<?> api;
+			try
+			{
+				api = Class.forName("com.github.exopandora.shouldersurfing.api.client.IShoulderSurfing");	// 5.2+
+			}
+			catch(ClassNotFoundException e)
+			{
+				api = Class.forName("com.github.exopandora.shouldersurfing.api.client.ShoulderSurfing");
+			}
 			Object instance = api.getMethod("getInstance").invoke(null);
 			Class<?> perspectiveClass;
 			try
@@ -716,7 +724,7 @@ public final class DevScene
 				perspectiveClass = Class.forName("com.github.exopandora.shouldersurfing.api.model.Perspective");	// 4.x
 			}
 			Object value = perspectiveClass.getMethod("valueOf", String.class).invoke(null, perspective);
-			instance.getClass().getMethod("changePerspective", perspectiveClass).invoke(instance, value);
+			api.getMethod("changePerspective", perspectiveClass).invoke(instance, value);
 			check("Shoulder Surfing perspective " + perspective + " with a heavy crossbow", true, mc.options.getCameraType());
 		}
 		catch(ReflectiveOperationException | RuntimeException e)

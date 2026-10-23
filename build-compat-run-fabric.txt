@@ -1,5 +1,8 @@
 === build-compat-fabric-scene.out: 56 checks, DONE, failed checks: 0
 --- errors
-   1 java.lang.RuntimeException: Unknown variable: BIOME_SULFUR_CAVES
-   1 [IO-Worker-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+   1 [Render thread/ERROR] (ShoulderSurfing) Plugin for Spartan Weaponry (spartanweaponry) does not contain an entrypoints key
    1 [Download-3/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+   1 [Download-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+   1 [Download-1/ERROR] (Minecraft) Failed to retrieve profile key pair
+   1 MinecraftClientHttpException[type=HTTP_ERROR, status=401, response=ErrorResponse[path=/player/certificates, error=null, errorMessage=null, details=null]]
+   1 	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.buildHttpException(MinecraftClient.java:170)

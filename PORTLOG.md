@@ -340,3 +340,23 @@ have no 26.1.2 version, so their integrations are not tested here (the data stay
   0.24.7, FerriteCore 9.0.0, Jade 26.1, Shoulder Surfing 5.1.1 (+ ModernFix 5.27.24 on NeoForge): Fabric with the
   Complementary shaders; NeoForge without a shader pack, Iris 1.11.4's NeoForge shadow pass still crashes on enchanted
   items ("Missing sampler Sampler1"). No stress scene with FPS numbers (owner's call).
+
+## 26.2 (branch mc/26.2, 2026-10-23, 3.2.1.2+26.2)
+
+NeoForge 26.2.0.93, Fabric Loader 0.19.5 + Fabric API 0.161.0, Forge Config API Port 26.2.1, Java 25, Fabric Loom 1.18. Curios 16.0.0, JEI 30.47, Shoulder Surfing 5.2.0. EMI, JEED, ModernFix and Shoulder Surfing 4.x have no 26.2
+version.
+
+- **Mob head drops**: 26.2 entity predicates are a map of sub-predicates; the head loot modifiers name the mob with
+  `"minecraft:entity_type"` instead of `"type"` (with `"type"` they failed to load and no head dropped; the scene caught it).
+- Knockback (Hammer Slam, the block knockback) takes the damage source: `knockback(power, x, z, source, damage)`.
+- Moved classes (`advancements.triggers`, `advancements.predicates`), `MobEffect#isInstantaneous`,
+  `Language#has`, `TextColor` colours, blend factors; `Minecraft.gui` holds the screen, overlay and toasts.
+- Fabric mixins: the selected item name is in `Hud` now, the crossbow arm pose in `ItemInHandRenderer#submitArmWithItem`.
+- Shoulder Surfing 5.2: `IShoulderSurfing`, no registrar of the 4.x versions.
+- `bannerFile` instead of the deprecated `logoFile`; the scenes go on past NeoForge's load warnings screen (Curios still
+  uses `logoFile`).
+- **Verified**: client scene 56 checks on NeoForge, 54 on Fabric, all pass; release jar on a real NeoForge 26.2.0.93
+  server and a dedicated Fabric server; scene and stress scene on a Fabric production client; compatibility runs with
+  Sodium 0.9.2, Iris 1.11.4, Lithium 0.25.3, FerriteCore 9.0.0, Jade 26.2, Shoulder Surfing 5.2 (58 checks on NeoForge,
+  56 on Fabric): Fabric with the Complementary shaders, NeoForge without a shader pack (Iris 1.11.4's NeoForge shadow
+  pass crashes on enchanted items). No stress scene with FPS numbers (owner's call).
