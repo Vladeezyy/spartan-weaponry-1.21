@@ -92,7 +92,12 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
     нужен (Iris 1.11.4). ModernFix 5.27.24 в compat-наборе NeoForge.
   - На CurseForge 26.1.2 ещё не выложен (MC 26.1.2 → 16082, Java 25 → 14454).
   - Ender IO 9.0.6-alpha есть под 26.1.2: щиты Dark Steel включатся, но не проверены.
-  - Следующий шаг — `mc/26.2`.
+- **26.2 (ветки `mc/26.2`, папки `~/Desktop/<repo>-26.2`, 2026-10-23):** выпущены `v1.0.0.3+26.2`, `v3.1.1.5+26.2`,
+  `v3.2.1.2+26.2`, `v1.0.3.1+26.2` (на CurseForge ещё нет). NeoForge 26.2.0.93, Fabric API 0.161.0, Curios 16, FCAP 26.2.1.
+  - Скрипт порта: modding-kb `scripts/port_262.py`; грабли — modding-kb `porting/mc-versions/26.2.md` (раздел Spartan).
+  - Curios 16 с `logoFile` открывает экран предупреждений NeoForge: сцены его пропускают, сетевая жмёт «Proceed».
+  - Все тест-скрипты со сторожем зависаний (`STALL`, по умолчанию 90 с): modding-kb `testing/hang-watchdog.md`.
+  - Следующий шаг — `mc/26.3`.
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
