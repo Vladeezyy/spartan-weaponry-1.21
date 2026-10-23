@@ -116,7 +116,7 @@ public class OilHandler implements IOilHandler
 		if(usesLeft <= 0)
 		{
 			if(userIn instanceof Player)
-				((Player)userIn).displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_depleted", oilStack.getHoverName(), userWeaponIn.getHoverName()), true);
+				((Player)userIn).sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_depleted", oilStack.getHoverName(), userWeaponIn.getHoverName()));
 			clearEffect();
 		}
 		return resultDamage;

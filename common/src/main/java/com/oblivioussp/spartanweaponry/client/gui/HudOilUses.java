@@ -17,7 +17,7 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +27,7 @@ import net.minecraft.client.gui.Gui;
 public class HudOilUses
 {
 	
-	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)
+	public static void render(Gui gui, GuiGraphicsExtractor guiGraphics, float partialTicks, int screenWidth, int screenHeight)
 	{
 		RenderSystem.assertOnRenderThread();
 		
@@ -64,12 +64,12 @@ public class HudOilUses
 //        MultiBufferSource.BufferSource renderBuffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
 
         
-        guiGraphics.renderFakeItem(oilStack, offsetX - 17, offsetY);
+        guiGraphics.fakeItem(oilStack, offsetX - 17, offsetY);
         
 		Matrix3x2fStack guiPose = guiGraphics.pose();
 		guiPose.pushMatrix();
 		guiPose.identity();
-        guiGraphics.drawString(font, usesStr, offsetX , offsetY + 6, 0xFFFFFFFF);
+        guiGraphics.text(font, usesStr, offsetX , offsetY + 6, 0xFFFFFFFF);
 		guiPose.popMatrix();
 //		font.drawInBatch(usesStr, offsetX , offsetY + 6, 0xFFFFFF, true, poseStack.last().pose(), renderBuffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
 		

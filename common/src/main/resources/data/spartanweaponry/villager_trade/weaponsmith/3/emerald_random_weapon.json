@@ -1,0 +1,18 @@
+{
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 0.0
+  },
+  "gives": {
+    "id": "minecraft:iron_sword"
+  },
+  "max_uses": 5.0,
+  "xp": 20.0,
+  "reputation_discount": 0.2,
+  "given_item_modifiers": [
+    {
+      "function": "spartanweaponry:weaponsmith_trade_item",
+      "level": 3
+    }
+  ]
+}

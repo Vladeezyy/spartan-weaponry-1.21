@@ -164,7 +164,7 @@ public class LongbowItem extends BowItem implements IReloadable
                     stack.hurtAndBreak(1, player, player.getUsedItemHand().asEquipmentSlot());
                 }
 
-                level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 1.0F, 1.0F / (level.random.nextFloat() * 0.4f + 1.2f) + f * 0.5f);
+                level.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4f + 1.2f) + f * 0.5f);
                 player.awardStat(Stats.ITEM_USED.get(this));
             }
         }

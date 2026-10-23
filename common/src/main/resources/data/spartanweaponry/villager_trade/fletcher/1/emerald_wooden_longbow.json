@@ -1,0 +1,16 @@
+{
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 4.0
+  },
+  "gives": {
+    "id": "spartanweaponry:wooden_longbow"
+  },
+  "max_uses": 3.0,
+  "xp": 2.0,
+  "reputation_discount": 0.2,
+  "merchant_predicate": {
+    "condition": "spartanweaponry:trade_enabled",
+    "weapon": "longbow"
+  }
+}

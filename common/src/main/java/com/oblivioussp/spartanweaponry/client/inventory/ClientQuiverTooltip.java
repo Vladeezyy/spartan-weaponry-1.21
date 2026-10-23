@@ -10,7 +10,7 @@ import com.oblivioussp.spartanweaponry.inventory.tooltip.QuiverTooltip;
 import com.oblivioussp.spartanweaponry.util.Defaults;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.NonNullList;
@@ -67,7 +67,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 	}
 
 	@Override
-	public void renderImage(Font fontIn, int posXIn, int posYIn, int widthIn, int heightIn, GuiGraphics guiGraphics) 
+	public void extractImage(Font fontIn, int posXIn, int posYIn, int widthIn, int heightIn, GuiGraphicsExtractor guiGraphics) 
 	{
 		
 		// Left Border
@@ -90,7 +90,7 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 				drawLongVertBorders ? TexturePart.BORDER_LONG_RIGHT : TexturePart.BORDER_RIGHT);
 	}
 	
-	public void renderSlot(int slotIdxIn, Font fontIn, int posXIn, int posYIn, GuiGraphics guiGraphics)
+	public void renderSlot(int slotIdxIn, Font fontIn, int posXIn, int posYIn, GuiGraphicsExtractor guiGraphics)
 	{
 		
 		ItemStack stackToDraw = items.get(slotIdxIn);
@@ -107,12 +107,12 @@ public class ClientQuiverTooltip implements ClientTooltipComponent
 			ClientHelper.renderSlotHighlight(guiGraphics, slotX + 1, slotY + 1, 0, 0x8040C040);
 		if(!stackToDraw.isEmpty())
 		{
-			guiGraphics.renderItem(stackToDraw, slotX + 1, slotY + 1);
-			guiGraphics.renderItemDecorations(fontIn, stackToDraw, slotX + 1, slotY + 1);
+			guiGraphics.item(stackToDraw, slotX + 1, slotY + 1);
+			guiGraphics.itemDecorations(fontIn, stackToDraw, slotX + 1, slotY + 1);
 		}
 	}
 	
-	protected void blitPart(GuiGraphics guiGraphics, int posXIn, int posYIn, TexturePart partIn)
+	protected void blitPart(GuiGraphicsExtractor guiGraphics, int posXIn, int posYIn, TexturePart partIn)
 	{
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, posXIn, posYIn, partIn.x, partIn.y, partIn.width, partIn.height, TEXTURE_SIZE, TEXTURE_SIZE);
 	}

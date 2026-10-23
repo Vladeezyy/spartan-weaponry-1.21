@@ -16,7 +16,7 @@ public abstract class QuiverModelBase extends Model<Integer>
 	
 	public QuiverModelBase(ModelPart rootModel) 
 	{
-		super(rootModel, RenderTypes::entityCutoutNoCull);
+		super(rootModel, RenderTypes::entityCutout);
 		root = rootModel;
 	}
 }

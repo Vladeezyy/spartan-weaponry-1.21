@@ -29,18 +29,18 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
  * entry of an "ingredient" array may name a {@code "disabled_type"}: the entry is left out when that weapon type is
  * disabled in the config.
  */
-public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements RecipeSerializer<T> 
+public final class TagCookingRecipeSerializer
 {
 	private static final String DISABLED_TYPE = "disabled_type";
 	private static final Codec<Ingredient> INPUT_CODEC = Codec.PASSTHROUGH.flatXmap(TagCookingRecipeSerializer::readInput, 
 			(ingredient) -> Ingredient.CODEC.encodeStart(JsonOps.INSTANCE, ingredient).map((json) -> new Dynamic<>(JsonOps.INSTANCE, json)));
 	
-	private final MapCodec<T> codec;
-	private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
+	private TagCookingRecipeSerializer() {}
 	
-	public TagCookingRecipeSerializer(RecipeFactory<T> factoryIn, int defaultCookingTimeIn)
+	/** 26.1: a RecipeSerializer is a record of the two codecs */
+	public static <T extends ITagCookingRecipe> RecipeSerializer<T> create(RecipeFactory<T> factoryIn, int defaultCookingTimeIn)
 	{
-		codec = RecordCodecBuilder.mapCodec((instance) -> instance.group(
+		MapCodec<T> codec = RecordCodecBuilder.mapCodec((instance) -> instance.group(
 				Codec.STRING.optionalFieldOf("group", "").forGetter(ITagCookingRecipe::group),
 				CookingBookCategory.CODEC.fieldOf("category").orElse(CookingBookCategory.MISC).forGetter(ITagCookingRecipe::getCategory),
 				INPUT_CODEC.fieldOf("ingredient").forGetter(ITagCookingRecipe::getInputIngredient),
@@ -48,7 +48,7 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 				Codec.FLOAT.fieldOf("experience").orElse(0.0f).forGetter(ITagCookingRecipe::getExperienceDrop),
 				Codec.INT.fieldOf("cookingtime").orElse(defaultCookingTimeIn).forGetter(ITagCookingRecipe::getCookTime))
 				.apply(instance, factoryIn::create));
-		streamCodec = StreamCodec.of((buffer, recipe) -> 
+		StreamCodec<RegistryFriendlyByteBuf, T> streamCodec = StreamCodec.of((buffer, recipe) -> 
 		{
 			buffer.writeUtf(recipe.group());
 			buffer.writeEnum(recipe.getCategory());
@@ -58,18 +58,7 @@ public class TagCookingRecipeSerializer<T extends ITagCookingRecipe> implements 
 			buffer.writeVarInt(recipe.getCookTime());
 		}, (buffer) -> factoryIn.create(buffer.readUtf(), buffer.readEnum(CookingBookCategory.class), Ingredient.CONTENTS_STREAM_CODEC.decode(buffer),
 				TagKey.create(Registries.ITEM, buffer.readIdentifier()), buffer.readFloat(), buffer.readVarInt()));
-	}
-
-	@Override
-	public MapCodec<T> codec()
-	{
-		return codec;
-	}
-
-	@Override
-	public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec()
-	{
-		return streamCodec;
+		return new RecipeSerializer<>(codec, streamCodec);
 	}
 
 	private static <O> DataResult<Ingredient> readInput(Dynamic<O> input)

@@ -94,7 +94,7 @@ public class ThrowableMeleeWeaponTrait extends WeaponTrait implements IActionTra
 	            
 	            if(thrown.isValidThrowingWeapon())
 	            {
-	            	levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), ModSounds.THROWN_WEAPON_THROW.get(), SoundSource.PLAYERS, 0.5f, 0.4f / (levelIn.random.nextFloat() * 0.4f + 0.8f));
+	            	levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), ModSounds.THROWN_WEAPON_THROW.get(), SoundSource.PLAYERS, 0.5f, 0.4f / (levelIn.getRandom().nextFloat() * 0.4f + 0.8f));
 	            	levelIn.addFreshEntity(thrown);
 	            }
 	        }

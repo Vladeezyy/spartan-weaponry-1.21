@@ -11,7 +11,9 @@ import net.minecraft.core.registries.Registries;
 import java.util.List;
 import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
 
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,14 +33,15 @@ public class TagSmeltingRecipe extends AbstractCookingRecipe implements ITagCook
 	
 	public TagSmeltingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, float experienceIn, int cookTimeIn) 
 	{
-		super(groupIn, categoryIn, inputIngredientIn, ItemStack.EMPTY, experienceIn, cookTimeIn);
+		// 26.1: the result template cannot be empty; a barrier, never made (assemble and display use the tag)
+		super(new Recipe.CommonInfo(true), new AbstractCookingRecipe.CookingBookInfo(categoryIn, groupIn), inputIngredientIn, new ItemStackTemplate(Items.BARRIER), experienceIn, cookTimeIn);
 		resultTag = resultTagIn;
 	}
 	
 	@Override
-	public ItemStack assemble(SingleRecipeInput containerIn, HolderLookup.Provider registryIn)
+	public ItemStack assemble(SingleRecipeInput containerIn)
 	{
-		return registryIn.lookupOrThrow(Registries.ITEM).get(resultTag).flatMap((tag) -> tag.stream().findFirst()).map(ItemStack::new).orElse(ItemStack.EMPTY);
+		return BuiltInRegistries.ITEM.get(resultTag).flatMap((tag) -> tag.stream().findFirst()).map(ItemStack::new).orElse(ItemStack.EMPTY);
 	}
 
 	@Override

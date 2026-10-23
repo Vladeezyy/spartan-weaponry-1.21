@@ -33,7 +33,6 @@ import net.fabricmc.fabric.api.item.v1.EnchantmentEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.conditions.v1.ResourceConditions;
 import net.minecraft.core.Registry;
@@ -45,7 +44,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.neoforged.fml.config.ModConfig;
@@ -55,7 +53,6 @@ public class SpartanWeaponryFabric implements ModInitializer
 	/** The oil brewing recipes (NeoForge: its brewing recipe registry), asked by mixin/PotionBrewingMixin. */
 	public static final List<BrewingRecipe> BREWING_RECIPES = new ArrayList<>();
 
-	private static boolean tradesAdded;
 
 	@Override
 	public void onInitialize()
@@ -113,8 +110,6 @@ public class SpartanWeaponryFabric implements ModInitializer
 		});
 		// NeoForge IItemExtension#supportsEnchantment (anvil, /enchant) and #isPrimaryItemFor (enchanting table)
 		EnchantmentEvents.ALLOW_ENCHANTING.register((enchantment, stack, context) -> FabricItemHooks.allowEnchanting(stack, enchantment, context == EnchantingContext.PRIMARY));
-		// NeoForge VillagerTradesEvent; the trade lists come from the config and the registries, so on the first start
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> addVillagerTrades());
 		
 		// Addons (entrypoint "spartanweaponry" in their fabric.mod.json) start after the mod: their weapons are made by
 		// the API, and Fabric does not order the "main" entrypoints of dependent mods (NeoForge: their constructors
@@ -145,7 +140,7 @@ public class SpartanWeaponryFabric implements ModInitializer
 			@Override
 			public <T extends CustomPacketPayload> void playToServer(CustomPacketPayload.Type<T> type, StreamCodec<? super RegistryFriendlyByteBuf, T> codec, java.util.function.BiConsumer<T, PacketContext> handler)
 			{
-				PayloadTypeRegistry.playC2S().register(type, codec);
+				PayloadTypeRegistry.serverboundPlay().register(type, codec);
 				// Fabric runs the receivers on the server thread
 				ServerPlayNetworking.registerGlobalReceiver(type, (packet, ctx) -> handler.accept(packet, new PacketContext()
 				{
@@ -163,24 +158,5 @@ public class SpartanWeaponryFabric implements ModInitializer
 				}));
 			}
 		});
-	}
-
-	private static void addVillagerTrades()
-	{
-		if(tradesAdded)
-			return;
-		tradesAdded = true;
-		for(ResourceKey<VillagerProfession> profession : List.of(VillagerProfession.WEAPONSMITH, VillagerProfession.FLETCHER))
-		{
-			Int2ObjectOpenHashMap<List<ItemListing>> trades = new Int2ObjectOpenHashMap<>();
-			for(int level = 1; level <= 5; level++)
-				trades.put(level, new ArrayList<>());
-			CommonEventHandler.addVillagerTrades(new LoaderEvents.VillagerTrades(profession, trades));
-			trades.forEach((level, listings) ->
-			{
-				if(!listings.isEmpty())
-					TradeOfferHelper.registerVillagerOffers(profession, level, factories -> factories.addAll(listings));
-			});
-		}
 	}
 }

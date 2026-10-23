@@ -12,7 +12,8 @@ import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
 import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.ItemStack;
@@ -24,10 +25,11 @@ import net.minecraft.world.level.Level;
 
 public class ApplyOilRecipe extends CustomRecipe
 {
-	public ApplyOilRecipe(CraftingBookCategory craftingBookCategoryIn) 
-	{
-		super(craftingBookCategoryIn);
-	}
+	/** 26.1: a RecipeSerializer is a record of the two codecs; the recipe has no fields */
+	public static final ApplyOilRecipe INSTANCE = new ApplyOilRecipe();
+	public static final RecipeSerializer<ApplyOilRecipe> SERIALIZER = new RecipeSerializer<>(MapCodec.unit(INSTANCE), StreamCodec.unit(INSTANCE));
+	
+	public ApplyOilRecipe() {}
 
 	@Override
 	public boolean matches(CraftingInput containerIn, Level levelIn)
@@ -65,7 +67,7 @@ public class ApplyOilRecipe extends CustomRecipe
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput containerIn, HolderLookup.Provider registryAccessIn) 
+	public ItemStack assemble(CraftingInput containerIn) 
 	{
 		ItemStack oilStack = ItemStack.EMPTY,
 				weaponStack = ItemStack.EMPTY;

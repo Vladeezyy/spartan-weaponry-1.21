@@ -21,10 +21,10 @@ public class ModRecipeSerializers
 {
 	public static final Registrar<RecipeSerializer<?>> REGISTRY = Registrar.create(Registries.RECIPE_SERIALIZER);
 	
-	public static final Registrar.Entry<RecipeSerializer<?>, TippedProjectileBaseRecipe.Serializer> TIPPED_PROJECTILE_BASE = REGISTRY.register("tipped_projectile", () -> new TippedProjectileBaseRecipe.Serializer());
-	public static final Registrar.Entry<RecipeSerializer<?>, CustomRecipe.Serializer<ApplyOilRecipe>> APPLY_OIL = REGISTRY.register("apply_oil", () -> new CustomRecipe.Serializer<>(ApplyOilRecipe::new));
+	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<TippedProjectileBaseRecipe>> TIPPED_PROJECTILE_BASE = REGISTRY.register("tipped_projectile", () -> TippedProjectileBaseRecipe.Serializer.INSTANCE);
+	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<ApplyOilRecipe>> APPLY_OIL = REGISTRY.register("apply_oil", () -> ApplyOilRecipe.SERIALIZER);
 	
-	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<TagSmeltingRecipe>> TAGGED_SMELTING = REGISTRY.register("tag_smelting", () -> new TagCookingRecipeSerializer<>(TagSmeltingRecipe::new, 200));
-	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<TagBlastingRecipe>> TAGGED_BLASTING = REGISTRY.register("tag_blasting", () -> new TagCookingRecipeSerializer<>(TagBlastingRecipe::new, 100));
+	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<TagSmeltingRecipe>> TAGGED_SMELTING = REGISTRY.register("tag_smelting", () -> TagCookingRecipeSerializer.create(TagSmeltingRecipe::new, 200));
+	public static final Registrar.Entry<RecipeSerializer<?>, RecipeSerializer<TagBlastingRecipe>> TAGGED_BLASTING = REGISTRY.register("tag_blasting", () -> TagCookingRecipeSerializer.create(TagBlastingRecipe::new, 100));
 	
 }

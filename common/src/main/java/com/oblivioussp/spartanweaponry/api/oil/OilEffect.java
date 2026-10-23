@@ -32,13 +32,13 @@ public class OilEffect
 	}
 	
 	public static final IUsePredicate USE_NOTHING = (baseDamage, effect, level, target, user) -> false;
-	public static final IUsePredicate USE_UNDEAD = (baseDamage, effect, level, target, user) -> target.getType().is(EntityTypeTags.UNDEAD);
-	public static final IUsePredicate USE_ARTHROPOD = (baseDamage, effect, level, target, user) -> target.getType().is(EntityTypeTags.ARTHROPOD);
-	public static final IUsePredicate USE_CRYOTIC = (baseDamage, effect, level, target, user) -> target.getType().is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
-	public static final IUsePredicate USE_NECTROTIC = (baseDamage, effect, level, target, user) -> target.getType().is(ModEntityTypeTags.HUMANOIDS);
-	public static final IUsePredicate USE_CREEPER = (baseDamage, effect, level, target, user) -> target.getType().is(ModEntityTypeTags.CREEPERS);
-	public static final IUsePredicate USE_AQUATIC = (baseDamage, effect, level, target, user) -> target.getType().is(EntityTypeTags.AQUATIC);
-	public static final IUsePredicate USE_ENDER = (baseDamage, effect, level, target, user) ->  target.getType().is(ModEntityTypeTags.ENDER);
+	public static final IUsePredicate USE_UNDEAD = (baseDamage, effect, level, target, user) -> target.is(EntityTypeTags.UNDEAD);
+	public static final IUsePredicate USE_ARTHROPOD = (baseDamage, effect, level, target, user) -> target.is(EntityTypeTags.ARTHROPOD);
+	public static final IUsePredicate USE_CRYOTIC = (baseDamage, effect, level, target, user) -> target.is(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES);
+	public static final IUsePredicate USE_NECTROTIC = (baseDamage, effect, level, target, user) -> target.is(ModEntityTypeTags.HUMANOIDS);
+	public static final IUsePredicate USE_CREEPER = (baseDamage, effect, level, target, user) -> target.is(ModEntityTypeTags.CREEPERS);
+	public static final IUsePredicate USE_AQUATIC = (baseDamage, effect, level, target, user) -> target.is(EntityTypeTags.AQUATIC);
+	public static final IUsePredicate USE_ENDER = (baseDamage, effect, level, target, user) ->  target.is(ModEntityTypeTags.ENDER);
 	
 	protected final String name;
 	protected final OilEffectType type;

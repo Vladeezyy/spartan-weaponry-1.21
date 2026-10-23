@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
@@ -160,12 +160,12 @@ public abstract class QuiverBaseMenu extends AbstractContainerMenu
 	}
 	
 	@Override
-	public void clicked(int slot, int dragType, ClickType clickType, Player player)
+	public void clicked(int slot, int dragType, ContainerInput clickType, Player player)
 	{
 		// The open quiver itself can't be moved: not by clicking it, nor by number keys / F swapping it into another slot
 		if(slot >= 0 && slot < slots.size() && getSlot(slot).getItem() == quiverStack)
 			return;
-		if(clickType == ClickType.SWAP && ((dragType >= 0 && dragType < 9 && player.getInventory().getItem(dragType) == quiverStack) || 
+		if(clickType == ContainerInput.SWAP && ((dragType >= 0 && dragType < 9 && player.getInventory().getItem(dragType) == quiverStack) || 
 				(dragType == 40 && player.getOffhandItem() == quiverStack)))
 			return;
 		super.clicked(slot, dragType, clickType, player);

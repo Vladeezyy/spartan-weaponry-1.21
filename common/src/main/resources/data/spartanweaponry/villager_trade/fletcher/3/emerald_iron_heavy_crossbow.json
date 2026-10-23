@@ -1,0 +1,16 @@
+{
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 4.0
+  },
+  "gives": {
+    "id": "spartanweaponry:iron_heavy_crossbow"
+  },
+  "max_uses": 3.0,
+  "xp": 15.0,
+  "reputation_discount": 0.2,
+  "merchant_predicate": {
+    "condition": "spartanweaponry:trade_enabled",
+    "weapon": "heavy_crossbow"
+  }
+}

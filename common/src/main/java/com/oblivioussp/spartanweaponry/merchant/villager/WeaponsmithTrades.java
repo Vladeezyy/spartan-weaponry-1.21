@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.oblivioussp.spartanweaponry.init.ModItems;
-import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.RandomisedBuyEnchantedItemWithEmeraldsTrade;
-import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.RandomisedBuyItemWithEmeraldsTrade;
 import com.oblivioussp.spartanweaponry.merchant.villager.VillagerTrades.RandomisedTradeItem;
 import com.oblivioussp.spartanweaponry.util.Config;
-
-import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 
 public class WeaponsmithTrades
 {
@@ -19,11 +15,6 @@ public class WeaponsmithTrades
 	public static List<RandomisedTradeItem> LVL4_ITEMS = new ArrayList<RandomisedTradeItem>();
 	public static List<RandomisedTradeItem> LVL5_ITEMS = new ArrayList<RandomisedTradeItem>();
 	
-	public static ItemListing LVL1_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL1_ITEMS, 5, 2, 0.2f);
-	public static ItemListing LVL2_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL2_ITEMS, 5, 10, 0.2f);
-	public static ItemListing LVL3_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL3_ITEMS, 5, 20, 0.2f);
-	public static ItemListing LVL4_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL4_ITEMS, 5, 25, 0.2f);
-	public static ItemListing LVL5_TRADE = new RandomisedBuyEnchantedItemWithEmeraldsTrade(LVL5_ITEMS, 5, 30, 0.2f);
 	
 	public static void initTradeLists()
 	{
@@ -87,12 +78,19 @@ public class WeaponsmithTrades
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.QUARTERSTAVES.diamond.get(), 6), Config.INSTANCE.quarterstaves.disableRecipes.get());
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.GLAIVES.diamond.get(), 9), Config.INSTANCE.glaives.disableRecipes.get());
 		addToListConditional(LVL5_ITEMS, new RandomisedTradeItem(ModItems.SCYTHES.diamond.get(), 12), Config.INSTANCE.scythes.disableRecipes.get());
-		
-		LVL1_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL1_ITEMS, 5, 2, 0.2f);
-		LVL2_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL2_ITEMS, 5, 10, 0.2f);
-		LVL3_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL3_ITEMS, 5, 20, 0.2f);
-		LVL4_TRADE = new RandomisedBuyItemWithEmeraldsTrade(LVL4_ITEMS, 5, 25, 0.2f);
-		LVL5_TRADE = new RandomisedBuyEnchantedItemWithEmeraldsTrade(LVL5_ITEMS, 5, 30, 0.2f);
+	}
+	
+	/** The list of a villager level (1 to 5), for spartanweaponry:weaponsmith_trade_item */
+	public static List<RandomisedTradeItem> items(int level)
+	{
+		return switch(level)
+		{
+			case 1 -> LVL1_ITEMS;
+			case 2 -> LVL2_ITEMS;
+			case 3 -> LVL3_ITEMS;
+			case 4 -> LVL4_ITEMS;
+			default -> LVL5_ITEMS;
+		};
 	}
 	
 	public static void addToListConditional(List<RandomisedTradeItem> list, RandomisedTradeItem item, boolean disable)

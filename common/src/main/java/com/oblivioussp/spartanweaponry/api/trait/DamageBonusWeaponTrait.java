@@ -66,7 +66,7 @@ public class DamageBonusWeaponTrait extends MeleeCallbackWeaponTrait
 		
 	public static final DamageCalculationFunc DAMAGE_UNDEAD = (material, baseDamage, bonusDamage, source, attacker, victim) ->
 		{
-			return victim.getType().is(EntityTypeTags.UNDEAD) ? baseDamage + bonusDamage : baseDamage;
+			return victim.is(EntityTypeTags.UNDEAD) ? baseDamage + bonusDamage : baseDamage;
 		};
 		
 	public static final DamageCalculationFunc DAMAGE_BACKSTAB = (material, baseDamage, bonusDamage, source, attacker, victim) ->

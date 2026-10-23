@@ -9,7 +9,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
@@ -60,14 +60,14 @@ public class FabricPlatform implements Platform
 	@Override
 	public CreativeModeTab.Builder creativeTabBuilder()
 	{
-		return FabricItemGroup.builder();
+		return FabricCreativeModeTab.builder();
 	}
 
 	// Fabric keeps the tabs in the order of their registration
 	@Override
 	public CreativeModeTab.Builder creativeTabBuilder(ResourceKey<CreativeModeTab> after)
 	{
-		return FabricItemGroup.builder();
+		return FabricCreativeModeTab.builder();
 	}
 
 	@Override

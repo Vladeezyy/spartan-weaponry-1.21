@@ -14,7 +14,7 @@ import com.oblivioussp.spartanweaponry.util.ClientConfig;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
@@ -36,7 +36,7 @@ public class HudCrosshair
 	public static final Identifier ATTACK_INDICATOR_PROGRESS = Identifier.withDefaultNamespace("hud/crosshair_attack_indicator_progress");
 	protected static boolean isVanillaCrosshairDisabled = false;
 	
-	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight)
+	public static void render(Gui gui, GuiGraphicsExtractor guiGraphics, float partialTicks, int screenWidth, int screenHeight)
 	{
 		Minecraft mc = Minecraft.getInstance();
 		Options options = mc.options;

@@ -1,6 +1,7 @@
 package com.oblivioussp.spartanweaponry.compat.jei;
 
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
@@ -42,9 +43,9 @@ public class TippedProjectileRecipeMaker
 				ItemStack outputStack = PotionHelper.setPotion(new ItemStack(tippedProjectile, 8), potionType);
         
 				// 1.21.2+: an ingredient is a set of items; the potion is shown through the slot display
-				CraftingRecipe recipe = factory.createShapedRecipeBuilder(CraftingBookCategory.MISC, new SlotDisplay.ItemStackSlotDisplay(outputStack))
+				CraftingRecipe recipe = factory.createShapedRecipeBuilder(CraftingBookCategory.MISC, new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(outputStack)))
 						.define('#', Ingredient.of(projectile))
-						.define('P', Ingredient.of(Items.LINGERING_POTION), new SlotDisplay.ItemStackSlotDisplay(potionStack))
+						.define('P', Ingredient.of(Items.LINGERING_POTION), new SlotDisplay.ItemStackSlotDisplay(ItemStackTemplate.fromNonEmptyStack(potionStack)))
 						.pattern("###").pattern("#P#").pattern("###")
 						.group(recipeGroup)
 						.build();

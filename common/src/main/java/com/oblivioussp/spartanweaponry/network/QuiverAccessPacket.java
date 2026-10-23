@@ -109,7 +109,7 @@ public record QuiverAccessPacket() implements CustomPacketPayload
 				
 				if(quiver.isEmpty() || quiverItem == null || slotType == QuiverBaseItem.SlotType.UNDEFINED)
 				{
-					player.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".quiver_not_found").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), true);
+					player.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".quiver_not_found").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 					return;
 				}
 				

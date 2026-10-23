@@ -1,11 +1,11 @@
 #!/bin/sh
 # Release check: the jars as players have them. NeoForge: the release jar on the real NeoForge servers in prodtest/*/
 # (prodtest/serve.sh). Fabric: the release jar on a real Fabric server (:fabric:prodServer), then the client scene and
-# the stress scene on a production client (intermediary names; :fabric:prodScene / prodStress run a jar that is the
+# the stress scene on a production client (:fabric:prodScene / prodStress run a jar that is the
 # release jar plus port/). Outputs: prodtest/<version>/server.out, build-prod*-fabric.log.
 . "$(dirname "$0")/common.sh"
 MOD=spartanweaponry
-./gradlew :neoforge:jar :fabric:remapJar -q || exit 1
+./gradlew :neoforge:jar :fabric:jar -q || exit 1
 VERSION=$(grep '^mod_version=' gradle.properties | cut -d= -f2)+$(grep '^minecraft_version=' gradle.properties | cut -d= -f2)
 JAR=neoforge/build/libs/$MOD-neoforge-$VERSION.jar
 for dir in prodtest/*/; do

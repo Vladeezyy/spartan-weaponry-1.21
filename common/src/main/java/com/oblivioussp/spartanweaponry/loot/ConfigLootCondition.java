@@ -2,12 +2,10 @@ package com.oblivioussp.spartanweaponry.loot;
 
 import com.mojang.serialization.MapCodec;
 
-import com.oblivioussp.spartanweaponry.init.ModLootModifiers;
 import com.oblivioussp.spartanweaponry.util.Config;
 
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public class ConfigLootCondition implements LootItemCondition 
 {
@@ -24,9 +22,9 @@ public class ConfigLootCondition implements LootItemCondition
 	}
 
 	@Override
-	public LootItemConditionType getType()
+	public MapCodec<ConfigLootCondition> codec()
 	{
-		return ModLootModifiers.CONFIG_ENABLED.get();
+		return CODEC;
 	}
 	
 	public static LootItemCondition.Builder builder()

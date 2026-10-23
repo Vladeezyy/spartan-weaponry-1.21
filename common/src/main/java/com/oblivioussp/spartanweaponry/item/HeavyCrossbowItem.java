@@ -204,7 +204,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     				if(bolt.isEmpty())
     					player.getInventory().removeItem(bolt);
     			}
-    			levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_END, SoundSource.PLAYERS, 1.0F, 1.0F / (levelIn.random.nextFloat() * 0.5F + 1.0F) + 0.2F);
+    			levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_LOADING_END, SoundSource.PLAYERS, 1.0F, 1.0F / (levelIn.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
     		}
     		else
     		{
@@ -254,7 +254,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 	                    stack.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.EMPTY);
 	                }
 	
-	                levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.NEUTRAL, 1.0F, 1.0F / (levelIn.random.nextFloat() * 0.4F + 1.2F) + 1.5f * 0.5F);
+	                levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.NEUTRAL, 1.0F, 1.0F / (levelIn.getRandom().nextFloat() * 0.4F + 1.2F) + 1.5f * 0.5F);
 	
 	                player.awardStat(Stats.ITEM_USED.get(this));
 	            }
@@ -499,7 +499,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 		ChargedProjectiles charged = crossbow.get(DataComponents.CHARGED_PROJECTILES);
 		if(charged != null && !charged.isEmpty())
 		{
-			List<ItemStack> bolts = charged.getItems();
+			List<ItemStack> bolts = charged.itemCopies();
 			ItemStack bolt = bolts.get(0).copy();
 			bolt.setCount(bolts.size());
 			return bolt;
@@ -515,7 +515,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 		List<ItemStack> bolts = new ArrayList<>(count);
 		for(int i = 0; i < count; i++)
 			bolts.add(bolt.copyWithCount(1));
-		crossbow.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.of(bolts));
+		crossbow.set(DataComponents.CHARGED_PROJECTILES, ChargedProjectiles.ofNonEmpty(bolts));
 		ItemNbt.remove(crossbow, NBT_PROJECTILE);
 	}
 	

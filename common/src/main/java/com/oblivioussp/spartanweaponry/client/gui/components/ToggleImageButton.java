@@ -3,7 +3,7 @@ package com.oblivioussp.spartanweaponry.client.gui.components;
 
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.input.InputWithModifiers;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -39,9 +39,9 @@ public class ToggleImageButton extends Button
 	}
 
 	@Override
-	protected void renderContents(GuiGraphics guiGraphics, int renderX, int renderY, float p_94285_) 
+	protected void extractContents(GuiGraphicsExtractor guiGraphics, int renderX, int renderY, float p_94285_) 
 	{
-		renderDefaultSprite(guiGraphics);
+		extractDefaultSprite(guiGraphics);
 		int u = texStartU;
 		int v = texStartV;
 		

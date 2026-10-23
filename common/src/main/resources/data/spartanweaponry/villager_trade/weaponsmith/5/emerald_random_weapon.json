@@ -1,0 +1,27 @@
+{
+  "wants": {
+    "id": "minecraft:emerald",
+    "count": 0.0
+  },
+  "gives": {
+    "id": "minecraft:iron_sword"
+  },
+  "max_uses": 5.0,
+  "xp": 30.0,
+  "reputation_discount": 0.2,
+  "given_item_modifiers": [
+    {
+      "function": "spartanweaponry:weaponsmith_trade_item",
+      "level": 5
+    },
+    {
+      "function": "minecraft:enchant_with_levels",
+      "levels": {
+        "type": "minecraft:uniform",
+        "min": 5.0,
+        "max": 19.0
+      },
+      "options": "#minecraft:on_traded_equipment"
+    }
+  ]
+}

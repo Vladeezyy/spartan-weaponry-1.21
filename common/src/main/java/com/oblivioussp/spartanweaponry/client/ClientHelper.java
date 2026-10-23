@@ -5,7 +5,7 @@ import java.util.function.Function;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.rendertype.RenderType;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 import net.minecraft.world.inventory.MenuType;
 
@@ -124,7 +124,7 @@ public class ClientHelper
 	@FunctionalInterface
 	public interface HudLayer
 	{
-		void render(GuiGraphics graphics, DeltaTracker delta);
+		void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker delta);
 	}
 	
 	// 1.21.4+: item model properties and tints are in WeaponryItemModels, used by the item definitions
@@ -203,7 +203,7 @@ public class ClientHelper
 	}
 	
 	/** AbstractContainerScreen.renderSlotHighlight with a colour (NeoForge adds that overload). */
-	public static void renderSlotHighlight(GuiGraphics guiGraphics, int x, int y, int blitOffset, int colour)
+	public static void renderSlotHighlight(GuiGraphicsExtractor guiGraphics, int x, int y, int blitOffset, int colour)
 	{
 		// 1.21.6+: the GUI is drawn in order, the offset is gone
 		guiGraphics.fill(x, y, x + 16, y + 16, colour);

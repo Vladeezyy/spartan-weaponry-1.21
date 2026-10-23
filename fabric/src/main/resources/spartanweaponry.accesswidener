@@ -1,4 +1,4 @@
-accessWidener v2 named
+accessWidener v2 official
 # Spartan Weaponry: the same entries as common/accesstransformer.cfg (NeoForge)
 accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow life I
 accessible field net/minecraft/world/entity/projectile/arrow/AbstractArrow piercingIgnoreEntityIds Lit/unimi/dsi/fastutil/ints/IntOpenHashSet;

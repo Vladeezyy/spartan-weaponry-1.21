@@ -1,6 +1,7 @@
 package com.oblivioussp.spartanweaponry.item;
 
 import com.oblivioussp.spartanweaponry.api.ItemIds;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.server.level.ServerLevel;
 import com.oblivioussp.spartanweaponry.util.TooltipLines;
@@ -86,7 +87,7 @@ public abstract class QuiverBaseItem extends Item
 		if(ammo < 0)
 		{
 			ammo = 0;
-			for(ItemStack item : stack.getOrDefault(ModDataComponents.QUIVER_CONTENTS.get(), ItemContainerContents.EMPTY).nonEmptyItems())
+			for(ItemStackTemplate item : stack.getOrDefault(ModDataComponents.QUIVER_CONTENTS.get(), ItemContainerContents.EMPTY).nonEmptyItems())
 				ammo++;
 		}
 		
@@ -154,7 +155,7 @@ public abstract class QuiverBaseItem extends Item
 				
 				String collectStatus = ammoCollect ? "enabled" : "disabled";
 				ChatFormatting collectColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
-				playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".ammo_collect_toggle", Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(collectColour)), true);
+				playerIn.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".ammo_collect_toggle", Component.translatable("tooltip." + ModSpartanWeaponry.ID + "." + collectStatus).withStyle(collectColour)));
 				return InteractionResult.FAIL;
 			}
 		}

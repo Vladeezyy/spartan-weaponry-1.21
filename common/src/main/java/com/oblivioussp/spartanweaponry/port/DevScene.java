@@ -30,7 +30,7 @@ import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Screenshot;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -264,7 +264,7 @@ public final class DevScene
 				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.setScreen(new TitleScreen()));
 			else
 			{
-				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, false, Difficulty.NORMAL, true, new GameRules(net.minecraft.world.flag.FeatureFlags.DEFAULT_FLAGS), WorldDataConfiguration.DEFAULT);
+				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, new LevelSettings.DifficultySettings(Difficulty.NORMAL, false, false), true, WorldDataConfiguration.DEFAULT);
 				mc.createWorldOpenFlows().createFreshLevel(WORLD, settings, new WorldOptions(1234L, false, false), WorldPresets::createNormalWorldDimensions, new TitleScreen());
 			}
 			return;
@@ -364,8 +364,8 @@ public final class DevScene
 		server.overworld().getGameRules().set(GameRules.ADVANCE_TIME, false, server);
 		server.overworld().getGameRules().set(GameRules.ADVANCE_WEATHER, false, server);
 		server.overworld().getGameRules().set(GameRules.MOB_GRIEFING, false, server);
-		player.level().setDayTime(6000);
-		player.level().setWeatherParameters(6000, 0, false, false);
+		player.level().getServer().getCommands().performPrefixedCommand(player.level().getServer().createCommandSourceStack().withSuppressedOutput(), "time set 6000");
+		player.level().getServer().getCommands().performPrefixedCommand(player.level().getServer().createCommandSourceStack().withSuppressedOutput(), "weather clear");
 	}
 
 	/** Item frame wall n (0 vanilla materials, 1 modded materials, 2 ammo): its centre */
@@ -855,7 +855,14 @@ public final class DevScene
 	{
 		double reach = player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE);
 		check("Reach: a spear extends the entity interaction range", reach > 3.0, reach);
-		var offer = com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades.LVL1_TRADE.getOffer(player.level(), player, player.getRandom());
+		// 26.1: the trades are data; the weaponsmith level 1 trade as a villager makes it
+		var trade = player.level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.VILLAGER_TRADE).getValue(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "weaponsmith/1/emerald_random_weapon"));
+		var context = new net.minecraft.world.level.storage.loot.LootContext.Builder(new net.minecraft.world.level.storage.loot.LootParams.Builder(player.level())
+				.withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ORIGIN, player.position())
+				.withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.THIS_ENTITY, player)
+				.withParameter(net.minecraft.world.level.storage.loot.parameters.LootContextParams.ADDITIONAL_COST_COMPONENT_ALLOWED, net.minecraft.util.Unit.INSTANCE)
+				.create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.VILLAGER_TRADE)).create(java.util.Optional.empty());
+		var offer = trade == null ? null : trade.getOffer(context);
 		check("weaponsmith trade offers an iron weapon (1.20.1 kept the trades on empty lists)", offer != null && offer.getResult().is(ModItemTags.OILABLE_WEAPONS), offer == null ? "none" : offer.getResult());
 		player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 	}
@@ -1137,7 +1144,7 @@ public final class DevScene
 	private static ItemStack smelted(net.minecraft.world.item.crafting.RecipeHolder<?> recipe, ServerLevel level)
 	{
 		return recipe.value() instanceof net.minecraft.world.item.crafting.AbstractCookingRecipe cooking
-				? cooking.assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(ModItems.LONGSWORDS.iron.get())), level.registryAccess()) : ItemStack.EMPTY;
+				? ((net.minecraft.world.item.crafting.Recipe<net.minecraft.world.item.crafting.SingleRecipeInput>)cooking).assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(ModItems.LONGSWORDS.iron.get()))) : ItemStack.EMPTY;
 	}
 
 	private static List<String> offered(ItemStack stack, net.minecraft.core.HolderSet.Named<net.minecraft.world.item.enchantment.Enchantment> possible)
@@ -1163,7 +1170,7 @@ public final class DevScene
 		}
 
 		@Override
-		public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+		public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick)
 		{
 			graphics.fill(0, 0, width, height, 0xFF2B2B33);
 			for(int i = 0; i < stacks.size(); i++)
@@ -1174,7 +1181,7 @@ public final class DevScene
 				List<net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent> components = new ArrayList<>();
 				lines.forEach(line -> components.add(net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent.create(line.getVisualOrderText())));
 				stack.getTooltipImage().map(com.oblivioussp.spartanweaponry.client.ClientHelper::createTooltipComponent).ifPresent(image -> components.add(Math.min(1, components.size()), image));
-				graphics.renderTooltip(font, components, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16, net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner.INSTANCE, null);
+				graphics.tooltip(font, components, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16, net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner.INSTANCE, null);
 				for(Component line : lines)
 					if(line.getString().contains("tooltip.spartanweaponry") || line.getString().contains("item.spartanweaponry"))
 						Log.info("[scene] CHECK FAIL untranslated tooltip line (" + line.getString() + ")");
@@ -1193,7 +1200,7 @@ public final class DevScene
 		}
 
 		@Override
-		public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick)
+		public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick)
 		{
 			graphics.fill(0, 0, width, height, 0xFF2B2B33);
 			float scale = Math.min(width / (items.size() * 20.0F), height / 40.0F);
@@ -1201,8 +1208,8 @@ public final class DevScene
 			graphics.pose().scale(scale, scale);
 			for(int i = 0; i < items.size(); i++)
 			{
-				graphics.renderItem(new ItemStack(items.get(i)), 2 + i * 20, 2);
-				graphics.renderItem(oiled(items.get(i)), 2 + i * 20, 22);
+				graphics.item(new ItemStack(items.get(i)), 2 + i * 20, 2);
+				graphics.item(oiled(items.get(i)), 2 + i * 20, 22);
 			}
 			graphics.pose().popMatrix();
 		}

@@ -24,7 +24,7 @@ import com.oblivioussp.spartanweaponry.network.QuiverPrioritySlotPacket;
 import com.oblivioussp.spartanweaponry.util.Defaults;
 import com.oblivioussp.spartanweaponry.util.Log;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -114,10 +114,10 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 	}
 	
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) 
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) 
 	{
 		// 1.21: Screen.render draws the background itself
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 		if(menu.getCarried().isEmpty() && hoveredSlot != null && hoveredSlot.hasItem())
 		{
 			List<Component> tooltipList = getTooltipFromItem(minecraft, hoveredSlot.getItem());
@@ -127,14 +127,13 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 					mouseX > leftPos + hoveredSlot.x - 1 && mouseX < leftPos + hoveredSlot.x + 6 &&
 					mouseY > topPos + hoveredSlot.y - 1 && mouseY < topPos + hoveredSlot.y + 6)
 				tooltipList.add(0, PRIORITY_BUTTON_TOOLTIP);
-			
-			renderTooltip(guiGraphics, mouseX, mouseY);
 		}
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY)
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
+		super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
 		int offhandY = ammoSlots == Defaults.SlotsQuiverHuge ? 122 : 104;
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos - 27, topPos + offhandY, 178, offhandY, 27, 29, 256, 256);
@@ -144,11 +143,11 @@ public class QuiverBaseScreen<T extends QuiverBaseMenu> extends AbstractContaine
 	}
 	
 	@Override
-	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) 
+	protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) 
 	{
 		String name = quiver.getHoverName().getString();
-		guiGraphics.drawString(font, quiver.getHoverName(), imageWidth / 2 - font.width(name) / 2, 5, 0xFF404040, false);
-		guiGraphics.drawString(font, playerInventoryTitle, 8, 42 + (ammoSlots == Defaults.SlotsQuiverHuge ? 18 : 0), 0xFF404040, false);
+		guiGraphics.text(font, quiver.getHoverName(), imageWidth / 2 - font.width(name) / 2, 5, 0xFF404040, false);
+		guiGraphics.text(font, playerInventoryTitle, 8, 42 + (ammoSlots == Defaults.SlotsQuiverHuge ? 18 : 0), 0xFF404040, false);
 	}
 	
 /*	protected void drawButtonTooltip(Button button, PoseStack poseStack, int x, int y)

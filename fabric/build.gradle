@@ -1,6 +1,6 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 repositories {
@@ -19,36 +19,39 @@ loom {
     }
 }
 
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     // NeoForge's config API (the config of the NeoForge version) on Fabric; a required mod
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
+    implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 
     // Optional integrations
-    modCompileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_fabric_version}"
-    modCompileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_fabric_version}"
-    modCompileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_fabric_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_fabric_version}"
+    compileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
     // Mod Menu (opens the config screen) in the dev runs only
-    modLocalRuntime "maven.modrinth:modmenu:17.0.1"
+    localRuntime "maven.modrinth:modmenu:18.0.2"
     // Popular client / performance mods and the optional integrations for compatibility runs (-Pwith_compat)
     if (project.hasProperty('with_compat')) {
-        modLocalRuntime "maven.modrinth:sodium:${compat_fabric_sodium}"
-        modLocalRuntime "maven.modrinth:iris:${compat_fabric_iris}"
+        localRuntime "maven.modrinth:sodium:${compat_fabric_sodium}"
+        localRuntime "maven.modrinth:iris:${compat_fabric_iris}"
         // Iris' own libraries: Loom does not load the jars inside dev mods (Iris 1.8.8 for Fabric)
-        modLocalRuntime 'org.anarres:jcpp:1.4.14'
-        modLocalRuntime 'org.antlr:antlr4-runtime:4.13.1'
-        modLocalRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
-        modLocalRuntime "maven.modrinth:lithium:${compat_fabric_lithium}"
-        modLocalRuntime "maven.modrinth:ferrite-core:${compat_fabric_ferritecore}"
-        modLocalRuntime "maven.modrinth:jade:${compat_fabric_jade}"
-        modLocalRuntime "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
+        localRuntime 'org.anarres:jcpp:1.4.14'
+        localRuntime 'org.antlr:antlr4-runtime:4.13.1'
+        localRuntime 'io.github.douira:glsl-transformer:3.0.0-pre3'
+        localRuntime "maven.modrinth:lithium:${compat_fabric_lithium}"
+        localRuntime "maven.modrinth:ferrite-core:${compat_fabric_ferritecore}"
+        localRuntime "maven.modrinth:jade:${compat_fabric_jade}"
+        localRuntime "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
     }
     if (project.hasProperty('with_jei')) {
-        modLocalRuntime "mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}"
-        modLocalRuntime "maven.modrinth:mezzconfig:0.5.6"
+        localRuntime "mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}"
+        localRuntime "maven.modrinth:mezzconfig:0.5.6"
     }
 }
 
@@ -82,7 +85,7 @@ tasks.named('jar', Jar).configure {
     exclude 'com/oblivioussp/spartanweaponry/port/**'
 }
 
-// The release jar on a real (intermediary-mapped) Fabric server
+// The release jar on a real Fabric server
 configurations {
     productionMods { transitive = false }
 }
@@ -91,27 +94,21 @@ dependencies {
     productionMods "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forgeconfigapiport_version}"
 }
 
-// Production runs (tools/prodtest.sh): Minecraft with intermediary names, as players have it. The release jar on a
-// real Fabric server; the scenes on a production client from a jar that is the release jar plus port/ (so every
-// mixin is checked against the intermediary names)
+// Production runs (tools/prodtest.sh): Minecraft as players have it (26.x: no obfuscation, so no names to remap). The
+// release jar on a real Fabric server; the scenes on a production client from a jar that is the release jar plus port/
 var scenesJar = tasks.register('scenesJar', Jar) {
     from sourceSets.main.output
-    archiveClassifier = 'scenes-dev'
-    destinationDirectory = layout.buildDirectory.dir('devlibs')
-}
-var remapScenesJar = tasks.register('remapScenesJar', net.fabricmc.loom.task.RemapJarTask) {
-    inputFile = scenesJar.flatMap { it.archiveFile }
     archiveClassifier = 'scenes'
 }
 ['Scene': 'spartanweaponry.scene', 'Stress': 'spartanweaponry.stress'].each { name, property ->
     tasks.register("prod${name}", net.fabricmc.loom.task.prod.ClientProductionRunTask) {
-        // setFrom: Loom adds remapJar by default, and of two jars with one mod id Fabric loads either
-        mods.setFrom(remapScenesJar, configurations.productionMods)
+        // setFrom: Loom adds the jar by default, and of two jars with one mod id Fabric loads either
+        mods.setFrom(scenesJar, configurations.productionMods)
         jvmArgs.add("-D${property}=true")
         runDir = file('run-prod')
     }
 }
 tasks.register('prodServer', net.fabricmc.loom.task.prod.ServerProductionRunTask) {
-    mods.from(tasks.named('remapJar'), configurations.productionMods)
+    mods.from(tasks.named('jar'), configurations.productionMods)
     runDir = file('run-prod-server')
 }

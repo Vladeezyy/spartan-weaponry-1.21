@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -88,8 +87,6 @@ public final class LoaderEvents
 		void addPool(LootPool pool);
 	}
 
-	/** NeoForge VillagerTradesEvent: trades by villager level (1 to 5). */
-	public record VillagerTrades(ResourceKey<VillagerProfession> getType, Int2ObjectMap<List<ItemListing>> getTrades) {}
 
 	/** NeoForge AnvilUpdateEvent. */
 	public static class AnvilUpdate

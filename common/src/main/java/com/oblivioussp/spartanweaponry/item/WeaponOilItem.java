@@ -104,21 +104,21 @@ public class WeaponOilItem extends BasicItem
 						}
 						else
 							handler.setEffect(oil, stack);
-						playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_applied", stack.getHoverName(), oppositeStack.getHoverName()), true);
+						playerIn.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".oil_applied", stack.getHoverName(), oppositeStack.getHoverName()));
 						playerIn.playSound(ModSounds.OIL_APPLIED.get(), 1.0f, 1.0f);
 						// Remove one from the stack and replace the container back into the inventory (a glass bottle)
-						ItemStack bottleStack = getCraftingRemainder().copy();
+						ItemStack bottleStack = getCraftingRemainder() == null ? ItemStack.EMPTY : getCraftingRemainder().create();
 						stack.shrink(1);
 						if(stack.getCount() == 0)
 							playerIn.setItemInHand(handIn, ItemStack.EMPTY);
 						playerIn.getInventory().placeItemBackInInventory(bottleStack);
 					}
 					else
-						playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".weapon_already_oiled", stack.getHoverName(), oppositeStack.getHoverName()).withStyle(ChatFormatting.RED), true);
+						playerIn.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".weapon_already_oiled", stack.getHoverName(), oppositeStack.getHoverName()).withStyle(ChatFormatting.RED));
 				});
 			}
 			else
-				playerIn.displayClientMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".no_oilable_weapon", stack.getHoverName()).withStyle(ChatFormatting.RED), true);
+				playerIn.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".no_oilable_weapon", stack.getHoverName()).withStyle(ChatFormatting.RED));
 		}
 		return super.use(levelIn, playerIn, handIn);
 	}

@@ -15,7 +15,7 @@ import com.oblivioussp.spartanweaponry.util.ClientConfig;
 
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +24,7 @@ import net.minecraft.client.gui.Gui;
 
 public class HudCrosshairThrowingWeapon
 {
-	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight, ItemStack equippedStack) 
+	public static void render(Gui gui, GuiGraphicsExtractor guiGraphics, float partialTicks, int screenWidth, int screenHeight, ItemStack equippedStack) 
 	{
 		RenderSystem.assertOnRenderThread();
 		
@@ -111,7 +111,7 @@ public class HudCrosshairThrowingWeapon
 				Matrix3x2fStack guiPose = guiGraphics.pose();
 				guiPose.pushMatrix();
 				guiPose.identity();
-				guiGraphics.drawString(mc.font, text, textX - (mc.font.width(text) / 2), textY, 0xFFFFFFFF);
+				guiGraphics.text(mc.font, text, textX - (mc.font.width(text) / 2), textY, 0xFFFFFFFF);
 				guiPose.popMatrix();
 
 //				buffer.endBatch();

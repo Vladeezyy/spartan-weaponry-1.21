@@ -3,7 +3,7 @@ package com.oblivioussp.spartanweaponry.client.gui;
 import com.oblivioussp.spartanweaponry.item.IHudLoadState;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.util.Mth;
@@ -16,7 +16,7 @@ public class HudLoadState
 	protected static final int COLOUR_LOAD_READY = 0x6060FFFF;	// Teal-ish
 	protected static final int COLOUR_LOADED = 0x6040C040;		// Green
 
-	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight) 
+	public static void render(Gui gui, GuiGraphicsExtractor guiGraphics, float partialTicks, int screenWidth, int screenHeight) 
 	{
 		Minecraft mc = Minecraft.getInstance();
 		

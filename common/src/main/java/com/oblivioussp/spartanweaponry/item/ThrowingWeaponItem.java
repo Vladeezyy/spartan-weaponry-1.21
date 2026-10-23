@@ -375,7 +375,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 		            if(thrown.isValidThrowingWeapon())
 		            {
 		            	stack.setDamageValue(0);
-		            	levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), getThrowingSound(), SoundSource.PLAYERS, 0.5F, 0.4F / (levelIn.random.nextFloat() * 0.4F + 0.8F));
+		            	levelIn.playSound((Player)null, player.getX(), player.getY(), player.getZ(), getThrowingSound(), SoundSource.PLAYERS, 0.5F, 0.4F / (levelIn.getRandom().nextFloat() * 0.4F + 0.8F));
 		            	levelIn.addFreshEntity(thrown);
 		            }
 		            

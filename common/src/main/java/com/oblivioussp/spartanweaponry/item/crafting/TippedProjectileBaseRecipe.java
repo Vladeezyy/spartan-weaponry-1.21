@@ -29,7 +29,6 @@ public class TippedProjectileBaseRecipe extends CustomRecipe
 
 	public TippedProjectileBaseRecipe(Item arrowIn, Item arrowOut) 
 	{
-		super(CraftingBookCategory.MISC);
 		this.projectileIn = arrowIn;
 		this.projectileOut = arrowOut;
 	}
@@ -66,7 +65,7 @@ public class TippedProjectileBaseRecipe extends CustomRecipe
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registry)
+	public ItemStack assemble(CraftingInput inv)
 	{
 		ItemStack potionStack = inv.getItem(1, 1);
 		if(potionStack.getItem() == Items.LINGERING_POTION)
@@ -90,7 +89,8 @@ public class TippedProjectileBaseRecipe extends CustomRecipe
 		return ModRecipeSerializers.TIPPED_PROJECTILE_BASE.get();
 	}
 
-	public static class Serializer implements RecipeSerializer<TippedProjectileBaseRecipe>
+	/** 26.1: a RecipeSerializer is a record of the two codecs */
+	public static final class Serializer
 	{
 		private static final MapCodec<TippedProjectileBaseRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
 				BuiltInRegistries.ITEM.byNameCodec().fieldOf("projectile").forGetter((recipe) -> recipe.projectileIn),
@@ -101,18 +101,8 @@ public class TippedProjectileBaseRecipe extends CustomRecipe
 				ByteBufCodecs.registry(net.minecraft.core.registries.Registries.ITEM), (recipe) -> recipe.projectileOut,
 				TippedProjectileBaseRecipe::new);
 
-		public Serializer() {}
+		public static final RecipeSerializer<TippedProjectileBaseRecipe> INSTANCE = new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
-		@Override
-		public MapCodec<TippedProjectileBaseRecipe> codec()
-		{
-			return CODEC;
-		}
-
-		@Override
-		public StreamCodec<RegistryFriendlyByteBuf, TippedProjectileBaseRecipe> streamCodec()
-		{
-			return STREAM_CODEC;
-		}
+		private Serializer() {}
 	}
 }

@@ -46,8 +46,6 @@ import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
 import com.oblivioussp.spartanweaponry.item.SwordBaseItem;
 import com.oblivioussp.spartanweaponry.item.ThrowingWeaponItem;
 import com.oblivioussp.spartanweaponry.loot.ModLootTables;
-import com.oblivioussp.spartanweaponry.merchant.villager.FletcherTrades;
-import com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades;
 import com.oblivioussp.spartanweaponry.util.Config;
 import com.oblivioussp.spartanweaponry.util.Log;
 import com.oblivioussp.spartanweaponry.util.OilHelper;
@@ -70,7 +68,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.villager.VillagerProfession;
-import net.minecraft.world.entity.npc.villager.VillagerTrades.ItemListing;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -661,38 +658,6 @@ public class CommonEventHandler
 		
 		return new ItemStack(items.get(idx));
 	}*/
-	
-	public static void addVillagerTrades(LoaderEvents.VillagerTrades ev)
-	{
-		if(Config.INSTANCE.disableVillagerTrading.get())
-			return;
-		
-		if(ev.getType() == VillagerProfession.WEAPONSMITH)
-		{
-			List<ItemListing> tradesLv1 = ev.getTrades().get(1);
-			List<ItemListing> tradesLv2 = ev.getTrades().get(2);
-			List<ItemListing> tradesLv3 = ev.getTrades().get(3);
-			List<ItemListing> tradesLv4 = ev.getTrades().get(4);
-			List<ItemListing> tradesLv5 = ev.getTrades().get(5);
-			if(!WeaponsmithTrades.LVL1_ITEMS.isEmpty())		tradesLv1.add(WeaponsmithTrades.LVL1_TRADE);
-			if(!WeaponsmithTrades.LVL2_ITEMS.isEmpty())		tradesLv2.add(WeaponsmithTrades.LVL2_TRADE);
-			if(!WeaponsmithTrades.LVL3_ITEMS.isEmpty())		tradesLv3.add(WeaponsmithTrades.LVL3_TRADE);
-			if(!WeaponsmithTrades.LVL4_ITEMS.isEmpty())		tradesLv4.add(WeaponsmithTrades.LVL4_TRADE);
-			if(!WeaponsmithTrades.LVL5_ITEMS.isEmpty())		tradesLv5.add(WeaponsmithTrades.LVL5_TRADE);
-		}
-		else if(ev.getType() == VillagerProfession.FLETCHER)
-		{
-			List<ItemListing> tradesLv1 = ev.getTrades().get(1);
-			List<ItemListing> tradesLv3 = ev.getTrades().get(3);
-			List<ItemListing> tradesLv5 = ev.getTrades().get(5);
-			if(!Config.INSTANCE.longbows.disableRecipes.get())			tradesLv1.add(FletcherTrades.LONGBOW_WOOD_TRADE);
-			if(!Config.INSTANCE.longbows.disableRecipes.get())			tradesLv3.add(FletcherTrades.LONGBOW_IRON_TRADE);
-			if(!Config.INSTANCE.heavyCrossbows.disableRecipes.get())	tradesLv3.add(FletcherTrades.HEAVY_CROSSBOW_TRADE);
-			if(!Config.INSTANCE.heavyCrossbows.disableRecipes.get())	tradesLv3.add(FletcherTrades.BOLT_TRADE);
-			if(!Config.INSTANCE.longbows.disableRecipes.get())			tradesLv5.add(FletcherTrades.ENCHANTED_DIAMOND_LONGBOW_TRADE);
-			if(!Config.INSTANCE.heavyCrossbows.disableRecipes.get())	tradesLv5.add(FletcherTrades.ENCHANTED_DIAMOND_HEAVY_CROSSBOW_TRADE);
-		}
-	}
 	
 	/**
 	 * Events to supress Ender Teleportation using the Ender Disruption Mob Effect

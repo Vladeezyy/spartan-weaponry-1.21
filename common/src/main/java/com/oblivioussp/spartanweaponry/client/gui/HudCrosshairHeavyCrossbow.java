@@ -12,7 +12,7 @@ import com.oblivioussp.spartanweaponry.item.HeavyCrossbowItem;
 import com.oblivioussp.spartanweaponry.util.ClientConfig;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +20,7 @@ import net.minecraft.client.gui.Gui;
 
 public class HudCrosshairHeavyCrossbow
 {
-	public static void render(Gui gui, GuiGraphics guiGraphics, float partialTicks, int screenWidth, int screenHeight, ItemStack equippedStack) 
+	public static void render(Gui gui, GuiGraphicsExtractor guiGraphics, float partialTicks, int screenWidth, int screenHeight, ItemStack equippedStack) 
 	{
 		RenderSystem.assertOnRenderThread();
 		

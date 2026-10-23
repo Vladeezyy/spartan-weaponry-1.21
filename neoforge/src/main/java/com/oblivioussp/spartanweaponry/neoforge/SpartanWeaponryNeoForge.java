@@ -57,7 +57,6 @@ import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -111,7 +110,6 @@ public class SpartanWeaponryNeoForge
 				ev.getTable().addPool(pool);
 			}
 		}));
-		bus.addListener((VillagerTradesEvent ev) -> CommonEventHandler.addVillagerTrades(new LoaderEvents.VillagerTrades(ev.getType(), ev.getTrades())));
 		bus.addListener((EntityTeleportEvent.EnderEntity ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getEntityLiving())));
 		bus.addListener((EntityTeleportEvent.EnderPearl ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getPlayer())));
 		bus.addListener((EntityTeleportEvent.ItemConsumption ev) -> ev.setCanceled(CommonEventHandler.checkToCancelTeleport(ev.getEntityLiving())));

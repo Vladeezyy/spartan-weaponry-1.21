@@ -18,10 +18,10 @@ import com.oblivioussp.spartanweaponry.init.ModParticles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -48,7 +48,7 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 	{
 		ModSpartanWeaponry.clientSetup();
 		KeyMapping.Category.register(KeyBinds.CATEGORY.id());
-		KeyBindingHelper.registerKeyBinding(KeyBinds.KEY_ACCESS_QUIVER);
+		KeyMappingHelper.registerKeyMapping(KeyBinds.KEY_ACCESS_QUIVER);
 		// 1.21.4+: item definitions (assets/spartanweaponry/items) with these properties and tints, instead of item
 		// properties, item colours and the oil coating model (1.21.1: OilCoatingModels)
 		WeaponryItemModels.registerConditionalProperties(ConditionalItemModelProperties.ID_MAPPER::put);
@@ -69,7 +69,7 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 				BlockEntityRendererRegistry.register((BlockEntityType<T>)type, provider);
 			}
 		});
-		ClientHelper.registerModelLayers((layer, definition) -> EntityModelLayerRegistry.registerModelLayer(layer, definition::get));
+		ClientHelper.registerModelLayers((layer, definition) -> ModelLayerRegistry.registerModelLayer(layer, definition::get));
 		ClientHelper.registerScreens(new ClientHelper.ScreenRegistrar()
 		{
 			@Override
