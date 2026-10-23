@@ -97,7 +97,13 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   - Скрипт порта: modding-kb `scripts/port_262.py`; грабли — modding-kb `porting/mc-versions/26.2.md` (раздел Spartan).
   - Curios 16 с `logoFile` открывает экран предупреждений NeoForge: сцены его пропускают, сетевая жмёт «Proceed».
   - Все тест-скрипты со сторожем зависаний (`STALL`, по умолчанию 90 с): modding-kb `testing/hang-watchdog.md`.
-  - Следующий шаг — `mc/26.3`.
+- **26.3 (ветки `mc/26.3`, папки `~/Desktop/<repo>-26.3`, 2026-10-23):** выпущены `v1.0.0.3+26.3`, `v3.1.1.5+26.3`,
+  `v3.2.1.2+26.3`, `v1.0.3.1+26.3` (на CurseForge ещё нет; MC 26.3 → 17045). NeoForge 26.3.0.95, Fabric API 0.165.0,
+  Curios 17.0.0-beta.3 (бета), FCAP 26.3.1.
+  - Данные: `tools/port/convert_263.py` (конвертер Rats + villager_trade); варка масел — рецепт-подкласс `CodeBrewingRecipe`.
+  - Ввод SDL: modding-kb `scripts/port_263_input.py`; цели миксинов по дескрипторам — `scripts/mixin_targets.py`.
+  - Iris 1.11.7 на NeoForge 26.3 падает с шейдерами: compat на NeoForge с `NO_SHADERS=1` (теперь и у HUD).
+  - Все ветки версий выпущены; дальше — по новым версиям MC.
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
