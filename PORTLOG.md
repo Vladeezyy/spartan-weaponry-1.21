@@ -360,3 +360,25 @@ version.
   Sodium 0.9.2, Iris 1.11.4, Lithium 0.25.3, FerriteCore 9.0.0, Jade 26.2, Shoulder Surfing 5.2 (58 checks on NeoForge,
   56 on Fabric): Fabric with the Complementary shaders, NeoForge without a shader pack (Iris 1.11.4's NeoForge shadow
   pass crashes on enchanted items). No stress scene with FPS numbers (owner's call).
+
+## 26.3 (branch mc/26.3, 2026-10-23, 3.2.1.2+26.3)
+
+NeoForge 26.3.0.95, Fabric Loader 0.19.5 + Fabric API 0.165.0, Forge Config API Port 26.3.1, Java 25, Fabric Loom 1.18. Curios 17.0.0-beta.3, JEI 31.16, Shoulder Surfing 5.2.0. EMI, JEED, ModernFix and Shoulder Surfing 4.x have no
+26.3 version.
+
+- **Oil brewing is data**: 26.3 has no brewing registry (NeoForge's RegisterBrewingRecipesEvent and PotionBrewing are
+  gone, brewing stand recipes are `minecraft:brewing` recipes). The oil recipes stay code: `CodeBrewingRecipe` extends
+  the vanilla BrewingRecipe and asks OilBrewingRecipe / PotionToOilBrewingRecipe; `data/spartanweaponry/recipe/oil_brewing.json`
+  and `potion_to_oil_brewing.json` add them. Their input and reagent ingredients list the oil and all oil reagents, so the
+  stand takes them on both loaders; the Fabric brewing mixins are gone. The config switch is asked when brewing.
+- **Data in the 26.3 formats** (`tools/port/convert_263.py`, Rats' converter checked against vanilla, with the villager
+  trades added): typed loot conditions and functions, one condition per head drop modifier, `recipes` in the recipe
+  advancements, `given_item_modifier` in the trades, whole numbers. Tag blasting takes 200 ticks like vanilla's blasting
+  now (the blast furnace's speed comes from the fuel).
+- Loot injection with holders (the nested table from the event's registries, float provider bonus rolls); advancement
+  triggers with a loot condition for the player; NeoForge `LootModifier(Optional<Holder<LootItemCondition>>, priority)`.
+- `Enderman` (was EnderMan, also in the access transformer and widener); `randomTeleport` takes the blocks to avoid,
+  so the Fabric teleport mixins target the new descriptor; `FirstPersonHandsAndItemsRenderer` (was ItemInHandRenderer).
+- Curios 17: `ICurioRenderer.register`, the crouching offset of the back quiver done here (translateIfSneaking is gone).
+- SDL input: key codes are scancodes (the quiver key is still I), the scenes click with `MOUSE_BUTTON_LEFT` (1).
+- `ModConfig.Type.LOCAL` (was COMMON) with the old file name `spartanweaponry-common.toml`.
