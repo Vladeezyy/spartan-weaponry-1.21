@@ -41,15 +41,17 @@ jobs:
       - name: Build
         run: chmod +x gradlew && ./gradlew build --console=plain
 
-      # the dev server (tools/servertest.sh) on a fresh world: it has to reach "Done" with no crash
-      - name: Dev server starts
+      # the dev servers (tools/servertest.sh, NeoForge and Fabric) on a fresh world: each has to reach "Done" with no
+      # crash. The script writes build-server-<loader>.log (multiloader); it kills the server after "Done", so Gradle's
+      # BUILD FAILED at the end is expected
+      - name: Dev servers start
         run: |
-          mkdir -p run && echo "eula=true" > run/eula.txt
-          sh tools/servertest.sh
-          mv build-server.log selftest-server.log
-          # the script kills the server after "Done", so Gradle's BUILD FAILED at the end is expected
-          grep -q 'Done (' selftest-server.log
-          ! grep -qE 'Minecraft Crash Report|crash report has been saved|Failed to start|Registry loading errors|FAILED TO BIND' selftest-server.log
+          for loader in neoforge fabric; do
+            LOADER=$loader sh tools/servertest.sh
+            mv build-server-$loader.log selftest-server-$loader.log
+            grep -q 'Done (' selftest-server-$loader.log
+            ! grep -qE 'Minecraft Crash Report|crash report has been saved|Failed to start|Registry loading errors|FAILED TO BIND' selftest-server-$loader.log
+          done
 
       - name: Upload test logs
         if: ${{ !cancelled() }}
