@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_tomahawk"
+        "recipes": "spartanweaponry:bronze_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

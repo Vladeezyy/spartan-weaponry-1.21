@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_rapier"
+        "recipes": "spartanweaponry:platinum_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

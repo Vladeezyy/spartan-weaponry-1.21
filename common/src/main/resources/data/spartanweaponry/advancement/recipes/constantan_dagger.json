@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_dagger"
+        "recipes": "spartanweaponry:constantan_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

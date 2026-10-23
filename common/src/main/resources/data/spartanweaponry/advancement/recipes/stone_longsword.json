@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_longsword"
+        "recipes": "spartanweaponry:stone_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

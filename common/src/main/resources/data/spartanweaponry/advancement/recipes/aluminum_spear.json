@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_spear"
+        "recipes": "spartanweaponry:aluminum_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

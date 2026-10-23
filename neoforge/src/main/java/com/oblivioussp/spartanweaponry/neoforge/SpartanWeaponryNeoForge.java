@@ -13,7 +13,6 @@ import com.oblivioussp.spartanweaponry.init.ModCapabilities;
 import com.oblivioussp.spartanweaponry.init.ModCommands;
 import com.oblivioussp.spartanweaponry.init.ModOilRecipes;
 import com.oblivioussp.spartanweaponry.item.QuiverBaseItem;
-import com.oblivioussp.spartanweaponry.item.crafting.BrewingRecipe;
 import com.oblivioussp.spartanweaponry.loot.DecapitateLootModifier;
 import com.oblivioussp.spartanweaponry.network.NetworkHandler;
 import com.oblivioussp.spartanweaponry.network.PacketContext;
@@ -41,14 +40,12 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.LootTableLoadEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.brewing.PlayerBrewedPotionEvent;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
@@ -105,6 +102,12 @@ public class SpartanWeaponryNeoForge
 			}
 
 			@Override
+			public net.minecraft.core.HolderGetter.Provider registries()
+			{
+				return ev.getRegistries();
+			}
+
+			@Override
 			public void addPool(net.minecraft.world.level.storage.loot.LootPool pool)
 			{
 				ev.getTable().addPool(pool);
@@ -118,7 +121,6 @@ public class SpartanWeaponryNeoForge
 		bus.addListener(SpartanWeaponryNeoForge::rightClickBlock);
 		bus.addListener(EventPriority.HIGH, (TagsUpdatedEvent ev) -> ReloadResourceEventHandler.onUpdateTags());
 		bus.addListener((RegisterCommandsEvent ev) -> ModCommands.registerCommands(ev.getDispatcher()));
-		bus.addListener((RegisterBrewingRecipesEvent ev) -> ModOilRecipes.initOilRecipes(recipe -> ev.getBuilder().addRecipe(new BrewingRecipeNeoForge(recipe))));
 		bus.addListener((LivingShieldBlockEvent ev) ->
 		{
 			// 21.11: not cancelled, unblocked
@@ -126,7 +128,8 @@ public class SpartanWeaponryNeoForge
 				ev.setBlocked(false);
 		});
 
-		container.registerConfig(ModConfig.Type.COMMON, Config.CONFIG_SPEC);
+		// 26.3: COMMON is LOCAL; the file keeps its name
+		container.registerConfig(ModConfig.Type.LOCAL, Config.CONFIG_SPEC, ModSpartanWeaponry.ID + "-common.toml");
 		container.registerConfig(ModConfig.Type.CLIENT, ClientConfig.CONFIG_SPEC);
 	}
 
@@ -265,28 +268,6 @@ public class SpartanWeaponryNeoForge
 		public MapCodec<? extends ICondition> codec()
 		{
 			return CODEC;
-		}
-	}
-
-	/** The oil brewing recipes for NeoForge's brewing registry. */
-	private record BrewingRecipeNeoForge(BrewingRecipe recipe) implements IBrewingRecipe
-	{
-		@Override
-		public boolean isInput(ItemStack input)
-		{
-			return recipe.isInput(input);
-		}
-
-		@Override
-		public boolean isIngredient(ItemStack ingredient)
-		{
-			return recipe.isIngredient(ingredient);
-		}
-
-		@Override
-		public ItemStack getOutput(ItemStack input, ItemStack ingredient)
-		{
-			return recipe.getOutput(input, ingredient);
 		}
 	}
 }

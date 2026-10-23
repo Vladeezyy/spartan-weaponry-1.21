@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_flanged_mace"
+        "recipes": "spartanweaponry:wooden_flanged_mace"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

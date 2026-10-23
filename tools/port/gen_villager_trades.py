@@ -4,11 +4,12 @@ CommonEventHandler.addVillagerTrades, WeaponsmithTrades and FletcherTrades becom
 JSONs, appended to the vanilla tags of the levels (data/minecraft/tags/villager_trade/<profession>/level_N, which the
 trade sets pick from). Weaponsmith: one trade per level, the random weapon of the config lists by
 spartanweaponry:weaponsmith_trade_item. Fletcher: spartanweaponry:trade_enabled as the merchant predicate.
+26.3 format: typed conditions and loot functions, given_item_modifier (one or a list), whole numbers.
 Run from the repository root."""
 import json, os
 
 DATA = 'common/src/main/resources/data'
-ENCHANT = {'function': 'minecraft:enchant_with_levels', 'levels': {'type': 'minecraft:uniform', 'min': 5.0, 'max': 19.0},
+ENCHANT = {'type': 'minecraft:enchant_with_levels', 'levels': {'type': 'minecraft:uniform', 'min': 5, 'max': 19},
            'options': '#minecraft:on_traded_equipment'}
 
 def save(path, data):
@@ -19,12 +20,13 @@ def save(path, data):
         f.write('\n')
 
 def trade(emeralds, gives, max_uses, xp, discount, weapon=None, modifiers=()):
-    t = {'wants': {'id': 'minecraft:emerald', 'count': float(emeralds)}, 'gives': gives, 'max_uses': float(max_uses),
-         'xp': float(xp), 'reputation_discount': discount}
+    t = {'wants': {'id': 'minecraft:emerald', 'count': emeralds}, 'gives': gives, 'max_uses': max_uses,
+         'xp': xp, 'reputation_discount': discount}
     if weapon is not None:
-        t['merchant_predicate'] = {'condition': 'spartanweaponry:trade_enabled', 'weapon': weapon}
+        t['merchant_predicate'] = {'type': 'spartanweaponry:trade_enabled', 'weapon': weapon}
     if modifiers:
-        t['given_item_modifiers'] = list(modifiers)
+        # 26.3: one modifier or a list, typed loot functions
+        t['given_item_modifier'] = modifiers[0] if len(modifiers) == 1 else list(modifiers)
     return t
 
 tags = {}
@@ -34,7 +36,7 @@ def add(profession, level, name, data):
 
 # Weaponsmith (RandomisedBuy[Enchanted]ItemWithEmeraldsTrade(items, 5, xp, 0.2)): price 0 + the weapon's price
 for level, xp in [(1, 2), (2, 10), (3, 20), (4, 25), (5, 30)]:
-    modifiers = [{'function': 'spartanweaponry:weaponsmith_trade_item', 'level': level}] + ([ENCHANT] if level == 5 else [])
+    modifiers = [{'type': 'spartanweaponry:weaponsmith_trade_item', 'level': level}] + ([ENCHANT] if level == 5 else [])
     add('weaponsmith', level, 'emerald_random_weapon', trade(0, {'id': 'minecraft:iron_sword'}, 5, xp, 0.2, modifiers=modifiers))
 
 # Fletcher

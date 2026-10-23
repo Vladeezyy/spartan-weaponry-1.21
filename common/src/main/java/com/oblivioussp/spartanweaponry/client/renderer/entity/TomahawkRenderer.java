@@ -26,11 +26,11 @@ public class TomahawkRenderer<T extends TomahawkEntity> extends ThrowingWeaponRe
 	protected void doRenderTransformations(ThrowingWeaponRenderState state, PoseStack matrixStack)
 	{
 		matrixStack.scale(2.0f, 2.0f, 2.0f);
-		matrixStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0f));
-		matrixStack.mulPose(Axis.ZP.rotationDegrees(state.xRot - 90.0f));
-		matrixStack.mulPose(Axis.ZP.rotationDegrees(90.0f));
+		matrixStack.rotate(Axis.YP.rotationDegrees(state.yRot - 90.0f));
+		matrixStack.rotate(Axis.ZP.rotationDegrees(state.xRot - 90.0f));
+		matrixStack.rotate(Axis.ZP.rotationDegrees(90.0f));
 		matrixStack.translate(-0.05d, 0.05d, 0.0d);
 		if(state.spin != 0.0f)
-			matrixStack.mulPose(Axis.ZN.rotationDegrees(state.spin));
+			matrixStack.rotate(Axis.ZN.rotationDegrees(state.spin));
 	}
 }

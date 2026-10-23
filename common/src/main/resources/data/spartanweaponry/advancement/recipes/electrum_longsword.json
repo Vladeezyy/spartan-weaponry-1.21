@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_longsword"
+        "recipes": "spartanweaponry:electrum_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

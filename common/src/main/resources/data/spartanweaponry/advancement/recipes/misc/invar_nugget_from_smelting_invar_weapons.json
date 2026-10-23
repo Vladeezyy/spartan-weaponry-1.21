@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_nugget_from_smelting_invar_weapons"
+        "recipes": "spartanweaponry:invar_nugget_from_smelting_invar_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

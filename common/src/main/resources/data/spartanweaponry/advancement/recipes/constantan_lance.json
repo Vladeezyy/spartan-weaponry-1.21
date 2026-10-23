@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_lance"
+        "recipes": "spartanweaponry:constantan_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

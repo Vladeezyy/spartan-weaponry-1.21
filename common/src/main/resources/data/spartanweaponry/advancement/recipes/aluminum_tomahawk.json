@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_tomahawk"
+        "recipes": "spartanweaponry:aluminum_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

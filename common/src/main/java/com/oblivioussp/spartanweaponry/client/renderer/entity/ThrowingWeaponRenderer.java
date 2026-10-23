@@ -50,7 +50,7 @@ public class ThrowingWeaponRenderer<T extends ThrowingWeaponEntity> extends Enti
 		matrixStackIn.pushPose();
 		doRenderTransformations(state, matrixStackIn);
 		
-		matrixStackIn.mulPose(FLIP);
+		matrixStackIn.rotate(FLIP);
 		matrixStackIn.translate(-0.10d, -0.20d, 0.0d);
 		
 		if(!state.item.isEmpty())
@@ -62,7 +62,7 @@ public class ThrowingWeaponRenderer<T extends ThrowingWeaponEntity> extends Enti
 	protected void doRenderTransformations(ThrowingWeaponRenderState state, PoseStack matrixStack)
 	{
 		matrixStack.scale(2.0f, 2.0f, 2.0f);
-		matrixStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0f));
-		matrixStack.mulPose(Axis.ZP.rotationDegrees(state.xRot - 45.0f));
+		matrixStack.rotate(Axis.YP.rotationDegrees(state.yRot - 90.0f));
+		matrixStack.rotate(Axis.ZP.rotationDegrees(state.xRot - 45.0f));
 	}
 }

@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_saber"
+        "recipes": "spartanweaponry:golden_saber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

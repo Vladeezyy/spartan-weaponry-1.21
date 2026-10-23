@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:silver_boomerang"
+        "recipes": "spartanweaponry:silver_boomerang"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

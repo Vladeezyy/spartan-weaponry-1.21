@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_pike"
+        "recipes": "spartanweaponry:stone_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

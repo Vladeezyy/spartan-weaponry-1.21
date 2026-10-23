@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_heavy_crossbow"
+        "recipes": "spartanweaponry:tin_heavy_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

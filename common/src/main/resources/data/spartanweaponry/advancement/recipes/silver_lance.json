@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:silver_lance"
+        "recipes": "spartanweaponry:silver_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

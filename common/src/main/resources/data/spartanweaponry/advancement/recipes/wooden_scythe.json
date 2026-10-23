@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_scythe"
+        "recipes": "spartanweaponry:wooden_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_lance"
+        "recipes": "spartanweaponry:bronze_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

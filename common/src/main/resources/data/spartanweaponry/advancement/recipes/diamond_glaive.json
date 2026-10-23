@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_glaive"
+        "recipes": "spartanweaponry:diamond_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

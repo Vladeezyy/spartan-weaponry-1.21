@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_spear"
+        "recipes": "spartanweaponry:stone_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

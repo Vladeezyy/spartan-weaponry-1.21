@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_tomahawk"
+        "recipes": "spartanweaponry:nickel_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

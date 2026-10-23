@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_greatsword"
+        "recipes": "spartanweaponry:steel_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

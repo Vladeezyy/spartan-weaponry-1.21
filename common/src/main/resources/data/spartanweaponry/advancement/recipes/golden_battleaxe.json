@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_battleaxe"
+        "recipes": "spartanweaponry:golden_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

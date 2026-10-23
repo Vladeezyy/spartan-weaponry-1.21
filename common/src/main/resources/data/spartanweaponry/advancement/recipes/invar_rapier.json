@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_rapier"
+        "recipes": "spartanweaponry:invar_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

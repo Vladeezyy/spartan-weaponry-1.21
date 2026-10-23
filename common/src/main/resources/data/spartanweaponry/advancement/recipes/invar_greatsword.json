@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_greatsword"
+        "recipes": "spartanweaponry:invar_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

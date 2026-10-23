@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_battleaxe"
+        "recipes": "spartanweaponry:platinum_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

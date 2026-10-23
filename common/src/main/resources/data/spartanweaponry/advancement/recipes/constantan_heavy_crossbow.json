@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_heavy_crossbow"
+        "recipes": "spartanweaponry:constantan_heavy_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

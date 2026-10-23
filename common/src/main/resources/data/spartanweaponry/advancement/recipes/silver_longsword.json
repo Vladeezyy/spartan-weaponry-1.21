@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:silver_longsword"
+        "recipes": "spartanweaponry:silver_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

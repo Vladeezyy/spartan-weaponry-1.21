@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_dagger"
+        "recipes": "spartanweaponry:electrum_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

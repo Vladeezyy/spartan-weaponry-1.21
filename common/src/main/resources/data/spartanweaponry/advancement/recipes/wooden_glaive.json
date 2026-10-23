@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_glaive"
+        "recipes": "spartanweaponry:wooden_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

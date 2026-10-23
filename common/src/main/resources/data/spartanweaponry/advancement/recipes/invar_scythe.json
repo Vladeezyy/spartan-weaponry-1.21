@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_scythe"
+        "recipes": "spartanweaponry:invar_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

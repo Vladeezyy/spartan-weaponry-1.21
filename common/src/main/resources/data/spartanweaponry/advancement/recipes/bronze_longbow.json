@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_longbow"
+        "recipes": "spartanweaponry:bronze_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

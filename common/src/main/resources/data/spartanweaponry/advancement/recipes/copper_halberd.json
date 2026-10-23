@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_halberd"
+        "recipes": "spartanweaponry:copper_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

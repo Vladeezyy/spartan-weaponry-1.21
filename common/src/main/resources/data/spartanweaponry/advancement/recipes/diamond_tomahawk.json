@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_tomahawk"
+        "recipes": "spartanweaponry:diamond_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

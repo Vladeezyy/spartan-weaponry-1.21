@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_halberd"
+        "recipes": "spartanweaponry:nickel_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

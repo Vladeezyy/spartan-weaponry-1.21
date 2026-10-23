@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_javelin"
+        "recipes": "spartanweaponry:wooden_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

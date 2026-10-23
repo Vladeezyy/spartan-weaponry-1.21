@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:grease_ball"
+        "recipes": "spartanweaponry:grease_ball"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

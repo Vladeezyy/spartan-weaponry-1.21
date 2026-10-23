@@ -10,7 +10,6 @@ import com.oblivioussp.spartanweaponry.event.LoaderEvents;
 import com.oblivioussp.spartanweaponry.event.ReloadResourceEventHandler;
 import com.oblivioussp.spartanweaponry.init.ModCommands;
 import com.oblivioussp.spartanweaponry.init.ModOilRecipes;
-import com.oblivioussp.spartanweaponry.item.crafting.BrewingRecipe;
 import com.oblivioussp.spartanweaponry.network.NetworkHandler;
 import com.oblivioussp.spartanweaponry.network.PacketContext;
 import com.oblivioussp.spartanweaponry.platform.Registrar;
@@ -50,8 +49,6 @@ import net.neoforged.fml.config.ModConfig;
 
 public class SpartanWeaponryFabric implements ModInitializer
 {
-	/** The oil brewing recipes (NeoForge: its brewing recipe registry), asked by mixin/PotionBrewingMixin. */
-	public static final List<BrewingRecipe> BREWING_RECIPES = new ArrayList<>();
 
 
 	@Override
@@ -68,7 +65,6 @@ public class SpartanWeaponryFabric implements ModInitializer
 		ModSpartanWeaponry.setup();
 
 		registerPayloads();
-		ModOilRecipes.initOilRecipes(BREWING_RECIPES::add);
 		ResourceConditions.register(TypeDisabledResourceCondition.TYPE);
 		ResourceConditions.register(TagNotEmptyResourceCondition.TYPE);
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(DecapitationModifiers.INSTANCE);
@@ -92,6 +88,12 @@ public class SpartanWeaponryFabric implements ModInitializer
 			public Identifier getName()
 			{
 				return key.identifier();
+			}
+
+			@Override
+			public net.minecraft.core.HolderGetter.Provider registries()
+			{
+				return registries;
 			}
 
 			@Override

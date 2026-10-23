@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_pike"
+        "recipes": "spartanweaponry:diamond_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_tomahawk"
+        "recipes": "spartanweaponry:tin_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

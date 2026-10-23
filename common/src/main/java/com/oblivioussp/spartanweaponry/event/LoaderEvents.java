@@ -84,6 +84,9 @@ public final class LoaderEvents
 	{
 		Identifier getName();
 
+		/** 26.3: the registries of the load (a loot table reference is a holder now) */
+		net.minecraft.core.HolderGetter.Provider registries();
+
 		void addPool(LootPool pool);
 	}
 

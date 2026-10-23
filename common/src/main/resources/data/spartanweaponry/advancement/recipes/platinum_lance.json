@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_lance"
+        "recipes": "spartanweaponry:platinum_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

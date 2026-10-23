@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_tomahawk"
+        "recipes": "spartanweaponry:copper_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

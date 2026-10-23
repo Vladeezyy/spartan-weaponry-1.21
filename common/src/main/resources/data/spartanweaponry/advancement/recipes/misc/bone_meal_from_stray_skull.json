@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bone_meal_from_stray_skull"
+        "recipes": "spartanweaponry:bone_meal_from_stray_skull"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

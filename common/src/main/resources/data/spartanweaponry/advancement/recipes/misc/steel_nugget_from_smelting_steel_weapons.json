@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_nugget_from_smelting_steel_weapons"
+        "recipes": "spartanweaponry:steel_nugget_from_smelting_steel_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

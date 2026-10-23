@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:studded_club"
+        "recipes": "spartanweaponry:studded_club"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

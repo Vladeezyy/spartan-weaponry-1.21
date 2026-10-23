@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_spear"
+        "recipes": "spartanweaponry:diamond_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_tomahawk"
+        "recipes": "spartanweaponry:lead_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

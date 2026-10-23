@@ -47,7 +47,7 @@ public class TagSmeltingRecipe extends AbstractCookingRecipe implements ITagCook
 	@Override
 	public List<RecipeDisplay> display()
 	{
-		return List.of(new FurnaceRecipeDisplay(input().display(), SlotDisplay.AnyFuel.INSTANCE, new SlotDisplay.TagSlotDisplay(resultTag),
+		return List.of(new FurnaceRecipeDisplay(input().display(), SlotDisplay.AnyFuel.INSTANCE, new SlotDisplay.TagSlotDisplay(BuiltInRegistries.ITEM.getOrThrow(resultTag)),
 				new SlotDisplay.ItemSlotDisplay(furnaceIcon()), cookingTime(), experience()));
 	}
 

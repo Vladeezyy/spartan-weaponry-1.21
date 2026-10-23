@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_nugget_from_blasting_tin_weapons"
+        "recipes": "spartanweaponry:tin_nugget_from_blasting_tin_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

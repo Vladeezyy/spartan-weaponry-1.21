@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_scythe"
+        "recipes": "spartanweaponry:lead_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

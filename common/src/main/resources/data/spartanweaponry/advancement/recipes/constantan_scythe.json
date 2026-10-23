@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_scythe"
+        "recipes": "spartanweaponry:constantan_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

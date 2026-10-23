@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:weapon_oil_base"
+        "recipes": "spartanweaponry:weapon_oil_base"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

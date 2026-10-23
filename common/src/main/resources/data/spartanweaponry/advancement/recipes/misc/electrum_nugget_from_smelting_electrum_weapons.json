@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_nugget_from_smelting_electrum_weapons"
+        "recipes": "spartanweaponry:electrum_nugget_from_smelting_electrum_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

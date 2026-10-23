@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_rapier"
+        "recipes": "spartanweaponry:bronze_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

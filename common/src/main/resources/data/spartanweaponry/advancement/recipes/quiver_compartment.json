@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:quiver_compartment"
+        "recipes": "spartanweaponry:quiver_compartment"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

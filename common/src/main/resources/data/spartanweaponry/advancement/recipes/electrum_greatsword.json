@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_greatsword"
+        "recipes": "spartanweaponry:electrum_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

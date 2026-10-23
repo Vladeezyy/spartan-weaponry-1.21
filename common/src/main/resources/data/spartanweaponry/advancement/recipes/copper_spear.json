@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_spear"
+        "recipes": "spartanweaponry:copper_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

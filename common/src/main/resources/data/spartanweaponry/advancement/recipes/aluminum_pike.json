@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_pike"
+        "recipes": "spartanweaponry:aluminum_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

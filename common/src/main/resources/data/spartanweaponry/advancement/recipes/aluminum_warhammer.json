@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_warhammer"
+        "recipes": "spartanweaponry:aluminum_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

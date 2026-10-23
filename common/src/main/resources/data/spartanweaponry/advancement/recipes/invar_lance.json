@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_lance"
+        "recipes": "spartanweaponry:invar_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

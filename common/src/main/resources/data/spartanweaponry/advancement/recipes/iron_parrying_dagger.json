@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_parrying_dagger"
+        "recipes": "spartanweaponry:iron_parrying_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

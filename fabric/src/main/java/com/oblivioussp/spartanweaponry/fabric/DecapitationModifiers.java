@@ -110,7 +110,8 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 		{
 			try
 			{
-				List<LootItemCondition> conditions = LootItemCondition.DIRECT_CODEC.listOf().parse(ops, modifier.get("conditions")).getOrThrow();
+				// 26.3: one typed "condition" (NeoForge's global loot modifiers; was a "conditions" list)
+				List<LootItemCondition> conditions = List.of(LootItemCondition.DIRECT_CODEC.parse(ops, modifier.get("condition")).getOrThrow());
 				Item skull = BuiltInRegistries.ITEM.getValue(Identifier.parse(modifier.get("skull").getAsString()));
 				list.add(new Modifier(conditions, skull));
 			}

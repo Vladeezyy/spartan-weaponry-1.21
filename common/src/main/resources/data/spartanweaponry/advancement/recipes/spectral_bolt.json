@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:spectral_bolt"
+        "recipes": "spartanweaponry:spectral_bolt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

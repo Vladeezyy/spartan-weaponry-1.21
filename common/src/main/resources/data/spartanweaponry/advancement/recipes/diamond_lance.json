@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_lance"
+        "recipes": "spartanweaponry:diamond_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

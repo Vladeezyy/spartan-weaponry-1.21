@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_scythe"
+        "recipes": "spartanweaponry:nickel_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:cestus"
+        "recipes": "spartanweaponry:cestus"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

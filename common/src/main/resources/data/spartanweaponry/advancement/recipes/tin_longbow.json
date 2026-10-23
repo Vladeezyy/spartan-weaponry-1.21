@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_longbow"
+        "recipes": "spartanweaponry:tin_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

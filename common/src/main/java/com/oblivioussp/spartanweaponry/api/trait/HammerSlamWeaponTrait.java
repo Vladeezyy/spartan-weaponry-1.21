@@ -59,7 +59,7 @@ public class HammerSlamWeaponTrait extends WeaponTrait implements IActionTraitCa
 					weapon.hurtAndBreak(1, player, contextIn.getHand().asEquipmentSlot());
 				}
 			}
-			player.swing(contextIn.getHand(), true);
+			player.swing(contextIn.getHand(), net.minecraft.world.item.component.SwingAnimation.DEFAULT, true);
 			Sounds.notify(player, ModSounds.HAMMER_SLAMS_INTO_GROUND.get(), SoundSource.PLAYERS, 1.0f, 0.6f);
 			((ServerLevel)level).sendParticles(ParticleTypes.EXPLOSION, hitPos.x, hitPos.y, hitPos.z, 8, 0.0d, 0.1d, 0.0d, 0.5d);
 			player.resetAttackStrengthTicker();

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_lance"
+        "recipes": "spartanweaponry:lead_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -31,7 +31,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:small_bolt_quiver"
+        "recipes": "spartanweaponry:small_bolt_quiver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

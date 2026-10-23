@@ -4,7 +4,6 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import com.oblivioussp.spartanweaponry.client.item.WeaponryItemModels;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterConditionalItemModelPropertyEvent;
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
@@ -127,7 +126,7 @@ public class SpartanWeaponryNeoForgeClient
 		});
 		bus.addListener(EventPriority.NORMAL, true, (InputEvent.Key ev) ->
 		{
-			if(isAccessQuiver(InputConstants.Type.KEYSYM, ev.getKey(), ev.getAction()))
+			if(isAccessQuiver(InputConstants.Type.KEYBOARD, ev.getKey(), ev.getAction()))
 				ClientEventHandler.onAccessQuiverKey();
 		});
 		// High priority to allow other mods to place elements further above this
@@ -143,6 +142,6 @@ public class SpartanWeaponryNeoForgeClient
 	private static boolean isAccessQuiver(InputConstants.Type type, int code, int action)
 	{
 		KeyMapping key = KeyBinds.KEY_ACCESS_QUIVER;
-		return key.getKey().getType() == type && code == key.getKey().getValue() && action == GLFW.GLFW_PRESS;
+		return key.getKey().getType() == type && code == key.getKey().getValue() && action == InputConstants.PRESS;
 	}
 }

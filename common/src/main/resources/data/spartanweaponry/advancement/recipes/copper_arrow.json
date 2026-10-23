@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_arrow"
+        "recipes": "spartanweaponry:copper_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

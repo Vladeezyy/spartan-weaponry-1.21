@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_pike"
+        "recipes": "spartanweaponry:electrum_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

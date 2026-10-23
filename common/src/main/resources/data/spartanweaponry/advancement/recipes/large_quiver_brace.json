@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:large_quiver_brace"
+        "recipes": "spartanweaponry:large_quiver_brace"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

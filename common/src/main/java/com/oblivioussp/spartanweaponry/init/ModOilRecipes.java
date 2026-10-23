@@ -5,34 +5,46 @@ import com.oblivioussp.spartanweaponry.item.crafting.OilBrewingRecipe;
 import com.oblivioussp.spartanweaponry.item.crafting.PotionToOilBrewingRecipe;
 import com.oblivioussp.spartanweaponry.util.Config;
 
+import com.oblivioussp.spartanweaponry.init.ModItems;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import com.oblivioussp.spartanweaponry.item.crafting.BrewingRecipe;
 
-import java.util.function.Consumer;
+import com.oblivioussp.spartanweaponry.item.crafting.CodeBrewingRecipe;
+
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStackTemplate;
 
 public class ModOilRecipes
 {
 	public static OilBrewingRecipe oilRecipes = null;
 	public static PotionToOilBrewingRecipe potionToOilRecipes = null;
 	
-	// 1.21: brewing recipes are added on every server start (NeoForge's RegisterBrewingRecipesEvent)
-	public static void initOilRecipes(Consumer<BrewingRecipe> registrar)
+	// 26.3: the brewing recipes are data (data/spartanweaponry/recipe/*_brewing.json, CodeBrewingRecipe), made when the
+	// recipes are read
+	public static CodeBrewingRecipe oilBrewing()
 	{
 		if(oilRecipes == null)
 			oilRecipes = new OilBrewingRecipe();
-		registrar.accept(oilRecipes);
-		
-		if(potionToOilRecipes == null)
-			potionToOilRecipes = new PotionToOilBrewingRecipe();
-		registrar.accept(potionToOilRecipes);
+		if(OilBrewingRecipe.getValidMixes().isEmpty())
+			loadOilMixes();
+		Item[] reagents = OilBrewingRecipe.getValidMixes().stream().flatMap(mix -> mix.brewingIngredient.items()).map(Holder::value).distinct().toArray(Item[]::new);
+		return new CodeBrewingRecipe(oilRecipes, Ingredient.of(ModItems.WEAPON_OIL.get()), Ingredient.of(reagents),
+				new ItemStackTemplate(ModItems.WEAPON_OIL.get()), ModRecipeSerializers.OIL_BREWING::get);
 	}
 	
+	public static CodeBrewingRecipe potionToOilBrewing()
+	{
+		if(potionToOilRecipes == null)
+			potionToOilRecipes = new PotionToOilBrewingRecipe();
+		return new CodeBrewingRecipe(potionToOilRecipes, Ingredient.of(Items.POTION), Ingredient.of(ModItems.GREASE_BALL.get()),
+				new ItemStackTemplate(ModItems.WEAPON_OIL.get()), ModRecipeSerializers.POTION_TO_OIL_BREWING::get);
+	}
+	
+	/** The oil mixes; the config switch (disableOilRecipes) is asked when brewing, so the reagents stay known */
 	public static void loadOilMixes()
 	{
 		OilBrewingRecipe.clearMixes();
-		if(Config.INSTANCE.disableOilRecipes.get())
-			return;
 		
 		OilBrewingRecipe.addBaseOilMix(Ingredient.of(Items.GLISTERING_MELON_SLICE), OilEffects.UNDEAD.get());
 		OilBrewingRecipe.addOilMix(OilEffects.UNDEAD.get(), Ingredient.of(Items.GOLDEN_APPLE), OilEffects.UNDEAD_STRONG.get());

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_glaive"
+        "recipes": "spartanweaponry:electrum_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_greatsword"
+        "recipes": "spartanweaponry:nickel_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

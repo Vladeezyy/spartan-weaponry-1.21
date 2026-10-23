@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_spear"
+        "recipes": "spartanweaponry:wooden_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

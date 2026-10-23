@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_flanged_mace"
+        "recipes": "spartanweaponry:tin_flanged_mace"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

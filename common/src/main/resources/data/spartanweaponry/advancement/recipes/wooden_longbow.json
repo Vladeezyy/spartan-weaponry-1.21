@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_longbow"
+        "recipes": "spartanweaponry:wooden_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

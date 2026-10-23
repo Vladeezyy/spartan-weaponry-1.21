@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_flanged_mace"
+        "recipes": "spartanweaponry:golden_flanged_mace"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

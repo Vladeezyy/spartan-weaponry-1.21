@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_battleaxe"
+        "recipes": "spartanweaponry:wooden_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

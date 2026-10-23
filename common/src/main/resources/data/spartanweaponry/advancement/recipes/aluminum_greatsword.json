@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_greatsword"
+        "recipes": "spartanweaponry:aluminum_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

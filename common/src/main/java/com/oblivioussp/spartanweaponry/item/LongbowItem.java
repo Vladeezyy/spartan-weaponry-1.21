@@ -195,7 +195,7 @@ public class LongbowItem extends BowItem implements IReloadable
 
     
     // NeoForge IItemExtension (Fabric: a mixin)
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<ItemStack> onBroken) 
     {
     	int damage = amount;
     	for(WeaponTrait trait : rangedTraits)

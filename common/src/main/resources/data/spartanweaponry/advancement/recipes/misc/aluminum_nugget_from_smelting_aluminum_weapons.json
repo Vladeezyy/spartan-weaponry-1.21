@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_nugget_from_smelting_aluminum_weapons"
+        "recipes": "spartanweaponry:aluminum_nugget_from_smelting_aluminum_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

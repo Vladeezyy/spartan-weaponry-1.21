@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_halberd"
+        "recipes": "spartanweaponry:platinum_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

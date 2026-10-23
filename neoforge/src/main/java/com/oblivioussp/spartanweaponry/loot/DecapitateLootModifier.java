@@ -35,7 +35,8 @@ public class DecapitateLootModifier extends LootModifier
 	
 	private Item skull;
 
-	public DecapitateLootModifier(LootItemCondition[] conditionsIn, int priorityIn, Item skullItem)
+	// 26.3: one condition (a holder), was a list
+	public DecapitateLootModifier(java.util.Optional<net.minecraft.core.Holder<LootItemCondition>> conditionsIn, int priorityIn, Item skullItem)
 	{
 		super(conditionsIn, priorityIn);
 		skull = skullItem;

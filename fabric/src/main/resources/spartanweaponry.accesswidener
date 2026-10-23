@@ -18,7 +18,7 @@ accessible field net/minecraft/client/color/item/ItemTintSources ID_MAPPER Lnet/
 accessible method net/minecraft/client/gui/screens/MenuScreens register (Lnet/minecraft/world/inventory/MenuType;Lnet/minecraft/client/gui/screens/MenuScreens$ScreenConstructor;)V
 # The test scenes (port/)
 accessible field net/minecraft/world/entity/LivingEntity attackStrengthTicker I
-accessible method net/minecraft/world/entity/monster/EnderMan teleport ()Z
+accessible method net/minecraft/world/entity/monster/Enderman teleport ()Z
 # 1.21.11: reading an item's custom data without a copy, making the skull block entity type
 accessible field net/minecraft/world/item/component/CustomData tag Lnet/minecraft/nbt/CompoundTag;
 accessible method net/minecraft/world/level/block/entity/BlockEntityType <init> (Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;Ljava/util/Set;)V

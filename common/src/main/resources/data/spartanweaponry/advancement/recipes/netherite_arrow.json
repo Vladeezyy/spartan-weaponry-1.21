@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:netherite_arrow"
+        "recipes": "spartanweaponry:netherite_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

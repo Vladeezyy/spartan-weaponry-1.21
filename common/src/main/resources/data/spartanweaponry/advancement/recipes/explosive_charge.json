@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:explosive_charge"
+        "recipes": "spartanweaponry:explosive_charge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

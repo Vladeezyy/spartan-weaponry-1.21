@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_spear"
+        "recipes": "spartanweaponry:lead_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

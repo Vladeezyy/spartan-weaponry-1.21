@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_longsword"
+        "recipes": "spartanweaponry:lead_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

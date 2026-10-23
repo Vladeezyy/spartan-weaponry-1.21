@@ -208,7 +208,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 			{
 				EquipmentSlot breakSlot = stack == entity.getOffhandItem() ? EquipmentSlot.OFFHAND : stack == entity.getMainHandItem() ? EquipmentSlot.MAINHAND : null;
 				if(breakSlot != null)
-					entity.onEquippedItemBroken(stack.getItem(), breakSlot);
+					entity.onEquippedItemBroken(stack, breakSlot);
 				
 				int ammo = ItemNbt.read(stack).getIntOr(NBT_AMMO_USED, 0) + 1;
 				ItemNbt.update(stack, (nbt) -> nbt.putInt(NBT_AMMO_USED, ammo));
@@ -435,7 +435,7 @@ public class ThrowingWeaponItem extends Item implements IWeaponTraitContainer<Th
 	}
     
     // NeoForge IItemExtension (Fabric: a mixin)
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<ItemStack> onBroken) 
     {
     	int damage = amount;
     	for(WeaponTrait trait : traits)

@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_battle_hammer"
+        "recipes": "spartanweaponry:stone_battle_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

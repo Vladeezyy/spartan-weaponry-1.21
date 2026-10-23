@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_saber"
+        "recipes": "spartanweaponry:electrum_saber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

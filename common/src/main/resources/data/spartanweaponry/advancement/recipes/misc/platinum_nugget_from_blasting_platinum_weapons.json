@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_nugget_from_blasting_platinum_weapons"
+        "recipes": "spartanweaponry:platinum_nugget_from_blasting_platinum_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

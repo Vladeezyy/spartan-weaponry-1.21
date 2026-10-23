@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_pike"
+        "recipes": "spartanweaponry:bronze_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

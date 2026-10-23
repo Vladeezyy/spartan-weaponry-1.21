@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:medium_bolt_quiver_smithing"
+        "recipes": "spartanweaponry:medium_bolt_quiver_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

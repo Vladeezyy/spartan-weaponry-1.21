@@ -402,7 +402,7 @@ public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBa
     }
     
     // NeoForge IItemExtension (Fabric: a mixin)
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<ItemStack> onBroken) 
     {
     	int damage = amount;
     	for(WeaponTrait trait : traits)

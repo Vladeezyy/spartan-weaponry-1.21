@@ -111,7 +111,7 @@ public class WeaponOilItem extends BasicItem
 						stack.shrink(1);
 						if(stack.getCount() == 0)
 							playerIn.setItemInHand(handIn, ItemStack.EMPTY);
-						playerIn.getInventory().placeItemBackInInventory(bottleStack);
+						playerIn.getInventory().placeItemBackInInventory(bottleStack, net.minecraft.util.Prediction.SERVER_ONLY);
 					}
 					else
 						playerIn.sendOverlayMessage(Component.translatable("message." + ModSpartanWeaponry.ID + ".weapon_already_oiled", stack.getHoverName(), oppositeStack.getHoverName()).withStyle(ChatFormatting.RED));

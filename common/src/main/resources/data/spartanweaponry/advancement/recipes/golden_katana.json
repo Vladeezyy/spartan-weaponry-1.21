@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_katana"
+        "recipes": "spartanweaponry:golden_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

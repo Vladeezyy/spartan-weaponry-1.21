@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_parrying_dagger"
+        "recipes": "spartanweaponry:tin_parrying_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

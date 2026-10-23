@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_saber"
+        "recipes": "spartanweaponry:constantan_saber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

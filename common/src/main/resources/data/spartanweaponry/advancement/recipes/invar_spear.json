@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_spear"
+        "recipes": "spartanweaponry:invar_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

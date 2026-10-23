@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_heavy_crossbow"
+        "recipes": "spartanweaponry:golden_heavy_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

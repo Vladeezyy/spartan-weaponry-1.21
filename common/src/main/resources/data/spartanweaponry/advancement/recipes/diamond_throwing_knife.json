@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_throwing_knife"
+        "recipes": "spartanweaponry:diamond_throwing_knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

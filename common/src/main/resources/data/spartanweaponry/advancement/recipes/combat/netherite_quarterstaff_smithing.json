@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:netherite_quarterstaff_smithing"
+        "recipes": "spartanweaponry:netherite_quarterstaff_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

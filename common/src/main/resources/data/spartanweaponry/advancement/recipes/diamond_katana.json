@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_katana"
+        "recipes": "spartanweaponry:diamond_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

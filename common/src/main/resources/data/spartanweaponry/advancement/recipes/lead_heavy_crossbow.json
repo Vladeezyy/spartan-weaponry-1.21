@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_heavy_crossbow"
+        "recipes": "spartanweaponry:lead_heavy_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

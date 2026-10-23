@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_greatsword"
+        "recipes": "spartanweaponry:wooden_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

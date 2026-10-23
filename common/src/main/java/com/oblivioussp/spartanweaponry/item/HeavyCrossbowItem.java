@@ -367,7 +367,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
     
     
     // NeoForge IItemExtension (Fabric: a mixin)
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) 
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<ItemStack> onBroken) 
     {
     	int damage = amount;
     	for(WeaponTrait trait : rangedTraits)
@@ -499,7 +499,7 @@ public class HeavyCrossbowItem extends CrossbowItem implements IReloadable, IHud
 		ChargedProjectiles charged = crossbow.get(DataComponents.CHARGED_PROJECTILES);
 		if(charged != null && !charged.isEmpty())
 		{
-			List<ItemStack> bolts = charged.itemCopies();
+			List<ItemStack> bolts = charged.itemCopies().toList();
 			ItemStack bolt = bolts.get(0).copy();
 			bolt.setCount(bolts.size());
 			return bolt;

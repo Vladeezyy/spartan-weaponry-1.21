@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.datafixers.util.Pair;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
@@ -61,7 +60,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.skeleton.Skeleton;
 import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.entity.npc.villager.Villager;
@@ -267,7 +266,7 @@ public final class DevScene
 				return;
 			}
 			opened = true;
-			GLFW.glfwSetWindowSize(mc.getWindow().handle(), 1600, 900);
+			mc.getWindow().setWindowed(1600, 900);
 			if(mc.getLevelSource().levelExists(WORLD))
 				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.gui.setScreen(new TitleScreen()));
 			else
@@ -494,7 +493,7 @@ public final class DevScene
 	{
 		IronGolem golem = golem(player);
 		golem.setHealth(golem.getMaxHealth());
-		golem.invulnerableTime = 0;
+		golem.setInvulnerableTime(0);
 		golemHealth = golem.getHealth();
 	}
 
@@ -816,7 +815,7 @@ public final class DevScene
 	private static float hit(ServerPlayer player, Zombie target)
 	{
 		float before = target.getHealth();
-		target.invulnerableTime = 0;
+		target.setInvulnerableTime(0);
 		setAttackTicker(player, 1000);
 		player.attack(target);
 		return before - target.getHealth();
@@ -960,11 +959,11 @@ public final class DevScene
 		zombie.setYRot(180.0F);
 		player.startUsingItem(InteractionHand.MAIN_HAND);
 		boolean using = player.isUsingItem();
-		player.invulnerableTime = 0;
+		player.setInvulnerableTime(0);
 		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
 		float blocked = player.getMaxHealth() - player.getHealth();
 		player.stopUsingItem();
-		player.invulnerableTime = 0;
+		player.setInvulnerableTime(0);
 		player.hurt(player.damageSources().mobAttack(zombie), 4.0F);
 		float taken = player.getMaxHealth() - player.getHealth() - blocked;
 		check("Melee Block: a parrying dagger in use blocks a melee hit", using && blocked == 0.0F && taken > 0.0F, "using " + using + ", blocked hit " + blocked + ", unblocked " + taken);
@@ -1072,12 +1071,12 @@ public final class DevScene
 	private static void enderDisruption(ServerPlayer player)
 	{
 		ServerLevel level = player.level();
-		EnderMan enderman = EntityTypes.ENDERMAN.spawn(level, stage.offset(30, 0, 0), EntitySpawnReason.COMMAND);
+		Enderman enderman = EntityTypes.ENDERMAN.spawn(level, stage.offset(30, 0, 0), EntitySpawnReason.COMMAND);
 		enderman.setNoAi(true);
 		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION.holder(), 600));
 		Vec3 start = enderman.position();
 		boolean teleported = false;
-		// EnderMan.teleport() is opened by the access transformer / widener
+		// Enderman.teleport() is opened by the access transformer / widener
 		for(int i = 0; i < 30; i++)
 			teleported |= enderman.teleport();
 		check("Ender Disruption stops an enderman from teleporting", !teleported && enderman.position().equals(start), enderman.position());
@@ -1119,6 +1118,21 @@ public final class DevScene
 		var smelting = recipes.byKey(recipe("iron_nugget_from_smelting_iron_weapons"));
 		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> smelted(r, level).is(Items.IRON_NUGGET)
 				&& ((net.minecraft.world.item.crafting.AbstractCookingRecipe)r.value()).input().test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> smelted(r, level)).orElse(ItemStack.EMPTY));
+		// 26.3: the oil brewing stand recipes are data (CodeBrewingRecipe); the stand finds them and takes their items
+		ItemStack baseOil = com.oblivioussp.spartanweaponry.util.OilHelper.makeOilStack(com.oblivioussp.spartanweaponry.api.OilEffects.NONE.get());
+		ItemStack melon = new ItemStack(Items.GLISTERING_MELON_SLICE);
+		var oilInput = new net.minecraft.world.item.crafting.BrewingInput(baseOil, melon);
+		var oilRecipe = recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.BREWING, oilInput, level);
+		ItemStack brewedOil = oilRecipe.map(r -> r.value().assemble(oilInput)).orElse(ItemStack.EMPTY);
+		check("oil brewing: oil base + glistering melon slice makes undead oil", com.oblivioussp.spartanweaponry.util.OilHelper.getOilFromStack(brewedOil) == com.oblivioussp.spartanweaponry.api.OilEffects.UNDEAD.get(), oilRecipe.map(r -> r.id() + " -> " + brewedOil).orElse("no recipe"));
+		check("oil brewing: the brewing stand takes the oil and the reagent", recipes.propertySet(net.minecraft.world.item.crafting.RecipePropertySet.BREWING_INPUTS).test(baseOil)
+				&& recipes.propertySet(net.minecraft.world.item.crafting.RecipePropertySet.BREWING_REAGENTS).test(melon), "");
+		ItemStack poison = net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, net.minecraft.world.item.alchemy.Potions.POISON);
+		var potionInput = new net.minecraft.world.item.crafting.BrewingInput(poison, new ItemStack(ModItems.GREASE_BALL.get()));
+		ItemStack potionOil = recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.BREWING, potionInput, level).map(r -> r.value().assemble(potionInput)).orElse(ItemStack.EMPTY);
+		check("oil brewing: a potion + grease ball makes a potion oil", potionOil.is(ModItems.WEAPON_OIL.get()) && com.oblivioussp.spartanweaponry.util.OilHelper.getPotionFromStack(potionOil).isPresent(), potionOil);
+		var plainInput = new net.minecraft.world.item.crafting.BrewingInput(PotionContentsAwkward(), new ItemStack(Items.BLAZE_POWDER));
+		check("vanilla brewing still works (awkward potion + blaze powder)", recipes.getRecipeFor(net.minecraft.world.item.crafting.RecipeType.BREWING, plainInput, level).isPresent(), "");
 		// Enchanting table
 		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
 		check("enchanting table: throwing knife", offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible).containsAll(List.of("spartanweaponry:razors_edge", "spartanweaponry:propel", "spartanweaponry:lucky_throw", "minecraft:unbreaking")), offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible));
@@ -1165,6 +1179,11 @@ public final class DevScene
 				? ((net.minecraft.world.item.crafting.Recipe<net.minecraft.world.item.crafting.SingleRecipeInput>)cooking).assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(ModItems.LONGSWORDS.iron.get()))) : ItemStack.EMPTY;
 	}
 
+	private static ItemStack PotionContentsAwkward()
+	{
+		return net.minecraft.world.item.alchemy.PotionContents.createItemStack(Items.POTION, net.minecraft.world.item.alchemy.Potions.AWKWARD);
+	}
+
 	private static List<String> offered(ItemStack stack, net.minecraft.core.HolderSet.Named<net.minecraft.world.item.enchantment.Enchantment> possible)
 	{
 		List<EnchantmentInstance> available = EnchantmentHelper.getAvailableEnchantmentResults(30, stack, possible.stream());
@@ -1199,7 +1218,7 @@ public final class DevScene
 				List<net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent> components = new ArrayList<>();
 				lines.forEach(line -> components.add(net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent.create(line.getVisualOrderText())));
 				stack.getTooltipImage().map(com.oblivioussp.spartanweaponry.client.ClientHelper::createTooltipComponent).ifPresent(image -> components.add(Math.min(1, components.size()), image));
-				graphics.tooltip(font, components, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16, net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner.INSTANCE, null);
+				graphics.tooltip(font, components, (i % 2) * width / 2 + 4, (i / 2) * height / 2 + 16, net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner.INSTANCE, null, false);
 				for(Component line : lines)
 					if(line.getString().contains("tooltip.spartanweaponry") || line.getString().contains("item.spartanweaponry"))
 						Log.info("[scene] CHECK FAIL untranslated tooltip line (" + line.getString() + ")");

@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_bolt"
+        "recipes": "spartanweaponry:diamond_bolt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

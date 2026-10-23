@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_longsword"
+        "recipes": "spartanweaponry:platinum_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

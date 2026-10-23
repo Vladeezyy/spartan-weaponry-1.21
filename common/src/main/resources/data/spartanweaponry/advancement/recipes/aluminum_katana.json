@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_katana"
+        "recipes": "spartanweaponry:aluminum_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_warhammer"
+        "recipes": "spartanweaponry:iron_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

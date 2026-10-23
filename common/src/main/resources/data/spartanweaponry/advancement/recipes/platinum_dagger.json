@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_dagger"
+        "recipes": "spartanweaponry:platinum_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

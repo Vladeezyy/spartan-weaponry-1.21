@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_quarterstaff"
+        "recipes": "spartanweaponry:copper_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

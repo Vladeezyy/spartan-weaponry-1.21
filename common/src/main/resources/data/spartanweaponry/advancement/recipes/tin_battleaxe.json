@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_battleaxe"
+        "recipes": "spartanweaponry:tin_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

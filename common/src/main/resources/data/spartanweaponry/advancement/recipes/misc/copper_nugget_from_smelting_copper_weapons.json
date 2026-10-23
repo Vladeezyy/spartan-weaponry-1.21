@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_nugget_from_smelting_copper_weapons"
+        "recipes": "spartanweaponry:copper_nugget_from_smelting_copper_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

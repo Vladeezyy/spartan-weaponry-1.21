@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_dagger"
+        "recipes": "spartanweaponry:copper_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

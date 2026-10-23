@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_javelin"
+        "recipes": "spartanweaponry:invar_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

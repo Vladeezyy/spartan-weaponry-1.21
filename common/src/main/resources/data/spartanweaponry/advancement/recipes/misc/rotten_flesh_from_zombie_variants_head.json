@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:rotten_flesh_from_zombie_variants_head"
+        "recipes": "spartanweaponry:rotten_flesh_from_zombie_variants_head"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

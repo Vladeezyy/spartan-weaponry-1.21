@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_parrying_dagger"
+        "recipes": "spartanweaponry:bronze_parrying_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

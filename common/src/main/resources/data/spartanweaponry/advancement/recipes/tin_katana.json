@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_katana"
+        "recipes": "spartanweaponry:tin_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

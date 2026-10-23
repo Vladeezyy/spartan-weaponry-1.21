@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
 /**
@@ -42,15 +41,15 @@ public class CurioRenderer
 	
 	public static void register()
 	{
-		CuriosRendererRegistry.register(ModItems.SMALL_ARROW_QUIVER.get(), () -> new Renderer(Kind.SMALL_ARROW, smallArrowQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.MEDIUM_ARROW_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_ARROW, mediumArrowQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.LARGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, largeArrowQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.HUGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, hugeArrowQuiverTexture));
+		ICurioRenderer.register(ModItems.SMALL_ARROW_QUIVER.get(), () -> new Renderer(Kind.SMALL_ARROW, smallArrowQuiverTexture));
+		ICurioRenderer.register(ModItems.MEDIUM_ARROW_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_ARROW, mediumArrowQuiverTexture));
+		ICurioRenderer.register(ModItems.LARGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, largeArrowQuiverTexture));
+		ICurioRenderer.register(ModItems.HUGE_ARROW_QUIVER.get(), () -> new Renderer(Kind.LARGE_ARROW, hugeArrowQuiverTexture));
 		
-		CuriosRendererRegistry.register(ModItems.SMALL_BOLT_QUIVER.get(), () -> new Renderer(Kind.SMALL_BOLT, smallBoltQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.MEDIUM_BOLT_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_BOLT, mediumBoltQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.LARGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, largeBoltQuiverTexture));
-		CuriosRendererRegistry.register(ModItems.HUGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, hugeBoltQuiverTexture));
+		ICurioRenderer.register(ModItems.SMALL_BOLT_QUIVER.get(), () -> new Renderer(Kind.SMALL_BOLT, smallBoltQuiverTexture));
+		ICurioRenderer.register(ModItems.MEDIUM_BOLT_QUIVER.get(), () -> new Renderer(Kind.MEDIUM_BOLT, mediumBoltQuiverTexture));
+		ICurioRenderer.register(ModItems.LARGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, largeBoltQuiverTexture));
+		ICurioRenderer.register(ModItems.HUGE_BOLT_QUIVER.get(), () -> new Renderer(Kind.LARGE_BOLT, hugeBoltQuiverTexture));
 	}
 
 	private enum Kind { SMALL_ARROW, MEDIUM_ARROW, LARGE_ARROW, SMALL_BOLT, MEDIUM_BOLT, LARGE_BOLT }
@@ -89,9 +88,13 @@ public class CurioRenderer
 			int arrowsToRender = stack.getItem() instanceof QuiverBaseItem quiver ? quiver.getAmmoCount(stack) : 0;
 			QuiverModelBase model = model(kind);
 			poseStack.pushPose();
-			ICurioRenderer.translateIfSneaking(poseStack, slotContext.entity());
-			ICurioRenderer.rotateIfSneaking(poseStack, slotContext.entity());
-			collector.submitModel(model, arrowsToRender, poseStack, model.renderType(texture), light, OverlayTexture.NO_OVERLAY, renderState.outlineColor, null);
+			// Curios 17 has no translateIfSneaking / rotateIfSneaking: what they did (on the body when crouching)
+			if(slotContext.entity().isCrouching())
+			{
+				poseStack.translate(0.0F, 0.2F, 0.0F);
+				poseStack.rotate(com.mojang.math.Axis.XP.rotationDegrees(90.0F / (float)Math.PI));
+			}
+			collector.submitModel(model, arrowsToRender, poseStack, model.renderType(texture), light, OverlayTexture.NO_OVERLAY, renderState.outlineColor);
 			poseStack.popPose();
 		}
 	}

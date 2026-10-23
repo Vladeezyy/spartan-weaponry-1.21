@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_halberd"
+        "recipes": "spartanweaponry:lead_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

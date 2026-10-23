@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_quarterstaff"
+        "recipes": "spartanweaponry:nickel_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

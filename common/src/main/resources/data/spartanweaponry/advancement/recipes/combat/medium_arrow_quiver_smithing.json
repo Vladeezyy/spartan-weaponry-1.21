@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:medium_arrow_quiver_smithing"
+        "recipes": "spartanweaponry:medium_arrow_quiver_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

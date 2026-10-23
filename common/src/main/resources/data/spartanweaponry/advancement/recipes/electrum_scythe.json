@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_scythe"
+        "recipes": "spartanweaponry:electrum_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

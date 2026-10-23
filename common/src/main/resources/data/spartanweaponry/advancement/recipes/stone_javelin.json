@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_javelin"
+        "recipes": "spartanweaponry:stone_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

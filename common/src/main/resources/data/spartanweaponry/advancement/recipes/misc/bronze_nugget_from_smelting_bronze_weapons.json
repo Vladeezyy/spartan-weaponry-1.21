@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:bronze_nugget_from_smelting_bronze_weapons"
+        "recipes": "spartanweaponry:bronze_nugget_from_smelting_bronze_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

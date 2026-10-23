@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_rapier"
+        "recipes": "spartanweaponry:steel_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_halberd"
+        "recipes": "spartanweaponry:diamond_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

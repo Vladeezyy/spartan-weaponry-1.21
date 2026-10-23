@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_parrying_dagger"
+        "recipes": "spartanweaponry:wooden_parrying_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

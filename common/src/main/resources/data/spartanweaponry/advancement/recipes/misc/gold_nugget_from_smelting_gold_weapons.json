@@ -15,7 +15,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:gold_nugget_from_smelting_gold_weapons"
+        "recipes": "spartanweaponry:gold_nugget_from_smelting_gold_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

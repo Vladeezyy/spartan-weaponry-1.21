@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_greatsword"
+        "recipes": "spartanweaponry:tin_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

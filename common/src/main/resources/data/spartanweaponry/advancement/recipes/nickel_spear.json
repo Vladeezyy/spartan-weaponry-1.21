@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_spear"
+        "recipes": "spartanweaponry:nickel_spear"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

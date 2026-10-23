@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_heavy_crossbow"
+        "recipes": "spartanweaponry:electrum_heavy_crossbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

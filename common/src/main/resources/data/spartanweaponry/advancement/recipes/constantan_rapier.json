@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_rapier"
+        "recipes": "spartanweaponry:constantan_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

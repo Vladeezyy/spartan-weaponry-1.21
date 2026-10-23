@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:silver_warhammer"
+        "recipes": "spartanweaponry:silver_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

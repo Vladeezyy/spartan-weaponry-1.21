@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_dagger"
+        "recipes": "spartanweaponry:invar_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

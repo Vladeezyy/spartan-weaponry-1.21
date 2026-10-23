@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_katana"
+        "recipes": "spartanweaponry:lead_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

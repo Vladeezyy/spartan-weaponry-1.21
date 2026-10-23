@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_pike"
+        "recipes": "spartanweaponry:wooden_pike"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

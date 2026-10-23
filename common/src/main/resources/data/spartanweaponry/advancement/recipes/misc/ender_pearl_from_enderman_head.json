@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:ender_pearl_from_enderman_head"
+        "recipes": "spartanweaponry:ender_pearl_from_enderman_head"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:simple_pole"
+        "recipes": "spartanweaponry:simple_pole"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

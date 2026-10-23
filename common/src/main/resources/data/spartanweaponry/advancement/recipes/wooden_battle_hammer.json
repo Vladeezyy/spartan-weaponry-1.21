@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_battle_hammer"
+        "recipes": "spartanweaponry:wooden_battle_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

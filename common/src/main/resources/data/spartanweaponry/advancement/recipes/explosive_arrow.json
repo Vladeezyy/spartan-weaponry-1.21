@@ -31,7 +31,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:explosive_arrow"
+        "recipes": "spartanweaponry:explosive_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

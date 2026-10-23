@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_longsword"
+        "recipes": "spartanweaponry:nickel_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

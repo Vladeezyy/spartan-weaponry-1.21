@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_rapier"
+        "recipes": "spartanweaponry:electrum_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

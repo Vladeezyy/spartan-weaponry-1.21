@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_dagger"
+        "recipes": "spartanweaponry:nickel_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

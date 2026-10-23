@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_rapier"
+        "recipes": "spartanweaponry:nickel_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

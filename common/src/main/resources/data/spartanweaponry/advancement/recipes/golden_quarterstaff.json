@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_quarterstaff"
+        "recipes": "spartanweaponry:golden_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

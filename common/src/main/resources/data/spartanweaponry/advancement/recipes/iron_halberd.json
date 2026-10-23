@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_halberd"
+        "recipes": "spartanweaponry:iron_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

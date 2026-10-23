@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_battle_hammer"
+        "recipes": "spartanweaponry:diamond_battle_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

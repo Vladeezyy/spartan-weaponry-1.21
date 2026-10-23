@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_longbow"
+        "recipes": "spartanweaponry:diamond_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -1,6 +1,7 @@
 package com.oblivioussp.spartanweaponry.client;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
+
 
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
@@ -13,6 +14,6 @@ public class KeyBinds
 	// 1.21.9+: a category the loader registers (NeoForge RegisterKeyMappingsEvent, Fabric KeyMapping.Category.register);
 	// its name is key.category.spartanweaponry.title
 	public static final KeyMapping.Category CATEGORY = new KeyMapping.Category(Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "title"));
-	public static KeyMapping KEY_ACCESS_QUIVER = new KeyMapping("key." + ModSpartanWeaponry.ID + ".access_quiver", Type.KEYSYM, GLFW.GLFW_KEY_I, CATEGORY);
+	public static KeyMapping KEY_ACCESS_QUIVER = new KeyMapping("key." + ModSpartanWeaponry.ID + ".access_quiver", Type.KEYBOARD, InputConstants.KEY_I, CATEGORY);
 
 }

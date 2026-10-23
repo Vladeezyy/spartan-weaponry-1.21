@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_nugget_from_smelting_nickel_weapons"
+        "recipes": "spartanweaponry:nickel_nugget_from_smelting_nickel_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

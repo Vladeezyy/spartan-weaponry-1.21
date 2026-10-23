@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_glaive"
+        "recipes": "spartanweaponry:constantan_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

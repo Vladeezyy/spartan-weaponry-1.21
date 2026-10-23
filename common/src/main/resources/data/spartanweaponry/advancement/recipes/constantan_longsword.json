@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_longsword"
+        "recipes": "spartanweaponry:constantan_longsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

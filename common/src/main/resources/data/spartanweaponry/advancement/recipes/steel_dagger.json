@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_dagger"
+        "recipes": "spartanweaponry:steel_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

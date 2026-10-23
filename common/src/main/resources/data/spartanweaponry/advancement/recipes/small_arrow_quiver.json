@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:small_arrow_quiver"
+        "recipes": "spartanweaponry:small_arrow_quiver"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

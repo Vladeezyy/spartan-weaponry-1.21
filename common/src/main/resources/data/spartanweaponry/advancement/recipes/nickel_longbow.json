@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_longbow"
+        "recipes": "spartanweaponry:nickel_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

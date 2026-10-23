@@ -27,7 +27,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_nugget_from_blasting_constantan_weapons"
+        "recipes": "spartanweaponry:constantan_nugget_from_blasting_constantan_weapons"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

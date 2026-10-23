@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_longbow"
+        "recipes": "spartanweaponry:constantan_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

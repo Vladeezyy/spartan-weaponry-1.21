@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_quarterstaff"
+        "recipes": "spartanweaponry:constantan_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

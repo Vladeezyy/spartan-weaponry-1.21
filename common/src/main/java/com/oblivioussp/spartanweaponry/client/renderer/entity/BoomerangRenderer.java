@@ -37,11 +37,11 @@ public class BoomerangRenderer extends ThrowingWeaponRenderer<BoomerangEntity>
 	protected void doRenderTransformations(ThrowingWeaponRenderState state, PoseStack matrixStack) 
 	{
 		matrixStack.scale(2.0f, 2.0f, 2.0f);
-		matrixStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0f));
-		matrixStack.mulPose(Axis.ZP.rotationDegrees(state.xRot - 135.0f));
-		matrixStack.mulPose(FLIP);			// NOTE: PI = 180 degrees around (1, 1, 0)
-		matrixStack.mulPose(QUARTER);		// NOTE: PI / 2 = 90 degrees around (1, -1, 0)
-		matrixStack.mulPose(Axis.ZP.rotationDegrees(state.spin));
+		matrixStack.rotate(Axis.YP.rotationDegrees(state.yRot - 90.0f));
+		matrixStack.rotate(Axis.ZP.rotationDegrees(state.xRot - 135.0f));
+		matrixStack.rotate(FLIP);			// NOTE: PI = 180 degrees around (1, 1, 0)
+		matrixStack.rotate(QUARTER);		// NOTE: PI / 2 = 90 degrees around (1, -1, 0)
+		matrixStack.rotate(Axis.ZP.rotationDegrees(state.spin));
 		matrixStack.translate(0.075f, 0.25f, 0.0f);
 	}
 }

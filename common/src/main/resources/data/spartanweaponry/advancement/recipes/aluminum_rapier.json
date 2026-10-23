@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_rapier"
+        "recipes": "spartanweaponry:aluminum_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

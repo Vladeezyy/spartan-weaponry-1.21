@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_javelin"
+        "recipes": "spartanweaponry:constantan_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

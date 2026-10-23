@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_greatsword"
+        "recipes": "spartanweaponry:diamond_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

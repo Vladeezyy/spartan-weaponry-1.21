@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:netherite_parrying_dagger_smithing"
+        "recipes": "spartanweaponry:netherite_parrying_dagger_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_boomerang"
+        "recipes": "spartanweaponry:invar_boomerang"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

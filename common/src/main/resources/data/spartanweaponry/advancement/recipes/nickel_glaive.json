@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_glaive"
+        "recipes": "spartanweaponry:nickel_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

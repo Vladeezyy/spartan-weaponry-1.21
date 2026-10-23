@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:pole_from_wool"
+        "recipes": "spartanweaponry:pole_from_wool"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

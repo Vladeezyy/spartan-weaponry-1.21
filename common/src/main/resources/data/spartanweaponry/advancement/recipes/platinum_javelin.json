@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:platinum_javelin"
+        "recipes": "spartanweaponry:platinum_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

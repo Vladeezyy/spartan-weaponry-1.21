@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_halberd"
+        "recipes": "spartanweaponry:tin_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

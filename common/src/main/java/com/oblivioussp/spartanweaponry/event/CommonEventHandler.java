@@ -81,7 +81,6 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 /** Game event handlers; the NeoForge and Fabric modules call them (see LoaderEvents). */
@@ -141,7 +140,7 @@ public class CommonEventHandler
 			if(attackerStack.is(ModItemTags.OILABLE_WEAPONS))
 			{
 				IOilHandler oilHandler = ModCapabilities.getOil(attackerStack);
-				boolean blockedByInvulnerability = target.invulnerableTime > 10 && !source.is(DamageTypeTags.BYPASSES_COOLDOWN) && dmgDealt <= target.lastHurt;
+				boolean blockedByInvulnerability = target.getInvulnerableTime() > 10 && !source.is(DamageTypeTags.BYPASSES_COOLDOWN) && dmgDealt <= target.lastHurt;
 				if(oilHandler != null && oilHandler.isOiled() && !blockedByInvulnerability)
 				{
 					float dmgUnmodified = dmgDealt;
@@ -573,32 +572,35 @@ public class CommonEventHandler
 				ev.getName().equals(BuiltInLootTables.VILLAGE_WEAPONSMITH.identifier()))
 		{
 			Log.info("Adding Iron Weapons to the Village Weaponsmith Loot Table!");
-			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_WEAPONSMITH));
+			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_WEAPONSMITH, ev.registries()));
 		}
 		else if(Config.INSTANCE.addBowAndCrossbowLootToVillageFletcher.get() && 
 				ev.getName().equals(BuiltInLootTables.VILLAGE_FLETCHER.identifier()))
 		{
 			Log.info("Adding Longbow and Heavy Crossbow related loot to the Village Fletcher Loot Table!");
-			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_FLETCHER));
+			ev.addPool(generateLootPool(ModLootTables.INJECT_VILLAGE_FLETCHER, ev.registries()));
 		}
 		else if(Config.INSTANCE.addDiamondWeaponsToEndCity.get() && 
 				ev.getName().equals(BuiltInLootTables.END_CITY_TREASURE.identifier()))
 		{
 			Log.info("Adding Diamond Weapons to the End City Treasure Loot Table!");
-			ev.addPool(generateLootPool(ModLootTables.INJECT_END_CITY_TREASURE));
+			ev.addPool(generateLootPool(ModLootTables.INJECT_END_CITY_TREASURE, ev.registries()));
 		}
 	}
 	
-	private static LootPool generateLootPool(Identifier lootName)
+	// 26.3: the nested table is a holder of the loot table registry, the bonus rolls a float provider holder
+	private static LootPool generateLootPool(Identifier lootName, net.minecraft.core.HolderGetter.Provider registries)
 	{
-		return LootPool.lootPool().add(generateLootEntry(lootName))
-						.setBonusRolls(UniformGenerator.between(0, 1))
+		return LootPool.lootPool().add(generateLootEntry(lootName, registries))
+						.setBonusRolls(net.minecraft.core.Holder.direct(new net.minecraft.world.level.storage.loot.providers.number.floats.UniformGenerator(
+								net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders.exactly(0.0F),
+								net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders.exactly(1.0F))))
 						.build();
 	}
 	
-	private static LootPoolEntryContainer.Builder<?> generateLootEntry(Identifier lootName)
+	private static LootPoolEntryContainer.Builder<?> generateLootEntry(Identifier lootName, net.minecraft.core.HolderGetter.Provider registries)
 	{
-		return NestedLootTable.lootTableReference(ResourceKey.create(Registries.LOOT_TABLE, lootName)).setWeight(1);
+		return NestedLootTable.lootTableReference(registries.lookupOrThrow(Registries.LOOT_TABLE).getOrThrow(ResourceKey.create(Registries.LOOT_TABLE, lootName))).setWeight(1);
 	}
 	
 	/**

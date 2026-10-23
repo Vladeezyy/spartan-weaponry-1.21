@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_warhammer"
+        "recipes": "spartanweaponry:lead_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

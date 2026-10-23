@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_halberd"
+        "recipes": "spartanweaponry:constantan_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

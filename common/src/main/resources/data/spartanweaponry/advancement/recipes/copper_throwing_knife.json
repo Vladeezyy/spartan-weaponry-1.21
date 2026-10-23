@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_throwing_knife"
+        "recipes": "spartanweaponry:copper_throwing_knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

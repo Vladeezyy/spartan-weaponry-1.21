@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_lance"
+        "recipes": "spartanweaponry:copper_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

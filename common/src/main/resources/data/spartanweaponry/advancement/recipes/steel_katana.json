@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_katana"
+        "recipes": "spartanweaponry:steel_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

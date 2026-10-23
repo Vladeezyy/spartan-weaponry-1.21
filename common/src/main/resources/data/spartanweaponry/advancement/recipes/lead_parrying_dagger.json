@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_parrying_dagger"
+        "recipes": "spartanweaponry:lead_parrying_dagger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

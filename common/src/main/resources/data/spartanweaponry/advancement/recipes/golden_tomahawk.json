@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_tomahawk"
+        "recipes": "spartanweaponry:golden_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

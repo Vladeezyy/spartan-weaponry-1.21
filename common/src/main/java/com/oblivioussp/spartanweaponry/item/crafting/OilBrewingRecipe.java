@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableList;
 import com.oblivioussp.spartanweaponry.api.OilEffects;
 import com.oblivioussp.spartanweaponry.api.oil.OilEffect;
 import com.oblivioussp.spartanweaponry.init.ModItems;
+import com.oblivioussp.spartanweaponry.util.Config;
 import com.oblivioussp.spartanweaponry.util.OilHelper;
 
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,8 @@ public class OilBrewingRecipe implements BrewingRecipe
 	@Override
 	public boolean isIngredient(ItemStack ingredient) 
 	{
+		if(Config.INSTANCE.disableOilRecipes.get())
+			return false;
 		for(OilMix mix : VALID_MIXES)
 		{
 			if(mix.brewingIngredient.test(ingredient))

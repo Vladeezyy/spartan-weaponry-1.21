@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_longbow"
+        "recipes": "spartanweaponry:aluminum_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_arrow"
+        "recipes": "spartanweaponry:wooden_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

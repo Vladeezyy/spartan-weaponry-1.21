@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:large_bolt_quiver_smithing"
+        "recipes": "spartanweaponry:large_bolt_quiver_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

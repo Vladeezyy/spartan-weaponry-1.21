@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_halberd"
+        "recipes": "spartanweaponry:electrum_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

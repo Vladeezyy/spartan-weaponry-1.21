@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_arrow"
+        "recipes": "spartanweaponry:iron_arrow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

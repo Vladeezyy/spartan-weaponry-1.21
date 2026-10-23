@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_javelin"
+        "recipes": "spartanweaponry:golden_javelin"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

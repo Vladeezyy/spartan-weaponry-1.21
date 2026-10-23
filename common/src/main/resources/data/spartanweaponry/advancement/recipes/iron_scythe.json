@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_scythe"
+        "recipes": "spartanweaponry:iron_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

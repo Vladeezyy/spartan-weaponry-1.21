@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_battleaxe"
+        "recipes": "spartanweaponry:stone_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

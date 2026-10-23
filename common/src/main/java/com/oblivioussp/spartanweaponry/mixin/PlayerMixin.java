@@ -74,7 +74,7 @@ public class PlayerMixin
 		if(weaponStack.getItem() instanceof IWeaponTraitContainer<?> container && 
 				container.hasWeaponTraitWithType(WeaponTraits.TYPE_QUICK_STRIKE) && entityIn instanceof LivingEntity living)
 		{
-			living.invulnerableTime = Config.INSTANCE.quickStrikeHurtResistTicks.get();
+			living.setInvulnerableTime(Config.INSTANCE.quickStrikeHurtResistTicks.get());
 			Log.debug("Set hurt time to " + Config.INSTANCE.quickStrikeHurtResistTicks.get() + " ticks");
 		}
 		livingEntityIn.setLastHurtMob(entityIn);

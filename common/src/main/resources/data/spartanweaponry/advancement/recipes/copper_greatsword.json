@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:copper_greatsword"
+        "recipes": "spartanweaponry:copper_greatsword"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

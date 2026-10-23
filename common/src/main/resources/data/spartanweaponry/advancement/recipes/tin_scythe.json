@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_scythe"
+        "recipes": "spartanweaponry:tin_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

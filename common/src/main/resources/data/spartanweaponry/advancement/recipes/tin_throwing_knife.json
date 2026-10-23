@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_throwing_knife"
+        "recipes": "spartanweaponry:tin_throwing_knife"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

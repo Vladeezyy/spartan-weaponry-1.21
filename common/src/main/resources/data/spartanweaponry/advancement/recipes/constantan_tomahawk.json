@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:constantan_tomahawk"
+        "recipes": "spartanweaponry:constantan_tomahawk"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

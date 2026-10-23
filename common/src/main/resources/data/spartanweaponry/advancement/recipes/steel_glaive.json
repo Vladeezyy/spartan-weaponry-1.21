@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:steel_glaive"
+        "recipes": "spartanweaponry:steel_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

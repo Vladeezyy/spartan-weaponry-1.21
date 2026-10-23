@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_glaive"
+        "recipes": "spartanweaponry:lead_glaive"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

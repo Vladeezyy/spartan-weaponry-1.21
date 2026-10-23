@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:nickel_katana"
+        "recipes": "spartanweaponry:nickel_katana"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

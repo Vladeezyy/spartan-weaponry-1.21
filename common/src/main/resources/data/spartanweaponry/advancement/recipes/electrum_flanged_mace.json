@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_flanged_mace"
+        "recipes": "spartanweaponry:electrum_flanged_mace"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

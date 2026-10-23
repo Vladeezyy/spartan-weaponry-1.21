@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_quarterstaff"
+        "recipes": "spartanweaponry:aluminum_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:netherite_glaive_smithing"
+        "recipes": "spartanweaponry:netherite_glaive_smithing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

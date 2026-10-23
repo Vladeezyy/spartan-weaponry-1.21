@@ -29,7 +29,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:tin_warhammer"
+        "recipes": "spartanweaponry:tin_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

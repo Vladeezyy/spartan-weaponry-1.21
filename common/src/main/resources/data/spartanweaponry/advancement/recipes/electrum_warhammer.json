@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:electrum_warhammer"
+        "recipes": "spartanweaponry:electrum_warhammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

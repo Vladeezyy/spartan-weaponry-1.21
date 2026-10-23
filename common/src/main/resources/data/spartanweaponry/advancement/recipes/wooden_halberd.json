@@ -19,7 +19,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:wooden_halberd"
+        "recipes": "spartanweaponry:wooden_halberd"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

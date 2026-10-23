@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:lead_battleaxe"
+        "recipes": "spartanweaponry:lead_battleaxe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

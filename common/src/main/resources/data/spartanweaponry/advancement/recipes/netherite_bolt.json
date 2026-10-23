@@ -41,7 +41,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:netherite_bolt"
+        "recipes": "spartanweaponry:netherite_bolt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:invar_longbow"
+        "recipes": "spartanweaponry:invar_longbow"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

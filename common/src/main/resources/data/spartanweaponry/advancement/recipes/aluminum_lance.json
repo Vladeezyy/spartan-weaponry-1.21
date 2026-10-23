@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_lance"
+        "recipes": "spartanweaponry:aluminum_lance"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

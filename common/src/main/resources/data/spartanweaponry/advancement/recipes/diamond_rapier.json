@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:diamond_rapier"
+        "recipes": "spartanweaponry:diamond_rapier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -44,8 +44,8 @@ public class BoltRenderer<T extends BoltEntity> extends EntityRenderer<T, ArrowT
 	public void submit(ArrowTextureRenderState state, PoseStack matrixStackIn, SubmitNodeCollector collector, CameraRenderState camera)
 	{
 		matrixStackIn.pushPose();
-		matrixStackIn.mulPose(Axis.YP.rotationDegrees(state.yRot - 90.0F));
-		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(state.xRot));
+		matrixStackIn.rotate(Axis.YP.rotationDegrees(state.yRot - 90.0F));
+		matrixStackIn.rotate(Axis.ZP.rotationDegrees(state.xRot));
 	    
 		// Move the Bolt forward when rendering.
 		matrixStackIn.translate(0.2f, 0.0f, 0.0f);
@@ -54,10 +54,10 @@ public class BoltRenderer<T extends BoltEntity> extends EntityRenderer<T, ArrowT
 		if (f9 > 0.0F) 
 		{
 			float f10 = -Mth.sin(f9 * 3.0F) * f9;
-			matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f10));
+			matrixStackIn.rotate(Axis.ZP.rotationDegrees(f10));
 		}
 	
-		matrixStackIn.mulPose(Axis.XP.rotationDegrees(45.0F));
+		matrixStackIn.rotate(Axis.XP.rotationDegrees(45.0F));
 		matrixStackIn.scale(0.05625F, 0.05625F, 0.05625F);
 		matrixStackIn.translate(-4.0D, 0.0D, 0.0D);
 		int packedLightIn = state.lightCoords;

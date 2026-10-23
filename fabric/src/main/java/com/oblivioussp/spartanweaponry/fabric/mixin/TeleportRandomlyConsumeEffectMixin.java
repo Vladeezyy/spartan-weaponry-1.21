@@ -15,9 +15,9 @@ import net.minecraft.world.item.consume_effects.TeleportRandomlyConsumeEffect;
 @Mixin(TeleportRandomlyConsumeEffect.class)
 public abstract class TeleportRandomlyConsumeEffectMixin
 {
-	@WrapOperation(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;randomTeleport(DDDZ)Z"))
-	private boolean spartanweaponry$teleport(LivingEntity entity, double x, double y, double z, boolean particles, Operation<Boolean> original)
+	@WrapOperation(method = "apply", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;randomTeleport(DDDZLnet/minecraft/tags/TagKey;)Z"))
+	private boolean spartanweaponry$teleport(LivingEntity entity, double x, double y, double z, boolean particles, net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> avoid, Operation<Boolean> original)
 	{
-		return !CommonEventHandler.checkToCancelTeleport(entity) && original.call(entity, x, y, z, particles);
+		return !CommonEventHandler.checkToCancelTeleport(entity) && original.call(entity, x, y, z, particles, avoid);
 	}
 }

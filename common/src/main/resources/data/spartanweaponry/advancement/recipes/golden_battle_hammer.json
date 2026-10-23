@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:golden_battle_hammer"
+        "recipes": "spartanweaponry:golden_battle_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

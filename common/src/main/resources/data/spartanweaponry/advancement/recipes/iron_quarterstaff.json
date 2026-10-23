@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:iron_quarterstaff"
+        "recipes": "spartanweaponry:iron_quarterstaff"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

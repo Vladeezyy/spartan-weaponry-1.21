@@ -39,7 +39,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:aluminum_scythe"
+        "recipes": "spartanweaponry:aluminum_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

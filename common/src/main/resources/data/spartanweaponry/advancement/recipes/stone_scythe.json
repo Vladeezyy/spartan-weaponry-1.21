@@ -29,7 +29,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spartanweaponry:stone_scythe"
+        "recipes": "spartanweaponry:stone_scythe"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
