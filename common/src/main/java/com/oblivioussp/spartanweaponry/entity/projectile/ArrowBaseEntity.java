@@ -30,6 +30,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -155,7 +156,7 @@ public class ArrowBaseEntity extends AbstractArrow
 			// Roll a chance to spawn lightning under the right circumstances
 			if(random.nextInt(4) < 1)	// ~25%
 			{
-				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
+				LightningBolt lightning = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
 				if(lightning != null)
 				{
 					lightning.snapTo(Vec3.atBottomCenterOf(living.blockPosition()));

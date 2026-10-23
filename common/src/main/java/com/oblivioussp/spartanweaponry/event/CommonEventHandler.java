@@ -202,7 +202,7 @@ public class CommonEventHandler
                     if (trueSourceEntity instanceof LivingEntity)
                     {
                     	LivingEntity living = (LivingEntity)source.getEntity();
-                    	living.knockback(0.3F, player.getX() - living.getX(), player.getZ() - living.getZ());
+                    	living.knockback(0.3F, player.getX() - living.getX(), player.getZ() - living.getZ(), source, 0.0F);
                     }
                     damageItem = true;
 				}

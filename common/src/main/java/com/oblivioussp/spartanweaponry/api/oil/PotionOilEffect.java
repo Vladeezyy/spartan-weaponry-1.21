@@ -47,13 +47,13 @@ public class PotionOilEffect extends OilEffect
 		if(potion.isPresent())
 		{
 			potion.get().value().getEffects().forEach((effect) -> {
-				if(effect.getEffect().value().isInstantenous())
+				if(effect.getEffect().value().isInstantaneous())
 				{
 					// Temporarily bypass hurt time
 					int targetHurtTime = targetEntityIn.hurtTime;
 					targetEntityIn.hurtTime = 0;
 					if(levelIn instanceof ServerLevel serverLevel)
-						effect.getEffect().value().applyInstantenousEffect(serverLevel, userEntityIn, userEntityIn, targetEntityIn, effect.getAmplifier(), 1.0d);
+						effect.getEffect().value().applyInstantaneousEffect(serverLevel, userEntityIn, userEntityIn, targetEntityIn, effect.getAmplifier(), 1.0d);
 					// Restore hurt time
 					targetEntityIn.hurtTime = targetHurtTime;
 				}

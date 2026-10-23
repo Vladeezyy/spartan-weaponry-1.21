@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:blaze"
+        "minecraft:entity_type": "minecraft:blaze"
       },
       "entity": "this"
     }

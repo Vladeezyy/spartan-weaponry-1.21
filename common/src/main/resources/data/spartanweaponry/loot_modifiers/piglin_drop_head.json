@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:piglin"
+        "minecraft:entity_type": "minecraft:piglin"
       },
       "entity": "this"
     }

@@ -22,7 +22,7 @@ import com.oblivioussp.spartanweaponry.init.ModEntities;
 import com.oblivioussp.spartanweaponry.init.ModItems;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -36,6 +36,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -217,7 +218,7 @@ public class BoltEntity extends AbstractArrow
         		((LivingEntity)shooter).setLastHurtMob(entity);
         }
 
-        boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
+        boolean isEnderman = entity.getType() == EntityTypes.ENDERMAN;
         int fireTimer = entity.getRemainingFireTicks();
         if(isOnFire() && !isEnderman)
         	entity.igniteForSeconds(5);
@@ -304,7 +305,7 @@ public class BoltEntity extends AbstractArrow
 			// Roll a chance to spawn lightning under the right circumstances
 			if(random.nextInt(4) < 1)	// ~25%
 			{
-				LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
+				LightningBolt lightning = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.COMMAND);
 				if(lightning != null)
 				{
 					lightning.snapTo(Vec3.atBottomCenterOf(living.blockPosition()));

@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:skeleton"
+        "minecraft:entity_type": "minecraft:skeleton"
       },
       "entity": "this"
     }

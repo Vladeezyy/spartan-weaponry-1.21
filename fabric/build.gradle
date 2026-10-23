@@ -35,7 +35,7 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-fabric-api:${jei_fabric_version}"
     compileOnly "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
     // Mod Menu (opens the config screen) in the dev runs only
-    localRuntime "maven.modrinth:modmenu:18.0.2"
+    localRuntime "maven.modrinth:modmenu:20.0.3"
     // Popular client / performance mods and the optional integrations for compatibility runs (-Pwith_compat)
     if (project.hasProperty('with_compat')) {
         localRuntime "maven.modrinth:sodium:${compat_fabric_sodium}"

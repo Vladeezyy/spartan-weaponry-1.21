@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:creeper"
+        "minecraft:entity_type": "minecraft:creeper"
       },
       "entity": "this"
     }

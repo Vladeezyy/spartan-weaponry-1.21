@@ -20,7 +20,7 @@ public class HudLoadState
 	{
 		Minecraft mc = Minecraft.getInstance();
 		
-		if(!mc.options.hideGui)
+		if(!mc.gui.hud.isHidden())
 		{
 			LocalPlayer player = mc.player;
 			int loadSlot = -1;

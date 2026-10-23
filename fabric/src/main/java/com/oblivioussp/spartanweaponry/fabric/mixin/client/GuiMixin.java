@@ -7,13 +7,14 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.oblivioussp.spartanweaponry.item.HeavyCrossbowItem;
 
-import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
 /** NeoForge IItemExtension#getHighlightTip of the selected item name (the GUI layers: HudElementRegistry). */
-@Mixin(Gui.class)
+// 26.2: the HUD parts moved from Gui to Hud
+@Mixin(Hud.class)
 public abstract class GuiMixin
 {
 	@Shadow

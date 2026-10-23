@@ -49,6 +49,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -113,8 +114,8 @@ public final class StressScene
 		// Phase 2: rejoined
 		// Issue #165 of the original: heavy crossbow bolts turned black after rejoining
 		SECOND.add(Pair.of(30, mc -> server(mc, p -> p.teleportTo(p.level(), stage.getX() + 0.5, stage.getY() + 1.5, stage.getZ() + 2.5, java.util.Set.of(), 0.0F, 35.0F, true))));
-		SECOND.add(Pair.of(42, mc -> { mc.options.hideGui = true; shot(mc, "rejoined_projectiles"); }));
-		SECOND.add(Pair.of(44, mc -> mc.options.hideGui = false));
+		SECOND.add(Pair.of(42, mc -> { setHudHidden(mc, true); shot(mc, "rejoined_projectiles"); }));
+		SECOND.add(Pair.of(44, mc -> setHudHidden(mc, false)));
 		SECOND.add(Pair.of(46, mc -> server(mc, StressScene::checkData)));
 		SECOND.add(Pair.of(48, mc -> server(mc, StressScene::legacyItems)));
 		SECOND.add(Pair.of(50, mc -> server(mc, StressScene::prepareSpam)));
@@ -129,8 +130,8 @@ public final class StressScene
 		SECOND.add(Pair.of(80, mc -> {
 			// 1.20.1 (and the port before the fix) disconnected the client when a quiver screen arrived before the
 			// client's inventory had the quiver
-			check("the client is still connected after the quiver packet spam", mc.player != null && mc.getConnection() != null && mc.level != null, mc.screen);
-			if(mc.screen != null)
+			check("the client is still connected after the quiver packet spam", mc.player != null && mc.getConnection() != null && mc.level != null, mc.gui.screen());
+			if(mc.gui.screen() != null)
 				mc.player.closeContainer();
 			server(mc, StressScene::checkSpam);
 		}));
@@ -159,18 +160,25 @@ public final class StressScene
 		if(!ENABLED)
 			return;
 		Minecraft mc = Minecraft.getInstance();
-		if(!opened && mc.screen instanceof AccessibilityOnboardingScreen)
+		if(!opened && mc.gui.screen() instanceof AccessibilityOnboardingScreen)
 		{
 			mc.options.onboardAccessibility = false;
 			mc.options.save();
-			mc.setScreen(new TitleScreen());
+			mc.gui.setScreen(new TitleScreen());
 			return;
 		}
-		if(!opened && mc.screen instanceof TitleScreen)
+		// NeoForge 26.2: load warnings (e.g. another mod's deprecated logoFile) open LoadingErrorScreen before the menu
+		if(!opened && mc.gui.screen() != null && mc.gui.screen().getClass().getSimpleName().equals("LoadingErrorScreen"))
+		{
+			Log.info("[scene] NeoForge load warnings screen, going on to the main menu");
+			mc.gui.setScreen(new TitleScreen());
+			return;
+		}
+		if(!opened && mc.gui.screen() instanceof TitleScreen)
 		{
 			opened = true;
 			if(mc.getLevelSource().levelExists(WORLD))
-				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.setScreen(new TitleScreen()));
+				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.gui.setScreen(new TitleScreen()));
 			else
 			{
 				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, new LevelSettings.DifficultySettings(Difficulty.NORMAL, false, false), true, WorldDataConfiguration.DEFAULT);
@@ -182,9 +190,9 @@ public final class StressScene
 			return;
 		mc.options.pauseOnLostFocus = false;
 		mc.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);
-		mc.getToastManager().clear();
-		if(mc.screen instanceof PauseScreen)
-			mc.setScreen(null);
+		mc.gui.toastManager().clear();
+		if(mc.gui.screen() instanceof PauseScreen)
+			mc.gui.setScreen(null);
 		tick++;
 		for(Pair<Integer, Consumer<Minecraft>> step : phase == 1 ? FIRST : phase == 2 ? SECOND : List.<Pair<Integer, Consumer<Minecraft>>>of())
 		{
@@ -235,7 +243,7 @@ public final class StressScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.getMainRenderTarget(), 1, c -> Log.info("[stress] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "stress_" + name + ".png", mc.gameRenderer.mainRenderTarget(), 1, c -> Log.info("[stress] " + c.getString()));
 	}
 
 	private static void fps(Minecraft mc, String what)
@@ -514,7 +522,7 @@ public final class StressScene
 		for(int x = 0; x < 20; x++)
 			for(int z = 0; z < 20; z++)
 			{
-				ArmorStand stand = EntityType.ARMOR_STAND.create(level, EntitySpawnReason.COMMAND);
+				ArmorStand stand = EntityTypes.ARMOR_STAND.create(level, EntitySpawnReason.COMMAND);
 				stand.snapTo(stage.getX() - 19 + x * 2 + 0.5, stage.getY(), stage.getZ() + 6 + z * 2 + 0.5, 180.0F, 0.0F);
 				stand.setShowArms(true);
 				stand.setNoBasePlate(true);
@@ -573,12 +581,12 @@ public final class StressScene
 				ModItems.HALBERDS.iron.get(), ModItems.SCYTHES.iron.get(), ModItems.BATTLEAXES.netherite.get(), ModItems.DAGGERS.stone.get());
 		for(int i = 0; i < 40; i++)
 		{
-			Skeleton skeleton = EntityType.SKELETON.spawn(level, stage.offset(-20 + i, 0, 0), EntitySpawnReason.COMMAND);
+			Skeleton skeleton = EntityTypes.SKELETON.spawn(level, stage.offset(-20 + i, 0, 0), EntitySpawnReason.COMMAND);
 			skeleton.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(i % 2 == 0 ? ModItems.LONGBOWS.iron.get() : ModItems.LONGBOWS.wood.get()));
 			skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 			skeleton.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION));
 			mobs.add(skeleton.getId());
-			Zombie zombie = EntityType.ZOMBIE.spawn(level, stage.offset(-20 + i, 0, 4), EntitySpawnReason.COMMAND);
+			Zombie zombie = EntityTypes.ZOMBIE.spawn(level, stage.offset(-20 + i, 0, 4), EntitySpawnReason.COMMAND);
 			zombie.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(melee.get(i % melee.size())));
 			zombie.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 			zombie.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION));
@@ -586,7 +594,7 @@ public final class StressScene
 		}
 		for(int i = 0; i < 30; i++)
 		{
-			IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(-15 + i, 0, 20), EntitySpawnReason.COMMAND);
+			IronGolem golem = EntityTypes.IRON_GOLEM.spawn(level, stage.offset(-15 + i, 0, 20), EntitySpawnReason.COMMAND);
 			mobs.add(golem.getId());
 		}
 		for(int id : mobs)
@@ -658,5 +666,12 @@ public final class StressScene
 		stat("average server tick ms", String.format("%.2f", tickMs));
 		check("projectile stress: server keeps 20 TPS", tickMs < 50.0, String.format("%.2f ms", tickMs));
 		all.forEach(Entity::discard);
+	}
+
+	/** 26.2: the HUD is hidden through Minecraft.gui.hud, which only toggles */
+	private static void setHudHidden(net.minecraft.client.Minecraft mc, boolean hidden)
+	{
+		if(mc.gui.hud.isHidden() != hidden)
+			mc.gui.hud.toggle();
 	}
 }

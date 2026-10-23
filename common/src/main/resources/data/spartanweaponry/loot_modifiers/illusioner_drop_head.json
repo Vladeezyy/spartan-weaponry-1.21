@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:illusioner"
+        "minecraft:entity_type": "minecraft:illusioner"
       },
       "entity": "this"
     }

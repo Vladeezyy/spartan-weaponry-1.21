@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:witch"
+        "minecraft:entity_type": "minecraft:witch"
       },
       "entity": "this"
     }

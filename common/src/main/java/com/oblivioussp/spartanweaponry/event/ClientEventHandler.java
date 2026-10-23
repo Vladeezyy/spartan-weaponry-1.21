@@ -45,7 +45,7 @@ public class ClientEventHandler
 	public static void onAccessQuiverKey()
 	{
 		Minecraft mc = Minecraft.getInstance();
-		if(mc.level == null || mc.screen != null || mc.isPaused())
+		if(mc.level == null || mc.gui.screen() != null || mc.isPaused())
 			return;
 		NetworkHandler.sendPacketToServer(new QuiverAccessPacket());
 	}

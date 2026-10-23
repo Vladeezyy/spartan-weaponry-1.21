@@ -53,7 +53,8 @@ public class HammerSlamWeaponTrait extends WeaponTrait implements IActionTraitCa
 				{
 					float yRot = entity.getYRot();
 					final float halfPi = (float)Math.PI / 180.0f;
-					entity.knockback(1.0f, Mth.sin(yRot * halfPi), -Mth.cos(yRot * halfPi));
+					// 26.2: knockback takes the damage source and damage (for NeoForge's knockback event)
+					entity.knockback(1.0f, Mth.sin(yRot * halfPi), -Mth.cos(yRot * halfPi), player.damageSources().playerAttack(player), 0.0F);
 					entity.hurt(player.damageSources().playerAttack(player), (float)(player.getAttributeValue(Attributes.ATTACK_DAMAGE) / 2.0d));
 					weapon.hurtAndBreak(1, player, contextIn.getHand().asEquipmentSlot());
 				}

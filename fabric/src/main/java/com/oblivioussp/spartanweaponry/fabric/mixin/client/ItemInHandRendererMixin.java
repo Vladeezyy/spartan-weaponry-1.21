@@ -16,7 +16,7 @@ import net.minecraft.world.item.Items;
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin
 {
-	@WrapOperation(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z"))
+	@WrapOperation(method = "submitArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z"))
 	// 26.1: is(Item) is TypedInstance#is(T), erased to Object
 	private boolean spartanweaponry$crossbow(ItemStack stack, Object item, Operation<Boolean> original)
 	{

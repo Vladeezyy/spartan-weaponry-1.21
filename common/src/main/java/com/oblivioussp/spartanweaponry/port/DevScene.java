@@ -54,6 +54,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -112,7 +113,7 @@ public final class DevScene
 	static
 	{
 		at(40, mc -> server(mc, DevScene::setup));
-		at(45, mc -> mc.options.hideGui = true);
+		at(45, mc -> setHudHidden(mc, true));
 		at(60, mc -> server(mc, DevScene::buildStage));
 		at(160, mc -> server(mc, p -> look(p, wall(0), 0)));
 		at(220, mc -> shot(mc, "wall_vanilla"));
@@ -122,19 +123,19 @@ public final class DevScene
 		at(350, mc -> shot(mc, "wall_ammo"));
 		// Creative tab and tooltip
 		at(355, mc -> {
-			mc.options.hideGui = false;
-			mc.getToastManager().clear();
-			mc.setScreen(new CreativeModeInventoryScreen(mc.player, mc.player.connection.enabledFeatures(), true));
+			setHudHidden(mc, false);
+			mc.gui.toastManager().clear();
+			mc.gui.setScreen(new CreativeModeInventoryScreen(mc.player, mc.player.connection.enabledFeatures(), true));
 		});
 		at(365, mc -> selectTab(mc, ModCreativeTabs.BASIC.get()));
 		at(385, mc -> shot(mc, "creative_tab"));
-		at(390, mc -> mc.setScreen(new TooltipScreen(List.of(new ItemStack(ModItems.GREATSWORDS.iron.get()), oiled(ModItems.KATANAS.diamond.get()),
+		at(390, mc -> mc.gui.setScreen(new TooltipScreen(List.of(new ItemStack(ModItems.GREATSWORDS.iron.get()), oiled(ModItems.KATANAS.diamond.get()),
 				new ItemStack(ModItems.HEAVY_CROSSBOWS.iron.get()), new ItemStack(ModItems.JAVELINS.iron.get())))));
 		at(405, mc -> shot(mc, "tooltip"));
 		// The oil coating layer: the same weapons plain (top) and oiled (bottom)
-		at(406, mc -> mc.setScreen(new ItemsScreen(List.of(ModItems.KATANAS.diamond.get(), ModItems.GREATSWORDS.iron.get(), ModItems.SPEARS.gold.get(), ModItems.BATTLEAXES.netherite.get()))));
+		at(406, mc -> mc.gui.setScreen(new ItemsScreen(List.of(ModItems.KATANAS.diamond.get(), ModItems.GREATSWORDS.iron.get(), ModItems.SPEARS.gold.get(), ModItems.BATTLEAXES.netherite.get()))));
 		at(409, mc -> shot(mc, "oil_coating"));
-		at(410, mc -> { mc.setScreen(null); mc.options.hideGui = true; });
+		at(410, mc -> { mc.gui.setScreen(null); setHudHidden(mc, true); });
 		// Dropped weapons (#168) and heads
 		at(415, mc -> server(mc, DevScene::dropped));
 		at(470, mc -> shot(mc, "dropped"));
@@ -142,7 +143,7 @@ public final class DevScene
 		at(520, mc -> shot(mc, "heads"));
 		// First person: oiled katana
 		at(525, mc -> server(mc, DevScene::firstPerson));
-		at(560, mc -> { mc.options.hideGui = false; shot(mc, "first_person_oiled"); });
+		at(560, mc -> { setHudHidden(mc, false); shot(mc, "first_person_oiled"); });
 		// Longbow with real input: draw, screenshot, shoot the golem
 		at(565, mc -> server(mc, DevScene::prepareLongbow));
 		at(600, mc -> mc.options.keyUse.setDown(true));
@@ -179,11 +180,11 @@ public final class DevScene
 		at(1250, mc -> { mc.options.keyUse.setDown(true); });
 		at(1252, mc -> mc.options.keyUse.setDown(false));
 		at(1270, mc -> shot(mc, "quiver_small"));
-		at(1275, mc -> { if(mc.screen != null) mc.player.closeContainer(); server(mc, DevScene::hugeQuiver); });
+		at(1275, mc -> { if(mc.gui.screen() != null) mc.player.closeContainer(); server(mc, DevScene::hugeQuiver); });
 		at(1290, mc -> mc.options.keyUse.setDown(true));
 		at(1292, mc -> mc.options.keyUse.setDown(false));
-		at(1310, mc -> { check("quiver screen opens", mc.screen != null && mc.screen.getClass().getSimpleName().contains("Quiver"), mc.screen); shot(mc, "quiver_huge"); });
-		at(1315, mc -> { if(mc.screen != null) mc.player.closeContainer(); mc.options.hideGui = true; });
+		at(1310, mc -> { check("quiver screen opens", mc.gui.screen() != null && mc.gui.screen().getClass().getSimpleName().contains("Quiver"), mc.gui.screen()); shot(mc, "quiver_huge"); });
+		at(1315, mc -> { if(mc.gui.screen() != null) mc.player.closeContainer(); setHudHidden(mc, true); });
 		// Server side checks
 		at(1320, mc -> server(mc, DevScene::oil));
 		at(1325, mc -> server(mc, DevScene::prepareMelee));
@@ -213,8 +214,8 @@ public final class DevScene
 		// Shoulder Surfing: a loaded heavy crossbow in the shoulder view (issue #192 of the original: crash)
 		at(1910, mc -> server(mc, DevScene::prepareShoulderSurfing));
 		at(1920, mc -> shoulderSurfing(mc, "SHOULDER_SURFING"));
-		at(1960, mc -> { if(isShoulderSurfing()) { mc.options.hideGui = false; shot(mc, "shoulder_surfing"); } });
-		at(1965, mc -> { shoulderSurfing(mc, "FIRST_PERSON"); mc.options.hideGui = true; });
+		at(1960, mc -> { if(isShoulderSurfing()) { setHudHidden(mc, false); shot(mc, "shoulder_surfing"); } });
+		at(1965, mc -> { shoulderSurfing(mc, "FIRST_PERSON"); setHudHidden(mc, true); });
 		// Issue #162 of the original: a data pack with "replace": true can take traits away
 		at(1970, mc -> server(mc, DevScene::traitDataPack));
 		at(2050, mc -> server(mc, DevScene::checkTraitDataPack));
@@ -238,17 +239,24 @@ public final class DevScene
 		if(!ENABLED)
 			return;
 		Minecraft mc = Minecraft.getInstance();
-		if(!opened && mc.screen instanceof net.minecraft.client.gui.screens.AccessibilityOnboardingScreen)
+		if(!opened && mc.gui.screen() instanceof net.minecraft.client.gui.screens.AccessibilityOnboardingScreen)
 		{
 			mc.options.onboardAccessibility = false;
 			mc.options.save();
-			mc.setScreen(new TitleScreen());
+			mc.gui.setScreen(new TitleScreen());
 			return;
 		}
 		// The language switch reloads the resources; the world is created after that, not during it
-		if(!opened && mc.getOverlay() != null)
+		if(!opened && mc.gui.overlay() != null)
 			return;
-		if(!opened && mc.screen instanceof TitleScreen)
+		// NeoForge 26.2: load warnings (e.g. another mod's deprecated logoFile) open LoadingErrorScreen before the menu
+		if(!opened && mc.gui.screen() != null && mc.gui.screen().getClass().getSimpleName().equals("LoadingErrorScreen"))
+		{
+			Log.info("[scene] NeoForge load warnings screen, going on to the main menu");
+			mc.gui.setScreen(new TitleScreen());
+			return;
+		}
+		if(!opened && mc.gui.screen() instanceof TitleScreen)
 		{
 			if(!mc.options.languageCode.equals(LANG))
 			{
@@ -261,7 +269,7 @@ public final class DevScene
 			opened = true;
 			GLFW.glfwSetWindowSize(mc.getWindow().handle(), 1600, 900);
 			if(mc.getLevelSource().levelExists(WORLD))
-				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.setScreen(new TitleScreen()));
+				mc.createWorldOpenFlows().openWorld(WORLD, () -> mc.gui.setScreen(new TitleScreen()));
 			else
 			{
 				LevelSettings settings = new LevelSettings(WORLD, GameType.CREATIVE, new LevelSettings.DifficultySettings(Difficulty.NORMAL, false, false), true, WorldDataConfiguration.DEFAULT);
@@ -273,9 +281,9 @@ public final class DevScene
 			return;
 		mc.options.pauseOnLostFocus = false;
 		mc.getTutorial().setStep(net.minecraft.client.tutorial.TutorialSteps.NONE);
-		mc.getToastManager().clear();
-		if(mc.screen instanceof PauseScreen)
-			mc.setScreen(null);
+		mc.gui.toastManager().clear();
+		if(mc.gui.screen() instanceof PauseScreen)
+			mc.gui.setScreen(null);
 		tick++;
 		for(Pair<Integer, Consumer<Minecraft>> step : STEPS)
 		{
@@ -321,12 +329,12 @@ public final class DevScene
 
 	private static void shot(Minecraft mc, String name)
 	{
-		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.getMainRenderTarget(), 1, c -> Log.info("[scene] " + c.getString()));
+		Screenshot.grab(mc.gameDirectory, "scene_" + name + ".png", mc.gameRenderer.mainRenderTarget(), 1, c -> Log.info("[scene] " + c.getString()));
 	}
 
 	private static void selectTab(Minecraft mc, CreativeModeTab tab)
 	{
-		if(mc.screen instanceof CreativeModeInventoryScreen screen)
+		if(mc.gui.screen() instanceof CreativeModeInventoryScreen screen)
 		{
 			try
 			{
@@ -470,7 +478,7 @@ public final class DevScene
 		player.setItemSlot(EquipmentSlot.MAINHAND, oiled(ModItems.KATANAS.diamond.get()));
 		player.setItemSlot(EquipmentSlot.OFFHAND, ItemStack.EMPTY);
 		player.teleportTo(level, stage.getX() + 0.5, stage.getY(), stage.getZ() + 0.5, java.util.Set.of(), 0.0F, 10.0F, true);
-		IronGolem golem = EntityType.IRON_GOLEM.spawn(level, stage.offset(0, 0, 12), EntitySpawnReason.COMMAND);
+		IronGolem golem = EntityTypes.IRON_GOLEM.spawn(level, stage.offset(0, 0, 12), EntitySpawnReason.COMMAND);
 		golem.setNoAi(true);
 		golem.setYRot(180.0F);
 		golemId = golem.getId();
@@ -770,7 +778,7 @@ public final class DevScene
 	private static Zombie target(ServerPlayer player, double dz, boolean armored)
 	{
 		ServerLevel level = player.level();
-		Zombie zombie = EntityType.ZOMBIE.spawn(level, BlockPos.containing(player.getX(), player.getY(), player.getZ() + dz), EntitySpawnReason.COMMAND);
+		Zombie zombie = EntityTypes.ZOMBIE.spawn(level, BlockPos.containing(player.getX(), player.getY(), player.getZ() + dz), EntitySpawnReason.COMMAND);
 		zombie.setNoAi(true);
 		for(EquipmentSlot slot : EquipmentSlot.values())
 			zombie.setItemSlot(slot, ItemStack.EMPTY);
@@ -1028,10 +1036,10 @@ public final class DevScene
 		ServerLevel level = player.level();
 		player.setGameMode(GameType.CREATIVE);
 		BlockPos at = stage.offset(-30, 0, 0);
-		Skeleton skeleton = EntityType.SKELETON.spawn(level, at, EntitySpawnReason.COMMAND);
+		Skeleton skeleton = EntityTypes.SKELETON.spawn(level, at, EntitySpawnReason.COMMAND);
 		skeleton.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
 		skeleton.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.LONGBOWS.iron.get()));
-		Villager villager = EntityType.VILLAGER.spawn(level, at.offset(0, 0, 10), EntitySpawnReason.COMMAND);
+		Villager villager = EntityTypes.VILLAGER.spawn(level, at.offset(0, 0, 10), EntitySpawnReason.COMMAND);
 		villager.setNoAi(true);
 		villager.getAttribute(Attributes.MAX_HEALTH).setBaseValue(500.0);
 		villager.setHealth(500.0F);
@@ -1056,7 +1064,7 @@ public final class DevScene
 	private static void enderDisruption(ServerPlayer player)
 	{
 		ServerLevel level = player.level();
-		EnderMan enderman = EntityType.ENDERMAN.spawn(level, stage.offset(30, 0, 0), EntitySpawnReason.COMMAND);
+		EnderMan enderman = EntityTypes.ENDERMAN.spawn(level, stage.offset(30, 0, 0), EntitySpawnReason.COMMAND);
 		enderman.setNoAi(true);
 		enderman.addEffect(new MobEffectInstance(ModMobEffects.ENDER_DISRPUTION.holder(), 600));
 		Vec3 start = enderman.position();
@@ -1215,5 +1223,12 @@ public final class DevScene
 			}
 			graphics.pose().popMatrix();
 		}
+	}
+
+	/** 26.2: the HUD is hidden through Minecraft.gui.hud, which only toggles */
+	private static void setHudHidden(net.minecraft.client.Minecraft mc, boolean hidden)
+	{
+		if(mc.gui.hud.isHidden() != hidden)
+			mc.gui.hud.toggle();
 	}
 }

@@ -9,7 +9,7 @@
     {
       "condition": "minecraft:entity_properties",
       "predicate": {
-        "type": "minecraft:stray"
+        "minecraft:entity_type": "minecraft:stray"
       },
       "entity": "this"
     }

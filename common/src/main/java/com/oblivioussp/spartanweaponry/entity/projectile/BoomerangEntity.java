@@ -21,6 +21,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -55,7 +56,7 @@ public class BoomerangEntity extends ThrowingWeaponEntity
 	protected boolean affectedByWaterDrag = true;
 	
 	protected int caughtItems = 0;
-	protected static final Predicate<Entity> ITEMS_AND_XP = EntitySelector.NO_SPECTATORS.and((entity) -> entity.getType() == EntityType.EXPERIENCE_ORB || entity instanceof ItemEntity);
+	protected static final Predicate<Entity> ITEMS_AND_XP = EntitySelector.NO_SPECTATORS.and((entity) -> entity.getType() == EntityTypes.EXPERIENCE_ORB || entity instanceof ItemEntity);
 	
 	public BoomerangEntity(EntityType<? extends ThrowingWeaponEntity> type, Level level)
 	{

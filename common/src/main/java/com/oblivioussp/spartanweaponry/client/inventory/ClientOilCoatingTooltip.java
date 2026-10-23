@@ -45,6 +45,6 @@ public class ClientOilCoatingTooltip implements ClientTooltipComponent
 	public void extractText(GuiGraphicsExtractor guiGraphics, Font fontIn, int posXIn, int posYIn)
 	{
 		guiGraphics.text(fontIn, oilStack.getHoverName(), posXIn + 20, posYIn, 0xFFFFFFFF, true);
-		guiGraphics.text(fontIn, text, posXIn + 20, posYIn + 10, ARGB.opaque(ChatFormatting.GOLD.getColor()), true);
+		guiGraphics.text(fontIn, text, posXIn + 20, posYIn + 10, ARGB.opaque(net.minecraft.network.chat.TextColor.GOLD.getValue()), true);
 	}
 }

@@ -5,7 +5,7 @@ import com.oblivioussp.spartanweaponry.platform.Registrar;
 import com.oblivioussp.spartanweaponry.ModSpartanWeaponry;
 import com.oblivioussp.spartanweaponry.advancement.criterion.BrewOilTrigger;
 
-import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.triggers.CriterionTrigger;
 import net.minecraft.core.registries.Registries;
 
 public class ModCriteriaTriggers 

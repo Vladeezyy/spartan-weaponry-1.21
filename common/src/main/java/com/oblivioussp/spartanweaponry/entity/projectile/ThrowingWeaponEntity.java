@@ -42,6 +42,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
@@ -287,7 +288,7 @@ public class ThrowingWeaponEntity extends AbstractArrow
 				}
 			}
 			
-			boolean isEnderman = entity.getType() == EntityType.ENDERMAN;
+			boolean isEnderman = entity.getType() == EntityTypes.ENDERMAN;
             if (isOnFire() && !isEnderman)
             {
                 entity.igniteForSeconds(5);
