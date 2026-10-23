@@ -81,6 +81,18 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
     `ingredients_1_21_2.py`).
   - Исходники MC 1.21.11 — распаковать `common/build/moddev/artifacts/vanilla-1.21.11-*-sources.jar`.
   - Тест-флаги: `NO_STRESS=1`, `NO_SHADERS=1` (Iris NeoForge 1.21.11 падает на зачарованном предмете с шейдерами).
+- **26.1.2 (ветки `mc/26.1.2`, папки `~/Desktop/<repo>-26.1.2`, 2026-10-23):** выпущены `v1.0.0.3+26.1.2` (HUD,
+  только NeoForge), `v3.1.1.5+26.1.2` (Shields), `v3.2.1.2+26.1.2` (Weaponry), `v1.0.3.1+26.1.2` (Arcana без Botania,
+  libs/ — jar'ы Weaponry 26.1.2). Java 25 (`org.gradle.java.home` в gradle.properties), Loom 1.18 без ремапа.
+  - Сделки жителей Weaponry — данные (`tools/port/gen_villager_trades.py`), см. modding-kb
+    `porting/mc-versions/26.1/spartan.md`.
+  - Скрипты порта: Matter Overdrive `tools/port/port_26.py <mc-src>` и `port_gui26.py`, modding-kb `build_26x.py`,
+    `fabric_api_0155.py`, `port_26_scenes.py` (файлы передавать через xargs).
+  - Прод-сервер NeoForge 26.1.2.122 — `prodtest/26.1.2.122/` (run.sh на JDK 25). `NO_SHADERS=1` на NeoForge всё ещё
+    нужен (Iris 1.11.4). ModernFix 5.27.24 в compat-наборе NeoForge.
+  - На CurseForge 26.1.2 ещё не выложен (MC 26.1.2 → 16082, Java 25 → 14454).
+  - Ender IO 9.0.6-alpha есть под 26.1.2: щиты Dark Steel включатся, но не проверены.
+  - Следующий шаг — `mc/26.2`.
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
