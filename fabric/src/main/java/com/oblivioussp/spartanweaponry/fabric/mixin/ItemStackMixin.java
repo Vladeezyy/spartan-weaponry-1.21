@@ -53,7 +53,7 @@ public abstract class ItemStackMixin
 	@WrapOperation(method = {"forEachModifier(Lnet/minecraft/world/entity/EquipmentSlotGroup;Lorg/apache/commons/lang3/function/TriConsumer;)V", "forEachModifier(Lnet/minecraft/world/entity/EquipmentSlot;Ljava/util/function/BiConsumer;)V"}, require = 2, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getOrDefault(Lnet/minecraft/core/component/DataComponentType;Ljava/lang/Object;)Ljava/lang/Object;"))
 	private Object spartanweaponry$attributes(ItemStack stack, DataComponentType<?> type, Object fallback, Operation<Object> original)
 	{
-		if(type == DataComponents.ATTRIBUTE_MODIFIERS && stack.getComponentsPatch().get(DataComponents.ATTRIBUTE_MODIFIERS) == null)
+		if(type == DataComponents.ATTRIBUTE_MODIFIERS && !stack.hasNonDefault(DataComponents.ATTRIBUTE_MODIFIERS))
 		{
 			ItemAttributeModifiers modifiers = FabricItemHooks.getDefaultAttributeModifiers(stack);
 			if(modifiers != null)

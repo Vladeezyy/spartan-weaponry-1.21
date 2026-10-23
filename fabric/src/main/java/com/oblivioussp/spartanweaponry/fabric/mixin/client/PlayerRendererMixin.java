@@ -17,8 +17,9 @@ import net.minecraft.world.item.Items;
 @Mixin(AvatarRenderer.class)
 public abstract class PlayerRendererMixin
 {
-	@WrapOperation(method = "getArmPose(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))
-	private static boolean spartanweaponry$crossbow(ItemStack stack, Item item, Operation<Boolean> original)
+	@WrapOperation(method = "getArmPose(Lnet/minecraft/world/entity/Avatar;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/client/model/HumanoidModel$ArmPose;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Ljava/lang/Object;)Z"))
+	// 26.1: is(Item) is TypedInstance#is(T), erased to Object
+	private static boolean spartanweaponry$crossbow(ItemStack stack, Object item, Operation<Boolean> original)
 	{
 		if(item == Items.CROSSBOW)
 			return stack.getItem() instanceof CrossbowItem;

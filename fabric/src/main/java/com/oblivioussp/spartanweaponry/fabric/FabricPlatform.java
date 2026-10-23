@@ -11,8 +11,8 @@ import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -73,7 +73,7 @@ public class FabricPlatform implements Platform
 	@Override
 	public <T> Registry<T> createRegistry(ResourceKey<Registry<T>> key, Identifier defaultKey)
 	{
-		FabricRegistryBuilder<T, ?> builder = defaultKey != null ? FabricRegistryBuilder.createDefaulted(key, defaultKey) : FabricRegistryBuilder.createSimple(key);
+		FabricRegistryBuilder<T, ?> builder = defaultKey != null ? FabricRegistryBuilder.createDefaulted(key, defaultKey) : FabricRegistryBuilder.create(key);
 		return builder.attribute(RegistryAttribute.SYNCED).buildAndRegister();
 	}
 
@@ -93,7 +93,7 @@ public class FabricPlatform implements Platform
 	@Override
 	public <T extends AbstractContainerMenu> MenuType<T> createMenuType(MenuFactory<T> factory)
 	{
-		return new ExtendedScreenHandlerType<T, byte[]>((id, inventory, data) -> factory.create(id, inventory, buffer(inventory, data)), ByteBufCodecs.BYTE_ARRAY);
+		return new ExtendedMenuType<T, byte[]>((id, inventory, data) -> factory.create(id, inventory, buffer(inventory, data)), ByteBufCodecs.BYTE_ARRAY);
 	}
 
 	private static RegistryFriendlyByteBuf buffer(Inventory inventory, byte[] data)
@@ -109,7 +109,7 @@ public class FabricPlatform implements Platform
 		byte[] bytes = new byte[buf.readableBytes()];
 		buf.readBytes(bytes);
 		buf.release();
-		player.openMenu(new ExtendedScreenHandlerFactory<byte[]>()
+		player.openMenu(new ExtendedMenuProvider<byte[]>()
 		{
 			@Override
 			public byte[] getScreenOpeningData(ServerPlayer player)

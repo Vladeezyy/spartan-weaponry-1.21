@@ -124,7 +124,7 @@ public class ClientHelper
 	@FunctionalInterface
 	public interface HudLayer
 	{
-		void extractRenderState(GuiGraphicsExtractor graphics, DeltaTracker delta);
+		void render(GuiGraphicsExtractor graphics, DeltaTracker delta);
 	}
 	
 	// 1.21.4+: item model properties and tints are in WeaponryItemModels, used by the item definitions
@@ -178,7 +178,7 @@ public class ClientHelper
 	 * renderer asks for them. */
 	public static void registerSkullModels(SkullRegistrar ev)
 	{
-		ev.register(ExtendedSkullBlock.Types.BLAZE, (models) -> new SkullModel(models.bakeLayer(ModelLayers.BLAZE_HEAD)), Identifier.withDefaultNamespace("textures/entity/blaze.png"));
+		ev.register(ExtendedSkullBlock.Types.BLAZE, (models) -> new SkullModel(models.bakeLayer(ModelLayers.BLAZE_HEAD)), Identifier.withDefaultNamespace("textures/entity/blaze/blaze.png"));
 		ev.register(ExtendedSkullBlock.Types.ENDERMAN, (models) -> new EndermanHeadModel(models.bakeLayer(ModelLayers.ENDERMAN_HEAD)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/enderman_head.png"));
 		ev.register(ExtendedSkullBlock.Types.SPIDER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.SPIDER_HEAD)), Identifier.withDefaultNamespace("textures/entity/spider/spider.png"));
 		ev.register(ExtendedSkullBlock.Types.CAVE_SPIDER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.CAVE_SPIDER_HEAD)), Identifier.withDefaultNamespace("textures/entity/spider/cave_spider.png"));
@@ -187,7 +187,7 @@ public class ClientHelper
 		ev.register(ExtendedSkullBlock.Types.STRAY, (models) -> new SkullModel(models.bakeLayer(ModelLayers.STRAY_SKULL)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/stray_skull.png"));
 		ev.register(ExtendedSkullBlock.Types.DROWNED, (models) -> new SkullModel(models.bakeLayer(ModelLayers.DROWNED_HEAD)), Identifier.fromNamespaceAndPath(ModSpartanWeaponry.ID, "textures/entity/skull/drowned_head.png"));
 		ev.register(ExtendedSkullBlock.Types.ILLAGER, (models) -> new SkullModel(models.bakeLayer(ModelLayers.ILLAGER_HEAD)), Identifier.withDefaultNamespace("textures/entity/illager/pillager.png"));
-		ev.register(ExtendedSkullBlock.Types.WITCH, (models) -> new SkullModel(models.bakeLayer(ModelLayers.WITCH_HEAD)), Identifier.withDefaultNamespace("textures/entity/witch.png"));
+		ev.register(ExtendedSkullBlock.Types.WITCH, (models) -> new SkullModel(models.bakeLayer(ModelLayers.WITCH_HEAD)), Identifier.withDefaultNamespace("textures/entity/witch/witch.png"));
 	}
 	
 	@FunctionalInterface

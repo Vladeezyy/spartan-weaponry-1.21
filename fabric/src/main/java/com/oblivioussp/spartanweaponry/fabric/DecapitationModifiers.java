@@ -3,6 +3,7 @@ package com.oblivioussp.spartanweaponry.fabric;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.google.gson.JsonElement;
@@ -26,14 +27,13 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 /**
- * The decapitate global loot modifiers on Fabric: the same data as NeoForge (the entries of
- * data/neoforge/loot_modifiers/global_loot_modifiers.json of type spartanweaponry:decapitate), applied by
+ * The decapitate global loot modifiers on Fabric: the same data as NeoForge (the files of data/<namespace>/loot_modifiers
+ * of type spartanweaponry:decapitate), applied by
  * mixin/LootTableMixin. The conditions need the registries, so they are read on the first roll after a reload.
  */
 public final class DecapitationModifiers implements SimpleSynchronousResourceReloadListener
 {
 	public static final DecapitationModifiers INSTANCE = new DecapitationModifiers();
-	private static final Identifier LIST = Identifier.fromNamespaceAndPath("neoforge", "loot_modifiers/global_loot_modifiers.json");
 	private static final String TYPE = ModSpartanWeaponry.ID + ":decapitate";
 
 	private record Modifier(List<LootItemCondition> conditions, Item skull) {}
@@ -52,42 +52,20 @@ public final class DecapitationModifiers implements SimpleSynchronousResourceRel
 	@Override
 	public void onResourceManagerReload(ResourceManager manager)
 	{
-		// The entries of every pack, in order; "replace" drops the ones before (as NeoForge's LootModifierManager)
-		List<Identifier> entries = new ArrayList<>();
-		for(Resource resource : manager.getResourceStack(LIST))
-		{
-			try(Reader reader = resource.openAsReader())
-			{
-				JsonObject list = JsonParser.parseReader(reader).getAsJsonObject();
-				if(list.has("replace") && list.get("replace").getAsBoolean())
-					entries.clear();
-				for(JsonElement entry : list.getAsJsonArray("entries"))
-				{
-					Identifier id = Identifier.parse(entry.getAsString());
-					if(!entries.contains(id))
-						entries.add(id);
-				}
-			}
-			catch(Exception e)
-			{
-				Log.error("Couldn't read the global loot modifier list of " + resource.sourcePackId() + ": " + e);
-			}
-		}
+		// 26.1: every file of data/<namespace>/loot_modifiers is a modifier, the top pack's file of an id wins (NeoForge's
+		// LootModifierManager; the global_loot_modifiers.json list is gone)
 		List<JsonObject> found = new ArrayList<>();
-		for(Identifier id : entries)
+		for(Map.Entry<Identifier, Resource> entry : manager.listResources("loot_modifiers", id -> id.getPath().endsWith(".json")).entrySet())
 		{
-			Optional<Resource> resource = manager.getResource(id.withPath(path -> "loot_modifiers/" + path + ".json"));
-			if(resource.isEmpty())
-				continue;
-			try(Reader reader = resource.get().openAsReader())
+			try(Reader reader = entry.getValue().openAsReader())
 			{
 				JsonObject modifier = JsonParser.parseReader(reader).getAsJsonObject();
-				if(TYPE.equals(modifier.get("type").getAsString()))
+				if(modifier.has("type") && TYPE.equals(modifier.get("type").getAsString()))
 					found.add(modifier);
 			}
 			catch(Exception e)
 			{
-				Log.error("Couldn't read the loot modifier " + id + ": " + e);
+				Log.error("Couldn't read the loot modifier " + entry.getKey() + ": " + e);
 			}
 		}
 		json = found;

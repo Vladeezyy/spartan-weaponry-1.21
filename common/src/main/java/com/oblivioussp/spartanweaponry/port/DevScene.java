@@ -864,6 +864,8 @@ public final class DevScene
 				.create(net.minecraft.world.level.storage.loot.parameters.LootContextParamSets.VILLAGER_TRADE)).create(java.util.Optional.empty());
 		var offer = trade == null ? null : trade.getOffer(context);
 		check("weaponsmith trade offers an iron weapon (1.20.1 kept the trades on empty lists)", offer != null && offer.getResult().is(ModItemTags.OILABLE_WEAPONS), offer == null ? "none" : offer.getResult());
+		int price = offer == null ? -1 : com.oblivioussp.spartanweaponry.merchant.villager.WeaponsmithTrades.LVL1_ITEMS.stream().filter(item -> offer.getResult().is(item.getItem())).findFirst().map(item -> item.getEmeraldCost()).orElse(-1);
+		check("the weaponsmith trade costs the weapon's emeralds (26.1: the additional trade cost)", offer != null && price > 0 && offer.getBaseCostA().is(net.minecraft.world.item.Items.EMERALD) && offer.getBaseCostA().getCount() == price, offer == null ? "none" : offer.getBaseCostA() + ", list price " + price);
 		player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
 	}
 

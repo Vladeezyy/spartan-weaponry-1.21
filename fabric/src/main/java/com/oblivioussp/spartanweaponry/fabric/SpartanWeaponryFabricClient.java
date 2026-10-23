@@ -19,11 +19,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.ClientTooltipComponentCallback;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
@@ -83,10 +83,10 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 			@Override
 			public <T extends ParticleOptions> void register(ParticleType<T> type, java.util.function.Function<SpriteSet, ParticleProvider<T>> provider)
 			{
-				ParticleFactoryRegistry.getInstance().register(type, provider::apply);
+				ParticleProviderRegistry.getInstance().register(type, provider::apply);
 			}
 		});
-		TooltipComponentCallback.EVENT.register(ClientHelper::createTooltipComponent);
+		ClientTooltipComponentCallback.EVENT.register(ClientHelper::createTooltipComponent);
 		// The GUI layers of NeoForge: above everything, and right after the crosshair, which the weapons with their own
 		// crosshair hide (NeoForge: RenderGuiLayerEvent.Pre of the crosshair)
 		ClientHelper.registerHudOverlays((id, layer) -> HudElementRegistry.addLast(id, layer::render),
@@ -94,7 +94,7 @@ public class SpartanWeaponryFabricClient implements ClientModInitializer
 		HudElementRegistry.replaceElement(VanillaHudElements.CROSSHAIR, (crosshair) -> (graphics, delta) ->
 		{
 			if(!ClientEventHandler.hideVanillaCrosshair())
-				crosshair.render(graphics, delta);
+				crosshair.extractRenderState(graphics, delta);
 		});
 		
 		// NeoForge: the key and mouse button input events; on Fabric before the game handles the key bindings each tick

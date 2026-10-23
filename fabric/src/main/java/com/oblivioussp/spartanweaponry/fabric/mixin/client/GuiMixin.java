@@ -19,7 +19,7 @@ public abstract class GuiMixin
 	@Shadow
 	private ItemStack lastToolHighlight;
 
-	@ModifyVariable(method = "renderSelectedItemName", at = @At("STORE"), ordinal = 0)
+	@ModifyVariable(method = "extractSelectedItemName", at = @At("STORE"), ordinal = 0)
 	private MutableComponent spartanweaponry$highlightTip(MutableComponent name)
 	{
 		if(lastToolHighlight.getItem() instanceof HeavyCrossbowItem crossbow)
