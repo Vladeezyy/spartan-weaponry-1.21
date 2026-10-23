@@ -382,3 +382,8 @@ NeoForge 26.3.0.95, Fabric Loader 0.19.5 + Fabric API 0.165.0, Forge Config API 
 - Curios 17: `ICurioRenderer.register`, the crouching offset of the back quiver done here (translateIfSneaking is gone).
 - SDL input: key codes are scancodes (the quiver key is still I), the scenes click with `MOUSE_BUTTON_LEFT` (1).
 - `ModConfig.Type.LOCAL` (was COMMON) with the old file name `spartanweaponry-common.toml`.
+- **Verified**: client scene 60 checks on NeoForge, 58 on Fabric (with the new oil brewing checks), all pass; release
+  jar on a real NeoForge 26.3.0.95 server and a dedicated Fabric server; scene and stress scene on a Fabric production
+  client; compatibility runs with Sodium 0.9.3 beta, Iris 1.11.7, Lithium 0.26.2, FerriteCore 9.0.0, Jade 26.3, Shoulder
+  Surfing 5.2 (62 checks on NeoForge, 60 on Fabric): Fabric with the Complementary shaders, NeoForge without a shader pack
+  (Iris 1.11.7 for NeoForge 26.3 crashes in its render passes with one on). No stress scene with FPS numbers.
