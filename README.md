@@ -53,22 +53,19 @@ thrown and ranged weapons, each with its own traits.
   <img src="docs/images/stress_render.jpg" width="49%" alt="400 armor stands with weapons">
 </p>
 
-## 📦 Installation
+## 📦 Requirements
 
 **NeoForge**
 
-1. Install **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
-2. Put `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` from the [releases](../../releases) into `mods`.
+- **NeoForge 21.1.197** or newer for Minecraft **1.21.1**.
 
 No other mods needed. Optional: **Curios** (quiver in the back slot), **JEI** / **EMI** (tipped projectile and oil
 recipes), **Shoulder Surfing** 4.x / 5.x (aims like a bow), **JEED**.
 
 **Fabric**
 
-1. Install **Fabric Loader 0.16.14** or newer for Minecraft **1.21.1**.
-2. Put into `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` from the [releases](../../releases),
-   **[Fabric API](https://modrinth.com/mod/fabric-api)** and
-   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 or newer (the settings).
+- **Fabric Loader 0.16.14** or newer for Minecraft **1.21.1**.
+- **[Fabric API](https://modrinth.com/mod/fabric-api)** and **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 or newer (the settings).
 
 Optional: **JEI** (tipped projectile and oil recipes), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. On Fabric the quiver has no back slot (that is Curios, which is NeoForge only); it works from the hotbar.
 
@@ -175,22 +172,19 @@ Spartan Weaponry добавляет в Minecraft целый новый арсе�
 </details>
 
 <details>
-<summary><b>📦 Установка</b></summary>
+<summary><b>📦 Требования</b></summary>
 
 **NeoForge**
 
-1. Установите **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
-2. Положите `spartanweaponry-neoforge-3.2.1.2+1.21.1.jar` из [релизов](../../releases) в папку `mods`.
+- **NeoForge 21.1.197** или новее для Minecraft **1.21.1**.
 
 Других модов не нужно. По желанию: **Curios** (колчан на спине), **JEI** / **EMI** (рецепты наконечников и масел),
 **Shoulder Surfing** 4.x / 5.x (прицеливание как с луком), **JEED**.
 
 **Fabric**
 
-1. Установите **Fabric Loader 0.16.14** или новее для Minecraft **1.21.1**.
-2. Положите в `mods`: `spartanweaponry-fabric-3.2.1.2+1.21.1.jar` из [релизов](../../releases),
-   **[Fabric API](https://modrinth.com/mod/fabric-api)** и
-   **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 или новее (настройки).
+- **Fabric Loader 0.16.14** или новее для Minecraft **1.21.1**.
+- **[Fabric API](https://modrinth.com/mod/fabric-api)** и **[Forge Config API Port](https://modrinth.com/mod/forge-config-api-port)** 21.1.6 или новее (настройки).
 
 По желанию: **JEI** (рецепты наконечников и масел), **EMI**, **Shoulder Surfing** 4.x / 5.x, **JEED**. На Fabric у колчана нет слота на спине (это Curios, он есть только на NeoForge); колчан работает из хотбара.
 
