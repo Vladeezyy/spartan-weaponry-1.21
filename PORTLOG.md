@@ -268,3 +268,11 @@ Stress scene (`tools/stresstest.sh`) with a JFR recording (`JDK_JAVA_OPTIONS="-X
   jar and the release jar ran together (Fabric happened to load the scenes jar). The task now uses `mods.setFrom`, and the
   production runs were repeated with only the scenes jar: all checks pass. `fabric.mod.json` in the jar is valid JSON
   now (the description's `\n` had become a raw newline when Gradle expanded the template).
+
+## 3.2.1.3: sweep on NeoForge (2026-11-08)
+CurseForge reports (2026-11): the Sweep trait did nothing on NeoForge. Fabric was not affected.
+- Cause 1 (every version since the multiloader port): the NeoForge module's `ItemStackMixin` injected into `ItemStack.canPerformAction(ItemAbility)`, which `ItemStack` does not declare: it is a default method of `IItemStackExtension` (1.21.x) / `ItemInstanceExtension` (26.x). The injector had no target and `require` 0 hid it, so the player's sweep check never asked the weapons. Now `neoforge/.../mixin/SwordBaseItemMixin` adds `IItemExtension.canPerformAction(<stack>, ItemAbility)` to `SwordBaseItem` and maps the ability to the common tool action of the same name.
+- 1.21.1 reads the sweep ratio in `Player.attack` (one method on NeoForge too), so Sweep II / III were right once the weapons could sweep.
+- Both mixin configs (`spartanweaponry.mixins.json`, `spartanweaponry.neoforge.mixins.json`) have `"injectors": {"defaultRequire": 1}`: an injector without a target now stops the game. Every injector of the mod found its target on both loaders.
+- Scene, `melee` step: the damage a full-strength hit does to a second zombie a block beside the target. Iron sword 0.94, iron katana (Sweep I) 1.92, iron glaive (Sweep II) 2.17, iron greatsword (Sweep III) 4.43, iron warhammer 0; Sweep III above Sweep I. The same numbers on both loaders. Before the fix NeoForge gave 0 for the mod's weapons (and 0.94 for Sweep II / III with only the first fix).
+- Verified: client scene 0 failed on NeoForge (61 checks) and Fabric (59 checks), dedicated server on both loaders. The release jars: real NeoForge 21.1.259 and 21.1.197 servers, a production Fabric server, the client scene on a Fabric production client (intermediary names; 59 checks, 0 failed, the same sweep numbers).
