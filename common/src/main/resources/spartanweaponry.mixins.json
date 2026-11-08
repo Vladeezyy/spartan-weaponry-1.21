@@ -16,5 +16,8 @@
 		"PiglinBruteMixin",
 		"WitherSkeletonMixin"
 	],
+	"injectors": {
+		"defaultRequire": 1
+	},
 	"minVersion": "0.8"
 }

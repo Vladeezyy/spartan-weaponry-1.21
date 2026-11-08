@@ -3,10 +3,13 @@
 	"package": "com.oblivioussp.spartanweaponry.neoforge.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"ItemStackMixin"
+		"SwordBaseItemMixin"
 	],
 	"client": [
 		"ItemModelGeneratorMixin"
 	],
+	"injectors": {
+		"defaultRequire": 1
+	},
 	"minVersion": "0.8"
 }
