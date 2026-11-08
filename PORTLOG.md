@@ -360,3 +360,11 @@ version.
   Sodium 0.9.2, Iris 1.11.4, Lithium 0.25.3, FerriteCore 9.0.0, Jade 26.2, Shoulder Surfing 5.2 (58 checks on NeoForge,
   56 on Fabric): Fabric with the Complementary shaders, NeoForge without a shader pack (Iris 1.11.4's NeoForge shadow
   pass crashes on enchanted items). No stress scene with FPS numbers (owner's call).
+
+## 3.2.1.3: sweep on NeoForge (2026-11-08)
+CurseForge reports (2026-11): the Sweep trait did nothing on NeoForge. Fabric was not affected.
+- Cause 1 (every version since the multiloader port): the NeoForge module's `ItemStackMixin` injected into `ItemStack.canPerformAction(ItemAbility)`, which `ItemStack` does not declare: it is a default method of `IItemStackExtension` (1.21.x) / `ItemInstanceExtension` (26.x). The injector had no target and `require` 0 hid it, so the player's sweep check never asked the weapons. Now `neoforge/.../mixin/SwordBaseItemMixin` adds `IItemExtension.canPerformAction(<stack>, ItemAbility)` to `SwordBaseItem` and maps the ability to the common tool action of the same name.
+- Cause 2 (1.21.11–26.3, NeoForge): `PlayerMixin` wraps `getAttributeValue(SWEEPING_DAMAGE_RATIO)` in `doSweepAttack`. NeoForge splits that method in two (the overload without a hit box calls the one with `AABB sweepHitBox`, which reads the ratio); a bare method name selects the first overload only, so Sweep II / III dealt the base sweep damage. The target is now `doSweepAttack*` (every overload).
+- Both mixin configs (`spartanweaponry.mixins.json`, `spartanweaponry.neoforge.mixins.json`) have `"injectors": {"defaultRequire": 1}`: an injector without a target now stops the game. Every injector of the mod found its target on both loaders.
+- Scene, `melee` step: the damage a full-strength hit does to a second zombie a block beside the target. Iron sword 0.94, iron katana (Sweep I) 1.92, iron glaive (Sweep II) 2.17, iron greatsword (Sweep III) 4.43, iron warhammer 0; Sweep III above Sweep I. The same numbers on both loaders. Before the fix NeoForge gave 0 for the mod's weapons (and 0.94 for Sweep II / III with only the first fix).
+- Verified: client scene 0 failed on NeoForge (62 checks) and Fabric (60 checks), dedicated server on both loaders.
