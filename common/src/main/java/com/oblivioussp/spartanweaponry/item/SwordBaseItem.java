@@ -356,7 +356,7 @@ public class SwordBaseItem extends Item implements IWeaponTraitContainer<SwordBa
 		super.onCraftedBy(stack, playerIn);
 	}
 	
-	// NeoForge's canPerformAction(ItemStack, ItemAbility) calls this (a mixin of the NeoForge module)
+	// NeoForge: IItemExtension.canPerformAction calls this (SwordBaseItemMixin of the NeoForge module); Fabric: PlayerMixin
 	@Override
 	public boolean canPerformToolAction(ItemStack stack, ToolAction toolAction) 
 	{
