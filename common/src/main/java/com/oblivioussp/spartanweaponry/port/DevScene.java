@@ -806,6 +806,23 @@ public final class DevScene
 		return before - target.getHealth();
 	}
 
+	/** The damage a full strength hit on a zombie with this weapon does to a second zombie a block to its side */
+	private static float sweepDamage(ServerPlayer player, ItemStack weapon)
+	{
+		player.setItemSlot(EquipmentSlot.MAINHAND, weapon);
+		player.setSprinting(false);
+		player.setOnGround(true);
+		Zombie target = target(player, 2.0, false);
+		Zombie side = target(player, 2.0, false);
+		side.setPos(target.getX() + 1.0, target.getY(), target.getZ());
+		float before = side.getHealth();
+		hit(player, target);
+		float dealt = before - side.getHealth();
+		target.discard();
+		side.discard();
+		return dealt;
+	}
+
 	private static void setAttackTicker(ServerPlayer player, int ticks)
 	{
 		// Opened by the access transformer / widener (by name it would be another on a production Fabric client)
@@ -832,6 +849,20 @@ public final class DevScene
 		float expected = CombatRules.getDamageAfterAbsorb(plated, katanaAttack, player.damageSources().playerAttack(player), (float)plated.getArmorValue(), (float)plated.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
 		check("katana hit deals its attack damage (after armour)", Math.abs(katanaDealt - expected) < 0.01F, katanaDealt + " vs " + expected + " of " + katanaAttack);
 		plated.discard();
+		// Sweep traits (CurseForge reports 2026-11: the swords of the mod did not sweep): a full strength hit on the ground
+		// also hurts a zombie next to the target, as a vanilla sword does
+		float vanillaSweep = sweepDamage(player, new ItemStack(Items.IRON_SWORD));
+		float katanaSweep = sweepDamage(player, new ItemStack(ModItems.KATANAS.iron.get()));
+		float greatswordSweep = sweepDamage(player, new ItemStack(ModItems.GREATSWORDS.iron.get()));
+		float glaiveSweep = sweepDamage(player, new ItemStack(ModItems.GLAIVES.iron.get()));
+		float warhammerSweep = sweepDamage(player, new ItemStack(ModItems.WARHAMMERS.iron.get()));
+		check("a vanilla sword sweeps", vanillaSweep > 0.0F, vanillaSweep);
+		check("katana sweeps (Sweep I)", katanaSweep > 0.0F, katanaSweep);
+		check("greatsword sweeps (Sweep III)", greatswordSweep > 0.0F, greatswordSweep);
+		check("glaive sweeps (Sweep II)", glaiveSweep > 0.0F, glaiveSweep);
+		check("no sweep with a warhammer", warhammerSweep == 0.0F, warhammerSweep);
+		// The level sets the share of the attack damage (common PlayerMixin)
+		check("Sweep III hits harder than Sweep I", greatswordSweep > katanaSweep, greatswordSweep + " vs " + katanaSweep);
 		player.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.WARHAMMERS.iron.get()));
 		// The armour counts from the next tick on
 		armoredId = target(player, 2.0, true).getId();
