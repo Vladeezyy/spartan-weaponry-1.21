@@ -104,6 +104,10 @@ HUD Baubles на Fabric — только 1.21.1 с Trinkets. Порядок: п�
   - Ввод SDL: modding-kb `scripts/port_263_input.py`; цели миксинов по дескрипторам — `scripts/mixin_targets.py`.
   - Iris 1.11.7 на NeoForge 26.3 падает с шейдерами: compat на NeoForge с `NO_SHADERS=1` (теперь и у HUD).
   - Все ветки версий выпущены; дальше — по новым версиям MC.
+- **Weaponry 3.2.1.3 (2026-11-08), все 5 версий:** на NeoForge мечи снова делают sweep (жалобы на CurseForge). Миксин
+  `ItemStack#canPerformAction` никогда не применялся → `SwordBaseItemMixin`; `PlayerMixin` → `doSweepAttack*` (у NeoForge две
+  перегрузки); `defaultRequire: 1` в обоих mixin-конфигах. GitHub `v3.2.1.3+<mc>`, CurseForge файлы 9503889–9503901, CI зелёный.
+  Arcana и HUD не пересобирались (Arcana требует `>=3.2.1.2`). Подробности — PORTLOG каждой ветки.
 - Потом: ветки версий `mc/1.21.11`, `mc/26.1.2`, `mc/26.2`, `mc/26.3` для всех четырёх (как в iron-backpacks-1.21;
   HUD Baubles на Fabric — только 1.21.1). Weaponry на Fabric: слота колчана нет (Curios → можно Trinkets).
 
