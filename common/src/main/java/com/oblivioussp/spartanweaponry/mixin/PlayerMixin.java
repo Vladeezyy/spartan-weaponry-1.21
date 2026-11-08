@@ -32,7 +32,9 @@ public class PlayerMixin
 	 * 1.21 reads the SWEEPING_DAMAGE_RATIO attribute in Player.attack (sweep damage = 1 + ratio * damage, as before);
 	 * 1.21.11 in Player.doSweepAttack.
 	 */
-	@WrapOperation(method = "doSweepAttack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
+	// "doSweepAttack*": every overload; NeoForge splits it in two and reads the ratio in the one with the hit box (a bare
+	// name takes the first overload only, where the call is missing: Sweep II / III did nothing on NeoForge)
+	@WrapOperation(method = "doSweepAttack*", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getAttributeValue(Lnet/minecraft/core/Holder;)D"))
 	private double getSweepingDamageRatio(Player entityIn, Holder<Attribute> attribute, Operation<Double> original)
 	{
 		if(attribute == Attributes.SWEEPING_DAMAGE_RATIO)
