@@ -1,44 +1,35 @@
 package com.oblivioussp.spartanweaponry.item.crafting;
 
-import net.minecraft.world.item.crafting.display.SlotDisplay;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
-import net.minecraft.world.item.crafting.RecipeBookCategories;
-import net.minecraft.world.item.Items;
-import net.minecraft.core.registries.Registries;
 import java.util.List;
-import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
 
-import net.minecraft.core.HolderLookup;
+import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
+import com.oblivioussp.spartanweaponry.util.LoadedTags;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 /**
- * Smelting with an item tag as the result: the first item of the tag when it is made (1.21.2+: a cooking recipe of its own,
- * vanilla's SmeltingRecipe#getSerializer is typed to its own serializer)
+ * Smelting with an item tag as the result: the first item of the tag when the recipes load (an empty stack for an empty
+ * tag: nothing is made). A SmeltingRecipe, as RecipeType.SMELTING promises: other mods cast the smelting recipes to it
+ * and read the result (TagBlastingRecipe: Alloy Forgery crashed with a ClassCastException on a blasting recipe that
+ * was only a cooking recipe, Fabric 26.1.2).
  */
-public class TagSmeltingRecipe extends AbstractCookingRecipe implements ITagCookingRecipe
+public class TagSmeltingRecipe extends SmeltingRecipe implements ITagCookingRecipe
 {
 	protected final TagKey<Item> resultTag;
 	
 	public TagSmeltingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, float experienceIn, int cookTimeIn) 
 	{
-		super(groupIn, categoryIn, inputIngredientIn, ItemStack.EMPTY, experienceIn, cookTimeIn);
+		super(groupIn, categoryIn, inputIngredientIn, LoadedTags.firstItem(resultTagIn).map(ItemStack::new).orElse(ItemStack.EMPTY), experienceIn, cookTimeIn);
 		resultTag = resultTagIn;
-	}
-	
-	@Override
-	public ItemStack assemble(SingleRecipeInput containerIn, HolderLookup.Provider registryIn)
-	{
-		return registryIn.lookupOrThrow(Registries.ITEM).get(resultTag).flatMap((tag) -> tag.stream().findFirst()).map(ItemStack::new).orElse(ItemStack.EMPTY);
 	}
 
 	@Override
@@ -49,27 +40,11 @@ public class TagSmeltingRecipe extends AbstractCookingRecipe implements ITagCook
 	}
 
 	@Override
-	protected Item furnaceIcon()
+	@SuppressWarnings("unchecked")
+	public RecipeSerializer<SmeltingRecipe> getSerializer() 
 	{
-		return Items.FURNACE;
-	}
-
-	@Override
-	public RecipeSerializer<TagSmeltingRecipe> getSerializer() 
-	{
-		return (RecipeSerializer<TagSmeltingRecipe>)ModRecipeSerializers.TAGGED_SMELTING.get();
-	}
-
-	@Override
-	public RecipeType<? extends AbstractCookingRecipe> getType()
-	{
-		return RecipeType.SMELTING;
-	}
-
-	@Override
-	public RecipeBookCategory recipeBookCategory()
-	{
-		return RecipeBookCategories.FURNACE_MISC;
+		// Typed to vanilla's serializer; ours makes this class, a SmeltingRecipe
+		return (RecipeSerializer<SmeltingRecipe>)(RecipeSerializer<?>)ModRecipeSerializers.TAGGED_SMELTING.get();
 	}
 
 	@Override
