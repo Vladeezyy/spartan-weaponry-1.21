@@ -1,47 +1,55 @@
 package com.oblivioussp.spartanweaponry.item.crafting;
 
-import net.minecraft.world.item.crafting.display.SlotDisplay;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
-import net.minecraft.world.item.crafting.RecipeBookCategories;
-import net.minecraft.world.item.Items;
-import net.minecraft.core.registries.Registries;
 import java.util.List;
+import java.util.Optional;
+
 import com.oblivioussp.spartanweaponry.init.ModRecipeSerializers;
+import com.oblivioussp.spartanweaponry.util.LoadedTags;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.ItemStackTemplate;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
+import net.minecraft.world.item.crafting.display.FurnaceRecipeDisplay;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 /**
- * Blasting with an item tag as the result: the first item of the tag when it is made (1.21.2+: a cooking recipe of its own,
- * vanilla's BlastingRecipe#getSerializer is typed to its own serializer)
+ * Blasting with an item tag as the result: the first item of the tag when the recipes load. A BlastingRecipe, as
+ * RecipeType.BLASTING promises: other mods cast the blasting recipes to it and read the result (Alloy Forgery turns
+ * them into forge recipes; a cooking recipe of its own crashed it with a ClassCastException when the world loaded).
  */
-public class TagBlastingRecipe extends AbstractCookingRecipe implements ITagCookingRecipe
+public class TagBlastingRecipe extends BlastingRecipe implements ITagCookingRecipe
 {
 	protected final TagKey<Item> resultTag;
-	
-	public TagBlastingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, float experienceIn, int cookTimeIn) 
+	/** False for an empty tag: nothing is made (26.1: the result template cannot be empty, a barrier stands in) */
+	protected final boolean hasResult;
+
+	public TagBlastingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, float experienceIn, int cookTimeIn)
 	{
-		// 26.1: the result template cannot be empty; a barrier, never made (assemble and display use the tag)
-		super(new Recipe.CommonInfo(true), new AbstractCookingRecipe.CookingBookInfo(categoryIn, groupIn), inputIngredientIn, new ItemStackTemplate(Items.BARRIER), experienceIn, cookTimeIn);
-		resultTag = resultTagIn;
+		this(groupIn, categoryIn, inputIngredientIn, resultTagIn, LoadedTags.firstItem(resultTagIn), experienceIn, cookTimeIn);
 	}
-	
+
+	private TagBlastingRecipe(String groupIn, CookingBookCategory categoryIn, Ingredient inputIngredientIn, TagKey<Item> resultTagIn, Optional<Item> resultIn, float experienceIn, int cookTimeIn)
+	{
+		super(new Recipe.CommonInfo(true), new AbstractCookingRecipe.CookingBookInfo(categoryIn, groupIn), inputIngredientIn, new ItemStackTemplate(resultIn.orElse(Items.BARRIER)), experienceIn, cookTimeIn);
+		resultTag = resultTagIn;
+		hasResult = resultIn.isPresent();
+	}
+
 	@Override
 	public ItemStack assemble(SingleRecipeInput containerIn)
 	{
-		return BuiltInRegistries.ITEM.get(resultTag).flatMap((tag) -> tag.stream().findFirst()).map(ItemStack::new).orElse(ItemStack.EMPTY);
+		return hasResult ? super.assemble(containerIn) : ItemStack.EMPTY;
 	}
 
 	@Override
@@ -52,37 +60,21 @@ public class TagBlastingRecipe extends AbstractCookingRecipe implements ITagCook
 	}
 
 	@Override
-	protected Item furnaceIcon()
+	@SuppressWarnings("unchecked")
+	public RecipeSerializer<BlastingRecipe> getSerializer()
 	{
-		return Items.BLAST_FURNACE;
+		// Typed to vanilla's serializer; ours makes this class, a BlastingRecipe
+		return (RecipeSerializer<BlastingRecipe>)(RecipeSerializer<?>)ModRecipeSerializers.TAGGED_BLASTING.get();
 	}
 
 	@Override
-	public RecipeSerializer<TagBlastingRecipe> getSerializer() 
-	{
-		return (RecipeSerializer<TagBlastingRecipe>)ModRecipeSerializers.TAGGED_BLASTING.get();
-	}
-
-	@Override
-	public RecipeType<? extends AbstractCookingRecipe> getType()
-	{
-		return RecipeType.BLASTING;
-	}
-
-	@Override
-	public RecipeBookCategory recipeBookCategory()
-	{
-		return RecipeBookCategories.BLAST_FURNACE_MISC;
-	}
-
-	@Override
-	public CookingBookCategory getCategory() 
+	public CookingBookCategory getCategory()
 	{
 		return category();
 	}
 
 	@Override
-	public Ingredient getInputIngredient() 
+	public Ingredient getInputIngredient()
 	{
 		return input();
 	}
@@ -94,7 +86,7 @@ public class TagBlastingRecipe extends AbstractCookingRecipe implements ITagCook
 	}
 
 	@Override
-	public int getCookTime() 
+	public int getCookTime()
 	{
 		return cookingTime();
 	}
