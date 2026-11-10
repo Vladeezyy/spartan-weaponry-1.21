@@ -1134,6 +1134,12 @@ public final class DevScene
 		var smelting = recipes.byKey(recipe("iron_nugget_from_smelting_iron_weapons"));
 		check("tag smelting: iron weapons melt into iron nuggets", smelting.map(r -> smelted(r, level).is(Items.IRON_NUGGET)
 				&& ((net.minecraft.world.item.crafting.AbstractCookingRecipe)r.value()).input().test(new ItemStack(ModItems.LONGSWORDS.iron.get()))).orElse(false), smelting.map(r -> smelted(r, level)).orElse(ItemStack.EMPTY));
+		var blasting = recipes.byKey(recipe("iron_nugget_from_blasting_iron_weapons"));
+		check("tag blasting: iron weapons melt into iron nuggets (the result the recipe keeps, read by other mods)", blasting.map(r -> smelted(r, level).is(Items.IRON_NUGGET)).orElse(false), blasting.map(r -> smelted(r, level)).orElse(ItemStack.EMPTY));
+		// Mods cast the recipes of a vanilla type to its class (Alloy Forgery: every blasting recipe to BlastingRecipe)
+		List<String> wrongClass = recipes.getRecipes().stream().filter(r -> r.id().identifier().getNamespace().equals(ModSpartanWeaponry.ID)
+				&& !vanillaClass(r.value().getType()).isInstance(r.value())).map(r -> r.id().identifier().getPath() + " " + r.value().getClass().getSimpleName()).toList();
+		check("our recipes of a vanilla type are of its class (BlastingRecipe for blasting...)", wrongClass.isEmpty(), wrongClass);
 		// Enchanting table
 		var possible = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).get(EnchantmentTags.IN_ENCHANTING_TABLE).orElseThrow();
 		check("enchanting table: throwing knife", offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible).containsAll(List.of("spartanweaponry:razors_edge", "spartanweaponry:propel", "spartanweaponry:lucky_throw", "minecraft:unbreaking")), offered(new ItemStack(ModItems.THROWING_KNIVES.iron.get()), possible));
@@ -1178,6 +1184,26 @@ public final class DevScene
 	{
 		return recipe.value() instanceof net.minecraft.world.item.crafting.AbstractCookingRecipe cooking
 				? ((net.minecraft.world.item.crafting.Recipe<net.minecraft.world.item.crafting.SingleRecipeInput>)cooking).assemble(new net.minecraft.world.item.crafting.SingleRecipeInput(new ItemStack(ModItems.LONGSWORDS.iron.get()))) : ItemStack.EMPTY;
+	}
+
+	/** The class a vanilla recipe type promises (RecipeType<BlastingRecipe> and so on); Recipe for the other types */
+	private static Class<?> vanillaClass(net.minecraft.world.item.crafting.RecipeType<?> type)
+	{
+		if(type == net.minecraft.world.item.crafting.RecipeType.BLASTING)
+			return net.minecraft.world.item.crafting.BlastingRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.SMELTING)
+			return net.minecraft.world.item.crafting.SmeltingRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.SMOKING)
+			return net.minecraft.world.item.crafting.SmokingRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.CAMPFIRE_COOKING)
+			return net.minecraft.world.item.crafting.CampfireCookingRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.CRAFTING)
+			return net.minecraft.world.item.crafting.CraftingRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.STONECUTTING)
+			return net.minecraft.world.item.crafting.StonecutterRecipe.class;
+		if(type == net.minecraft.world.item.crafting.RecipeType.SMITHING)
+			return net.minecraft.world.item.crafting.SmithingRecipe.class;
+		return net.minecraft.world.item.crafting.Recipe.class;
 	}
 
 	private static List<String> offered(ItemStack stack, net.minecraft.core.HolderSet.Named<net.minecraft.world.item.enchantment.Enchantment> possible)
