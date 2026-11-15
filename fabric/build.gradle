@@ -9,6 +9,11 @@ repositories {
         url = 'https://maven.fabricmc.net'
     }
     maven { url = 'https://maven.blamejared.com/' } // JEI
+    // Twilight Forest is on CurseForge only (-Pwith_tf)
+    maven {
+        url = 'https://cursemaven.com'
+        content { includeGroup 'curse.maven' }
+    }
 }
 
 loom {
@@ -48,6 +53,14 @@ dependencies {
         localRuntime "maven.modrinth:ferrite-core:${compat_fabric_ferritecore}"
         localRuntime "maven.modrinth:jade:${compat_fabric_jade}"
         localRuntime "maven.modrinth:shoulder-surfing-reloaded:${shoulder_surfing_version}+fabric"
+    }
+    // Twilight Forest (its carminite layer replaces ItemStack#forEachModifier) and Mythic Metals: CurseForge report
+    // 2026-11, the weapons hit as a bare hand with both installed (-Pwith_tf)
+    if (project.hasProperty('with_tf')) {
+        localRuntime 'curse.maven:the-twilight-forest-227639:9556107'
+        localRuntime 'maven.modrinth:mythicmetals:scbJGui1'
+        localRuntime 'maven.modrinth:alloy-forgery:7bsTNh92'
+        localRuntime 'maven.modrinth:owo-lib:HmigD8GL'
     }
     if (project.hasProperty('with_jei')) {
         localRuntime "mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}"
